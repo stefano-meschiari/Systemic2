@@ -1,0 +1,4 @@
+Systemic embeds the following libraries:
+- GSL, the GNU Scientific Library for several numerical routines (>>>http://www.gnu.org/software/gsl/ )
+- SWIFT (Hal Levison and Martin Duncan; >>>http://www.boulder.swri.edu/~hal/swift.html ) 
+- ODE.f for the Bulirsch-Stoer algorithm (E. Hairer and G. Wanner; >>>http://www.unige.ch/~hairer/prog/nonstiff/odex.f )

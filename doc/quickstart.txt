@@ -1,0 +1,19 @@
+QUICKSTART
+==========
+You can use Systemic by typing commands in the terminal (this area), or by using the user interface (menus and buttons). For a tour of the interface, use Help -> Tutorial.
+
+User interface
+==============
+- Each fit is called a "kernel", an object which carries both data (e.g. radial velocity) and parameters (e.g. orbital parameters, velocity offsets, etc.). A list of kernels is on the left hand side panel (KERNELS); the properties of the selected kernel are displayed in the PARAMETERS panel.
+
+- You can open/save kernels using File -> Open... and File -> Save...
+- Add data to a fit using the Data Browser panel (star icon).
+- Add new planets by clicking on the Planet buttons.
+- To optimize a fit, use the Optimize button.
+- To select parameters to optimize over, use the "semaphore" circle buttons next to each parameter.
+
+Explore the menus to get an idea of the type of tasks that can be run through Systemic.
+
+Terminal
+========
+The terminal accepts R commands. See Help -> R tutorial for a quick tutorial on the R language. 

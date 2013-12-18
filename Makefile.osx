@@ -1,0 +1,150 @@
+# Systemic 2 Makefile for Linux
+# 2012, Stefano Meschiari (http://www.stefanom.org)
+#
+# Please modify these paths:
+CC = /usr/bin/gcc
+FORTRAN = /usr/local/bin/gfortran
+
+# If you have installed GSL & company in non-standard places, add them here:
+LIBS = -L./deps/lib -L/opt/local/lib -L/usr/local/lib
+INCLUDES = -I./deps/include -I/opt/local/include -I/opt/local/include
+LIBNAMES = -lm -lgsl -lgslcblas -lgfortran -lc -lswift -lf2c  
+PACKAGE_DIR = ~/Downloads
+FFLAGS='-c -g -O3'
+
+OPTIMIZED_FLAGS = -g -O3 $(INCLUDES) $(LIBS) -Wall   -Wstrict-aliasing=2 -fopenmp  -std=c99
+DEBUG_FLAGS =  $(INCLUDES) $(LIBS) -Wall -Werror  -Wstrict-aliasing=2 -fopenmp -std=c99 -g3
+
+SYSFLAGS=$(OPTIMIZED_FLAGS)
+#SYSFLAGS=$(DEBUG_FLAGS)
+
+#UPDATE = --update --java
+UPDATE =
+ALLOBJECTS = objects/swift.o objects/periodogram.o objects/extras.o objects/mercury.o objects/integration.o objects/mcmc.o objects/utils.o objects/simplex.o objects/kernel.o objects/bootstrap.o objects/kl.o objects/qsortimp.o objects/lm.o objects/lm.o objects/hermite.o objects/ode.o objects/odex.o objects/sa.o objects/de.o
+
+# Only used when building Mac binary
+LUA=/opt/local/bin/lua
+
+
+
+macosx: src/*.c src/*.h $(ALLOBJECTS) utils/systemic_cli
+	gcc $(SYSFLAGS) $(CCFLAGS) -undefined dynamic_lookup -dynamiclib  -o libsystemic.dylib objects/*.o $(LIBNAMES)
+	cp libsystemic.dylib R
+	
+javascript_tester: macosx
+	$(CC)  -o test src/javascript.c objects/*.o $(CCFLAGS) $(SYSFLAGS) $(LIBNAMES)
+
+utils/systemic_cli: src/systemic_cli.c src/*.c src/*.h $(ALLOBJECTS) 
+	$(CC) -o utils/systemic_cli src/systemic_cli.c objects/*.o $(CCFLAGS) $(SYSFLAGS) $(LIBNAMES)
+	
+test: src/*.c src/*.h  $(ALLOBJECTS)
+	$(CC)  -o test src/test.c objects/*.o $(CCFLAGS) $(SYSFLAGS) $(LIBNAMES)
+
+objects/kernel.o: src/kernel.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/kernel.o src/kernel.c 
+
+objects/qsortimp.o: src/qsortimp.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/qsortimp.o src/qsortimp.c 
+
+objects/extras.o: src/extras.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/extras.o src/extras.c 
+
+
+objects/periodogram.o: src/periodogram.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/periodogram.o src/periodogram.c 
+
+objects/simplex.o: src/simplex.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/simplex.o src/simplex.c 
+
+objects/integration.o: src/integration.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/integration.o src/integration.c 
+
+objects/mercury.o: src/mercury.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/mercury.o src/mercury.c
+
+objects/utils.o: src/utils.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/utils.o src/utils.c
+
+objects/swift.o: src/swift.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/swift.o src/swift.c
+
+objects/bootstrap.o: src/bootstrap.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/bootstrap.o src/bootstrap.c
+
+objects/kl.o: src/kl.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/kl.o src/kl.c
+
+objects/mcmc.o: src/mcmc.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/mcmc.o src/mcmc.c
+
+objects/lm.o: src/lm.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/lm.o src/lm.c
+
+objects/hermite.o: src/hermite.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/hermite.o src/hermite.c
+
+objects/ode.o: src/ode.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/ode.o src/ode.c
+
+objects/odex.o: src/odex.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/odex.o src/odex.c
+
+objects/sa.o: src/sa.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/sa.o src/sa.c
+
+objects/de.o: src/de.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/de.o src/de.c
+
+.PHONY: clean cleanreqs
+
+clean:
+	rm -rf test objects/*.o *.dylib *.a *.so prefs.txt
+	-rm -rf mac
+	
+# For all-in-one installations
+
+reqs: ./deps/lib/libswift.a  ./deps/lib/libf2c.a 
+
+
+./deps/lib/libswift.a: 
+	echo "Making swift"
+	cd deps/swift; export FORTRAN=$(FORTRAN); export FFLAGS=$(FFLAGS); export SWIFT_DIR="`pwd`"; sh Makefile.sh; ar ruv libswift.a objects/*.o; ar ts libswift.a; cp libswift.a ../lib
+
+./deps/lib/libf2c.a:
+	echo "Making f2c"
+	cd deps/f2c; make -f makefile.u ; cp libf2c.a ../lib; cp f2c.h ../include
+
+cleanreqs:
+	-rm -rf ./deps/lib/* ./deps/bin/* 
+	-cd deps/f2c; make -f makefile.u clean; rm *.a *.so
+	-cd deps/swift; rm -f objects/* *.a *.so
+
+LUAJIT=/bin/luajit-2.0.0-beta9
+update_binding:
+	cd lua; $(LUAJIT) rparse.lua
+
+package: clean cleanreqs update_binding reqs macosx utils/systemic_cli 
+	$(LUA) lua/libs.lua libsystemic.dylib
+	- rm -R $(PACKAGE_DIR)/mac
+	mkdir $(PACKAGE_DIR)/mac
+	- rm prefs.txt
+	cp libsystemic.dylib R
+	cp -R deps R
+	- mkdir -p $(PACKAGE_DIR)/mac/Systemic $(PACKAGE_DIR)/mac/Systemic/deps/bin $(PACKAGE_DIR)/mac/Systemic/deps/lib  $(PACKAGE_DIR)/mac/Systemic/gui
+	cd utils; $(LUA) ../lua/libs.lua systemic_cli
+	cp -RH R utils sample datafiles fits doc *.dylib *.txt $(PACKAGE_DIR)/mac/Systemic
+	cp -RH deps/lib/* $(PACKAGE_DIR)/mac/Systemic/deps/lib
+	cp -R ../SystemicGui/dist/SystemicGui.jar ../SystemicGui/dist/lib $(PACKAGE_DIR)/mac/Systemic/gui
+	tar -cvzf $(PACKAGE_DIR)/mac/Systemic/src.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' src objects Makefile.osx
+	echo >$(PACKAGE_DIR)/mac/Systemic/gui/java_cmd.txt "/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin/java -server -Xmx1g -jar "
+	
+	- cp packaging/formac/* $(PACKAGE_DIR)/mac
+	- cp packaging/formac/*.txt $(PACKAGE_DIR)/mac/Systemic
+	- cp -R deps/lib/* $(PACKAGE_DIR)/mac/Systemic/R/deps/lib
+	- cp -R private/Systemic.app $(PACKAGE_DIR)/mac/Systemic
+
+	cd $(PACKAGE_DIR); tar -cvzf systemic_mac_`cat mac/Systemic/R/version`.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' --exclude '*.a' mac
+
+srcpackage: clean cleanreqs
+	cd ..; tar -cvzf $(PACKAGE_DIR)/src.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' --exclude '*.dylib' --exclude '.R*' --exclude ".temp*" --exclude '*.so' --exclude 'private' --exclude 'tests' Systemic2 SystemicGui
+	

@@ -1,0 +1,9 @@
+2.1010
+======
+- Changed name of "local" directory to "deps" directory
+
+2.1000
+======
+- Restored proper antialiasing in the rendering of curves and points in plots
+- Added a new "Data" menu to manipulate datasets
+

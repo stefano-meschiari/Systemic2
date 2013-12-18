@@ -1,0 +1,10 @@
+Welcome! This is a quick walkthrough to use the Systemic Console. 
+
+Press the Star shaped button to browse the data files available in your system.
+@ .gui.flash("openSystem")
+@ .gui.show("browser")
+@ .gui.flash("browserModule")
+
+Data files are simple text files, where each line represents a data point and each column different quantities, depending on the type of data. Radial velocities, for instance, have columns (TIME, VAL, ERR). Up to three additional columns can be used to represent other kinds of data.
+
+@ .wait()

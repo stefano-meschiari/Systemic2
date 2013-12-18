@@ -1,0 +1,128 @@
+Welcome! This is a quick walkthrough to show some of the basic features for radial velocity fitting of the Systemic Console.
+
+In this tutorial, we will analyze the dataset for 61 Virginis (HD115617).
+
+Type >>>tutorial() to start the basic interface walkthrough.
+Type >>>STOP() at any time to stop the tutorial.
+
+Blue, underlined links in this area are clickable. To proceed with the tutorial, click on the underlined >>>NEXT() link (or type NEXT() followed by Enter in the space underneath).
+
+# Click >>>NEXT() to continue 
+You can analyze and plot data by either:
+
+?- Choosing from the menu. 
+Menus let you open and save kernels, start a variety of tasks and plots and control the current session. Each menu item corresponds to a command. Some menu items have an associated shortcut for fast access.
+
+?- Using the sidebar on the right hand side. 
+A variety of plots and panels are placed there for point-and-click access to some functionality.
+
+# Click >>>NEXT() to continue 
+?- Typing commands in the terminal (optional). 
+
+This is the most powerful way to interact with Systemic. The terminal supports command history (arrow up and down) and tab completion inside strings (press TAB to complete a path). 
+
+The underlying language is R, so you can use R commands to manipulate and plot data. See >>>http://www.r-project.org for more information.
+
+A few tips & tricks:
+- Each fit is represented by a named object, called a "kernel" (you can see the list of fits on the sidebar on the left, under the KERNELS heading). The currently selected kernel is aliased to the "." (period) variable. To select a different kernel, type "`" followed by the name of the kernel.
+
+- To run a system command and see its output, type ! followed by the command. 
+
+- To write out a script, use the Editor tab on the sidebar.
+# Click >>>NEXT() to continue 
+@.gui.flash("clear")
+Let's analyze a dataset. A new fit ("kernel") is created using the menu item "File -> New kernel" or using the knew() function. Create a fit called "tut", typing
+
+?tut <- knew()
+
+or using the menu.
+# Create the new kernel called "tut", then click >>>NEXT() to continue
+@ tut <<- knew()
+@ .gui.select("tut")
+@.gui.flash("openSystem")
+@ .gui.show("browser")
+@ .gui.flash("browserModule")
+@ .gui.flash("kernelsModule")
+A new kernel has been created and selected (notice it has been added to the list of kernel objects on the left).
+
+Now select HD115617.sys from the Data Browser (you can use the arrows to move up and down, type to search and ENTER to load a dataset). This will load a collection of radial velocities of 61 Virginis, obtained with the Keck and AAT telescopes.
+
+# Load HD115617.sys, then click >>>NEXT() to continue
+@if (exists('tut')) { kremove.data(tut, 'all'); tut$mstar <- 0.950000; kadd.data(tut, c("datafiles/HD115617_AAT.vels", "datafiles/HD115617_KECK.vels"));}
+
+@.gui.flash("clear")
+@.gui.flash("rvModule")
+@.gui.flash("resModule")
+@.gui.flash("propertiesModule")
+@.gui.show("rvs")
+The data is now loaded. The radial velocities are shown in the panel on the right (actual measurements on the top, residuals to the fit on the bottom.)
+
+On the left sidebar, the properties of the fit (e.g. the chi^2, RMS and jitter, the number of data points, etc.) are automatically updated.
+
+# Click >>>NEXT() to continue
+@.gui.flash("clear")
+@.gui.flash("perModule")
+@.gui.flash("perResModule")
+@.gui.flash("perWinModule")
+@.gui.show("per")
+The Periodogram module (in the sidebar on the right) shows, from top to bottom, the periodogram of the loaded data, the periodogram of the residuals and the periodogram of sampling.
+
+The strongest periodicities are listed on the right, together with its estimated False Alarm Probabilities (to calculate other periodograms, look at the Tasks menu). 
+
+?You should see a peak at ~38 days.
+
+# Click >>>NEXT() to continue
+@.gui.flash("clear")
+@.gui.flash("planet1")
+To add a new planet, use the highlighted button. Systemic will suggest the strongest periodicities in the data. When a selection is made, Systemic will try to automatically adjust the parameters to fit the system.
+
+?- Click the highlighted button to add the first planet at 38 days
+?- Shift-Click the highlighted button to add the first planet, without eccentricity
+
+# Click >>>NEXT() to continue
+@.gui.flash("clear")
+@.gui.flash("minimize")
+@.gui.flash("planet2")
+Try to add the second strongest periodicity at ~ 4.2 days. Systemic will add the new planet and automatically optimize its parameters.
+
+?When the calculation is done, try minimizing over all the parameters by clicking "Minimize" (on the top right corner).
+
+# Click >>>NEXT() to continue
+@.gui.flash("clear")
+@.gui.flash("rms")
+@.gui.flash("allRvsModule")
+@.gui.show("")
+?Switch the sidebar to the "RV signal by planet" view (the double squiggly line icon), which shows the data folded with the periods of the planets.
+
+Notice that the residuals panel shows significant, periodic residuals over the fit, and the scatter (shown by the RMS) is still high. 
+
+Now check the periodogram of residuals; a third periodicity at P ~ 122 days is evident. (Notice that you can quickly switch between plots by using the shortcuts in the View menu.)
+
+?Add the planet at 122 days and minimize over all the parameters.
+
+# Add the third planet, minimize and click >>>NEXT() to continue
+@.gui.show("error")
+@.gui.flash("clear")
+@.gui.flash("errorEstStartPanel")
+@if (exists("tut")) tut$min.method <- LM
+@if (exists("tut")) tut$int.method <- KEPLER
+Let's calculate the errors on the fit parameters using the "Error Estimation" tab. Click on the bulls-eye icon or select "View -> Error Estimation".
+
+?Select the kernel name ("tut"), select the Bootstrap option and press Setup.
+?The command will be set up in the terminal area; press ENTER to start the calculation.
+
+This calculation will take a few minutes. Notice that it can be stopped at any time.
+
+# Start the bootstrap calculation, wait for completion and click >>>NEXT() to continue
+@.gui.flash("clear")
+@.gui.flash("errorEstStartPanel")
+Now that the calculation has completed, you can print, save and visualize the parameter distributions. 
+
+?In the Analyze section, select the object containing the error estimation results (tut$results), a type of plot and the variables to plot on the X (/Y) axis, and press Plot.
+
+# Try a few plots, then click >>>NEXT() to continue
+@.gui.flash("clear")
+As the last step, analyze the long-term stability of the system. 
+
+?Select Tasks->Long term integration to start the integration.
+

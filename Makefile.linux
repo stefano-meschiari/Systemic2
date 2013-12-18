@@ -1,0 +1,131 @@
+# Systemic 2 Makefile for Linux
+# 2012, Stefano Meschiari (http://www.stefanom.org)
+#
+# Please modify these paths:
+CC = gcc
+FORTRAN = gfortran
+R = /usr/bin/R
+# If you have installed GSL & company in non-standard places, add them here:
+LIBS = -L./deps/lib 
+INCLUDES = -I./deps/include 
+LIBNAMES = -lm -lgsl -lgslcblas -lgomp -lc -lswift -lf2c -lgfortran
+INSTALL_DIR = /usr/local/include
+PACKAGE_DIR = ~/Downloads
+FFLAGS='-c -g -fPIC'
+
+OPTIMIZED_FLAGS = -g -fPIC -O3 $(INCLUDES) $(LIBS) -fopenmp -std=c99 
+
+DEBUG_FLAGS =  $(INCLUDES) $(LIBS) -Wall -fopenmp -std=c99 -g3 -fPIC
+
+SYSFLAGS=$(OPTIMIZED_FLAGS)
+
+#UPDATE = --update --java
+UPDATE =
+
+ALLOBJECTS = objects/swift.o objects/periodogram.o objects/extras.o objects/mercury.o objects/integration.o objects/mcmc.o objects/utils.o objects/simplex.o objects/kernel.o objects/bootstrap.o objects/kl.o objects/qsortimp.o objects/lm.o objects/lm.o objects/hermite.o objects/ode.o objects/odex.o objects/sa.o objects/de.o
+
+linux: reqs src/*.c src/*.h  $(ALLOBJECTS)
+	gcc -shared -o libsystemic.so objects/*.o $(LIBS) $(LIBNAMES) 
+	cp libsystemic.so R
+	
+test: src/*.c src/*.h $(ALLOBJECTS)
+	$(CC)  -o test src/test.c objects/*.o $(CCFLAGS) $(SYSFLAGS) $(LIBNAMES)
+
+objects/kernel.o: src/kernel.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/kernel.o src/kernel.c 
+
+objects/qsortimp.o: src/qsortimp.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/qsortimp.o src/qsortimp.c 
+	
+objects/extras.o: src/extras.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/extras.o src/extras.c 
+
+objects/periodogram.o: src/periodogram.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/periodogram.o src/periodogram.c 
+
+objects/simplex.o: src/simplex.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/simplex.o src/simplex.c 
+
+objects/integration.o: src/integration.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/integration.o src/integration.c 
+
+objects/mercury.o: src/mercury.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/mercury.o src/mercury.c
+
+objects/utils.o: src/utils.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/utils.o src/utils.c
+
+objects/swift.o: src/swift.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/swift.o src/swift.c
+
+objects/bootstrap.o: src/bootstrap.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/bootstrap.o src/bootstrap.c
+
+objects/kl.o: src/kl.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/kl.o src/kl.c
+
+objects/mcmc.o: src/mcmc.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/mcmc.o src/mcmc.c
+
+objects/lm.o: src/lm.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/lm.o src/lm.c
+
+objects/hermite.o: src/hermite.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/hermite.o src/hermite.c
+
+objects/ode.o: src/ode.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/ode.o src/ode.c
+
+
+objects/odex.o: src/odex.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/odex.o src/odex.c
+
+objects/sa.o: src/sa.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/sa.o src/sa.c
+
+objects/de.o: src/de.c
+	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/de.o src/de.c
+
+.PHONY: clean cleanreqs
+
+clean:
+	rm -rf test objects/*.o *.dylib *.a *.so R/*.dylib R/*.so
+
+# For all-in-one installations
+
+reqs: ./deps/lib/libswift.a  ./deps/lib/libf2c.a R_packages_installed
+
+R_packages_installed:
+	-echo "Installing R packages"
+	$(R) --vanilla --interactive --no-save < R/install.r
+	-touch R_packages_installed
+	
+./deps/lib/libswift.a: 
+	-echo "Making swift"
+	cd deps/swift; export FORTRAN=$(FORTRAN); export FFLAGS=$(FFLAGS); export SWIFT_DIR="`pwd`"; sh Makefile.sh; $(CC) -shared -o libswift.so objects/*.o; cp libswift.a ../lib
+
+./deps/lib/libf2c.a:
+	-echo "Making f2c"
+	cd deps/f2c; make -f makefile.u ; cp libf2c.a ../lib; cp f2c.h ../include
+
+cleanreqs:
+	-rm -rf ./deps/lib/* ./deps/bin/* R_packages_installed
+	-cd deps/f2c; make -f makefile.u clean; rm *.a *.so *.o
+	-cd deps/swift; rm -f objects/* *.a *.so
+	
+# For GSL
+gsl:
+	cd deps/gsl; tar -xvzf gsl-1.15.tar.gz; cd gsl-1.15; ./configure --prefix='$(shell pwd)/deps'; make; make install
+
+package: clean cleanreqs
+	- rm -Rf $(PACKAGE_DIR)/linux
+	- mkdir $(PACKAGE_DIR)/linux
+	- mkdir $(PACKAGE_DIR)/linux/Systemic	
+	- mkdir $(PACKAGE_DIR)/linux/Systemic/objects
+	- rm prefs.txt
+	cp -RH R utils datafiles fits sample doc src *.txt Makefile.* deps $(PACKAGE_DIR)/linux/Systemic
+	cp -R ../SystemicGui/dist/SystemicGui.jar ../SystemicGui/dist/lib $(PACKAGE_DIR)/linux/Systemic
+	
+	- cp ./packaging/forlinux/*.txt $(PACKAGE_DIR)/linux
+	- cp ./packaging/forlinux/* $(PACKAGE_DIR)/linux/Systemic
+	cd $(PACKAGE_DIR); tar -cvzf systemic_linux_`cat linux/Systemic/R/version`.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' --exclude '*.dylib' --exclude '.*' --exclude '*.so' linux

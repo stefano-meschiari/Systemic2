@@ -1,0 +1,187 @@
+# You can customize the menus by modifying this file!
+#
+# Each menu item is defined in the following way:
+# - empty lines or lines that start with # are treated as comments
+# - the dash character by itself defines a menu separator
+# - a single word defines a new menu
+# - a line in the format title|accelerator|command|[parameter] defines a new item. Meta is the platform's main accelerator modifier (Command on Mac, Ctrl on Linux). Parameter is optional.
+# - if command starts with @, the line will be executed in the interpreter without echoing to the user (silent)
+# - if command starts with $, the line will be executed in the interpreter, with echoing
+# - if command starts with !, the line will be set up in the input window without executing; @ins@ defines the insertion point of the cursor. If the command contains the @@ token, everything beyond the @@ token will be shown as a hint in the input window
+# - if command starts with %, then the string that follows will be broadcasted as an internal event (this is for internal use only; the GUI API is not public and might change in the future)
+# - if command starts with [[, every line until a ]] token will be considered part of the command. This is useful to write out scripts inside this file (e.g. see F-test compare # planets entry).  The ".kernel" variable will represent the current kernel
+# - @kernel@ will be substituted with the currently selected kernel
+# - @var@ will be substituted for a unique counter
+# - @file@ will pop up a file requester
+# - if command does not start with a special character, then the corresponding method in the Frame class is called. If an option is specified, it will be passed to that method.
+
+File
+New session|meta shift N|newSession
+Open session...|meta shift O|openSession
+Save session...|meta shift S|saveSession
+Clone session||cloneSession
+-
+New kernel|meta N|!@ins@ <- knew()
+Open kernel...|meta O|openKernel
+Save kernel...|meta S|saveKernel
+Rename kernel...||renameKernel
+Select kernel...|meta K|!`@ins@ @@Use `kernelname to quickly switch between kernels. "." represents the currently selected kernel.
+Clone kernel|meta shift C|!@ins@ <- kclone(@kernel@)
+-
+Open old Systemic fit|meta alt shift O|!@kernel@ <- kload.old("@file@")
+-
+Run script||source("@ins@")
+-
+Close session|Meta W|closeSession
+
+Edit
+Clear output||% clearsession
+-
+Stop|meta shift H|stop
+Kill and restart session|meta shift K|kill
+-
+Undo last change|meta shift Z|$undo(@kernel@)
+Refresh|Meta R|@.gui.update("all")
+-
+Focus terminal|Meta 0|focusTerminal
+Cycle planets|Meta I|focusNextPlanet
+-
+Add planet popup|Meta shift A|addPlanetPopup
+Add planet|Meta shift alt A|!@kernel@[] <- c(period=@ins@, mass=1, ma=0, ecc=0, lop=0)
+Remove planet|Meta shift D|!@kernel@[@ins@] <- NULL
+-
+Sort planets by period||@ kels(@kernel@) <- kels(@kernel@)[sort.list(kallels(@kernel@)[, 'period']),]
+Sort planets by K||@ kels(@kernel@) <- kels(@kernel@)[sort.list(kallels(@kernel@)[, 'k'], decreasing=TRUE),]
+-
+Circular fit|meta E|$ @kernel@[, 'ecc'] <- 0; @kernel@[, 'lop'] <- 0; kdeactivate(@kernel@, 'all', 'ecc'); kdeactivate(@kernel@, 'all', 'lop')
+Eccentric fit|meta shift E|$ kselect(@kernel@, 'all', 'ecc'); kselect(@kernel@, 'all', 'lop')
+Coplanar fit|meta Y|$ @kernel@[, 'inc'] <- 90; @kernel@[, 'node'] <- 0; kdeactivate(@kernel@, 'all', 'inc'); kdeactivate(@kernel@, 'all', 'node')
+Non-coplanar fit|meta shift Y|$ kselect(@kernel@, 'all', 'inc'); kselect(@kernel@, 'all', 'node')
+-
+Select all parameters|meta G|$kselect(@kernel@, 'all', 'all')
+Deselect all parameters|meta shift G|$kdeselect(@kernel@, 'all', 'all')
+Add noise in quadrature to dataset||!k['par', DATA.NOISE1] <- @ins@
+-
+Set ranges...||!krange(@kernel@, 1, 'period') <- c(min@ins@, max)
+Set steps...||!kstep(@kernel@, 1, 'period') <- @ins@
+Show steps||$ksteps(@kernel@)
+-
+Execute shell command||@! @ins@
+Insert file path|meta shift F|insertFilePath
+
+# The view menu is special, and is autofilled with all the modules
+View
+
+Tasks
+Minimize|meta M|minimize
+Minimize 1-D|meta shift M|!kminimize1d(@kernel@, @ins@, 'period')
+Minimize, Differential Evolution||!kminimize(@kernel@, iters=5000, algo=DIFFEVOL, de.CR=0.2, de.NPfac=10, de.Fmin=0.5, de.Fmax=1.0, de.use.steps=TRUE)
+Minimize, Simulated Annealing||!kminimize(@kernel@, iters=5000, algo=SA, sa.T0=0.5*@kernel@$chi2, sa.alpha=2, sa.chains=4)
+Minimize using...||[[
+	cat("?Set the min.func property to change the objective function of the minimizer. Can be a string (one of: chi2, chi2_nr, rms, jitter, chi2rvs, chi2tts, loglik), or a custom function.\n\n")
+	cat("?Note: the LM algorithm only minimizes on chi^2. You must change the minimization algorithm to SIMPLEX if you want to minimize over something different than chi2.\n\n")
+	cat(sprintf("?Currently: %s\n", .kernel$min.func))
+	.gui.input("@kernel@$min.func = 'chi2@ins@'")
+]]
+-
+Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = @ins@, print=TRUE)
+Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
+MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=k$nrpars*10, print=TRUE)
+-
+Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE)
+-
+F-test compare kernels|meta F|!var.test(kdata(@kernel@, 'res')[, VAL], kdata(@ins@, 'res')[, VAL])@@Type the name of the second kernel to compare to 
+F-test, all planets||[[
+	stopifnot(k$nplanets >= 1)
+	.k <- kclone(.kernel) 
+	.k$auto <- F
+	invisible(kcalculate(.k))
+	for (i in .k$nplanets:1) { 
+			cat("# ", i, " vs ", i-1, " planets\n") 
+			a <- kdata(.k, 'res')
+			cat("# ", "Chi2 (", .k$nplanets, " planets) = ", .k$chi2, ", RMS = ", .k$rms, "\n")
+			kremove.planet(.k, i)
+			invisible(kminimize(.k))
+			b <- kdata(.k, 'res')
+			cat("# ", "Chi2 (", .k$nplanets, " planets) = ", .k$chi2, ", RMS = ", .k$rms, "\n")
+			print(var.test(a[,2], b[,2])) 
+	}
+]]
+Cross-validation, single fit||$kcrossval.l1o(@kernel@)
+Cross-validation, all planets||$kcrossval.l1o(@kernel@, type="auto")
+-
+Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
+Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
+Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
+Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
+-
+Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
+Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
+
+Plots
+New plot window|meta alt P|@ dev.new()
+Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file@")
+Save current plot as EPS...||!dev.copy2eps(file="@file@")
+-
+Plot RV||$plot(@kernel@)
+Plot RVs, all planets||$plot (@kernel@, 'allrv', wrap=TRUE)
+Plot TTVs||$plot(@kernel@, 'ttv')
+-
+Plot normalized residuals (histogram)||$plot(@kernel@, 'normres', density=FALSE)
+Plot normalized residuals (density)||$plot(@kernel@, 'normres', density=TRUE)
+
+Data
+Print data||$kdata(@kernel@)
+Save data to variable||!@ins@ <- kdata(@kernel@)
+Print time span||$@kernel@$trange
+-
+Add dataset||!kadd.data(@kernel@, "path@ins@")
+Remove dataset||!kremove.data(@kernel@, idx=@ins@)
+Remove all data||!kremove.data(@kernel@)@ins@
+-
+Print dataset||!kdata(@kernel@, idx = @ins@)
+Summary of dataset||!summary(kdata(k, idx = @ins@)[, TIME:ERR])
+-
+Add error in quadrature||!d <- kdata(@kernel@); d[, ERR] = sqrt(d[, ERR]^2 + @ins@^2); kdata(@kernel@) <- d
+Inflate error||!d <- kdata(@kernel@); d[, ERR] = d[, ERR] * @ins@; kdata(@kernel@) <- d
+Select temporal subset||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
+Remove ouliers by normalized residual value||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
+Other data manipulation examples||$edit.script("doc/data_examples.R")
+-
+Get RV curve||!rv <- krvcurve(@kernel@)
+Get RV curve at times...||!rv <- krvcurve(@kernel@, times=@ins@)
+-
+Save table to file...||!write.fmatrix(@ins@, file="")
+Save table to CSV file...||!write.csv(@ins@, file="")
+
+
+Editor
+New...|meta alt N|%edit.new
+Open...|meta alt O|%edit.open
+Save|meta alt S|%edit.save
+Save as...|meta alt shift S|%edit.saveas
+Close|meta alt W|%edit.close
+-
+Next tab|meta OPEN_BRACKET|%edit.next
+Previous tab|meta CLOSE_BRACKET|%edit.prev
+-
+Run|control ENTER|%edit.run
+
+Options
+Show current values||@ for (name in names(.Options)) if (grepl("systemic", name)) cat(name, " = ", getOption(name), "\n")
+Set RV curve smoothness...||!options(systemic.rvsamples=@ins@)
+Set minimum period...||!options(systemic.pmin = @ins@)
+Set maximum period...||!options(systemic.pmax = @ins@)
+Set periodogram samples...||!options(systemic.psamples = @ins@)
+-
+Set integration accuracy (RK/BS)||!@kernel@$abs.acc <- @kernel@$rel.acc <- @ins@
+Set integration dt (SWIFT)||!@kernel@$dt <- @ins@
+
+Help
+Quickstart||$quickstart()
+Radial velocity tutorial||@tutorial('rv')
+-
+R project homepage||@browseURL('http://www.r-project.org')
+R tutorial||@browseURL('http://cran.r-project.org/doc/manuals/r-release/R-intro.html')
+-
+
