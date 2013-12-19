@@ -27,7 +27,7 @@ ALLOBJECTS = objects/swift.o objects/periodogram.o objects/extras.o objects/merc
 linux: reqs src/*.c src/*.h  $(ALLOBJECTS)
 	gcc -shared -o libsystemic.so objects/*.o $(LIBS) $(LIBNAMES) 
 	cp libsystemic.so R
-	
+
 test: src/*.c src/*.h $(ALLOBJECTS)
 	$(CC)  -o test src/test.c objects/*.o $(CCFLAGS) $(SYSFLAGS) $(LIBNAMES)
 
@@ -36,7 +36,7 @@ objects/kernel.o: src/kernel.c
 
 objects/qsortimp.o: src/qsortimp.c
 	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/qsortimp.o src/qsortimp.c 
-	
+
 objects/extras.o: src/extras.c
 	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/extras.o src/extras.c 
 
@@ -93,13 +93,16 @@ clean:
 
 # For all-in-one installations
 
-reqs: ./deps/lib/libswift.a  ./deps/lib/libf2c.a R_packages_installed
+reqs: untardeps ./deps/lib/libswift.a  ./deps/lib/libf2c.a R_packages_installed
+
+untardeps:
+	tar -xvzf deps.tar.gz
 
 R_packages_installed:
 	-echo "Installing R packages"
 	$(R) --vanilla --interactive --no-save < R/install.r
 	-touch R_packages_installed
-	
+
 ./deps/lib/libswift.a: 
 	-echo "Making swift"
 	cd deps/swift; export FORTRAN=$(FORTRAN); export FFLAGS=$(FFLAGS); export SWIFT_DIR="`pwd`"; sh Makefile.sh; $(CC) -shared -o libswift.so objects/*.o; cp libswift.a ../lib
@@ -109,12 +112,10 @@ R_packages_installed:
 	cd deps/f2c; make -f makefile.u ; cp libf2c.a ../lib; cp f2c.h ../include
 
 cleanreqs:
-	-rm -rf ./deps/lib/* ./deps/bin/* R_packages_installed
-	-cd deps/f2c; make -f makefile.u clean; rm *.a *.so *.o
-	-cd deps/swift; rm -f objects/* *.a *.so
-	
+	-rm -rf deps
+
 # For GSL
-gsl:
+gsl:	untardeps
 	cd deps/gsl; tar -xvzf gsl-1.15.tar.gz; cd gsl-1.15; ./configure --prefix='$(shell pwd)/deps'; make; make install
 
 package: clean cleanreqs
@@ -123,9 +124,9 @@ package: clean cleanreqs
 	- mkdir $(PACKAGE_DIR)/linux/Systemic	
 	- mkdir $(PACKAGE_DIR)/linux/Systemic/objects
 	- rm prefs.txt
-	cp -RH R utils datafiles fits sample doc src *.txt Makefile.* deps $(PACKAGE_DIR)/linux/Systemic
+	cp -RH R utils datafiles fits sample doc src *.txt Makefile.* deps.tar.gz $(PACKAGE_DIR)/linux/Systemic
 	cp -R ../SystemicGui/dist/SystemicGui.jar ../SystemicGui/dist/lib $(PACKAGE_DIR)/linux/Systemic
-	
+
 	- cp ./packaging/forlinux/*.txt $(PACKAGE_DIR)/linux
 	- cp ./packaging/forlinux/* $(PACKAGE_DIR)/linux/Systemic
 	cd $(PACKAGE_DIR); tar -cvzf systemic_linux_`cat linux/Systemic/R/version`.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' --exclude '*.dylib' --exclude '.*' --exclude '*.so' linux
