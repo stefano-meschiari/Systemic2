@@ -1,0 +1,8 @@
+Data  {
+	RV[] "HD209458_B06K.vels"
+	RV[] "HD209458_ELODIE04.vels"
+	RV[] "HD209458_CORALIE04.vels"
+}
+"HD209458_B06K" {    
+  Mass   1.15
+}

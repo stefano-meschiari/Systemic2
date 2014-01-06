@@ -1,0 +1,8 @@
+Data  {
+        RV[] "HD89744_AFOE00.vels"
+	RV[] "HD89744_B06L.vels"
+	RV[] "HD89744_HET07.vels"
+}
+"HD89744_3datasets" {
+  Mass   1.4
+}

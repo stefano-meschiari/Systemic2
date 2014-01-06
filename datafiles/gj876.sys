@@ -1,0 +1,7 @@
+Data  {
+	RV[] "gj876_Lick.vels"
+	RV[] "gj876_Keck.vels"
+}
+"gj876" {    
+  Mass   0.32
+}

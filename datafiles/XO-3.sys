@@ -1,0 +1,10 @@
+Data  {
+	RV[] "XO-3_HJS08.vels"
+	RV[] "XO-3_HET08.vels"
+}
+TransitData {
+	    TD[] "XO-3.tds"
+}
+"XO-3" {
+  Mass 1.41
+}

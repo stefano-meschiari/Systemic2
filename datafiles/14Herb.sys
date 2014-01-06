@@ -1,0 +1,7 @@
+Data  {
+	RV[] "14Her_1.vels"
+	RV[] "14Her_2b.vels"
+}
+"14Herb" {    
+  Mass   1.00
+}

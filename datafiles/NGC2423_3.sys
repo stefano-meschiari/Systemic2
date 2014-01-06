@@ -1,0 +1,7 @@
+Data  {
+	RV[] "NGC2423_3_CORALIE07.vels"
+	RV[] "NGC2423_3_HARPS07.vels"
+}
+"NGC2423_3" {
+  Mass 2.4
+}

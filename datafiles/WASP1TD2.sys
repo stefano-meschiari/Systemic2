@@ -1,0 +1,9 @@
+Data  {
+	RV[] "WASP1.vels"
+}
+TransitsData {
+	    TD[] "WASP1_2.tds"
+}
+"WASP1TD2" {
+  Mass 1.15
+}

@@ -1,0 +1,8 @@
+Data  {
+	RV[] "HD92788_1.vels"
+	RV[] "HD92788_2.vels"
+	RV[] "HD92788_3.vels"
+}
+"HD92788" {    
+  Mass   1.06
+}

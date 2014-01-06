@@ -1,0 +1,7 @@
+Data  {
+	RV[] "HD142022A_CORALIE06.vels"
+	RV[] "HD142022A_HARPS06.vels"
+}
+"HD142022A_actual" {
+  Mass   0.99
+}

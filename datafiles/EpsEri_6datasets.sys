@@ -1,0 +1,11 @@
+Data  {
+	RV[] "EpsEri_CFHT1995.vels"
+	RV[] "EpsEri_Lick2006.vels"
+	RV[] "EpsEri_McDI2000.vels"
+	RV[] "EpsEri_McDII2000.vels"
+	RV[] "EpsEri_ESO2000.vels"
+	RV[] "EpsEri_McDIII2006.vels"
+}
+"EpsEri_6datasets" {
+  Mass   0.8
+}

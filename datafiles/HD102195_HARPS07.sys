@@ -1,0 +1,11 @@
+Data  {
+	RV[] "HD102195_1.vels"
+	RV[] "HD102195_2.vels"
+	RV[] "HD102195_3.vels"
+	RV[] "HD102195_4.vels"
+	RV[] "HD102195_5.vels"
+	RV[] "HD102195_HARPS07.vels"
+}
+"HD102195_HARPS07" {    
+  Mass   0.926
+}

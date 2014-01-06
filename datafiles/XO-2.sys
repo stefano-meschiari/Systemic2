@@ -1,0 +1,6 @@
+Data  {
+	RV[] "XO-2_HET07.vels"
+}
+"XO-2" {    
+  Mass   0.98
+}

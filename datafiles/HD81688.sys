@@ -1,0 +1,6 @@
+Data  {
+	RV[] "HD81688_OAO08.vels"
+}
+"HD81688" {
+  Mass 2.10
+}

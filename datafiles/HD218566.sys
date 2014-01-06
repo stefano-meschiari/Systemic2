@@ -1,0 +1,6 @@
+Data {
+	RV[] "HD218566_KECK.vels"
+}
+"HD218566" {
+ Mass 0.85
+}

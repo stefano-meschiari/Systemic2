@@ -1,0 +1,6 @@
+Data  {
+	RV[] "70vir_1.vels"
+}
+"70vir" {    
+  Mass   1.1
+}

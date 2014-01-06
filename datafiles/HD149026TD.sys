@@ -1,0 +1,10 @@
+Data  {
+	RV[] "HD149026_WolfK06.vels"
+	RV[] "HD149026_WolfS06.vels"
+}
+TransitsData {
+             TD[] "HD149026.tds"
+}
+"HD149026TD" {
+  Mass   1.30
+}

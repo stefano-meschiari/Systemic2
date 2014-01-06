@@ -1,0 +1,8 @@
+Data  {
+	RV[] "HD3651_B06L.vels"
+	RV[] "HD3651_B06K.vels"
+	RV[] "HD3651_HET07.vels"
+}
+"HD3651_HET07" {
+  Mass   0.79
+}

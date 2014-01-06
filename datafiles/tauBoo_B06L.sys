@@ -1,0 +1,6 @@
+Data  {
+	RV[] "tauBoo_B06L.vels"
+}
+"tauBoo_B06L" {    
+  Mass   1.35
+}

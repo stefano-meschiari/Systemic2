@@ -1,0 +1,7 @@
+Data  {
+	RV[] "51peg_1.vels"
+	RV[] "51peg_2.vels"
+}
+"51peg" {    
+  Mass   1.06
+}

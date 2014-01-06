@@ -1,0 +1,9 @@
+Data  {
+	RV[] "TrES-1_1.vels"
+}
+TransitsData {
+             TD[] "TrES-1.tds"
+}
+"TrES-1" {    
+  Mass   0.88
+}

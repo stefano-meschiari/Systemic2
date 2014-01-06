@@ -1,0 +1,6 @@
+Data {
+	RV[] "HD219828_HARPS07.vels"
+}
+"HD219828" {
+  Mass 1.24
+}

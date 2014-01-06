@@ -1,0 +1,6 @@
+Data  {
+	RV[] "upsand_1.vels"
+}
+"upsand" {    
+  Mass   1.30
+}

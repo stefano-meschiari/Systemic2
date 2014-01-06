@@ -1,0 +1,6 @@
+Data  {
+	RV[] "AlphaCenB_CESESO01.vels"
+}
+"AlphaCenB" {    
+  Mass   0.91
+}

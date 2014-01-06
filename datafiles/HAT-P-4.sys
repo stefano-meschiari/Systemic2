@@ -1,0 +1,9 @@
+Data  {
+        RV[] "HAT-P-4_Keck07.vels"
+}
+TransitsData {
+             TD[] "HAT-P-4.tds"
+}
+"HAT-P-4" {
+  Mass   1.26
+}

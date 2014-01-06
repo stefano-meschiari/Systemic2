@@ -1,0 +1,6 @@
+Data  {
+        RV[] "HD125612_Keck07v2.vels"
+}
+"HD125612v2" {
+  Mass   1.1
+}

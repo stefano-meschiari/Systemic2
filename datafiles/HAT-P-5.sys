@@ -1,0 +1,9 @@
+Data  {
+        RV[] "HAT-P-5_SOPHIE07.vels"
+}
+TransitsData {
+             TD[] "HAT-P-5.tds"
+}
+"HAT-P-5" {
+  Mass   1.160
+}

@@ -1,0 +1,10 @@
+Data {
+	RV[] "HD74156_CORALIE04.vels"
+	RV[] "HD74156_HET09.vels"
+	RV[] "HD74156_KECK.vels"
+}
+"HD74156" {
+ Mass 1.24
+}
+IndepFreq 3354.885774
+# effM updated on Mon May 17 13:54:03 PDT 2010

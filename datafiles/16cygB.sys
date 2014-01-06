@@ -1,0 +1,7 @@
+Data  {
+	RV[] "16cygB_1.vels"
+	RV[] "16cygB_2.vels"
+}
+"16cygB" {    
+  Mass   1.01
+}

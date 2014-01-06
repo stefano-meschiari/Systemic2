@@ -1,0 +1,6 @@
+Data {
+	RV[] "gj674_HARPS07.vels"
+}
+"gj674" {
+  Mass 0.35
+}

@@ -1,0 +1,8 @@
+Data  {
+	RV[] "HD210277_B06K.vels"
+	RV[] "HD210277_CORALIE01.vels"
+	RV[] "HD210277_HJS06.vels"
+}
+"HD210277_B06K_3datasets" {    
+  Mass   0.99
+}

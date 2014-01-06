@@ -1,0 +1,10 @@
+Data  {
+	RV[] "ogle-tr56_1.vels"
+	RV[] "ogle-tr56_2.vels"
+}
+TransitsData {
+        TD[] "ogle-tr56.tds"
+}
+"ogle-tr56" {
+  Mass   1.04
+}

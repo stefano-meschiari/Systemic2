@@ -1,0 +1,6 @@
+Data {
+	RV[] "HD23127_AAT07.vels"
+}
+"HD23127" {
+  Mass 1.13
+}

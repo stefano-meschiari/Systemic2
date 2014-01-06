@@ -1,0 +1,6 @@
+Data  {
+        RV[] "HD17092_HET07.vels"
+}
+"HD17092" {
+  Mass   2.3
+}

@@ -1,0 +1,9 @@
+Data  {
+	RV[] "gj436_M07K.vels"
+}
+TransitsData {
+	     TD[] "gj436_2.tds"
+}
+"gj436_M07KTD2" {
+  Mass   0.47
+}

@@ -1,0 +1,9 @@
+Data  {
+	RV[] "AlphaCenB_CESESO01.vels"
+	RV[] "AlphaCenB_PourbaixAATr2002.vels"
+	RV[] "AlphaCenB_PourbaixCORALIE2002.vels"
+	RV[] "AlphaCenB_CarrierBourbanCORRALIE2003.vels"
+}
+"AlphaCenB_recent2" {
+  Mass   0.91
+}

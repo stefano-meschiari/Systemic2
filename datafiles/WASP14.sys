@@ -1,0 +1,10 @@
+Data  {
+	RV[] "WASP14_FIES08.vels"
+	RV[] "WASP14_SOPHIE08.vels"
+}
+TransitData {
+	    TD[] "WASP14.tds"
+}
+"WASP14" {
+  Mass 1.319
+}

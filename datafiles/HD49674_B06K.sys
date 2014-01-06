@@ -1,0 +1,6 @@
+Data  {
+	RV[] "HD49674_B06K.vels"
+}
+"HD49674_B06K" {    
+  Mass   1.0
+}

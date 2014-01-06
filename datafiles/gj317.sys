@@ -1,0 +1,6 @@
+Data  {
+	RV[] "gj317_Keck07.vels"
+}
+"gj317" {
+  Mass 0.24
+}

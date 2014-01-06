@@ -1,0 +1,7 @@
+Data  {
+	RV[] "47uma_Lick02.vels"
+	RV[] "47uma_ELODIE04.vels"
+}
+"47uma" {    
+  Mass   1.00
+}

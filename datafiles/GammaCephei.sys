@@ -1,0 +1,9 @@
+Data  {
+	RV[] "GammaCephei_1.vels"
+	RV[] "GammaCephei_2.vels"
+	RV[] "GammaCephei_3.vels"
+	RV[] "GammaCephei_4.vels"
+}
+"GammaCephei" {    
+  Mass   1.59
+}

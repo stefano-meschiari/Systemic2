@@ -1,0 +1,7 @@
+Data  {
+	RV[] "EpsEri_all_d.vels"
+	RV[] "EpsEri_Lick_d.vels"
+}
+"EpsEri_2datasets" {
+  Mass   0.8
+}

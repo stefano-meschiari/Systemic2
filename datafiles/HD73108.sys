@@ -1,0 +1,6 @@
+Data {
+	RV[] "HD73108_TLS07.vels"
+}
+"HD73108" {
+  Mass 1.23
+}

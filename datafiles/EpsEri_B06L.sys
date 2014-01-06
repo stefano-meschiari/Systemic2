@@ -1,0 +1,6 @@
+Data  {
+	RV[] "EpsEri_B06L.vels"
+}
+"EpsEri_B06L" {
+  Mass   0.8
+}

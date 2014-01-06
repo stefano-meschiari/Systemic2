@@ -12,6 +12,7 @@ build/*
 *.pbxuser
 *.xcworkspace
 xcuserdata
+*.dSYM
 
 # systemic2 ignores
 objects/*.o
@@ -27,6 +28,7 @@ utils/*
 .#*
 prefs.txt
 .R*
+utils/*
 
 # svn & cvs
 .svn

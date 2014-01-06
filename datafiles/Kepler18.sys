@@ -1,0 +1,8 @@
+# Kepler-18, data from Dan
+
+RV[] "Kepler18.vels"
+TD[] "Kepler18c.tds"
+TD[] "Kepler18d.tds"
+
+Mass 0.972
+Epoch 2455168.0

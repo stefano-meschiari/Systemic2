@@ -1,0 +1,6 @@
+Data {
+	RV[] "gj674_HARPS07_actual.vels"
+}
+"gj674_actual" {
+  Mass 0.35
+}

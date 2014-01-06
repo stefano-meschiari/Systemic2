@@ -1,0 +1,8 @@
+Data  {
+	RV[] "HD179949_B06A.vels"
+	RV[] "HD179949_B06K.vels"
+	RV[] "HD179949_HJS06.vels"
+}
+"HD179949_B06_3datasets" {    
+  Mass   1.24
+}

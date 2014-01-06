@@ -1,0 +1,7 @@
+Data  {
+	RV[] "HD81040_2ds1.vels"
+	RV[] "HD81040_2ds2.vels"
+}
+"HD81040_2datasets" {    
+  Mass   0.96
+}

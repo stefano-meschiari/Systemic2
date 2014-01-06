@@ -1,0 +1,15 @@
+Data  {
+	RV[] "AlphaCenA_CampbellMoore1928.vels"
+	RV[] "AlphaCenA_Wright1904.vels"
+	RV[] "AlphaCenA_Hough1911.vels"
+	RV[] "AlphaCenA_Jones1928.vels"
+	RV[] "AlphaCenA_Lunt1918.vels"
+	RV[] "AlphaCenA_Wesselink1953.vels"
+	RV[] "AlphaCenA_Archer1957.vels"
+	RV[] "AlphaCenA_JonesFisher1984.vels"
+	RV[] "AlphaCenA_Murdochetal1993.vels"
+	RV[] "AlphaCenA_CESESO01.vels"
+}
+"AlphaCenA_old2" {    
+  Mass   1.1
+}

@@ -1,0 +1,11 @@
+Data  {
+	RV[] "HD80606_B06K.vels"
+	RV[] "HD80606_ELODIE01.vels"
+	RV[] "HD80606_HET07.vels"
+}
+TransitsData {
+	     TD[] "HD80606.tds"
+}
+"HD80606_HET07" {
+  Mass   0.9
+}

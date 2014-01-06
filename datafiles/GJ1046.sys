@@ -1,0 +1,6 @@
+Data  {
+        RV[] "GJ1046_UVES08.vels"
+}
+"GJ1046" {
+  Mass   0.398
+}

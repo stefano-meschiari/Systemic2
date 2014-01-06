@@ -1,0 +1,7 @@
+Data  {
+	RV[] "HD149026_Subaru05.vels"
+	RV[] "HD149026_B06K.vels"
+}
+"HD149026_B06K" {    
+  Mass   1.30
+}

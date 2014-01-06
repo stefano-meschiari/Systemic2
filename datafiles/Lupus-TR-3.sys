@@ -1,0 +1,9 @@
+Data  {
+	RV[] "Lupus-TR-3_MIKE08.vels"
+}
+TransitData {
+	    TD[] "Lupus-TR-3.tds"
+}
+"Lupus-TR-3" {
+  Mass 0.87
+}

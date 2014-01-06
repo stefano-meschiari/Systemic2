@@ -1,0 +1,9 @@
+Data  {
+	RV[] "upsand_B06L.vels"
+	RV[] "upsand_AFOE99.vels"
+	RV[] "upsand_ELODIE04.vels"
+        RV[] "upsand_HJS06.vels"
+}
+"upsand_4datasets_B06L" {    
+  Mass   1.30
+}

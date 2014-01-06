@@ -1,0 +1,7 @@
+Data  {
+	RV[] "HR810_1.vels"
+	RV[] "HR810_2.vels"
+}
+"HR810_2datasets" {    
+  Mass   1.03
+}

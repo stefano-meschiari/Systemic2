@@ -1,0 +1,6 @@
+Data  {
+	RV[] "rhoCrB_D1.vels"
+}
+"rhoCrBD" {    
+  Mass   0.95
+}

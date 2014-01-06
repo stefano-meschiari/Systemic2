@@ -1,0 +1,9 @@
+Data  {
+	RV[] "CoRoT-Exo-1_SOPHIE08.vels"
+}
+TransitData {
+	    TD[] "CoRoT-Exo-1.tds"
+}
+"CoRoT-Exo-1" {
+  Mass 0.95
+}

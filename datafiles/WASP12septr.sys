@@ -1,0 +1,12 @@
+Data  {
+	RV[] "WASP12sop1.vels"
+	RV[] "WASP12sop2.vels"
+	RV[] "WASP12sop3.vels"
+	RV[] "WASP12albrecht.vels"
+}
+TransitsData {
+	    TD[] "WASP12.tds"
+}
+"WASP12sep" {
+  Mass 1.35
+}

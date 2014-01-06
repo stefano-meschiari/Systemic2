@@ -1,0 +1,10 @@
+Data  {
+        RV[] "HD17156_Keck07.vels"
+        RV[] "HD17156_Subaru07.vels"
+}
+TransitsData {
+	     TD[] "HD17156.tds"
+}
+"HD17156" {
+  Mass   1.2
+}

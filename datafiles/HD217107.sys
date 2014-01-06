@@ -1,0 +1,8 @@
+Data  {
+	RV[] "HD217107_Lick99.vels"
+	RV[] "HD217107_CORALIE01.vels"
+	RV[] "HD217107_Keck05.vels"
+}
+"HD217107" {    
+  Mass   1.05
+}

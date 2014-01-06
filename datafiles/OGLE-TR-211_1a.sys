@@ -1,0 +1,9 @@
+Data  {
+	RV[] "OGLE-TR-211_FLAMES07_1a.vels"
+}
+TransitsData {
+        TD[] "OGLE-TR-211.tds"
+}
+"OGLE-TR-211_1a" {
+  Mass   1.33
+}

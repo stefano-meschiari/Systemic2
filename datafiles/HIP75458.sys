@@ -1,0 +1,6 @@
+Data  {
+	RV[] "HIP75458_1.vels"
+}
+"HIP75458" {    
+  Mass   1.05
+}

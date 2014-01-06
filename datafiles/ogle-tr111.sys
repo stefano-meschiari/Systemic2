@@ -1,0 +1,9 @@
+Data  {
+	RV[] "ogle-tr111_1.vels"
+}
+TransitsData {
+        TD[] "ogle-tr111.tds"
+}
+"ogle-tr111" {    
+  Mass   0.82
+}

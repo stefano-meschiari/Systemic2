@@ -1,0 +1,9 @@
+Data  {
+	RV[] "TrES-3_Keck07.vels"
+}
+TransitsData {
+             TD[] "TrES-3.tds"
+}
+"TrES-3" {
+  Mass   0.90
+}

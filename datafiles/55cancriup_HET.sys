@@ -1,0 +1,8 @@
+Data  {
+	RV[] "55cncup_Keck07.vels"
+	RV[] "55cncup_Lick07.vels"
+	RV[] "55cancri_2.vels"
+}
+"55cancriup_HET" {
+  Mass   0.95
+}

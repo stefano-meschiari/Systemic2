@@ -1,0 +1,10 @@
+Data  {
+	RV[] "HD80606_1.vels"
+	RV[] "HD80606_2.vels"
+}
+TransitsData {
+	     TD[] "HD80606.tds"
+}
+"HD80606" {    
+  Mass   0.9
+}
