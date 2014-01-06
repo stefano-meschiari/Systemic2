@@ -29,6 +29,12 @@ utils/*
 prefs.txt
 .R*
 utils/*
+.err
+.temp*
+lua
+packaging
+tests
+
 
 # svn & cvs
 .svn
