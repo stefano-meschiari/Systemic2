@@ -14,7 +14,7 @@ build/*
 xcuserdata
 
 # systemic2 ignores
-objects/*
+objects/*.o
 gui/*
 *.o
 *.class
