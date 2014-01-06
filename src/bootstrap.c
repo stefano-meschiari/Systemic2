@@ -66,7 +66,7 @@ ok_list* K_bootstrap(ok_kernel* k, int trials, int warmup, int malgo, int miter,
     for (int i = 0; i < trials; i++) {
         if (invalid)
             continue;
-        
+       
         ok_kernel * k2 = K_cloneFlags(k, SHARE_FLAGS | SHARE_STEPS | SHARE_RANGES);
         k2->flags |= NEEDS_COMPILE | BOOTSTRAP_DATA;
         k2->progress = NULL;
