@@ -1,0 +1,33 @@
+# osx noise
+.DS_Store
+profile
+
+# xcode noise
+build/*
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata
+
+# systemic2 ignores
+objects/*
+gui/*
+*.o
+*.class
+*.a
+deps
+private
+utils/*
+*.so
+*.dylib
+.#*
+prefs.txt
+.R*
+
+# svn & cvs
+.svn
+CVS
