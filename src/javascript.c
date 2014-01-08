@@ -54,6 +54,8 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
 double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
     
     static int length;
+    static int samples = 30000;
+    
     static ok_periodogram_workspace* p = NULL;
     static gsl_matrix* ps = NULL;
     if (p == NULL) {
@@ -70,7 +72,7 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         for (int i = 0; i < MROWS(data); i++)
             MSET(data, i, T_SVAL, MGET(data, i, T_SVAL)-MGET(data, i, T_PRED));
 
-        gsl_matrix* ret = ok_periodogram_ls(data, 20000, 0.5, 20000., 
+        gsl_matrix* ret = ok_periodogram_ls(data, samples, 1., 20000., 
                 0, T_TIME, T_SVAL, T_ERR, p);
         
         ps = ok_resample_curve(ret, 0, 1, 30, 0.1);
@@ -87,7 +89,15 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
             return p->z_fap_3;
         else
             return 0.;
-    } else {
+    } else if (row == -3) {
+        if (p != NULL) {
+            gsl_matrix_free(p->per);
+            gsl_matrix_free(p->buf);
+            p->per = p->buf = NULL;
+        };
+        samples = col;
+        return 0;
+    }else {
         return MGET(ps, row, col);
     }
 }

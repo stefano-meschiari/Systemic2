@@ -102,6 +102,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
     gsl_matrix_get_col(bufv, data, valcol);
     double avg = gsl_stats_mean(bufv->data, 1, ndata);
     double z1_max = 0.;
+    double xa[ndata];
     
     // pre-calculate cdf, sdf
     for (int i = 0; i < ndata; i++) {
@@ -111,6 +112,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         MSET(buf, i, BUF_C, cos(2*M_PI*fmin*t));
         MSET(buf, i, BUF_S, sin(2*M_PI*fmin*t));
         MSET(buf, i, BUF_SIG, 1./(MGET(data, i, sigcol) * MGET(data, i, sigcol)));
+        xa[i] = MGET(data, i, valcol) - avg;
     }
     
     // Calculate periodogram by looping over all angular frequencies
@@ -148,7 +150,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         double chi2_h_w = 0;
         
         for (int j = 0; j < ndata; j++) {
-            double x = MGET(data, j, valcol) - avg;
+            
             double sig = SIG(j);
             
             const double cos_wt = C(j);
@@ -159,7 +161,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
             
             double c = cos_wt * coswtau + sin_wt * sinwtau;
             double s = sin_wt * coswtau - cos_wt * sinwtau;
-            
+            double x = xa[j];
             
             MSET(buf, j, BUF_C, cos_wt*cos_wdf - sin_wt*sin_wdf);
             MSET(buf, j, BUF_S, sin_wt*cos_wdf + cos_wt*sin_wdf);
