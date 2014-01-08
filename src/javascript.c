@@ -50,71 +50,33 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
 }
 
 
-double** ps_resample(gsl_matrix* ps, int* length) {
-    
-    double** list = (double**) malloc(MROWS(ps) * sizeof(double*));
-    list[0] = gsl_matrix_ptr(ps, 0, 0);
-    int len = 1;
-    double last_t = list[0][0];
-    const double min_dt = 0.25;
-    
-    for (int i = 1; i < MROWS(ps) - 1; i++) {
-        if (MGET(ps, i, 1) > MGET(ps, i-1, 1) && MGET(ps, i, 1) > MGET(ps, i+1, 1) &&
-                MGET(ps, i, 0) - last_t > min_dt) {
-            list[len] = gsl_matrix_ptr(ps, i, 0);
-            last_t = list[len][0];
-            len++;
-        } else if (MGET(ps, i, 1) < MGET(ps, i-1, 1) && MGET(ps, i, 1) < MGET(ps, i+1, 1) &&
-                        MGET(ps, i, 0) - last_t > min_dt) {
-            list[len] = gsl_matrix_ptr(ps, i, 0);
-            last_t = list[len][0];
-            len++;
-        } else if (MGET(ps, i, 0) - last_t > 3 * min_dt) {
-            list[len] = gsl_matrix_ptr(ps, i, 0);
-            last_t = list[len][0];
-            len++;
-        }
-    }
-    list[len] = gsl_matrix_ptr(ps, MROWS(ps)-1, 0);
-    len++;
-    *length = len;
-    return list;
-}
 
 double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
     
     static int length;
-    static double** buf = NULL;
-    static gsl_matrix* ps = NULL;
-    
     static ok_periodogram_workspace* p = NULL;
+    static gsl_matrix* ps = NULL;
     if (p == NULL) {
         p = (ok_periodogram_workspace*) malloc(sizeof(ok_periodogram_workspace));
         p->buf = NULL;
         p->per = NULL;
+        p->calc_z_fap = true;
     }
     if (row == -1) {
-        if (buf != NULL) {
-            free(buf);
-        }
         if (ps != NULL)
             gsl_matrix_free(ps);
         
-        if (p->buf != NULL) {
-            gsl_matrix_free(p->buf);
-        }
-        p->buf = NULL;
-        p->per = NULL;
-                
         gsl_matrix* data = K_getCompiledDataMatrix(k);
         for (int i = 0; i < MROWS(data); i++)
             MSET(data, i, T_SVAL, MGET(data, i, T_SVAL)-MGET(data, i, T_PRED));
 
-        ps = ok_periodogram_ls(data, 40000, 0.5, 20000., 
+        gsl_matrix* ret = ok_periodogram_ls(data, 20000, 0.5, 20000., 
                 0, T_TIME, T_SVAL, T_ERR, p);
-        buf = ps_resample(ps, &length);
         
+        ps = ok_resample_curve(ret, 0, 1, 30, 0.1);
+        length = MROWS(ps);
         gsl_matrix_free(data);
+        
         return (double) length;
     } else if (row == -2) {
         if (col == 1)
@@ -126,10 +88,7 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         else
             return 0.;
     } else {
-        if (buf == NULL)
-            return INVALID_NUMBER;
-        else
-            return buf[row][col];
+        return MGET(ps, row, col);
     }
 }
 

@@ -39,3 +39,4 @@ tests
 # svn & cvs
 .svn
 CVS
+autosave

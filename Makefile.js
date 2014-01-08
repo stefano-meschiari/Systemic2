@@ -1,5 +1,5 @@
 # Systemic 2 Makefile for Javascript
-# 2012, Stefano Meschiari (http://www.stefanom.org)
+# 2014, Stefano Meschiari (http://www.stefanom.org)
 #
 # Compiling for Javascript requires at least emscripten 1.7.0 and llvm-3.2. Current "portable SDK" version is 1.5.6; activate "incoming" SDK to install 1.7.0.
 
@@ -17,8 +17,12 @@ INSTALL_DIR = /usr/local/include
 PACKAGE_DIR = ~/Downloads
 FFLAGS='-c -g -fPIC'
 
--include packaging/forweb/Makefile_include
-OPTIMIZED_FLAGS = -s LINKABLE=1 -O2 $(INCLUDES) $(LIBS) -DJAVASCRIPT -std=c99 -DJAVASCRIPT 
+
+SYSTEMICLIVE_DIR = ~/Projects/SystemicLive/
+JS_DIR=$(SYSTEMICLIVE_DIR)/js/
+
+-include $(SYSTEMICLIVE_DIR)/Makefile_include
+OPTIMIZED_FLAGS = -s LINKABLE=1 -O3 --closure 0 $(INCLUDES) $(LIBS) -DJAVASCRIPT -std=c99 -DJAVASCRIPT 
 GSL_OBJECTS = private/javascript/f2c/*.o private/javascript/interpolation/*.o private/javascript/statistics/*.o private/javascript/blas/*.o private/javascript/cblas/*.o private/javascript/block/*.o private/javascript/err/*.o private/javascript/histogram/*.o private/javascript/matrix/*.o private/javascript/multifit/*.o private/javascript/multimin/*.o private/javascript/ode-initval2/*.o private/javascript/randist/*.o private/javascript/rng/*.o private/javascript/roots/*.o private/javascript/sort/*.o private/javascript/sys/*.o private/javascript/utils/*.o private/javascript/vector/*.o 
 
 SYSFLAGS=$(OPTIMIZED_FLAGS)
@@ -28,21 +32,25 @@ UPDATE =
 
 ALLOBJECTS = objects/periodogram.o objects/extras.o objects/mercury.o objects/integration.o objects/mcmc.o objects/utils.o objects/simplex.o objects/kernel.o objects/bootstrap.o objects/kl.o objects/qsortimp.o objects/lm.o objects/lm.o objects/ode.o objects/odex.o objects/sa.o objects/de.o
 
+JS_FILES = ui help systemic
+
 js: src/*.c src/*.h  $(ALLOBJECTS) support
-	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) $(EXP_FUNCTIONS) src/javascript.c  objects/*.o -o packaging/forweb/js/libsystemic.html $(LIBS) $(LIBNAMES)  --embed-file datafiles 
+	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) $(EXP_FUNCTIONS) src/javascript.c  objects/*.o -o $(SYSTEMICLIVE_DIR)/js/libsystemic.html $(LIBS) $(LIBNAMES)  --embed-file datafiles 
+	cd $(JS_DIR); sh minify.sh
+	lua lua/minify_safely.lua $(JS_DIR)/libsystemic.js >$(JS_DIR)/libsystemic.min.js
 
 support: 
 	cd lua; luajit-2.0.0-beta9 jsparse.lua; luajit-2.0.0-beta9 list_sys.lua
-	
+
 test: src/*.c src/*.h $(ALLOBJECTS)
 	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) src/test.c -o packaging/forweb/systemic_test.js objects/*.o $(LIBS) $(LIBNAMES)  --embed-file datafiles --embed-file ./private/hd141399.fit
-	
+
 objects/kernel.o: src/kernel.c
 	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/kernel.o src/kernel.c 
 
 objects/qsortimp.o: src/qsortimp.c
 	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/qsortimp.o src/qsortimp.c 
-	
+
 objects/extras.o: src/extras.c
 	$(CC) $(CCFLAGS) $(SYSFLAGS) -c -o objects/extras.o src/extras.c 
 
