@@ -244,7 +244,12 @@ idle <- function() {
 			trange <- c(min(rvdata[,1]), max(rvdata[,1]))
 			rvsamples <- getOption("systemic.rvsamples", 20000)
 			a <- integer(1)
+      dt <- k$dt
+      K_setIntDt(k$h, min(k$dt, 0.05 * k[, 'period']))
+
 			rvsignal <- K_integrateStellarVelocity(k$h, trange[1], trange[2], rvsamples, NULL, a)
+      K_setIntDt(k$h, dt)
+      
 			if (a[1] != K_INTEGRATION_SUCCESS)
 				print(.integration.errors[a[1]])
 			if (is.nullptr(rvsignal)) {

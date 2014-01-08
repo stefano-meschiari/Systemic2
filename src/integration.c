@@ -579,7 +579,7 @@ int ok_jac(double t, const double y[], double *dfdy,
     return GSL_SUCCESS;
 }
 
-ok_integrator_options defoptions = { 1e-12, 1e-12, 0.15, 1., 1e-6, 2, true, &ok_force, &ok_jac, &ok_force_jerk, NULL, NULL, NULL };
+ok_integrator_options defoptions = { 1e-13, 1e-13, 0.15, 1., 1e-6, 2, true, &ok_force, &ok_jac, &ok_force_jerk, NULL, NULL, NULL };
 
 /// This routine integrates the system in time. An array of snapshots taken at each time specified
 /// by the times vector is returned. 

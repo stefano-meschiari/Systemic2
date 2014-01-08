@@ -9,3 +9,4 @@ write.fmatrix <- function(m, file="", col.names=TRUE, format="%18.10e", sformat=
 	
 	close(f)
 }
+

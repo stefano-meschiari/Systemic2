@@ -88,7 +88,7 @@ Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = @ins@, print=TRUE)
 Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
 MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=k$nrpars*10, print=TRUE)
 -
-Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE)
+Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE); print(i_@var@)
 -
 F-test compare kernels|meta F|!var.test(kdata(@kernel@, 'res')[, VAL], kdata(@ins@, 'res')[, VAL])@@Type the name of the second kernel to compare to 
 F-test, all planets||[[
@@ -119,7 +119,7 @@ Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin =
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
 
 Plots
-New plot window|meta alt P|@ dev.new()
+New plot window|meta alt P|$dev.new()
 Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file@")
 Save current plot as EPS...||!dev.copy2eps(file="@file@")
 -
@@ -132,7 +132,7 @@ Plot normalized residuals (density)||$plot(@kernel@, 'normres', density=TRUE)
 
 Data
 Print data||$kdata(@kernel@)
-Save data to variable||!@ins@ <- kdata(@kernel@)
+Save kernel data to variable||!@ins@ <- kdata(@kernel@)
 Print time span||$@kernel@$trange
 -
 Add dataset||!kadd.data(@kernel@, "path@ins@")
@@ -150,10 +150,17 @@ Other data manipulation examples||$edit.script("doc/data_examples.R")
 -
 Get RV curve||!rv <- krvcurve(@kernel@)
 Get RV curve at times...||!rv <- krvcurve(@kernel@, times=@ins@)
+
+R
+List all variables||$ll()
 -
 Save table to file...||!write.fmatrix(@ins@, file="")
 Save table to CSV file...||!write.csv(@ins@, file="")
-
+-
+Change working directory...||!setwd("@ins@")
+Show working directory||$getwd()
+-
+Help on function||!?function@ins@
 
 Editor
 New...|meta alt N|%edit.new
@@ -174,6 +181,7 @@ Set minimum period...||!options(systemic.pmin = @ins@)
 Set maximum period...||!options(systemic.pmax = @ins@)
 Set periodogram samples...||!options(systemic.psamples = @ins@)
 -
+Show integration accuracy parameters||$sprintf("%e %e %e", @kernel@$abs.acc, @kernel@$rel.acc, @kernel@$dt)
 Set integration accuracy (RK/BS)||!@kernel@$abs.acc <- @kernel@$rel.acc <- @ins@
 Set integration dt (SWIFT)||!@kernel@$dt <- @ins@
 
@@ -183,5 +191,5 @@ Radial velocity tutorial||@tutorial('rv')
 -
 R project homepage||@browseURL('http://www.r-project.org')
 R tutorial||@browseURL('http://cran.r-project.org/doc/manuals/r-release/R-intro.html')
--
+
 
