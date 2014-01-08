@@ -528,11 +528,11 @@ attach(.systemic.functions)
 		source("startup.r")
 	if (getOption("systemic.installed", FALSE))
 		.gui.event("installed")
+  .gui.event("#pid", Sys.getpid())
 }
 
-.gui.hint <- function(str) {
-	cat(str, file=paste(.gui.path, "_hint", sep=""))
-	.gui.event("#hint", paste(.gui.path, "_hint", sep=""))
+.gui.hint <- function(str, func="") {
+	.gui.event("#hint", gsub("function", func, str))
 }
 
 .gui.input <- function(str) {
@@ -563,6 +563,7 @@ attach(.gui.env)
 
 acknowledgments <- function() {
 	cat(readLines(paste(getOption("systemic.dir", "./"), "/acknowledgments.txt", sep="")), sep="\n")
+  edit.script("License.txt")
 }
 
 tutorial <- function(which="rv") {

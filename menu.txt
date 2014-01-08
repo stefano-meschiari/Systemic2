@@ -191,5 +191,9 @@ Radial velocity tutorial||@tutorial('rv')
 -
 R project homepage||@browseURL('http://www.r-project.org')
 R tutorial||@browseURL('http://cran.r-project.org/doc/manuals/r-release/R-intro.html')
-
-
+-
+What's new?||@edit.script("WHATSNEW.txt")
+Acknowledgments||@acknowledgments()
+-
+Systemic2 homepage||@browseURL('http://www.stefanom.org/?systemic')
+Systemic2 on GitHub||@browseURL('https://github.com/stefano-meschiari/Systemic2')

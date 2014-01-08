@@ -1,3 +1,8 @@
+2.1050
+=====
+- R does not hang when the user inputs a command where symbols are not balanced (e.g. a bracket or a quote that is not closed)
+- Systemic can now send interrupt signals to R and attempt to escape loops
+
 2.1010
 ======
 - Changed name of "local" directory to "deps" directory
