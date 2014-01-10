@@ -539,6 +539,14 @@ attach(.systemic.functions)
 	.gui.event("#input", str)
 }
 
+.gui.input.atcursor <- function(str) {
+    .gui.event("#insert_input", str)
+}
+
+.gui.complete.func <- function(partial) {
+    
+}
+
 .gui.show <- function(str) {
 	.gui.event("#switchSidebar", str)
 }
