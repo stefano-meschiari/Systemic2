@@ -476,7 +476,7 @@ kels <- function(k, keep.first = FALSE) {
 				K_setMinFunc(k[['h']], .dynsym(.lib$libhandle, paste("K_get", toupper(substring(value, 1, 1)),
 					substring(value, 2), sep="")))
 			k[['min.func']] <- value
-		} else if (is.function(what)){ 
+		} else if (is.function(value)){ 
 			k[['min.func']] <- function(h) {
 				return(value(k))
 			}

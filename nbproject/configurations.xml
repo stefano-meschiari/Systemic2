@@ -420,7 +420,7 @@
       <item path="src/systemic_cli.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
-            <pElem>local/include</pElem>
+            <pElem>deps/include</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>.</pElem>
           </incDir>
