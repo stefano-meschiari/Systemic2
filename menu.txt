@@ -117,18 +117,20 @@ Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res"
 -
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
+-
+Parallelize a task||$edit.script("doc/parallelize.R")
 
 Plots
-New plot window|meta alt P|$dev.new()
+New plot window|meta alt P|!dev.new()
 Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file@")
 Save current plot as EPS...||!dev.copy2eps(file="@file@")
 -
-Plot RV||$plot(@kernel@)
-Plot RVs, all planets||$plot (@kernel@, 'allrv', wrap=TRUE)
-Plot TTVs||$plot(@kernel@, 'ttv')
+Plot RV||!plot(@kernel@)
+Plot RVs, all planets||!plot (@kernel@, 'allrv', wrap=TRUE)
+Plot TTVs||!plot(@kernel@, 'ttv')
 -
-Plot normalized residuals (histogram)||$plot(@kernel@, 'normres', density=FALSE)
-Plot normalized residuals (density)||$plot(@kernel@, 'normres', density=TRUE)
+Plot normalized residuals (histogram)||!plot(@kernel@, 'normres', density=FALSE)
+Plot normalized residuals (density)||!plot(@kernel@, 'normres', density=TRUE)
 
 Data
 Print data||$kdata(@kernel@)
