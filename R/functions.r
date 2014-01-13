@@ -1939,7 +1939,6 @@ save.systemic <- function(file) {
 	for (kn in ls(envir=globalenv())) {
 		ka <- get(kn, envir=globalenv())
 		if (class(ka) == "kernel") {
-			print(kn)
 			fn <- tempfile()
 			p <- fopen(fn, "w")
 			K_save(ka$h, p)

@@ -34,10 +34,11 @@ utils/*
 lua
 packaging
 tests
-
+autosave/*
+!autosave/.gitignore
 
 # svn & cvs
 .svn
 CVS
-autosave
+#autosave
 /BUGS.org

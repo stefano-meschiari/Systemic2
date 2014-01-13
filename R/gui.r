@@ -7,6 +7,7 @@ if (!exists(".gui")) {
 options(systemic.url="http://www.stefanom.org/")
 options(help_type="html")
 options(max.print=100)
+options(systemic.autosave=FALSE)
 
 .gui.version <- SYSTEMIC.VERSION
 .gui.env <- new.env()
@@ -145,6 +146,21 @@ idle <- function() {
 	close(con)
 }
 
+.gui.autosave.dir <- paste(getOption("systemic.dir", "./"), "/autosave/", sep="")
+.gui.last.autosave <- Sys.time()
+
+if (! file.exists(.gui.autosave.dir)) {
+    dir.create(.gui.autosave.dir, showWarnings=FALSE)
+}
+.gui.autosave <- function() {
+    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > 60)) {
+        .gui.last.autosave <<- Sys.time()
+        fn <- paste(.gui.autosave.dir, "session_", .gui.session, sep="")
+        .gui.event("#save_session", fn)
+        .gui.event("#hint", "Autosaved.")
+    }
+}
+
 .gui.undo.list = c()
 .gui.add.undo <- function(name, k) {
 	if (is.null(.gui.undo.list[[name]])) {
@@ -158,10 +174,12 @@ idle <- function() {
 		if (isTRUE(all.equal(kallels(old, keep.first=T), kallels(k,  keep.first=T))) && isTRUE(all.equal(kpars(old), kpars(k))) && isTRUE(all.equal(kdata(old), kdata(k)))) {
 		} else {
 			.gui.undo.list[[name]]$old <<- .gui.undo.list[[name]]$new
-			.gui.undo.list[[name]]$new <<- kclone(k)			
+			.gui.undo.list[[name]]$new <<- kclone(k)
 		}
 	}
 }
+
+
 
 .gui.last.str <- "?"
 .gui.progress <- function(cur, max, state, str) {
@@ -431,7 +449,9 @@ attach(.systemic.functions)
 				dev.off()
 			}
 		}
-		
+
+    .gui.autosave()
+    
 		if (length(.gui.hooks[['after']]) > 0)
 			for (fun in .gui.hooks[['after']])
 				fun()
@@ -439,7 +459,7 @@ attach(.systemic.functions)
 		.gui.write.env()
 		.gui.event("ready")				
 		flush(stdin())
-		flush(stderr())		
+		flush(stderr())
 		flush(stdout())
 	})
 }

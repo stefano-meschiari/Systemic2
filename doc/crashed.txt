@@ -1,0 +1,14 @@
+Console crash information
+=========================
+The Console appears to have crashed. The terminal shows you two options:
+
+- Click on the RESTORE.CRASH link to attempt to restore your work;
+- Click on the menu item "Edit -> Kill and restart session" to just close the session and restart from scratch.
+
+What happened?
+==============
+Crashes in the Console package are usually originated within the C code. They might be due to unexpected inputs (either from you, or from the R code) that were not corrected before they were sent to the C code, or an actual programming error. When those crashes happen, the process that executes the code panics and exits.
+
+Reporting issues
+================
+Click on Help -> Reporting a bug for instructions on filing a bug.

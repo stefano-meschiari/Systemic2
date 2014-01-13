@@ -10,6 +10,8 @@
 # - if command starts with !, the line will be set up in the input window without executing; @ins@ defines the insertion point of the cursor. If the command contains the @@ token, everything beyond the @@ token will be shown as a hint in the input window
 # - if command starts with %, then the string that follows will be broadcasted as an internal event (this is for internal use only; the GUI API is not public and might change in the future)
 # - if command starts with [[, every line until a ]] token will be considered part of the command. This is useful to write out scripts inside this file (e.g. see F-test compare # planets entry).  The ".kernel" variable will represent the current kernel
+# - if command starts with > and is followed by a file name, the contents of that file will be printed in the terminal
+#
 # - @kernel@ will be substituted with the currently selected kernel
 # - @var@ will be substituted for a unique counter
 # - @file@ will pop up a file requester
@@ -197,3 +199,5 @@ Acknowledgments||@acknowledgments()
 -
 Systemic2 homepage||@browseURL('http://www.stefanom.org/?systemic')
 Systemic2 on GitHub||@browseURL('https://github.com/stefano-meschiari/Systemic2')
+-
+Report a bug||>BUGS.txt
