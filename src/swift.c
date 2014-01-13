@@ -142,7 +142,7 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
                 if (error != NULL) {
                     *error = INTEGRATION_FAILURE_STOPPED;
                 }
-                break;
+                return NULL;
             }
         }
         

@@ -131,7 +131,7 @@ package: clean cleanreqs reqs macosx utils/systemic_cli
 	cp libsystemic.dylib R
 	cp -R deps R
 	- mkdir -p $(PACKAGE_DIR)/mac/Systemic $(PACKAGE_DIR)/mac/Systemic/deps/bin $(PACKAGE_DIR)/mac/Systemic/deps/lib  $(PACKAGE_DIR)/mac/Systemic/gui
-	cd utils; $(LUA) ../lua/libs.lua systemic_cli
+	$(LUA) lua/libs.lua utils/systemic_cli
 	cp -RH R utils sample datafiles fits doc *.dylib *.txt $(PACKAGE_DIR)/mac/Systemic
 	cp -RH deps/lib/* $(PACKAGE_DIR)/mac/Systemic/deps/lib
 	cp -R ../SystemicGui/dist/SystemicGui.jar ../SystemicGui/dist/lib $(PACKAGE_DIR)/mac/Systemic/gui

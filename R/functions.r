@@ -1684,7 +1684,7 @@ kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot
 	sl <- K_integrateProgress(k$h, v, NULL, k$last.error.code)
 	
 	if (is.nullptr(sl) || k$last.error.code != K_INTEGRATION_SUCCESS) {
-		warning("Error during integration:", k$last.error, " ", k$last.error.code)
+		warning("Error during integration: ", k$last.error, " [", k$last.error.code, "]")
 		if (is.nullptr(sl))
 			return (NULL)
 	}
@@ -1714,16 +1714,16 @@ kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot
 		
 		mass <- k[i, 'mass'] * MJUP/MSUN * K2
 		a <- sapply(ret$els[[i]][, PER], ok_acalc, mstar, mass)
-		ret$els[[i]] <- cbind(ret$els[[i]], a, a*(1-ret$els[[i]][, ECC]))
-		
-		colnames(ret$els[[i]]) <- c(.elements, 'a', 'q')
-		ret$xyz[[i]] <- xyz[, (i * 7 + 2) : ((i+1) * 7 + 1)]
-		colnames(ret$xyz[[i]]) <- c("m", "x", "y", "z", "u", "v", "w")
+		ret$els[[i]] <- cbind(ret$els[[i]], a, a*(1-ret$els[[i]][, ECC]), ret$times)
+
+		colnames(ret$els[[i]]) <- c(.elements, 'a', 'q', 'time')
+		ret$xyz[[i]] <- cbind(xyz[, (i * 7 + 2) : ((i+1) * 7 + 1)], ret$times)
+		colnames(ret$xyz[[i]]) <- c("m", "x", "y", "z", "u", "v", "w", "time")
 	}
 
 	ret$xyz[['star']] <- xyz[, 1:7]
 	
-	colnames(ret$rvs) <- c("t", "rv")
+	colnames(ret$rvs) <- c("time", "rv")
 	
 	ok_free_systems(sl, nt)
 	class(ret) <- "integration"

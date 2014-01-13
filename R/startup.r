@@ -5,7 +5,7 @@ cat(sprintf('Hello master %s!\nThis is Console %.4f speaking.\n(c) 2013-2014 Ste
 	Sys.getenv("USER"), SYSTEMIC.VERSION))
 
 # Window title
-.gui.title(paste("Systemic", SYSTEMIC.VERSION))
+.gui.title(sprintf("Systemic %.4f", SYSTEMIC.VERSION))
 
 if (file.exists("../private/startup.r"))
 	source("../private/startup.r")

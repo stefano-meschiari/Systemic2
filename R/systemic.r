@@ -21,6 +21,7 @@
 .require.library('compiler')
 .require.library('lattice')
 .require.library('MASS', hush=TRUE)
+.require.library('KernSmooth', hush=TRUE)
 
 if (exists('.systemic.env')) {
 	tryCatch({
