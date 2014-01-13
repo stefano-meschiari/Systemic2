@@ -1,7 +1,9 @@
-2.1050
-=====
+2.1100
+======
 - R does not hang when the user inputs a command where symbols are not balanced (e.g. a bracket or a quote that is not closed)
 - Systemic can now send interrupt signals to R and attempt to escape loops
+- Systemic can complete functions at the prompt
+- Increased smoothness of curves
 
 2.1010
 ======

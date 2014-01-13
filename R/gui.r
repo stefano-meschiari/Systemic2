@@ -1,9 +1,14 @@
 source("systemic.r")
+
+if (!exists(".gui")) {
+    stop("This file is not meant to be used by a regular R session. Start the Systemic GUI instead.")
+}
+
 options(systemic.url="http://www.stefanom.org/")
 options(help_type="html")
 options(max.print=100)
 
-.gui.version <- 0.01
+.gui.version <- SYSTEMIC.VERSION
 .gui.env <- new.env()
 .gui.silent <- FALSE
 .gui.no.undo <- FALSE
@@ -537,6 +542,29 @@ attach(.systemic.functions)
 
 .gui.input <- function(str) {
 	.gui.event("#input", str)
+}
+
+.gui.input.atcursor <- function(str) {
+    .gui.event("#insert_input", str)
+}
+
+.gui.title <- function(str) {
+    .gui.event("#frame_title", str)
+}
+
+.gui.complete <- function(partial, quotedPartial) {
+    
+    completions <- apropos(paste("^", quotedPartial, sep=""), ignore.case=FALSE)
+    if (length(completions) == 0)
+        .gui.hint(paste("No completion for ", partial, sep=""))
+    else if (length(completions) == 1)
+        .gui.input.atcursor(substr(completions[1], nchar(partial)+1, nchar(completions[1])))
+    else {
+        prefix <- longest.prefix(completions)
+        print(prefix)
+        .gui.input.atcursor(substr(prefix, nchar(partial)+1, nchar(prefix)))
+        print(completions)
+    }       
 }
 
 .gui.show <- function(str) {
