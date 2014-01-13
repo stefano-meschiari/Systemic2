@@ -4,6 +4,6 @@ Reporting a bug
 Please click on >>>https://github.com/stefano-meschiari/Systemic2/issues to file a bug.
 
 When you file a bug, please include:
-* Steps to reproduce bug;
+* Steps to reproduce bug, and any diagnostic output;
 * Version of Systemic;
 * Operating system and R version.

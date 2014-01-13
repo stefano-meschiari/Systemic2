@@ -186,6 +186,8 @@ Set periodogram samples...||!options(systemic.psamples = @ins@)
 Show integration accuracy parameters||$sprintf("%e %e %e", @kernel@$abs.acc, @kernel@$rel.acc, @kernel@$dt)
 Set integration accuracy (RK/BS)||!@kernel@$abs.acc <- @kernel@$rel.acc <- @ins@
 Set integration dt (SWIFT)||!@kernel@$dt <- @ins@
+- 
+Turn off auto-save||!options(systemic.autosave=FALSE)
 
 Help
 Quickstart||$quickstart()
