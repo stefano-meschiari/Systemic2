@@ -15,18 +15,18 @@
 
 #define NSTATR NSTAT
 
-extern void rmvs_step_(int*, double*, int*, int*, double*, double*, double*,
+extern void rmvs_step_systemic_(int*, double*, int*, int*, double*, double*, double*,
         double*, double*, double*, double*, double*, double*,
         double*, double*, double*, double*, double*, double*,
-        int*, double*, double*);
-
-
+        int*, double*, double*, int*);
 
 ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, const ok_integrator_options* options,
     ok_system** bag, int* error) {
     
     const double startTime = initial->epoch;
     int NDIMS = initial->nplanets + 1;
+    int* swiftError = malloc(sizeof(int));
+    swiftError[0] = 0;
     
     // Allocate the return array of snapshots
     const int SAMPLES = times->size;
@@ -87,19 +87,26 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
         
         // Integrate between prevTime and time
         
-        if (fabs(time - prevTime) > 1e-10) {
+        if (fabs(time - prevTime) > 1e-10 && swiftError[0] == 0) {
             double t = prevTime;
             
             while (fabs(t - time) > 1e-10) {
                 h = copysign(MIN(dt, fabs(t-time)), time - prevTime);
                 
-                rmvs_step_(&step, &t, &NDIMS, &dum0, mass, &dum0d, &dum0d, 
+                rmvs_step_systemic_(&step, &t, &NDIMS, &dum0, mass, &dum0d, &dum0d, 
                         r[0], r[1], r[2], r[3], r[4], r[5], 
                         dum, dum, dum, dum, dum, dum,
-                        NULL, NULL, &h);
-                
+                        NULL, NULL, &h, swiftError);
+                if (swiftError[0] != 0)
+                    break;
                 t += h;
             }
+        } 
+        if (swiftError[0] != 0) {
+            
+            for (int j = 0; j < NDIMS; j++)
+                for (int i = 0; i < 6; i++)
+                       r1[i][j] = INVALID_NUMBER;
         }
         
         // Set up the return vector
@@ -149,6 +156,9 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
         prevTime = time;
     }
     
+    if (swiftError[0] != 0) {
+        *error = INTEGRATION_FAILURE_SWIFT;
+    }
     
     free(r[0]);
     free(r[1]);

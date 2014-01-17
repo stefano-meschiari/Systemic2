@@ -1,11 +1,10 @@
 .require.library <- function(name, hush = FALSE) {
-	
 	if (hush)
 		req <- suppressMessages(require(name, warn.conflicts = F, character.only = TRUE, quietly = TRUE))
 	else
 		req <- require(name, warn.conflicts = F, character.only = TRUE, quietly = TRUE)
 	
-	if (! req) {
+	if (! req && getOption("systemic.install.packages", FALSE)) {
 		warning(paste("Installing package ", name, "\n"))	
 		install.packages(name, repos="http://cran.us.r-project.org")
 		options(systemic.installed = TRUE)
@@ -22,6 +21,7 @@
 .require.library('lattice')
 .require.library('MASS', hush=TRUE)
 .require.library('KernSmooth', hush=TRUE)
+.require.library('Hmisc', hush=TRUE)
 
 if (exists('.systemic.env')) {
 	tryCatch({

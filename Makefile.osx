@@ -103,9 +103,9 @@ clean:
 
 # For all-in-one installations
 
-reqs: untardeps ./deps/lib/libswift.a  ./deps/lib/libf2c.a 
+reqs: ./deps ./deps/lib/libswift.a  ./deps/lib/libf2c.a 
 
-untardeps:
+./deps:
 	tar -xvzf deps.tar.gz
 
 ./deps/lib/libswift.a: 

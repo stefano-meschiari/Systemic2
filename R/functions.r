@@ -407,6 +407,10 @@ kels <- function(k, keep.first = FALSE) {
 		return(k[[idx]])	
 }
 
+kget <- function(k, idx) {
+    return(`$.kernel`(k, idx))
+}
+
 `$<-.kernel` <- function(k, idx, value) {
 	.check_kernel(k)	
 	if (idx == "mstar") {
@@ -490,6 +494,11 @@ kels <- function(k, keep.first = FALSE) {
 	return(k)
 }
 
+kset <- function(k, idx, val) {
+    return(`$<-.kernel`(k, idx, val))
+}
+
+
 kallels <- function(k, keep.first = F) {
 	# Returns a matrix of orbital elements, including derived orbital elements [2]
 	#
@@ -541,7 +550,8 @@ kadd.data <- function(k, data, type = NA) {
 	}
 	
 	if (class(data) == "character") {
-		if (! file.exists(data))
+    data <- normalizePath(data, mustWork=FALSE)
+    if (! file.exists(data))
 			stop(paste("Could not open", data))
 		if (grepl(".vels", data)) {
 			type <- T_RV
@@ -808,7 +818,7 @@ kload <- function(file, skip = 0, chdir=TRUE) {
 	#	file: path to the file
 	#	skip: if multiple kernels are saved in a single file, the index of the kernel to read (usually only one kernel is saved per file, so specify 0)
 	stopifnot(class(file) == "character")
-	
+	file <- normalizePath(file, mustWork=FALSE)
 	header <- readLines(file, n=1)
 	k <- NULL
 	
@@ -856,6 +866,8 @@ ksave <- function(k, file) {
 	#	file: file to save to
 	
 	stopifnot(class(file) == "character")
+	file <- normalizePath(file, mustWork=FALSE)
+  
 	if (class(k) == "kernel") {
 		.check_kernel(k)
 		
@@ -1721,6 +1733,12 @@ kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot
 		colnames(ret$xyz[[i]]) <- c("m", "x", "y", "z", "u", "v", "w", "time")
 	}
 
+  tmax <- max(ret$times)
+  ret$survival.time <- min(sapply(1:k$nplanets, function(n) {
+      return(min(ret$times[ret$els[[n]][,'ecc'] > 1 | is.nan(ret$els[[n]][,'period']) | is.nan(ret$els[[n]][,'ecc'])], tmax))
+  })) - min(ret$times)
+  
+  
 	ret$xyz[['star']] <- xyz[, 1:7]
 	
 	colnames(ret$rvs) <- c("time", "rv")
@@ -1848,7 +1866,28 @@ kx2el <- function(mu = 1, x=1, y=0, z=0, u=0, v=1, w=0) {
 	return(b)
 }
 
+# Forces printing of string
+print.ktor <- function(s) {
+  cat(s)
+}
 
+ktor <- function(k) {
+    name <- deparse(substitute(k))
+    .check_kernel(k)
+
+    tr <- sprintf("%s <- knew()", name)
+    for (prop in c("mstar", "int.method", "epoch", "element.type"))  {
+        tr <- c(tr, sprintf("%s$%s <- %s", name, prop, kget(k, prop)))
+    }
+
+    if (k$nplanets > 0)
+        for (i in 1:k$nplanets)
+            tr <- c(tr, sprintf("%s[] <- c(period=%s, mass=%s, ma=%s, ecc=%s, lop=%s, inc=%s, node=%s)", name, k[i, 'period'], k[i, 'mass'], k[i, 'ma'], k[i, 'ecc'], k[i, 'lop'], k[i, 'inc'], k[i, 'node']))
+
+    tr <- paste(tr, collapse='\n')
+    class(tr) <- c("ktor", "character")
+    return(tr)
+}
 
 
 print.error.est <- function(e, all.pars = FALSE) {
@@ -1904,9 +1943,10 @@ print.kernel <- function(k, all.pars = FALSE) {
 
 print.integration <- function(int) {
 
-	cat(sprintf("# Integration: %.2f days [%.2f years], int.method: %d\n",
+	cat(sprintf("# Integration: %.2f days [%.2f years], survival time: %.2f years, int.method: %d\n",
 		max(int$times)-min(int$times),
 		(max(int$times)-min(int$times))/365.25,
+    int$survival.time/365.25,
 		int$int.method))
 	
 	for (i in 1:int$nplanets) {

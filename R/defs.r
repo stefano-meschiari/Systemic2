@@ -158,6 +158,7 @@ K_INTEGRATION_FAILURE_INCREASE_TOLERANCE <- 4096
 K_INTEGRATION_FAILURE_CLOSE_ENCOUNTER <- 8192
 K_INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR <- 16384
 K_INTEGRATION_FAILURE_STOPPED <- 32768
+K_INTEGRATION_FAILURE_SWIFT <- 65536
 # Structs 
 parseStructInfos("gsl_block{L*d}size data;")
 parseStructInfos("gsl_matrix{LLL*d*<gsl_block>i}size1 size2 tda data block owner;")
@@ -770,3 +771,5 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 .integration.errors[K_INTEGRATION_FAILURE_CLOSE_ENCOUNTER+1] <- "Close encounter between two planets"
 .integration.errors[K_INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR+1] <- "Close encounter with the star"
 .integration.errors[K_INTEGRATION_FAILURE_STOPPED+1] <- "Integration stopped"
+.integration.errors[K_INTEGRATION_FAILURE_SWIFT+1] <- "Error during SWIFT integration (maybe planet was lost?)"
+
