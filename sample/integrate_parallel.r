@@ -1,48 +1,51 @@
 source("~/Projects/Systemic2/R/systemic.r", chdir=TRUE)
-
+require(parallel)
 # Set up a new kernel object
 k <- knew()
 k$mstar <- 0.95
 k$epoch <- 0.
 
 # Add planets
-k[] <- c(period=38., mass=0.053, ma=214.07, ecc=0.22, lop=303.75, inc=90, node=0)
+k[] <- c(period=38., mass=0.053, ma=214.07, ecc=0.219, lop=303.74, inc=90, node=0)
 k[] <- c(period=122., mass=0.07, ma=33.57, ecc=0.36, lop=331.22, inc=90, node=0)
 
-# Integrate for 10^5 years
-nyears <- 1e4
-#int <- kintegrate(k, nyears*365.25, int.method=SWIFTRMVS, dt=min(k[, 'period'])*0.05)
-# plot(int)
+# Integrate for 5e4 years
+nyears <- 5e4
+int <- kintegrate(k, nyears*365.25, int.method=SWIFTRMVS, dt=min(k[, 'period'])*0.1)
+pdf('integration_1e5.pdf')
+plot(int)
+dev.off()
 
-# Grid points for planet #2: eccentricity between 0
-# and 0.95, long. of pericenter between 0 and 360,
-# sampled with 10 points respectively.
-npoints <- 10
-ecc <- seq(0, 0.95, length.out=npoints)
-lop <- seq(0, 360, length=npoints)
-grid <- expand.grid(ecc, lop)
-
+# Grid points for planet #2: 
+per <- seq(38, 122, length.out=40)
+ma <- seq(0, 360, length=50)
+grid <- expand.grid(per, ma)
 
 # Return a list of 'survival times' for each 
 # realization of the system with the modified orbital
 # elements of planet #2
-times <- mapply(function(e, l) {
+times <- mcmapply(function(p, ma) {
     k2 <- kclone(k)
-    k2[2, 'ecc'] <- e
-    k2[2, 'lop'] <- l
+    k2[2, 'period'] <- p
+    k2[2, 'ma'] <- ma
 
-    i <- kintegrate(k2, nyears*365.25, int.method=SWIFTRMVS, dt=min(k[, 'period'])*0.05)
+    i <- kintegrate(k2, nyears*365.25, int.method=SWIFTRMVS, dt=min(k[, 'period'])*0.1)
 
-    cat(sprintf("e = %.2f, lop = %.2f, survival time = %.2f\n", e, l, i$survival.time / 365.25))
+    cat(sprintf("per = %.2f, ma = %.2f, survival time = %.2f\n", p, ma, i$survival.time / 365.25))
     return(i$survival.time)
-}, grid[[1]], grid[[2]])
+}, grid[[1]], grid[[2]], mc.cores=8)
 
-# Cut the survival times by eccentricity...
-times.by.ecc <- split(times, grid[[1]])
+# Cut the survival times by period...
+times.by.per <- split(times, grid[[1]])
 
 # ...and take the median over the phases
-times.by.ecc.median <- sapply(times.by.ecc, median)
+times.by.per.median <- sapply(times.by.per, median)
 
-# Make a plot
-plot(ecc, times.by.ecc.median / 365.25, type='l',
-     xlab='Eccentricity', ylab='Survival time [yrs]', log='y')
+# Save the results to file
+save.image('results')
+
+# Make a plot, using the default Systemic plot style
+par(systemic.par)
+plot(per, times.by.per.median / 365.25, type='l',
+     xlab='Period [d]', ylab='Survival time [yrs]', log='y')
+

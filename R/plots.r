@@ -8,7 +8,6 @@ systemic.plot.style <- function() {
     par(systemic.par)
 }
 
-
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, breaks=NA, plot.gaussian=TRUE, density=FALSE, ...) {
     .check_kernel(k)
     oldpar <- par(no.readonly=TRUE)
