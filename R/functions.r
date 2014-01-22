@@ -1835,7 +1835,8 @@ kx2el <- function(mu = 1, x=1, y=0, z=0, u=0, v=1, w=0) {
 	
 	b$fit.els <- kallels(k)
 	b$fit.params <- kpars(k)
-	
+	b$element.type <- k$element.type
+  b$length <- b$size
 	b$type <- type
 	b$desc <- desc
 	b$par.flags <- flags

@@ -8,8 +8,10 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 	breaks=NA, plot.gaussian=TRUE, density=FALSE, ...) {
 	.check_kernel(k)
 	oldpar <- par(no.readonly=TRUE)	
-	par(systemic.par)
-	if (is.nan(k$epoch)) {
+  par(systemic.par)
+  on.exit(suppressWarnings(par(oldpar)))
+
+  if (is.nan(k$epoch)) {
 		stop("No epoch set")
 	}
 	
@@ -237,30 +239,85 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 		print(m)
 		cat("# Specify the breaks parameter to use a different number of bins\n")
 	} else if (type == "orbits") {
-		t <- seq(0, 2*pi, length.out=1000)
-
-		xlim <- c(-max(k[, 'a'] * (1+k[, 'ecc'])), max(k[, 'a'] * (1+k[, 'ecc'])))
-
-		plot(0, 0, pch=19, xlim=xlim, ylim=xlim, xlab="", ylab="")
-
-		for (i in 1:k$nplanets) {
-			f <- k[i, 'trueanomaly'] * pi/180
-			pom <- k[i, 'lop'] * pi/180
-			e <- k[i, 'ecc']
-			a <- k[i, 'a']
-			r <- a*(1-e^2)/(1+e*cos(t-pom))
-			q <- a*(1-e)
-			rf <- a*(1-e^2)/(1+e*cos(f))
-			lines(r*cos(t), r*sin(t), lwd=2, type='l')
-			lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted")
-			points(rf*cos(f+pom), rf*sin(f+pom), pch=19)
-		}
+		plot.orbit(k, ...)
 	}
 	
 	axis(3, labels=FALSE)
 	suppressWarnings(par(oldpar))
 	par(mfrow=c(1, 1))
 }
+
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.color=rgb(0, 0, 0, 0.5), samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", ...) {
+    oldpar <- par(no.readonly=TRUE)	
+    par(systemic.par)
+    on.exit(suppressWarnings(par(oldpar)))
+    
+    if (("kernel" %in% class(k)) || (".orbit" %in% class(k))) {
+        if ("kernel" %in% class(k))
+            if (k$element.type != ASTROCENTRIC)
+                stop("Currently only plots orbits for ASTROCENTRIC orbital elements.")
+        
+        t <- seq(0, 2*pi, length.out=1000)
+        
+        if (planet == -1)
+            planet = 1:nplanets
+        if (is.na(xlim)) {
+            xlim <- c(-max(k[, 'a'] * (1+k[, 'ecc'])), max(k[, 'a'] * (1+k[, 'ecc'])))
+            ylim <- xlim
+        }
+        if (!add)
+            plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
+
+        for (i in planet) {
+            f <- k[i, 'trueanomaly'] * pi/180
+            pom <- k[i, 'lop'] * pi/180
+            e <- k[i, 'ecc']
+            a <- k[i, 'a']
+            r <- a*(1-e^2)/(1+e*cos(t-pom))
+            q <- a*(1-e)
+            rf <- a*(1-e^2)/(1+e*cos(f))
+            lines(r*cos(t), r*sin(t), lwd=2, type='l', lwd=lwd, col=col)
+            if (plot.pericenter)
+                lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted")
+            if (plot.planet)
+                points(rf*cos(f+pom), rf*sin(f+pom), pch=19)
+        }
+    } else if ("error.est" %in% class(k)) {
+        if (!is.null(k$element.type) && k$element.type != ASTROCENTRIC)
+            stop("Currently only plots orbits for ASTROCENTRIC orbital elements.");
+        if (k$length < samples)
+            warning("There are fewer elements than samples.")
+        
+        samples = max(samples, k$length)
+        samples.indices = sample(1:samples, samples)
+
+        if (planet == -1)
+            planet = 1:k$nplanets
+        
+        lim <- Reduce(max, sapply(planet, function(i) k[[i]][,'a'] * k[[i]][, 'ecc']))
+        if (is.na(xlim)) {
+            xlim <- c(-lim, lim)
+            ylim <- xlim
+        }
+        
+        plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
+
+        obj <- matrix(nrow=length(planet), ncol=4)
+        colnames(obj) <- c('a', 'ecc', 'lop', 'trueanomaly')
+        class(obj) <- c('matrix', '.orbit')
+        
+        for (j in samples.indices) {
+            for (e in colnames(obj)
+                 obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
+            plot.orbit(obj, xlim=lim, ylim=lim, nplanets=k$nplanets,
+                       lwd=samples.lwd, col=samples.col)
+        }
+        
+    } else {
+        stop("First argument should be an object of class kernel, or of class error.est")
+    }
+}
+
 
 plot.periodogram <- function(p, overplot.window = F, what = 'power') {
 	par(systemic.par)
@@ -305,7 +362,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power') {
     bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 
         0.975), show = c("filled.contour", "contour", "image", 
         "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, 
-    pch = par("pch"), points.col = "red", xlab, ylab, xlim, ylim, extra.points=NULL, ...) 
+    pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, ...) 
 {
 	par(systemic.par)
     show <- match.arg(show)
@@ -489,7 +546,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=list(1,
 	} else if (type == "smoothScatter") {
 		smoothScatter(datax, datay, nrpoints=0, xlab=labx, ylab=laby, col=col, xlim=limx, ylim=limy, pch=pch, ...)
 		points(c(bfx), c(bfy), pch=19, col='red')
-       
+    
 		axis(3, labels=FALSE)
 		axis(4, labels=FALSE)
 	} else if (type == "filled.contour") {
@@ -501,7 +558,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=list(1,
 	} else if (type == "contour") {
 		fcol <- if (missing(col)) "black" else col
 		
-		.ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch)
+		.ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col)
 		
 	} else if (type == "image") {
 		fcol <- if (missing(col)) "black" else col
