@@ -3,6 +3,10 @@ systemic.par <- list()
 systemic.par$font.lab <- 2
 systemic.par$tck <- 0.02
 
+systemic.plot.style <- function() {
+    par(systemic.par)
+}
+
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, 
 	breaks=NA, plot.gaussian=TRUE, density=FALSE, ...) {

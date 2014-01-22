@@ -219,7 +219,7 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER (1 << 13)
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR (1 << 14)
 #define INTEGRATION_FAILURE_STOPPED (1 << 15)
-
+#define INTEGRATION_FAILURE_SWIFT (1 << 16)
 typedef struct ok_system {
     /// The number of planets
     int nplanets;
