@@ -14,7 +14,7 @@
 #
 # - @kernel@ will be substituted with the currently selected kernel
 # - @var@ will be substituted for a unique counter
-# - @file@ will pop up a file requester
+# - @file@ will pop up a file requester; @file_save@ will pop up a file save requester
 # - if command does not start with a special character, then the corresponding method in the Frame class is called. If an option is specified, it will be passed to that method.
 
 File
@@ -122,12 +122,13 @@ Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 8000
 
 Plots
 New plot window|meta alt P|$dev.new()
-Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file@")
-Save current plot as EPS...||!dev.copy2eps(file="@file@")
+Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file_save@")
+Save current plot as EPS...||!dev.copy2eps(file="@file_save@")
 -
 Plot RV||$plot(@kernel@)
 Plot RVs, all planets||$plot (@kernel@, 'allrv', wrap=TRUE)
 Plot TTVs||$plot(@kernel@, 'ttv')
+Plot orbit||$plot.orbit(@kernel@)
 -
 Plot normalized residuals (histogram)||$plot(@kernel@, 'normres', density=FALSE)
 Plot normalized residuals (density)||$plot(@kernel@, 'normres', density=TRUE)
@@ -163,6 +164,7 @@ Change working directory...||!setwd("@ins@")
 Show working directory||$getwd()
 -
 Help on function||!?function@ins@
+Show function arguments||!args(@ins@)
 
 Editor
 New...|meta alt N|%edit.new

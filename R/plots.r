@@ -7,12 +7,11 @@ systemic.plot.style <- function() {
     par(systemic.par)
 }
 
-
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, 
 	breaks=NA, plot.gaussian=TRUE, density=FALSE, ...) {
 	.check_kernel(k)
 	oldpar <- par(no.readonly=TRUE)	
-  par(systemic.par)
+  systemic.plot.style()
   on.exit(suppressWarnings(par(oldpar)))
 
   if (is.nan(k$epoch)) {
@@ -120,7 +119,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 		plot(pr, overplot.window = TRUE)
 
 	} else if (type == "residuals") {
-		oldpar <- par()
+		
 		par(mfrow=c(ceiling(k$nsets/2), 2), mar=c(4, 4, 1, 1))
 		data <- kdata(k)
 		kcalculate(k)
@@ -247,30 +246,30 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 	}
 	
 	axis(3, labels=FALSE)
-	suppressWarnings(par(oldpar))
-	par(mfrow=c(1, 1))
 }
 
-plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.color=rgb(0, 0, 0, 0.5), samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", ...) {
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", axes=FALSE, ...) {
     oldpar <- par(no.readonly=TRUE)	
-    par(systemic.par)
+    systemic.plot.style()
+    par(pty="s")
     on.exit(suppressWarnings(par(oldpar)))
     
     if (("kernel" %in% class(k)) || (".orbit" %in% class(k))) {
         if ("kernel" %in% class(k))
             if (k$element.type != ASTROCENTRIC)
                 stop("Currently only plots orbits for ASTROCENTRIC orbital elements.")
-        
-        t <- seq(0, 2*pi, length.out=1000)
+        # Eliminates weird "pattern"
+        r <- runif(1, max=2*pi)
+        t <- seq(r, 2*pi+r, length.out=500)
         
         if (planet == -1)
             planet = 1:nplanets
-        if (is.na(xlim)) {
+        if (is.na(xlim) || is.na(ylim)) {
             xlim <- c(-max(k[, 'a'] * (1+k[, 'ecc'])), max(k[, 'a'] * (1+k[, 'ecc'])))
             ylim <- xlim
         }
         if (!add)
-            plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
+            plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes)
 
         for (i in planet) {
             f <- k[i, 'trueanomaly'] * pi/180
@@ -280,42 +279,50 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             r <- a*(1-e^2)/(1+e*cos(t-pom))
             q <- a*(1-e)
             rf <- a*(1-e^2)/(1+e*cos(f))
-            lines(r*cos(t), r*sin(t), lwd=2, type='l', lwd=lwd, col=col)
+            lines(r*cos(t), r*sin(t), type='l', lwd=lwd, col=col)
             if (plot.pericenter)
-                lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted")
+                lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted", col=col)
             if (plot.planet)
-                points(rf*cos(f+pom), rf*sin(f+pom), pch=19)
+                points(rf*cos(f+pom), rf*sin(f+pom), pch=19, col=col)
         }
     } else if ("error.est" %in% class(k)) {
         if (!is.null(k$element.type) && k$element.type != ASTROCENTRIC)
             stop("Currently only plots orbits for ASTROCENTRIC orbital elements.");
-        if (k$length < samples)
+        if (k$size < samples)
             warning("There are fewer elements than samples.")
         
-        samples = max(samples, k$length)
+        samples = min(samples, k$size)
         samples.indices = sample(1:samples, samples)
 
         if (planet == -1)
             planet = 1:k$nplanets
         
-        lim <- Reduce(max, sapply(planet, function(i) k[[i]][,'a'] * k[[i]][, 'ecc']))
-        if (is.na(xlim)) {
+        lim <- Reduce(max, sapply(planet, function(i) k[[i]][,'a'] * (1+k[[i]][, 'ecc'])))
+        if (is.na(xlim) || is.na(ylim)) {
             xlim <- c(-lim, lim)
             ylim <- xlim
         }
         
-        plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab)
+        plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes)
 
         obj <- matrix(nrow=length(planet), ncol=4)
         colnames(obj) <- c('a', 'ecc', 'lop', 'trueanomaly')
         class(obj) <- c('matrix', '.orbit')
+        samples.col <- rgb(0, 0, 0, samples.alpha)
         
         for (j in samples.indices) {
-            for (e in colnames(obj)
+            for (e in colnames(obj))
                  obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
-            plot.orbit(obj, xlim=lim, ylim=lim, nplanets=k$nplanets,
-                       lwd=samples.lwd, col=samples.col)
+
+            plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
+                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE)
         }
+
+        obj <- k$fit.els
+        class(obj) <- c('matrix', '.orbit')
+        plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
+                       lwd=lwd, col=col, xlab=xlab, ylab=ylab, add=TRUE)
+        
         
     } else {
         stop("First argument should be an object of class kernel, or of class error.est")
@@ -324,7 +331,10 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
 
 plot.periodogram <- function(p, overplot.window = F, what = 'power') {
-	par(systemic.par)
+	oldpar <- par(no.readonly=TRUE)	
+  systemic.plot.style()
+  on.exit(suppressWarnings(par(oldpar)))
+
 	ymax = max(p[, what])
 	if (overplot.window)
 		ymax = max(ymax, p[, 'window'])
@@ -368,7 +378,9 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power') {
         "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, 
     pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, ...) 
 {
-	par(systemic.par)
+	oldpar <- par(no.readonly=TRUE)	
+  systemic.plot.style()
+  on.exit(suppressWarnings(par(oldpar)))
     show <- match.arg(show)
     method <- match.arg(method)
     breaks <- unique(c(0, ci.levels, 1))
@@ -455,7 +467,11 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power') {
 
 
 plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=list(1, "mass"), dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, ...) {
-	x <- px
+	oldpar <- par(no.readonly=TRUE)	
+  systemic.plot.style()
+  on.exit(suppressWarnings(par(oldpar)))
+
+  x <- px
 	y <- py
 	bfx <- 0
 	bfy <- 0
@@ -467,7 +483,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=list(1,
 	devy <- 0
 	labx <- ""
 	laby <- ""
-	par(systemic.par)
+
 	if (x[[1]] != "par") {
 		bfx <- e$fit.els[x[[1]], x[[2]]]
 		datax <- e[[x[[1]]]][, x[[2]]]
@@ -578,9 +594,11 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=list(1,
 }
 
 plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE) {
-	oldpar <- par(no.readonly=TRUE)
+	oldpar <- par(no.readonly=TRUE)	
+  systemic.plot.style()
+  on.exit(suppressWarnings(par(oldpar)))
 	par(mfrow=c(length(what), 1), mar=c(4, 4, 1, 8))
-	par(systemic.par)
+
 	all <- do.call("rbind", int$els)
 	times <- (int$times-int$times[1])/(YEAR/DAY)
 	for (el in what) {
@@ -601,5 +619,5 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE) {
 		legend("topright", inset=c(-0.35,0), col=1:int$nplanets, legend=sprintf("Planet %d", 1:int$nplanets), xpd=TRUE, lty=rep(1, int$nplanets), box.col="white")
 	}
 	
-	suppressWarnings(par(oldpar))
+
 }
