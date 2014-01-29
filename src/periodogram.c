@@ -81,16 +81,23 @@ double _find_z(gsl_root_fsolver* s, gsl_function* F, double target, double x_lo,
 gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples, const double Pmin, const double Pmax, const int method,
         unsigned int timecol, unsigned int valcol, unsigned int sigcol, ok_periodogram_workspace* p) {
     
-    gsl_matrix* ret;
-    gsl_matrix* buf;
+    gsl_matrix* ret = NULL;
+    gsl_matrix* buf = NULL;
     gsl_vector* bufv = gsl_vector_alloc(data->size1);
     
     int ndata = data->size1;
     
     // If no pre-allocated buffers are passed through p, or p is null,
     // allocate those buffers.
-    ret = (p != NULL && p->per != NULL ? p->per : gsl_matrix_alloc(samples, PS_SIZE));
-    buf = (p != NULL && p->buf != NULL ? p->buf : gsl_matrix_alloc(ndata, 5));
+    if (p != NULL) {
+        if (p->per != NULL && MROWS(p->per) == samples && MCOLS(p->per) == PS_SIZE)
+            ret = p->per;
+        if (p->buf != NULL && MROWS(p->buf) == ndata && MCOLS(p->per) == 5)
+            ret = p->buf;
+    }
+    
+    ret = (ret != NULL ? ret : gsl_matrix_alloc(samples, PS_SIZE));
+    buf = (buf != NULL ? buf : gsl_matrix_alloc(ndata, 5));
     
     double fmin = 1./Pmax;
     double fmax = 1./Pmin;

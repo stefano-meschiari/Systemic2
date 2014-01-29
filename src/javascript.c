@@ -24,8 +24,9 @@ void K_setDataAt(ok_kernel* k, int subset, int row, int column, double val) {
         MSET(K_getData(k, subset), row, column, val);
 }
 
-gsl_matrix* rvline = NULL;
+
 double K_getRVLine(ok_kernel* k, int row, int col) {
+    static gsl_matrix* rvline = NULL;
     if (row < 0) {
         int samples = -row;
         if (rvline != NULL)
@@ -49,45 +50,85 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
     }
 }
 
-gsl_matrix* phased_data = NULL;
-gsl_matrix* phased_rv = NULL;
-ok_kernel* k2 = NULL;
-double K_getPhasedDataForPlanet(ok_kernel* kin, int planet, int row, int col) {
+
+
+double K_getPhasedDataForPlanet(ok_kernel* k, int planet, int row, int column) {
+    static gsl_matrix* phased_data = NULL;
+
     if (planet >= 1) {
-        if (k2 != NULL)
-            K_free(k2);
         if (phased_data != NULL)
             gsl_matrix_free(phased_data);
         
-        k2 = K_clone(kin);
-        planet = MAX(planet, K_getNplanets(k2));
-        double mass = K_getElement(k2, planet, MASS);
-        double period = K_getElement(k2, planet, PER);
-        K_setElement(k2, planet, MASS, 0);
-        K_calculate(k2);
+        planet = MAX(planet, K_getNplanets(k));
+        double mass = K_getElement(k, planet, MASS);
+        double period = K_getElement(k, planet, PER);
+        K_setElement(k, planet, MASS, 0);
+        K_calculate(k);
         
-        phased_data = K_getCompiledDataMatrix(k2);
-        double mint = MGET(phased_data, 0, TIME);
+        phased_data = K_getCompiledDataMatrix(k);
+        double mint = MGET(phased_data, 0, T_TIME);
         for (int i = 0; i < MROWS(phased_data); i++) {
-            double t = (MGET(phased_data, i, TIME) - mint) % period;
-            double v = MGET(phased_data, i, PRED)-MGET(phased_data, i, SVAL);
-            MSET(phased_data, i, TIME, t);
-            MSET(phased_data, i, VAL, v);
+            double t = fmod((MGET(phased_data, i, T_TIME) - mint), period);
+            double v = MGET(phased_data, i, T_SVAL)-MGET(phased_data, i, T_PRED);
+            MSET(phased_data, i, T_TIME, t);
+            MSET(phased_data, i, T_VAL, v);
         }
         
-        ok_sort_matrix(phased_data, TIME);
-        K_setElement(k2, planet, MASS, mass);
+        ok_sort_matrix(phased_data, T_TIME);
+        K_setElement(k, planet, MASS, mass);
+        return 1;
     } else {
         return MGET(phased_data, row, column);
     }
 }
 
-double K_getPhasedRVCurve(int planet, int row, int column) {
-    if (k2 == NULL) {
-        printf("Not initialized correctly.");
-        return 0;
+
+double K_getPhasedRVLine(ok_kernel* k, int planet, int row, int column) {
+    static gsl_matrix* phasedRVLine = NULL;
+    if (planet >= 1) {
+        if (k->ndata == 0)
+            return -1;
+        
+        int np = K_getNplanets(k);
+        double masses[np+1];
+        double periods[np+1];
+        for (int i = 1; i <= np; i++) {
+            masses[i] = K_getElement(k, i, MASS);
+            periods[i] = K_getElement(k, i, PER);
+            if (i != planet) {
+                K_setElement(k, i, MASS, 0.);
+                K_setElement(k, i, PER, 10000.);
+            }
+        };
+        
+        double period = K_getElement(k, planet, PER);
+        int samples = -row;
+        if (phasedRVLine != NULL)
+            gsl_matrix_free(phasedRVLine);
+        
+        double** comp = K_getCompiled(k);
+        
+        phasedRVLine = K_integrateStellarVelocity(k, comp[0][0],
+                comp[k->ndata-1][0], 
+                samples,
+                NULL, NULL);
+        
+        double mint = MGET(phasedRVLine, 0, T_TIME);
+        for (int i = 0; i < MROWS(phasedRVLine); i++) {
+            double t = fmod((MGET(phasedRVLine, i, 0) - mint), period);
+            MSET(phasedRVLine, i, 0, t);
+        }
+        ok_sort_matrix(phasedRVLine, 0);
+        
+        for (int i = 1; i <= np; i++) {
+            K_setElement(k, i, MASS, masses[i]);
+            K_setElement(k, i, PER, periods[i]);
+        }
+        
+        return 1;
+    } else {
+        return MGET(phasedRVLine, row, column);
     }
-    // TODO: Continue here.
 }
 
 
@@ -121,6 +162,8 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         
         return (double) length;
     } else if (row == -2) {
+        if (p == NULL || ps == NULL)
+            return 0;
         if (col == 1)
             return p->z_fap_1;
         else if (col == 2)
@@ -129,15 +172,9 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
             return p->z_fap_3;
         else
             return 0.;
-    } else if (row == -3) {
-        if (p != NULL) {
-            gsl_matrix_free(p->per);
-            gsl_matrix_free(p->buf);
-            p->per = p->buf = NULL;
-        };
-        samples = col;
-        return 0;
-    }else {
+    }  else {
+        if (ps == NULL)
+            return 0;
         return MGET(ps, row, col);
     }
 }
@@ -147,7 +184,7 @@ int timeout;
 int failed;
 
 int progressWithTimeout(int current, int max, void* state, const char* function) {
-    if (time(NULL) - mtime > timeout) {
+    if (difftime(time(NULL), mtime) > timeout) {
         failed = timeout;
         return PROGRESS_STOP;
     }

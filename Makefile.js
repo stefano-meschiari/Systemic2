@@ -1,3 +1,4 @@
+# -*- mode: Makefile -*-
 # Systemic 2 Makefile for Javascript
 # 2014, Stefano Meschiari (http://www.stefanom.org)
 #
@@ -22,7 +23,8 @@ SYSTEMICLIVE_DIR = ~/Projects/SystemicLive/
 JS_DIR=$(SYSTEMICLIVE_DIR)/js/
 
 -include $(SYSTEMICLIVE_DIR)/Makefile_include
-OPTIMIZED_FLAGS = -s LINKABLE=1 -O3 --closure 0 $(INCLUDES) $(LIBS) -DJAVASCRIPT -std=c99 -DJAVASCRIPT 
+OPTIMIZED_FLAGS = -s LINKABLE=1 -O3 --closure 0 $(INCLUDES) $(LIBS) -DJAVASCRIPT -std=c99 -DJAVASCRIPT
+DEBUG_FLAGS = -s LINKABLE=1 -g $(INCLUDES) $(LIBS) -DJAVASCRIPT -std=c99 -DJAVASCRIPT
 GSL_OBJECTS = private/javascript/f2c/*.o private/javascript/interpolation/*.o private/javascript/statistics/*.o private/javascript/blas/*.o private/javascript/cblas/*.o private/javascript/block/*.o private/javascript/err/*.o private/javascript/histogram/*.o private/javascript/matrix/*.o private/javascript/multifit/*.o private/javascript/multimin/*.o private/javascript/ode-initval2/*.o private/javascript/randist/*.o private/javascript/rng/*.o private/javascript/roots/*.o private/javascript/sort/*.o private/javascript/sys/*.o private/javascript/utils/*.o private/javascript/vector/*.o 
 
 SYSFLAGS=$(OPTIMIZED_FLAGS)
@@ -95,9 +97,9 @@ objects/de.o: src/de.c
 
 .PHONY: clean cleanreqs
 
-#f2c: ./local/lib/libf2c.a
-#	-echo "Making f2c"
-#	cd local/f2c; emmake make -f makefile.u ; cp libf2c.a ../lib; cp f2c.h ../include
+f2c: 
+	-echo "Making f2c"
+	cd deps/f2c; emmake make -f makefile.u ; cp libf2c.a ../lib; cp f2c.h ../include
 
 clean:
 	rm -rf test objects/*.o 
