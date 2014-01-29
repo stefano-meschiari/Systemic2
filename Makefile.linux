@@ -1,23 +1,22 @@
 # Systemic 2 Makefile for Linux
-# 2012, Stefano Meschiari (http://www.stefanom.org)
+# 2012-2014, Stefano Meschiari (http://www.stefanom.org)
 #
-# Please modify these paths:
+# Please modify these paths (if needed):
 CC = gcc
 FORTRAN = gfortran
 R = /usr/bin/R
-# If you have installed GSL & company in non-standard places, add them here:
-LIBS = -L./deps/lib 
-INCLUDES = -I./deps/include 
+
+# If you have installed GSL & company in non-standard places, add the correct paths here:
+LIBS = -L./deps/lib              # -L/my/path
+INCLUDES = -I./deps/include      # -I/my/path
 LIBNAMES = -lm -lgsl -lgslcblas -lgomp -lc -lswift -lf2c -lgfortran
-INSTALL_DIR = /usr/local/include
-PACKAGE_DIR = ~/Downloads
-FFLAGS='-c -g -fPIC'
+
 
 OPTIMIZED_FLAGS = -g -fPIC -O3 $(INCLUDES) $(LIBS) -fopenmp -std=c99 
-
 DEBUG_FLAGS =  $(INCLUDES) $(LIBS) -Wall -fopenmp -std=c99 -g3 -fPIC
-
 SYSFLAGS=$(OPTIMIZED_FLAGS)
+FFLAGS='-c -g -fPIC'
+
 
 #UPDATE = --update --java
 UPDATE =
@@ -117,6 +116,10 @@ cleanreqs:
 # For GSL
 gsl:	untardeps
 	cd deps/gsl; tar -xvzf gsl-1.15.tar.gz; cd gsl-1.15; ./configure --prefix='$(shell pwd)/deps'; make; make install
+
+
+# This part of the Makefile is for internal usage *only*
+PACKAGE_DIR = ~/Downloads
 
 package: clean cleanreqs
 	- rm -Rf $(PACKAGE_DIR)/linux

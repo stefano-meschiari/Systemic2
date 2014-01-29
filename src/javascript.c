@@ -49,6 +49,46 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
     }
 }
 
+gsl_matrix* phased_data = NULL;
+gsl_matrix* phased_rv = NULL;
+ok_kernel* k2 = NULL;
+double K_getPhasedDataForPlanet(ok_kernel* kin, int planet, int row, int col) {
+    if (planet >= 1) {
+        if (k2 != NULL)
+            K_free(k2);
+        if (phased_data != NULL)
+            gsl_matrix_free(phased_data);
+        
+        k2 = K_clone(kin);
+        planet = MAX(planet, K_getNplanets(k2));
+        double mass = K_getElement(k2, planet, MASS);
+        double period = K_getElement(k2, planet, PER);
+        K_setElement(k2, planet, MASS, 0);
+        K_calculate(k2);
+        
+        phased_data = K_getCompiledDataMatrix(k2);
+        double mint = MGET(phased_data, 0, TIME);
+        for (int i = 0; i < MROWS(phased_data); i++) {
+            double t = (MGET(phased_data, i, TIME) - mint) % period;
+            double v = MGET(phased_data, i, PRED)-MGET(phased_data, i, SVAL);
+            MSET(phased_data, i, TIME, t);
+            MSET(phased_data, i, VAL, v);
+        }
+        
+        ok_sort_matrix(phased_data, TIME);
+        K_setElement(k2, planet, MASS, mass);
+    } else {
+        return MGET(phased_data, row, column);
+    }
+}
+
+double K_getPhasedRVCurve(int planet, int row, int column) {
+    if (k2 == NULL) {
+        printf("Not initialized correctly.");
+        return 0;
+    }
+    // TODO: Continue here.
+}
 
 
 double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
