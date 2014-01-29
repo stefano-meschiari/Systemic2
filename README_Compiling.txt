@@ -4,7 +4,7 @@ Linux
 
 Installing from source
 ----------------------
-(1), (3), (4) and (5) are available through your distribution's package manager (Sun's Java 6 or later, or OpenJDK 7 or later should be fine). Edit the Makefile to ensure all paths are set correctly (gcc, gfortran, libraries and includes -- particularly GSL). Run make reqs:
+(1), (3), (4) and (5) are available through your distribution's package manager (Sun's Java 6 or later, or OpenJDK 7 or later should be fine). Edit the file Makefile.linux to ensure all paths are set correctly (gcc, gfortran, libraries and includes -- particularly GSL). Run make reqs:
 
 make -f Makefile.linux 
 
