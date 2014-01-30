@@ -192,6 +192,7 @@ int progressWithTimeout(int current, int max, void* state, const char* function)
     return PROGRESS_CONTINUE;
 }
 
+
 int K_minimizeWithTimeout(ok_kernel* k, int to) {
     mtime = time(NULL);
     timeout = to;
@@ -200,6 +201,22 @@ int K_minimizeWithTimeout(ok_kernel* k, int to) {
     K_minimize(k, SIMPLEX, 1000, NULL);
     k->progress = NULL;
     return failed;
+}
+
+double K_integrateForward(ok_kernel* k, int mode, double nyears,
+        int row, int column) {
+    static ok_system* syscontinue = NULL;
+    static double time;
+    static double yearspast;
+    static double dt = MIN(nyears, 10);
+    
+    if (mode == START) {
+        time = K_getEpoch(time);
+        yearspast = 0;
+        
+        ok_setup(k->system);
+        
+    }
 }
 
 int main() {
