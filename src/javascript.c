@@ -59,7 +59,7 @@ double K_getPhasedDataForPlanet(ok_kernel* k, int planet, int row, int column) {
         if (phased_data != NULL)
             gsl_matrix_free(phased_data);
         
-        planet = MAX(planet, K_getNplanets(k));
+        planet = MIN(planet, K_getNplanets(k));
         double mass = K_getElement(k, planet, MASS);
         double period = K_getElement(k, planet, PER);
         K_setElement(k, planet, MASS, 0);
