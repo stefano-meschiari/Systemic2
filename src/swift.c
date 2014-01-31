@@ -46,10 +46,12 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
         }
     }
 
+        
+    
     double prevTime = startTime;    
     
-    double* r[6];
-    double* r1[6];
+    double** r = (double**) malloc(sizeof(double*) * 6);
+    double** r1 = (double**) malloc(sizeof(double*) * 6);
     double* mass;
     
     for (int i = 0; i < 6; i++) {
@@ -67,6 +69,7 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
             r[j][i] = MGET(xyz, i, j+1) - MGET(xyz, 0, j+1);
     }
     
+    
     double dum[0];
     int dum0 = 0;
     double dum0d = 0.;
@@ -83,8 +86,9 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
         double time = times->data[i];
         
         for (int j = 0; j < 6; j++)
-            memcpy(r1[j], r[j], sizeof(double*) * NDIMS);
+            memcpy(r1[j], r[j], sizeof(double) * NDIMS);
         
+    
         // Integrate between prevTime and time
         
         if (fabs(time - prevTime) > 1e-10 && swiftError[0] == 0) {
@@ -144,6 +148,8 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
                 free(r[3]);
                 free(r[4]);
                 free(r[5]);
+                free(r);
+                free(r1);
                 free(mass);   
                 
                 if (error != NULL) {
@@ -166,6 +172,8 @@ ok_system** ok_integrate_swift(ok_system* initial, const gsl_vector* times, cons
     free(r[3]);
     free(r[4]);
     free(r[5]);
+    free(r);
+    free(r1);
     free(mass);   
 
     return bag;

@@ -13,7 +13,7 @@
 #define UTILS_H
 
 #ifndef M_PI
-        #define M_PI 3.14159265e+00
+        #define M_PI (3.14159265358979311600e+00)
 #endif
 
 #define DEBUG 

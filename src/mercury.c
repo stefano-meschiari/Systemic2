@@ -6,21 +6,23 @@
 #include "stdio.h"
 /* Table of constant values */
 
+#define pi (3.14159265358979311600)
+#define twopi (6.28318530717958623200e+00)
+#define piby2 (1.57079632679489655800e+00)
+#define pi3by2 (4.71238898038468967400e+0)
 static doublereal c_b2 = 1.;
-static doublereal c_b4 = 6.2831853071795862;
+static doublereal c_b4 = twopi;
 static integer c__9 = 9;
 static integer c__1 = 1;
-static doublereal c_b14 = .3333333333333333;
+static doublereal c_b14 = (1./3.);
 static integer c__5 = 5;
-static doublereal c_b34 = .33333333333333331;
+static doublereal c_b34 = (1./3.);
 
 
 #define mco_sine__(x, sx, cx) { sx = sin((*x)); cx = cos((*x)); }
 #define mco_sine_noptr__(x, sx, cx) { sx = sin((x)); cx = cos((x)); }
 
-#define pi 3.14159265e+00
-#define twopi 6.2831853072e+00
-#define piby2 1.57079633e+00
+
 /*
 doublereal mco_kep__(doublereal e, doublereal M) {
         //represent function and its derivatives
@@ -405,7 +407,7 @@ doublereal mco_kep__(doublereal e, doublereal oldl)
         *n = atan2(hx, -hy);
         /*<         if (n.lt.0) n = n + TWOPI >*/
         if (*n < 0.) {
-            *n += 6.2831853071795862;
+            *n += twopi;
         }
         /*<       else >*/
     } else {
@@ -415,7 +417,7 @@ doublereal mco_kep__(doublereal e, doublereal oldl)
         }
         /*<         if (ci.lt.0) i = PI >*/
         if (ci < 0.) {
-            *i__ = 3.141592653589793;
+            *i__ = pi;
         }
         /*<         n = 0.d0 >*/
         *n = 0.;
@@ -458,7 +460,7 @@ doublereal mco_kep__(doublereal e, doublereal oldl)
     }
     /*<       if (ci.lt.0) true = true + PI >*/
     if (ci < 0.) {
-        true__ += 3.141592653589793;
+        true__ += pi;
     }
     
     /*<       if (e.lt.1.d-8) then >*/
@@ -483,7 +485,7 @@ doublereal mco_kep__(doublereal e, doublereal oldl)
             bige = acos(ce);
             /*<           if (rv.lt.0) bige = TWOPI - bige >*/
             if (rv < 0.) {
-                bige = 6.2831853071795862 - bige;
+                bige = twopi - bige;
             }
             /*<           l = bige - e*sin(bige) >*/
             *l = bige - *e * sin(bige);
@@ -499,7 +501,7 @@ doublereal mco_kep__(doublereal e, doublereal oldl)
             bige = log(ce + sqrt(ce * ce - 1.));
             /*<           if (rv.lt.0) bige = TWOPI - bige >*/
             if (rv < 0.) {
-                bige = 6.2831853071795862 - bige;
+                bige = twopi - bige;
             }
             /*<           l = e*sinh(bige) - bige >*/
             *l = *e * sinh(bige) - bige;
@@ -517,22 +519,22 @@ doublereal mco_kep__(doublereal e, doublereal oldl)
         f = acos(cf);
         /*<         if (rv.lt.0) f = TWOPI - f >*/
         if (rv < 0.) {
-            f = 6.2831853071795862 - f;
+            f = twopi - f;
         }
         /*<         p = true - f >*/
         *p = true__ - f;
         /*<         p = mod (p + TWOPI + TWOPI, TWOPI) >*/
-        d__1 = *p + 6.2831853071795862 + 6.2831853071795862;
+        d__1 = *p + twopi + twopi;
         *p = d_mod(&d__1, &c_b4);
         /*<       end if >*/
     }
     
     /*<       if (l.lt.0) l = l + TWOPI >*/
     if (*l < 0.) {
-        *l += 6.2831853071795862;
+        *l += twopi;
     }
     /*<       if (l.gt.TWOPI) l = mod (l, TWOPI) >*/
-    if (*l > 6.2831853071795862) {
+    if (*l > twopi) {
         *l = d_mod(l, &c_b4);
     }
     
@@ -1021,13 +1023,13 @@ L100:
     /* ---- */
     /* ...  Executable code */
     /*<         nper = angle/TWOPI >*/
-    nper = (integer) (*angle / 6.28318530717958);
+    nper = (integer) (*angle / twopi);
     /*< 	x = angle - nper*TWOPI >*/
-    x = *angle - nper * 6.28318530717958;
+    x = *angle - nper * twopi;
     /*< 	if(x.lt.0.d0) then >*/
     if (x < 0.) {
         /*<            x = x + TWOPI >*/
-        x += 6.28318530717958;
+        x += twopi;
         /*<         endif >*/
     }
     /*< 	sx = sin(x) >*/
@@ -1035,7 +1037,7 @@ L100:
     /*< 	cx= sqrt(1.d0 - sx*sx) >*/
     *cx = sqrt(1. - *sx * *sx);
     /*< 	if( (x .gt. PIBY2) .and. (x .lt.PI3BY2)) then >*/
-    if (x > 1.570796326794895 && x < 4.7123889803846852) {
+    if (x > piby2 && x < pi3by2) {
         /*<            cx = -cx >*/
         *cx = -(*cx);
         /*<         endif >*/

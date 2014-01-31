@@ -28,19 +28,20 @@ k[] <- c(period = 4.617, mass = 0.689, ma = 314.71, ecc = 0.01, lop = 99.54)
 k[] <- c(period = 241.33, mass = 1.9, ma = 36.98, ecc = 0.268, lop = 246.15)
 k[] <- c(period = 1274.58, mass = 3.75, ma = 231.48, ecc = 0.259, lop = 252.92)
 
-# ..or, say, read them from a text table. Every row is a planet, every column is an
+# ...or, say, read them from a text table. Every row is a planet, every column is an
 # orbital element, in order period, mass, mean anomaly, eccentricity, long. of peri,
 # inclination and node.
 #
 # kels(k) <- read.table("elementstable.txt")
 
-if (noisy) { print("Starting integration...") }
+nyears <- 1e5
+if (noisy) { cat(sprintf("Starting integration for %e years (this might take a while)...\n", nyears)) }
 
 # Start integration. int.method can be one of SWIFTRMVS, BULIRSCHSTOER or RK89; SWIFTRMVS is a
 # fixed timestep integrator, and we need to specify a dt.
 #
 # The integration span can be specified with a single duration, in days...
-i_1 <- kintegrate(k, times=100000*365.25, int.method=SWIFTRMVS, dt=0.1*min(k[, 'period']))
+i_1 <- kintegrate(k, times=nyears*365.25, int.method=SWIFTRMVS, dt=0.1*min(k[, 'period']))
 
 # ... or as a vector of specific points at which to sample the integration
 # i_1 <- kintegrate(k, times=c(100, 1000, 10000) * 365.25, int.method=SWIFTRMVS, dt=0.1*min(k[, 'period']))
@@ -52,6 +53,7 @@ if (noisy) {
     # Saves plot as PDF
     pdf()
     plot(i_1)
+    dev.off()
 }
 
 # i_1 is an object contains the results of the integration.
