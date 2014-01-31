@@ -626,7 +626,7 @@ double K_getElement(ok_kernel* k, int row, int col) {
                     Mcent += MGET(k->system->elements, j, MASS) * MJUP;
         }
         
-        double a = cbrt(DAY_TO_YEAR(per) * DAY_TO_YEAR(per) * (Mcent + mass * MJUP)/MSUN);
+        double a = ok_acalc(per, Mcent/MSUN * K2, mass * MJUP/MSUN * K2);
         return a;
     } else if (col == SEMIAMP) {
         double Mcent = k->Mstar * MSUN;

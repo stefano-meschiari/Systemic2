@@ -29,7 +29,7 @@ void K_setDataAt(ok_kernel* k, int subset, int row, int column, double val) {
 double K_getRVLine(ok_kernel* k, int row, int col) {
     static gsl_matrix* rvline = NULL;
     if (row < 0) {
-        int samples = -row;
+        int samples = col;
         if (rvline != NULL) {
             gsl_matrix_free(rvline);
             rvline = NULL;
@@ -39,11 +39,15 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
         
         double** comp = K_getCompiled(k);
         
-        rvline = K_integrateStellarVelocity(k, comp[0][0],
+        gsl_matrix* rvline_full = K_integrateStellarVelocity(k, comp[0][0],
                 comp[k->ndata-1][0], 
                 samples,
                 NULL, NULL);
-        return 1;
+        rvline = ok_resample_curve(rvline_full,
+                0, 1, 10, 0.2);
+        gsl_matrix_free(rvline_full);
+              
+        return MROWS(rvline);
     } else {
         if (rvline == NULL)
             return INVALID_NUMBER;
@@ -62,6 +66,11 @@ double K_getPhasedDataForPlanet(ok_kernel* k, int planet, int row, int column) {
             gsl_matrix_free(phased_data);
             phased_data = NULL;
         }
+        double chi2 = k->chi2;
+        double rms = k->rms;
+        double jitter = k->jitter;
+        double chi2_rvs = k->chi2_rvs;
+        
         planet = MIN(planet, K_getNplanets(k));
         double mass = K_getElement(k, planet, MASS);
         double period = K_getElement(k, planet, PER);
@@ -79,6 +88,11 @@ double K_getPhasedDataForPlanet(ok_kernel* k, int planet, int row, int column) {
         
         ok_sort_matrix(phased_data, T_TIME);
         K_setElement(k, planet, MASS, mass);
+        
+        k->chi2 = chi2;
+        k->rms = rms;
+        k->jitter = jitter;
+        k->chi2_rvs = chi2_rvs;
         return 1;
     } else {
         return MGET(phased_data, row, column);
@@ -140,7 +154,8 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
     
     static int length;
     static int samples = 30000;
-    
+    static double Pmin = 1.;
+    static double Pmax = 20000.;
     static ok_periodogram_workspace* p = NULL;
     static gsl_matrix* ps = NULL;
     if (p == NULL) {
@@ -149,7 +164,13 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         p->per = NULL;
         p->calc_z_fap = true;
     }
-    if (row == -1) {
+    if (row == -3) {
+        Pmin = (double) col;        
+        return 0;
+    } else if (row == -4) {
+        Pmax = (double) col;
+        return 0;
+    } else if (row == -1) {
         if (ps != NULL) {
             gsl_matrix_free(ps);
             ps = NULL;
@@ -158,7 +179,7 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         for (int i = 0; i < MROWS(data); i++)
             MSET(data, i, T_SVAL, MGET(data, i, T_SVAL)-MGET(data, i, T_PRED));
 
-        gsl_matrix* ret = ok_periodogram_ls(data, samples, 1., 20000., 
+        gsl_matrix* ret = ok_periodogram_ls(data, samples, Pmin, Pmax, 
                 0, T_TIME, T_SVAL, T_ERR, p);
         
         ps = ok_resample_curve(ret, 0, 1, 30, 0.1);
@@ -203,7 +224,7 @@ int K_minimizeWithTimeout(ok_kernel* k, int to) {
     timeout = to;
     failed = 0;
     k->progress = progressWithTimeout;
-    K_minimize(k, SIMPLEX, 1000, NULL);
+    K_minimize(k, SIMPLEX, 5000, NULL);
     k->progress = NULL;
     return failed;
 }
@@ -228,6 +249,7 @@ double K_integrateForward(ok_kernel* k, const int mode, const double nyears,
         time = K_getEpoch(k);
         yearspast = 0;
         sys = ok_copy_system(k->system);
+        ok_setup(sys);
     } else if (mode == JS_I_STEP) {
         if (yearspast >= nyears)
             return JS_I_ENDREACHED;
@@ -241,7 +263,6 @@ double K_integrateForward(ok_kernel* k, const int mode, const double nyears,
         
         yearspast += dt;
         
-        ok_setup(sys);
         int error;
         ok_system** bag = ok_integrate(sys, times, k->intOptions, RK89, NULL, &error);
         els = ok_get_els(bag, 2, false);
@@ -268,7 +289,7 @@ double K_integrateForward(ok_kernel* k, const int mode, const double nyears,
         if (col == SMA) {
                 int idx = row * ELEMENTS_SIZE + PER + 1;
                 double mstar = K_getMstar(k) * K2;
-                double mp = K_getElement(k, row, MASS) * K2;
+                double mp = K_getElement(k, row, MASS) * MJUP / MSUN * K2;
                 double P = MGET(els, 1, idx);
                 
                 return ok_acalc(P, mstar, mp);

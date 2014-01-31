@@ -22,7 +22,7 @@
 #define INVALID_NUMBER (NAN)
 #define IS_INVALID(x) (isnan(x))
 
-#define SYSTEMIC_VERSION 2.1200
+#define SYSTEMIC_VERSION 2.1400
 
 #define MAX_LINE 8192
 
@@ -94,9 +94,8 @@
 #define DAY 8.64e4
 #define TWOPI 6.2831853072e+00
 #define SQRT_TWOPI 2.5066282746e+00
-#define YEAR 31556926.
-
 #define K2  ((GGRAV * MSUN * DAY * DAY) / (AU*AU*AU))
+#define YEAR 31556926.
 
 #define PER 0
 #define MASS 1

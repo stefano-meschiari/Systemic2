@@ -106,6 +106,7 @@ void ok_resize_system(ok_system* system, const int npnew) {
     system->elements = new;
 }
 
+
 double ok_acalc(const double P, const double Mcenter, const double Mp) {
     double a = cbrt(P * P * (Mcenter + Mp) / (4.*M_PI*M_PI));
     return a;
