@@ -585,7 +585,8 @@ kadd.data <- function(k, data, type = NA) {
 		stop("Data should be a string or a matrix")
 	}
 	
-	if (k$auto) kupdate(k)
+	if (k$auto) kupdate(k) else kcalculate(k)
+  
 	invisible()
 }
 
@@ -795,20 +796,30 @@ kload.old <- function(file, datafiles.dir=paste(dirname(file), "/datafiles")) {
 }
 
 kload.datafile <- function(k, datafile) {
+    dir <- getwd()
+    on.exit(setwd(dir))
+    
 	if (! file.exists(datafile))
 		stop(paste("Cannot open", datafile, ", current directory:", getwd()))
+
+    datafile.dir <- dirname(datafile)
 	lines <- readLines(datafile)
 	for (line in lines) {
 		line <- .trim(line)
 
 		if (startsWith(line, "RV[]") || startsWith(line, "TD[]")) {
 			dn <- .trim(regmatches(line, regexec("\"(.+)\"", line))[[1]][2])
+      if (!file.exists(dn) && file.exists(paste(datafile.dir, '/', dn, sep=''))) {
+          dn <- paste(datafile.dir, '/', dn, sep='');
+      }
+      
 			cat("Loading ", dn, " (current dir: ", getwd(), ")\n")
 			kadd.data(k, dn)
 		}
 		else if (startsWith(line, "Mass")) 
 			k$mstar <- as.numeric(gsub("Mass", "", line))
 	}
+    kcalculate(k)
 }
 
 kload <- function(file, skip = 0, chdir=TRUE) {
