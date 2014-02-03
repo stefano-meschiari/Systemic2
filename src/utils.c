@@ -807,56 +807,33 @@ bool ok_file_readable(char* fn) {
     return true;
 }
 
+ok_rivector* ok_rivector_alloc(const int max_length) {
+    ok_rivector* v = (ok_rivector*) malloc(sizeof(ok_rivector));
+    v->v = (int*) malloc(max_length*sizeof(int));
+    v->max_length = max_length;
+    v->length = 0;
+    return v;
+}
 
-gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top) {
-    gsl_matrix* work = gsl_matrix_calloc(curve->size1-2, 2);
-    for (int i = 1; i < curve->size1 - 1; i++) {
-        double t = MGET(curve, i, timecol);
-        double tp1 = MGET(curve, i+1, timecol);
-        double tm1 = MGET(curve, i-1, timecol);
-        
-        double v = MGET(curve, i, valcol);
-        double vp1 = MGET(curve, i+1, valcol);
-        double vm1 = MGET(curve, i-1, valcol);
-        
-        double d2 = ((vp1-v)/(tp1-t) - (v-vm1)/(t-tm1))/(tp1-tm1);
-        
-        MSET(work, i-1, 0, fabs(d2));
-        MSET(work, i-1, 1, i);
-    }
-    ok_sort_matrix(work, 0);
+void ok_matrix_column_range(gsl_vector* m, int col, double* min, double* max) {
+    *min = MGET(m, 0, col);
+    *max = MGET(m, 0, col);
     
-    gsl_matrix* out = gsl_matrix_alloc(curve->size1, curve->size2);
-    int n = 0;
-    for (int i = 0; i < (int)(top * work->size1); i++) {
-        int j = (int) MGET(work, i, 1);
-        
-        for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, j, k));
-        
-        n++;
+    for (int i = 1; i < MROWS(m); i++) {
+        *min = MIN(*min, MGET(m, i, col));
+        *max = MAX(*max, MGET(m, i, col));
     }
-     
-    for (int i = n; i < work->size1; i+=every) {
-        int j = (int) MGET(work, i, 1);
-        
-        for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, j, k));
-        
-        n++;
-    }
-          
-    for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, 0, k));
-    n++;
-    for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, curve->size1-1, k));
-    n++;
+};
+
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int timecol, const int valcol, const int target_points,
+    const int target_tolerance) {
+    const int max_points = MROWS(curve);
+    ok_rivector* riv = ok_rivector_alloc(max_points);
+    double xmin, xmax, ymin, ymax;
+    ok_matrix_column_range(curve, timecol, &xmin, &xmax);
+    ok_matrix_column_range(curve, valcol, &ymin, &ymax);
     
-    out = ok_matrix_resize(out, n, out->size2);
-   
+    double area = (xmax-xmin) * (ymax - ymin);
+    double tol = 1e-3;
     
-    gsl_matrix_free(work);
-    ok_sort_matrix(out, timecol);
-    return out;
 }

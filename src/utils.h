@@ -145,6 +145,8 @@ gsl_vector_int* ok_vector_int_copy(const gsl_vector_int* src);
 gsl_matrix* ok_buf_to_matrix(double** buf, int rows, int cols);
 void ok_buf_col(double** buf, double* vector, int col, int nrows);
 
+void ok_matrix_column_range(gsl_vector* m, int col, double* min, double* max);
+
 gsl_matrix* ok_matrix_remove_row(gsl_matrix* m, int row);
 gsl_matrix* ok_matrix_remove_column(gsl_matrix* m, int col);
 
@@ -192,7 +194,22 @@ unsigned int ok_matrix_cols(void* v);
 gsl_block* ok_vector_block(void* v);
 gsl_block* ok_matrix_block(void* v);
 
-gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top);
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int timecol, const int valcol, const int target_points,
+    const int target_tolerance);
 
 bool ok_file_readable(char* fn);
+
+typedef struct {
+    const int length;
+    const int max_length;
+    int* v;
+} ok_rivector;
+
+ok_rivector ok_rivector_alloc(const int maxlength);
+#define ok_rivector_push(v, i) do { v->v[v->length++] = i; } while (0);
+#define ok_rivector_pop(v) v->v[--v->length];
+#define ok_rivector_first(v) v->v[0]
+#define ok_rivector_last(v) v->v[v->length-1]
+#define ok_rivector_reset(v) do { v->length = 0; } while (0);
+#define ok_rivector_free(v) do { free(v->v); free(v); } while (0);
 #endif
