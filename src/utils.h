@@ -8,6 +8,8 @@
 #include "gsl/gsl_rng.h"
 #include "math.h"
 #include "stdbool.h"
+#include "assert.h"
+#include "gsl/gsl_sort_int.h";
 
 #ifndef UTILS_H
 #define UTILS_H
@@ -145,7 +147,7 @@ gsl_vector_int* ok_vector_int_copy(const gsl_vector_int* src);
 gsl_matrix* ok_buf_to_matrix(double** buf, int rows, int cols);
 void ok_buf_col(double** buf, double* vector, int col, int nrows);
 
-void ok_matrix_column_range(gsl_vector* m, int col, double* min, double* max);
+void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max);
 
 gsl_matrix* ok_matrix_remove_row(gsl_matrix* m, int row);
 gsl_matrix* ok_matrix_remove_column(gsl_matrix* m, int col);
@@ -200,16 +202,19 @@ gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int timecol, const int va
 bool ok_file_readable(char* fn);
 
 typedef struct {
-    const int length;
-    const int max_length;
+    int length;
+    int max_length;
     int* v;
 } ok_rivector;
 
-ok_rivector ok_rivector_alloc(const int maxlength);
-#define ok_rivector_push(v, i) do { v->v[v->length++] = i; } while (0);
-#define ok_rivector_pop(v) v->v[--v->length];
-#define ok_rivector_first(v) v->v[0]
-#define ok_rivector_last(v) v->v[v->length-1]
-#define ok_rivector_reset(v) do { v->length = 0; } while (0);
-#define ok_rivector_free(v) do { free(v->v); free(v); } while (0);
+ok_rivector* ok_rivector_alloc(const int maxlength);
+#define ok_rivector_push(va, i) do { assert(va->length < va->max_length); va->v[va->length++] = i; } while (0);
+#define ok_rivector_pop(va) (va->v[--va->length]);
+#define ok_rivector_first(va) (va->v[0])
+#define ok_rivector_last(va) (va->v[v->length-1])
+#define ok_rivector_length(va) (va->length)
+#define ok_rivector_reset(va) do { va->length = 0; } while (0);
+#define ok_rivector_free(va) do { free(va->v); free(va); } while (0);
+#define ok_rivector_sort(va) do { gsl_sort_int(va->v, 1, va->length); } while (0);
+#define ok_rivector_foreach(va, val, idx) for (int idx = 0, val = va->v[0]; idx < va->length; idx++, val=va->v[idx])
 #endif

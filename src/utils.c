@@ -16,6 +16,7 @@
 #include "string.h"
 #include "assert.h"
 #include "kernel.h"
+#include "time.h"
 
 double DEGRANGE(double angle) {
     return (fmod((angle < 0. ? angle + (floor(-angle/360.) + 1.) * 360. : angle), 360.));
@@ -815,7 +816,7 @@ ok_rivector* ok_rivector_alloc(const int max_length) {
     return v;
 }
 
-void ok_matrix_column_range(gsl_vector* m, int col, double* min, double* max) {
+void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max) {
     *min = MGET(m, 0, col);
     *max = MGET(m, 0, col);
     
@@ -825,15 +826,62 @@ void ok_matrix_column_range(gsl_vector* m, int col, double* min, double* max) {
     }
 };
 
+// Re-sample curve based on a triangle area criterion.
+// Adapted from http://ariel.chronotext.org/dd/defigueiredo93adaptive.pdf
+inline double _ok_fastrand(unsigned int* seed) {
+  *seed = (214013* *seed+2531011);
+  *seed = (*seed>>16)&0x7FFF;
+  return ((double) *seed / (1.+(double)RAND_MAX));
+}
+
+void _ok_reduce_curve(gsl_matrix* curve, const int timecol,
+        const int valcol, const double area_tol, ok_rivector* list, int a,
+        int b, unsigned int* seed) {
+    
+    if (b - a <= 1)
+        return;
+    
+    int n = round((_ok_fastrand(seed) * (0.55 - 0.45) + 0.45) * (b-a) + a);
+    assert(n > 1 && n < MROWS(curve));
+    
+    double x1 = MGET(curve, a, timecol) - MGET(curve, n, timecol);
+    double x2 = MGET(curve, b, timecol) - MGET(curve, n, timecol);
+    double y1 = MGET(curve, a, valcol) - MGET(curve, n, valcol);
+    double y2 = MGET(curve, b, valcol) - MGET(curve, n, valcol);
+    double area = fabs(x1*y2 - x2*y1);
+    
+    if (area > area_tol) {
+        _ok_reduce_curve(curve, timecol, valcol, area_tol, list,
+                a, n, seed);
+        _ok_reduce_curve(curve, timecol, valcol, area_tol, list,
+                n, b, seed);
+    } else {
+        ok_rivector_push(list, n);
+    }
+}
+
 gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int timecol, const int valcol, const int target_points,
     const int target_tolerance) {
     const int max_points = MROWS(curve);
-    ok_rivector* riv = ok_rivector_alloc(max_points);
+    ok_rivector* list = ok_rivector_alloc(max_points);
     double xmin, xmax, ymin, ymax;
     ok_matrix_column_range(curve, timecol, &xmin, &xmax);
     ok_matrix_column_range(curve, valcol, &ymin, &ymax);
     
     double area = (xmax-xmin) * (ymax - ymin);
     double tol = 1e-3;
+    double area_tol = area * tol;
     
+    unsigned int seed = time(NULL);
+    
+    _ok_reduce_curve(curve, timecol, valcol, area_tol,
+            list, 0, MROWS(curve), &seed);
+    
+    printf("%d\n", ok_rivector_length(list));
+    
+    ok_rivector_foreach(list, val, _) {
+        printf("%d ", val);
+    };
+    printf("\n");
+    exit(0);
 }

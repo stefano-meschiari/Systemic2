@@ -11,10 +11,11 @@ if (!exists('knew')) {
     source('R/systemic.r', chdir=TRUE)
 }
 
+# Re-sample curve based on a triangle area criterion.
+# Adapted from http://ariel.chronotext.org/dd/defigueiredo93adaptive.pdf
 kreduce.curve <- function(m, a = 1, b = nrow(m), tol=1e-5 * (max(m[, 1]) - min(m[, 1])) *  (max(m[, 2]) - min(m[, 2]))) {
     if (a == b || b == a + 1)
-        return
-    
+        return 
     n = trunc(runif(1, 0.45, 0.55) * (b-a) + a)
     if (n < 1 || n > nrow(m))
         stop(sprintf("%d %d %d", a, b, n))
@@ -23,8 +24,11 @@ kreduce.curve <- function(m, a = 1, b = nrow(m), tol=1e-5 * (max(m[, 1]) - min(m
         kreduce.curve(m, a, n)
         kreduce.curve(m, n, b)
     } else {
-        indexes <<- c(indexes, n)
+        kadd.index(n)
     }
+
+    
+    return(invisible())
 }
 
 k <- knew()
