@@ -210,6 +210,11 @@ if (! file.exists(.gui.autosave.dir)) {
 .gui.progresscb <- new.callback("iipZ)i", .gui.progress)
 .gui.scratch_model <- NULL
 
+.gui.periodogram.tol <- double(1)
+.gui.periodogram.tol[1] <- 1e-4
+.gui.rvsignal.tol <- double(1)
+.gui.rvsignal.tol[1] <- 1e-4
+
 .gui.update <- function(k, name = NA, calculate=TRUE) {
 	if (class(k) == "character" && k == "all") {
 		for (v in ls(envir=globalenv())) {
@@ -248,7 +253,9 @@ if (! file.exists(.gui.autosave.dir)) {
 			
 			if (k$nrvs > 0) {
 				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=T)
-				m <- ok_resample_curve(attr(p, "h"), 0, 1, 10, 0.2)
+				m <- ok_resample_curve(attr(p, "h"), 0, 1, 0.1, 10000,
+                               2000, .gui.periodogram.tol, 5, TRUE)
+        
 				.gui.event("periodogram", name)
 				.gui.matrix(m, free=T)
 			}
@@ -265,7 +272,7 @@ if (! file.exists(.gui.autosave.dir)) {
 		
 
 			trange <- c(min(rvdata[,1]), max(rvdata[,1]))
-			rvsamples <- getOption("systemic.rvsamples", 20000)
+			rvsamples <- getOption("systemic.rvsamples", 30000)
 			a <- integer(1)
       dt <- k$dt
       K_setIntDt(k$h, min(k$dt, 0.05 * k[, 'period']))
@@ -280,7 +287,8 @@ if (! file.exists(.gui.autosave.dir)) {
 				.gui.event("rvcurve", name)
 				.gui.matrix(NULL)
 			} else { 
-				m <- ok_resample_curve(rvsignal, 0, 1, 10, 0.2)
+				m <- ok_resample_curve(rvsignal, 0, 1, 1, 5000,
+                     500, .gui.rvsignal.tol, 5, FALSE)          
 				.gui.event("rvcurve", name)
 				.gui.matrix(m, free=T)
 				gsl_matrix_free(rvsignal)
@@ -289,7 +297,9 @@ if (! file.exists(.gui.autosave.dir)) {
 
 			if (k$nrvs > 0) {
 				p <- kperiodogram(k, per_type="res", samples=getOption("systemic.samples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h = TRUE)
-				m <- ok_resample_curve(attr(p, "h"), 0, 1, 10, 0.2)				
+				m <- ok_resample_curve(attr(p, "h"), 0, 1, 0.1, 10000,
+                               2000, .gui.periodogram.tol, 5, TRUE)
+        
 				.gui.event("per_res", name)
 				.gui.matrix(m, free=T)
 			} else {
@@ -464,6 +474,9 @@ attach(.systemic.functions)
 	})
 }
 
+.gui.phasedrvs.tol <- double(1)
+.gui.phasedrvs.tol[1] <- 1e-3
+
 .gui.phasedrvs <- function(k, name) {
 	
 	np <- k$nplanets
@@ -499,7 +512,8 @@ attach(.systemic.functions)
 			rvdata <- .buf_to_R(K_compileData(k$h), k$ndata, DATA_SIZE)
 			rvdata <- rvdata[rvdata[, FLAG] == RV, ]
 			.gui.matrix(rvdata, free=TRUE)	
-			.gui.matrix(ok_resample_curve(rvsignal, 0, 1, 10, 0.2), free=TRUE)
+			.gui.matrix(ok_resample_curve(rvsignal, 0, 1, 1, 5000,
+                     500, .gui.rvsignal.tol, 5, FALSE), free=TRUE)
 			gsl_matrix_free(rvsignal)
 			ok_free_systems(sl, rvsamples)
 		}

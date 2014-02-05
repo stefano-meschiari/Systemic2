@@ -9,7 +9,7 @@
 #include "math.h"
 #include "stdbool.h"
 #include "assert.h"
-#include "gsl/gsl_sort_int.h";
+#include "gsl/gsl_sort_int.h"
 
 #ifndef UTILS_H
 #define UTILS_H
@@ -196,8 +196,8 @@ unsigned int ok_matrix_cols(void* v);
 gsl_block* ok_vector_block(void* v);
 gsl_block* ok_matrix_block(void* v);
 
-gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int timecol, const int valcol, const int target_points,
-    const int target_tolerance);
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
+    const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x);
 
 bool ok_file_readable(char* fn);
 
@@ -208,13 +208,18 @@ typedef struct {
 } ok_rivector;
 
 ok_rivector* ok_rivector_alloc(const int maxlength);
-#define ok_rivector_push(va, i) do { assert(va->length < va->max_length); va->v[va->length++] = i; } while (0);
+#define ok_rivector_data(va) (va->v)
+#define ok_rivector_sizeof(va) (sizeof(int))
+#define ok_rivector_push(va, i) do { assert(va->length < va->max_length); va->v[va->length++] = i; } while (0)
+#define ok_rivector_append(vdest, vsource) do { for (int i = 0; i < vsource->length; i++) ok_rivector_push(vdest, vsource->v[i]); } while (0)
 #define ok_rivector_pop(va) (va->v[--va->length]);
 #define ok_rivector_first(va) (va->v[0])
 #define ok_rivector_last(va) (va->v[v->length-1])
 #define ok_rivector_length(va) (va->length)
-#define ok_rivector_reset(va) do { va->length = 0; } while (0);
-#define ok_rivector_free(va) do { free(va->v); free(va); } while (0);
-#define ok_rivector_sort(va) do { gsl_sort_int(va->v, 1, va->length); } while (0);
-#define ok_rivector_foreach(va, val, idx) for (int idx = 0, val = va->v[0]; idx < va->length; idx++, val=va->v[idx])
+#define ok_rivector_reset(va) do { va->length = 0; } while (0)
+#define ok_rivector_reset_to(va, len) do { va->length = len; } while (0)
+#define ok_rivector_free(va) do { free(va->v); free(va); } while (0)
+#define ok_rivector_sort(va) do { gsl_sort_int(va->v, 1, va->length); } while (0)
+#define ok_rivector_foreach(va, val) for (int __ri_idx ## val = 0, val = va->v[0]; __ri_idx ## val < va->length; __ri_idx ## val++, val=va->v[__ri_idx ## val])
+#define ok_rivector_foreach_i(va, val, idx) for (int idx = 0, val = va->v[0]; idx < va->length; idx++, val=va->v[idx])
 #endif

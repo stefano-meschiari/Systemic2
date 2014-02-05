@@ -28,6 +28,8 @@ void K_setDataAt(ok_kernel* k, int subset, int row, int column, double val) {
 
 double K_getRVLine(ok_kernel* k, int row, int col) {
     static gsl_matrix* rvline = NULL;
+    static double tolerance[1] = { 1e-3 };
+    
     if (row < 0) {
         int samples = col;
         if (rvline != NULL) {
@@ -44,7 +46,7 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
                 samples,
                 NULL, NULL);
         rvline = ok_resample_curve(rvline_full,
-                0, 1, 10, 0.2);
+                0, 1, 0.25, 800, 100, tolerance, 2, false);
         gsl_matrix_free(rvline_full);
               
         return MROWS(rvline);
@@ -158,6 +160,8 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
     static double Pmax = 20000.;
     static ok_periodogram_workspace* p = NULL;
     static gsl_matrix* ps = NULL;
+    static double tolerance[1] = { 1e-3 };
+    
     if (p == NULL) {
         p = (ok_periodogram_workspace*) malloc(sizeof(ok_periodogram_workspace));
         p->buf = NULL;
@@ -182,7 +186,9 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         gsl_matrix* ret = ok_periodogram_ls(data, samples, Pmin, Pmax, 
                 0, T_TIME, T_SVAL, T_ERR, p);
         
-        ps = ok_resample_curve(ret, 0, 1, 30, 0.1);
+        ps = ok_resample_curve(ret,
+                0, 1, 0.2, 800, 100, tolerance, 2, false);
+        
         length = MROWS(ps);
         gsl_matrix_free(data);
         

@@ -130,6 +130,7 @@ gsl_vector* ok_vector_copy(const gsl_vector* src);
 gsl_vector_int* ok_vector_int_copy(const gsl_vector_int* src);
 gsl_matrix* ok_buf_to_matrix(double** buf, int rows, int cols);
 void ok_buf_col(double** buf, double* vector, int col, int nrows);
+void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max);
 gsl_matrix* ok_matrix_remove_row(gsl_matrix* m, int row);
 gsl_matrix* ok_matrix_remove_column(gsl_matrix* m, int col);
 gsl_matrix_int* ok_matrix_int_remove_row(gsl_matrix_int* m, int row);
@@ -162,8 +163,15 @@ unsigned int ok_matrix_rows(void* v);
 unsigned int ok_matrix_cols(void* v);
 gsl_block* ok_vector_block(void* v);
 gsl_block* ok_matrix_block(void* v);
-gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top);
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
+    const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x);
 bool ok_file_readable(char* fn);
+typedef struct {
+    int length;
+    int max_length;
+    int* v;
+} ok_rivector;
+ok_rivector* ok_rivector_alloc(const int maxlength);
 extern double ok_default_steps[];
 ok_kernel* K_alloc();
 void K_free(ok_kernel* k);
@@ -277,8 +285,8 @@ gsl_vector* ok_find_transits(ok_system** bag, const int len, const int pidx, con
 void ok_to_cm(ok_system* system, gsl_matrix* xyz);
 void ok_to_star(ok_system* system, gsl_matrix* xyz);
 int ok_find_closest_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error);
-double ok_pcalc(double Mcenter, double Mp, double a);
-double ok_acalc(double Mcenter, double Mp, double P);
+double ok_pcalc(const double a, const double Mcenter, const double Mp);
+double ok_acalc(const double P, const double Mcenter, const double Mp);
     ok_list* KL_alloc(const int size, ok_kernel* prototype);
     void KL_free(ok_list* list);
     ok_list* KL_load(FILE* fid, int skip);
