@@ -11,6 +11,14 @@
 #define JS_I_END 3
 #define JS_I_ENDREACHED -1
 
+#define JS_PS_SET_PMIN -4
+#define JS_PS_SET_PMAX -5
+#define JS_PS_SETUP -1
+#define JS_PS_GET_FAPS_LEVELS -2
+#define JS_PS_GET_TOP_PERIODS -6
+#define JS_PS_GET_TOP_POWERS -7
+#define JS_PS_GET_TOP_FAPS -8
+
 double K_getDataAt(ok_kernel* k, int subset, int row, int column);
 void K_setDataAt(ok_kernel* k, int subset, int row, int column, double val);
 double K_getRVLine(ok_kernel* k, int row, int col);
