@@ -136,7 +136,10 @@ void ok_setup(ok_system* system) {
     
     // Copy elements matrix into orbits matrix (for instance, to carry on flags
     // such as ORD)
-    MATRIX_MEMCPY(system->orbits, system->elements);
+    for (int i = 1; i < MROWS(system->elements); i++)
+        for (int j = NODE+1; j < ELEMENTS_SIZE; j++)
+            MSET(system->orbits, i, j, MGET(system->elements, i, j));
+    
     
     double Mcenter = MSUN_TO_INT(MGET(system->elements, 0, MASS));
 

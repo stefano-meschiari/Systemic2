@@ -94,9 +94,9 @@ clean:
 
 # For all-in-one installations
 
-reqs: untardeps ./deps/lib/libswift.a  ./deps/lib/libf2c.a R_packages_installed
+reqs: ./deps ./deps/lib/libswift.a  ./deps/lib/libf2c.a R_packages_installed
 
-untardeps:
+./deps:
 	tar -xvzf deps.tar.gz
 
 R_packages_installed:

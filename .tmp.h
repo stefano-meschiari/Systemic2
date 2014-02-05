@@ -277,8 +277,8 @@ gsl_vector* ok_find_transits(ok_system** bag, const int len, const int pidx, con
 void ok_to_cm(ok_system* system, gsl_matrix* xyz);
 void ok_to_star(ok_system* system, gsl_matrix* xyz);
 int ok_find_closest_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error);
-double ok_pcalc(double Mcenter, double Mp, double a);
-double ok_acalc(double Mcenter, double Mp, double P);
+double ok_pcalc(const double a, const double Mcenter, const double Mp);
+double ok_acalc(const double P, const double Mcenter, const double Mp);
     ok_list* KL_alloc(const int size, ok_kernel* prototype);
     void KL_free(ok_list* list);
     ok_list* KL_load(FILE* fid, int skip);
