@@ -29,6 +29,7 @@ void K_setDataAt(ok_kernel* k, int subset, int row, int column, double val) {
 double K_getRVLine(ok_kernel* k, int row, int col) {
     static gsl_matrix* rvline = NULL;
     static double tolerance[1] = { 1e-3 };
+    static int target_points = 600;
     
     if (row < 0) {
         int samples = col;
@@ -45,11 +46,23 @@ double K_getRVLine(ok_kernel* k, int row, int col) {
                 comp[k->ndata-1][0], 
                 samples,
                 NULL, NULL);
+        int fac = 1;
+        
         rvline = ok_resample_curve(rvline_full,
-                0, 1, 0.25, 800, 100, tolerance, 2, false);
+                0, 1, 1, target_points, 100, tolerance, 0, false);
+        
+        if (MROWS(rvline) > 1.5 * target_points) {
+            gsl_matrix_free(rvline);
+            rvline = ok_resample_curve(rvline_full,
+                0, 1, 0.2, target_points, 100, tolerance, 0, false);
+            fac = -1;
+        }
+        
         gsl_matrix_free(rvline_full);
-              
-        return MROWS(rvline);
+        
+        
+        
+        return fac*(int)MROWS(rvline);
     } else {
         if (rvline == NULL)
             return INVALID_NUMBER;
@@ -90,7 +103,7 @@ double K_getPhasedDataForPlanet(ok_kernel* k, int planet, int row, int column) {
         
         ok_sort_matrix(phased_data, T_TIME);
         K_setElement(k, planet, MASS, mass);
-        
+        K_calculate(k);
         k->chi2 = chi2;
         k->rms = rms;
         k->jitter = jitter;
@@ -155,12 +168,14 @@ double K_getPhasedRVLine(ok_kernel* k, int planet, int row, int column) {
 double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
     
     static int length;
-    static int samples = 30000;
+    static int samples = 15000;
     static double Pmin = 1.;
     static double Pmax = 20000.;
     static ok_periodogram_workspace* p = NULL;
     static gsl_matrix* ps = NULL;
-    static double tolerance[1] = { 1e-3 };
+    static const int top_freqs = 10;
+    static double* top = NULL;
+    static double tolerance[1] = {1e-3};
     
     if (p == NULL) {
         p = (ok_periodogram_workspace*) malloc(sizeof(ok_periodogram_workspace));
@@ -168,17 +183,25 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         p->per = NULL;
         p->calc_z_fap = true;
     }
-    if (row == -3) {
+    if (row == JS_PS_GET_TOP_PERIODS) {
+        return top[col];  
+    } else if (row == JS_PS_GET_TOP_POWERS) {
+        return top[col+top_freqs];
+    } else if (row == JS_PS_GET_TOP_FAPS) {
+        return top[col+2*top_freqs];
+    } else if (row == JS_PS_SET_PMIN) {
         Pmin = (double) col;        
         return 0;
-    } else if (row == -4) {
+    } else if (row == JS_PS_SET_PMAX) {
         Pmax = (double) col;
         return 0;
-    } else if (row == -1) {
+    } else if (row == JS_PS_SETUP) {
         if (ps != NULL) {
             gsl_matrix_free(ps);
             ps = NULL;
         }
+        if (top == NULL)
+            top = (double*) malloc(top_freqs * 3 * sizeof(double));
         gsl_matrix* data = K_getCompiledDataMatrix(k);
         for (int i = 0; i < MROWS(data); i++)
             MSET(data, i, T_SVAL, MGET(data, i, T_SVAL)-MGET(data, i, T_PRED));
@@ -186,14 +209,32 @@ double K_getPeriodogramAt(ok_kernel* k, int row, int col) {
         gsl_matrix* ret = ok_periodogram_ls(data, samples, Pmin, Pmax, 
                 0, T_TIME, T_SVAL, T_ERR, p);
         
-        ps = ok_resample_curve(ret,
-                0, 1, 0.2, 800, 100, tolerance, 2, false);
-        
+        ps = ok_resample_curve(ret, 0, 1, 0.1, 800,
+                100, tolerance, 0, true);
         length = MROWS(ps);
+        
+        ok_sort_matrix(ret, PS_Z);
+        double dt = 0.5;
+        int idx = MROWS(ret);
+        int i = 0;
+        while (idx > 0 && i < top_freqs) {
+            idx--;
+            bool skip = false;
+            for (int n = 0; n < i; n++)
+                if (fabs(top[n] - MGET(ret, idx, PS_TIME)) < dt)
+                    skip = true;
+            
+            if (!skip) {
+                top[i] = MGET(ret, idx, PS_TIME);
+                top[i+top_freqs] = MGET(ret, idx, PS_Z);
+                top[i+2*top_freqs] = MGET(ret, idx, PS_FAP);   
+                i++;
+            }
+        }
         gsl_matrix_free(data);
         
         return (double) length;
-    } else if (row == -2) {
+    } else if (row == JS_PS_GET_FAPS_LEVELS) {
         if (p == NULL || ps == NULL)
             return 0;
         if (col == 1)

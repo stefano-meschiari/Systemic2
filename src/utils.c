@@ -841,8 +841,10 @@ static void _ok_reduce_curve(gsl_matrix* curve, const int timecol,
     if (b - a <= 1)
         return;
     
-    int n = round((_ok_fastrand(seed) * (0.55 - 0.45) + 0.45) * (b-a) + a);
-    assert(n > 1 && n < MROWS(curve));
+    int n = floor((_ok_fastrand(seed) * (0.55 - 0.45) + 0.45) * (b-a) + a);
+    
+    assert(n >= 0);
+    assert(n < MROWS(curve));
     double x1, x2;
     
     if (!log) {
@@ -928,7 +930,6 @@ gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol,
     
     ok_qsort_r(ok_rivector_data(peaks), ok_rivector_length(peaks),
             ok_rivector_sizeof(peaks), &t_curve, _ok_rsort_peaks);
-    
     
     int top_peaks_count = ceil(peaks_frac * ok_rivector_length(peaks));
     

@@ -27,6 +27,8 @@ typedef int		 cmp_t(void *, const void *, const void *);
 extern void ok_qsort_r(void *a, size_t n, size_t es, void *thunk, cmp_t *cmp);
 #endif
 
+
+
 #define MIN(a,b) (a < b ? a : b)
 #define MAX(a,b) (a > b ? a : b)
 
