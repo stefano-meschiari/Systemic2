@@ -330,7 +330,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 }
 
 
-plot.periodogram <- function(p, overplot.window = F, what = 'power') {
+plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim, xlab, ylab, ...) {
 	oldpar <- par(no.readonly=TRUE)	
   systemic.plot.style()
   on.exit(suppressWarnings(par(oldpar)))
@@ -338,8 +338,16 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power') {
 	ymax = max(p[, what])
 	if (overplot.window)
 		ymax = max(ymax, p[, 'window'])
-	
-	plot(p[, 'period'], p[, what], type="l", log="x", xlab="Period [d]", ylab="Power", ylim=c(0, ymax))
+  if (missing(ylim))
+      ylim = c(0, ymax)
+  if (missing(xlim))
+      xlim = c(min(p[, 'period']), max(p[, 'period']))
+  if (missing(xlab))
+      xlab = 'Period [d]'
+  if (missing(ylab))
+      ylab = 'Normalized power'
+  
+	plot(p[, 'period'], p[, what], type="l", log="x", xlab=xlab, ylab=ylab, xlim=xlim, ylim=ylim, ...)
 	
 	if (overplot.window) {
 		lines(p[, 'period'], p[, 'window'], col="red")

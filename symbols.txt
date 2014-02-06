@@ -30,6 +30,7 @@ ok_vector_copy
 ok_vector_int_copy
 ok_buf_to_matrix
 ok_buf_col
+ok_matrix_column_range
 ok_matrix_remove_row
 ok_matrix_remove_column
 ok_matrix_int_remove_row
@@ -64,6 +65,7 @@ ok_vector_block
 ok_matrix_block
 ok_resample_curve
 ok_file_readable
+ok_rivector_alloc
 K_alloc
 K_free
 K_clone

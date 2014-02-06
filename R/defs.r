@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1200
+K_SYSTEMIC_VERSION <- 2.1400
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -233,6 +233,8 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "ok_buf_to_matrix(pii)*<gsl_matrix>",
 # void ok_buf_col(double** buf, double* vector, int col, int nrows)
 "ok_buf_col(p*dii)v",
+# void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max)
+"ok_matrix_column_range(*<gsl_matrix>i*d*d)v",
 # gsl_matrix* ok_matrix_remove_row(gsl_matrix* m, int row)
 "ok_matrix_remove_row(*<gsl_matrix>i)*<gsl_matrix>",
 # gsl_matrix* ok_matrix_remove_column(gsl_matrix* m, int col)
@@ -297,10 +299,12 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "ok_vector_block(p)*<gsl_block>",
 # gsl_block* ok_matrix_block(void* v)
 "ok_matrix_block(p)*<gsl_block>",
-# gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top)
-"ok_resample_curve(*<gsl_matrix>iiid)*<gsl_matrix>",
+# gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,     const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x)
+"ok_resample_curve(*<gsl_matrix>iidii*diB)*<gsl_matrix>",
 # bool ok_file_readable(char* fn)
 "ok_file_readable(*c)B",
+# ok_rivector* ok_rivector_alloc(const int maxlength)
+"ok_rivector_alloc(i)*<ok_rivector>",
 # ok_kernel* K_alloc()
 "K_alloc()*<ok_kernel>",
 # void K_free(ok_kernel* k)
@@ -547,9 +551,9 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "ok_to_star(*<ok_system>*<gsl_matrix>)v",
 # int ok_find_closest_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error)
 "ok_find_closest_transit(*<ok_system>i*<ok_integrator_options>idi*d*i)i",
-# double ok_pcalc(double Mcenter, double Mp, double a)
+# double ok_pcalc(const double a, const double Mcenter, const double Mp)
 "ok_pcalc(ddd)d",
-# double ok_acalc(double Mcenter, double Mp, double P)
+# double ok_acalc(const double P, const double Mcenter, const double Mp)
 "ok_acalc(ddd)d",
 # ok_list* KL_alloc(const int size, ok_kernel* prototype)
 "KL_alloc(ip)*<ok_list>",

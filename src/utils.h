@@ -8,6 +8,8 @@
 #include "gsl/gsl_rng.h"
 #include "math.h"
 #include "stdbool.h"
+#include "assert.h"
+#include "gsl/gsl_sort_int.h"
 
 #ifndef UTILS_H
 #define UTILS_H
@@ -24,6 +26,8 @@
 typedef int		 cmp_t(void *, const void *, const void *);
 extern void ok_qsort_r(void *a, size_t n, size_t es, void *thunk, cmp_t *cmp);
 #endif
+
+
 
 #define MIN(a,b) (a < b ? a : b)
 #define MAX(a,b) (a > b ? a : b)
@@ -145,6 +149,8 @@ gsl_vector_int* ok_vector_int_copy(const gsl_vector_int* src);
 gsl_matrix* ok_buf_to_matrix(double** buf, int rows, int cols);
 void ok_buf_col(double** buf, double* vector, int col, int nrows);
 
+void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max);
+
 gsl_matrix* ok_matrix_remove_row(gsl_matrix* m, int row);
 gsl_matrix* ok_matrix_remove_column(gsl_matrix* m, int col);
 
@@ -192,7 +198,30 @@ unsigned int ok_matrix_cols(void* v);
 gsl_block* ok_vector_block(void* v);
 gsl_block* ok_matrix_block(void* v);
 
-gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top);
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
+    const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x);
 
 bool ok_file_readable(char* fn);
+
+typedef struct {
+    int length;
+    int max_length;
+    int* v;
+} ok_rivector;
+
+ok_rivector* ok_rivector_alloc(const int maxlength);
+#define ok_rivector_data(va) (va->v)
+#define ok_rivector_sizeof(va) (sizeof(int))
+#define ok_rivector_push(va, i) do { assert(va->length < va->max_length); va->v[va->length++] = i; } while (0)
+#define ok_rivector_append(vdest, vsource) do { for (int i = 0; i < vsource->length; i++) ok_rivector_push(vdest, vsource->v[i]); } while (0)
+#define ok_rivector_pop(va) (va->v[--va->length]);
+#define ok_rivector_first(va) (va->v[0])
+#define ok_rivector_last(va) (va->v[v->length-1])
+#define ok_rivector_length(va) (va->length)
+#define ok_rivector_reset(va) do { va->length = 0; } while (0)
+#define ok_rivector_reset_to(va, len) do { va->length = len; } while (0)
+#define ok_rivector_free(va) do { free(va->v); free(va); } while (0)
+#define ok_rivector_sort(va) do { gsl_sort_int(va->v, 1, va->length); } while (0)
+#define ok_rivector_foreach(va, val) for (int __ri_idx ## val = 0, val = va->v[0]; __ri_idx ## val < va->length; __ri_idx ## val++, val=va->v[__ri_idx ## val])
+#define ok_rivector_foreach_i(va, val, idx) for (int idx = 0, val = va->v[0]; idx < va->length; idx++, val=va->v[idx])
 #endif

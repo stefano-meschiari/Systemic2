@@ -37,7 +37,7 @@ ALLOBJECTS = objects/periodogram.o objects/extras.o objects/mercury.o objects/in
 JS_FILES = ui help systemic
 
 js: src/*.c src/*.h  $(ALLOBJECTS) support
-	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) $(EXP_FUNCTIONS) src/javascript.c  objects/*.o -o $(SYSTEMICLIVE_DIR)/js/libsystemic.html $(LIBS) $(LIBNAMES)  --embed-file datafiles 
+	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) $(EXP_FUNCTIONS) src/javascript.c  objects/*.o -o $(SYSTEMICLIVE_DIR)/js/libsystemic.html $(LIBS) $(LIBNAMES)  --embed-file ../SystemicLive/data@
 	cd $(JS_DIR); sh minify.sh
 	lua lua/minify_safely.lua $(JS_DIR)/libsystemic.js >$(JS_DIR)/libsystemic.min.js
 
