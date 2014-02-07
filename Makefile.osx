@@ -14,7 +14,7 @@ LIBNAMES = -lm -lgsl -lgslcblas -lgfortran -lc -lswift -lf2c
 PACKAGE_DIR = ~/Downloads
 FFLAGS='-c -g -O3'
 
-OPTIMIZED_FLAGS = -g -O3 $(INCLUDES) $(LIBS) -Wall   -Wstrict-aliasing=2 -fopenmp  -std=c99 -DNDEBUG
+OPTIMIZED_FLAGS = -g -O3 $(INCLUDES) $(LIBS) -Wall   -Wstrict-aliasing=2 -fopenmp  -std=c99
 DEBUG_FLAGS =  $(INCLUDES) $(LIBS) -Wall -Werror  -Wstrict-aliasing=2 -fopenmp -std=c99 -g3
 
 SYSFLAGS=$(OPTIMIZED_FLAGS)
