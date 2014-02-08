@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1300
+K_SYSTEMIC_VERSION <- 2.1400
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -168,7 +168,7 @@ parseStructInfos("gsl_vector_int{LL*i*<gsl_block_int>i}size stride data block ow
 parseStructInfos("gsl_vector{LL*d*<gsl_block>i}size stride data block owner;")
 parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_rvs chi2_tts rms rms_tts jitter nsets datasets compiled params times integration integrationSamples plFlags parFlags plSteps parSteps plRanges parRanges Mstar ndata nrvs ntts npars intMethod intOptions minfunc flags rng tag tagValue progress datanames;")
 # Function signatures
-.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";",
+tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";",
 # double DEGRANGE(double angle)
 "DEGRANGE(d)d",
 # double RADRANGE(double angle)
@@ -233,6 +233,8 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "ok_buf_to_matrix(pii)*<gsl_matrix>",
 # void ok_buf_col(double** buf, double* vector, int col, int nrows)
 "ok_buf_col(p*dii)v",
+# void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max)
+"ok_matrix_column_range(*<gsl_matrix>i*d*d)v",
 # gsl_matrix* ok_matrix_remove_row(gsl_matrix* m, int row)
 "ok_matrix_remove_row(*<gsl_matrix>i)*<gsl_matrix>",
 # gsl_matrix* ok_matrix_remove_column(gsl_matrix* m, int col)
@@ -297,10 +299,12 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "ok_vector_block(p)*<gsl_block>",
 # gsl_block* ok_matrix_block(void* v)
 "ok_matrix_block(p)*<gsl_block>",
-# gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top)
-"ok_resample_curve(*<gsl_matrix>iiid)*<gsl_matrix>",
+# gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,     const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x)
+"ok_resample_curve(*<gsl_matrix>iidii*diB)*<gsl_matrix>",
 # bool ok_file_readable(char* fn)
 "ok_file_readable(*c)B",
+# ok_rivector* ok_rivector_alloc(const int maxlength)
+"ok_rivector_alloc(i)*<ok_rivector>",
 # ok_kernel* K_alloc()
 "K_alloc()*<ok_kernel>",
 # void K_free(ok_kernel* k)
@@ -633,7 +637,9 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "fwrite(pLL*<FILE>)L",
 # int fputs(const char* str, FILE* stream)
 "fputs(Z*<FILE>)i",
-""))
+""))}, error=function(e) { stop(paste(readLines("../doc/libnotfound.txt", warn=FALSE), sep="
+", collapse="
+"))  }) 
 
 TIME <- K_T_TIME + 1
 VAL <- K_T_VAL + 1

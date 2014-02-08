@@ -62,7 +62,6 @@ Non-coplanar fit|meta shift Y|$ kselect(@kernel@, 'all', 'inc'); kselect(@kernel
 -
 Select all parameters|meta G|$kselect(@kernel@, 'all', 'all')
 Deselect all parameters|meta shift G|$kdeselect(@kernel@, 'all', 'all')
-Add noise in quadrature to dataset||!k['par', DATA.NOISE1] <- @ins@
 -
 Set ranges...||!krange(@kernel@, 1, 'period') <- c(min@ins@, max)
 Set steps...||!kstep(@kernel@, 1, 'period') <- @ins@
@@ -86,7 +85,7 @@ Minimize using...||[[
 	.gui.input("@kernel@$min.func = 'chi2@ins@'")
 ]]
 -
-Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = @ins@, print=TRUE)
+Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = 5000@ins@, print=TRUE)
 Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
 MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=k$nrpars*10, print=TRUE)
 -
@@ -112,10 +111,10 @@ F-test, all planets||[[
 Cross-validation, single fit||$kcrossval.l1o(@kernel@)
 Cross-validation, all planets||$kcrossval.l1o(@kernel@, type="auto")
 -
-Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
-Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
-Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
-Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE)
+Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
+Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
+Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
 -
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
@@ -134,22 +133,23 @@ Plot normalized residuals (histogram)||$plot(@kernel@, 'normres', density=FALSE)
 Plot normalized residuals (density)||$plot(@kernel@, 'normres', density=TRUE)
 
 Data
-Print data||$kdata(@kernel@)
+Print all data||$kdata(@kernel@)
+Summary of all data||$summary(kdata(k)[, TIME:ERR])
 Save kernel data to variable||!@ins@ <- kdata(@kernel@)
 Print time span||$@kernel@$trange
--
-Add dataset||!kadd.data(@kernel@, "path@ins@")
-Remove dataset||!kremove.data(@kernel@, idx=@ins@)
 Remove all data||!kremove.data(@kernel@)@ins@
 -
-Print dataset||!kdata(@kernel@, idx = @ins@)
-Summary of dataset||!summary(kdata(k, idx = @ins@)[, TIME:ERR])
+Add a dataset...||!kadd.data(@kernel@, "path@ins@")
+Remove a dataset...||!kremove.data(@kernel@, idx=@ins@)
+Print a dataset...||!kdata(@kernel@, idx=1@ins@)
+Summary of dataset...||!summary(kdata(k, idx = @ins@)[, TIME:ERR])
 -
-Add error in quadrature||!d <- kdata(@kernel@); d[, ERR] = sqrt(d[, ERR]^2 + @ins@^2); kdata(@kernel@) <- d
-Inflate error||!d <- kdata(@kernel@); d[, ERR] = d[, ERR] * @ins@; kdata(@kernel@) <- d
-Select temporal subset||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
-Remove ouliers by normalized residual value||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
-Other data manipulation examples||$edit.script("doc/data_examples.R")
+Add uncertainty in quadrature...||!d <- kdata(@kernel@); d[, ERR] <- sqrt(d[, ERR]^2 + @ins@^2); kdata(@kernel@) <- d
+Inflate uncertainty...||!d <- kdata(@kernel@); d[, ERR] <- d[, ERR] * @ins@; kdata(@kernel@) <- d
+Select temporal subset...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
+Remove ouliers by normalized residual value...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
+Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel) <- d
+Other data manipulation examples...||$edit.script("doc/data_examples.R")
 -
 Get RV curve||!rv <- krvcurve(@kernel@)
 Get RV curve at times...||!rv <- krvcurve(@kernel@, times=@ins@)
@@ -157,7 +157,7 @@ Get RV curve at times...||!rv <- krvcurve(@kernel@, times=@ins@)
 R
 List all variables||$ll()
 -
-Save table to file...||!write.fmatrix(@ins@, file="")
+Save table to file...||!write.f(@ins@, file="")
 Save table to CSV file...||!write.csv(@ins@, file="")
 -
 Change working directory...||!setwd("@ins@")
@@ -171,10 +171,10 @@ New...|meta alt N|%edit.new
 Open...|meta alt O|%edit.open
 Save|meta alt S|%edit.save
 Save as...|meta alt shift S|%edit.saveas
-Close|meta alt W|%edit.close
 -
 Next tab|meta OPEN_BRACKET|%edit.next
 Previous tab|meta CLOSE_BRACKET|%edit.prev
+Close tab|meta alt W|%edit.close
 -
 Run|control ENTER|%edit.run
 

@@ -16,6 +16,7 @@
 #include "string.h"
 #include "assert.h"
 #include "kernel.h"
+#include "time.h"
 
 double DEGRANGE(double angle) {
     return (fmod((angle < 0. ? angle + (floor(-angle/360.) + 1.) * 360. : angle), 360.));
@@ -507,7 +508,7 @@ void ok_sort_matrix(gsl_matrix* matrix, const int column) {
     ok_qsort_r(matrix->data, matrix->size1, matrix->size2 * sizeof(double), (void*)&column, _ok_compare);
 }
 
-int _ok_rcompare(void* col, const void* row1, const void* row2) {
+static int _ok_rcompare(void* col, const void* row1, const void* row2) {
     int c = *((int*)col);
     double* d1 = (double*) row1;
     double* d2 = (double*) row2;
@@ -807,56 +808,209 @@ bool ok_file_readable(char* fn) {
     return true;
 }
 
+ok_rivector* ok_rivector_alloc(const int max_length) {
+    ok_rivector* v = (ok_rivector*) malloc(sizeof(ok_rivector));
+    v->v = (int*) malloc(max_length*sizeof(int));
+    v->max_length = max_length;
+    v->length = 0;
+    return v;
+}
 
-gsl_matrix* ok_resample_curve(gsl_matrix* curve, int timecol, int valcol, int every, double top) {
-    gsl_matrix* work = gsl_matrix_calloc(curve->size1-2, 2);
-    for (int i = 1; i < curve->size1 - 1; i++) {
-        double t = MGET(curve, i, timecol);
-        double tp1 = MGET(curve, i+1, timecol);
-        double tm1 = MGET(curve, i-1, timecol);
-        
-        double v = MGET(curve, i, valcol);
-        double vp1 = MGET(curve, i+1, valcol);
-        double vm1 = MGET(curve, i-1, valcol);
-        
-        double d2 = ((vp1-v)/(tp1-t) - (v-vm1)/(t-tm1))/(tp1-tm1);
-        
-        MSET(work, i-1, 0, fabs(d2));
-        MSET(work, i-1, 1, i);
-    }
-    ok_sort_matrix(work, 0);
+void ok_matrix_column_range(gsl_matrix* m, int col, double* min, double* max) {
+    *min = MGET(m, 0, col);
+    *max = MGET(m, 0, col);
     
-    gsl_matrix* out = gsl_matrix_alloc(curve->size1, curve->size2);
-    int n = 0;
-    for (int i = 0; i < (int)(top * work->size1); i++) {
-        int j = (int) MGET(work, i, 1);
-        
-        for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, j, k));
-        
-        n++;
+    for (int i = 1; i < MROWS(m); i++) {
+        *min = MIN(*min, MGET(m, i, col));
+        *max = MAX(*max, MGET(m, i, col));
     }
-     
-    for (int i = n; i < work->size1; i+=every) {
-        int j = (int) MGET(work, i, 1);
+};
+
+// Re-sample curve based on a triangle area criterion.
+// Adapted from http://ariel.chronotext.org/dd/defigueiredo93adaptive.pdf
+static inline double _ok_fastrand(unsigned int* seed) {
+  *seed = (214013* *seed+2531011);
+  *seed = (*seed>>16)&0x7FFF;
+  return ((double) *seed / (1.+(double)RAND_MAX));
+}
+
+static void _ok_reduce_curve(gsl_matrix* curve, const int timecol,
+        const int valcol, const double area_tol, ok_rivector* list, int a,
+        int b, unsigned int* seed, const bool log) {
+    
+    if (b - a <= 1)
+        return;
+    
+    int n = floor((_ok_fastrand(seed) * (0.55 - 0.45) + 0.45) * (b-a) + a);
+    
+    assert(n >= 0);
+    assert(n < MROWS(curve));
+    double x1, x2;
+    
+    if (!log) {
+        x1 = MGET(curve, a, timecol) - MGET(curve, n, timecol);
+        x2 = MGET(curve, b, timecol) - MGET(curve, n, timecol);
+    } else {
+        x1 = log10(MGET(curve, a, timecol)) - log10(MGET(curve, n, timecol));
+        x2 = log10(MGET(curve, b, timecol)) - log10(MGET(curve, n, timecol));
+    };
+    
+    double y1 = MGET(curve, a, valcol) - MGET(curve, n, valcol);
+    double y2 = MGET(curve, b, valcol) - MGET(curve, n, valcol);
+    double area = fabs(x1*y2 - x2*y1);
         
-        for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, j, k));
+    if (area > area_tol) {
+        if (a != n && b != n)
+            ok_rivector_push(list, n);
         
-        n++;
+        _ok_reduce_curve(curve, timecol, valcol, area_tol, list,
+                a, n, seed, log);
+        _ok_reduce_curve(curve, timecol, valcol, area_tol, list,
+                n, b, seed, log);
+    } else {
+        ok_rivector_push(list, n);
     }
-          
-    for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, 0, k));
-    n++;
-    for (int k = 0; k < curve->size2; k++)
-            MSET(out, n, k, MGET(curve, curve->size1-1, k));
-    n++;
+}
+
+static int _ok_rsort_peaks(void* curve_v, const void* a_v, const void* b_v) {
+    gsl_matrix* curve = (gsl_matrix*) ((ok_tagdata*) curve_v)->data;
+    const int col = (int) ((ok_tagdata*) curve_v)->tag[0];
     
-    out = ok_matrix_resize(out, n, out->size2);
-   
+    const int a = *((const int*) a_v);
+    const int b = *((const int*) b_v);
+    return MGET(curve, b, col) - MGET(curve, a, col);
+}
+/**
+ * Resamples a curve (represented by two columns of the matrix "curve",
+ * "xcol" and "ycol" -- the x and y coordinates, respectively) 
+ * in order to obtain a curve that retains its "points of interest"
+ * (e.g., peaks, points where curvature is high, etc.) while being
+ * represented with far fewer samplings. The sampling is then denser
+ * where the curve changes rapidly, and sparser where the curve is
+ * changing more smoothly.
+ * 
+ * @param curve Matrix with at least two columns
+ * @param xcol "X" column of the curve
+ * @param ycol "Y" column of the curve
+ * @param peaks_frac Include at least a fraction peaks_frac of all the peaks 
+ * in the curve. A peak is a point where Y[i] > Y[i-1] && Y[i] > Y[i+1]. The
+ * regular algorithm can miss very steep or narrow peaks, so my algorithm
+ * attempts to prevent this. 
+ * @param target_points A target amount of points to sample the curve with. The 
+ * algorithm will only *try* to meet this target.
+ * @param target_tolerance A target tolerance (i.e. the algorithm will try
+ * to return target_points +- target_tolerance amount of points)
+ * @param start_tolerance An estimated area tolerance; start with a small number
+ * (e.g. 1e-3). The routine will return a new estimate for this number 
+ * that produces the target number of points. A smaller tolerance
+ * yields more points (finer sampling); a tolerance of 0 would
+ * return the original curve.
+ * @param max_steps The maximum number of iterations to converge
+ * @param log_x whether the x-axis is log (e.g. for periodograms)
+ * @return A new matrix with two columns containing the resampled curve.
+ * (The caller is responsible with freeing both the old and the new matrix.)
+ */
+
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
+    const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x) {
+    const int max_points = MROWS(curve);
     
-    gsl_matrix_free(work);
-    ok_sort_matrix(out, timecol);
-    return out;
+    ok_rivector* peaks = ok_rivector_alloc(max_points);
+    ok_rivector* list = ok_rivector_alloc(max_points);
+    
+    for (int i = 1; i < MROWS(curve)-1; i++)
+        if (MGET(curve, i, ycol) > MGET(curve, i-1, ycol) &&
+                MGET(curve, i, ycol) > MGET(curve, i+1, ycol)) {
+            ok_rivector_push(peaks, i);
+        }
+    
+    ok_tagdata t_curve;
+    t_curve.data = curve;
+    t_curve.tag[0] = ycol;
+    
+    ok_qsort_r(ok_rivector_data(peaks), ok_rivector_length(peaks),
+            ok_rivector_sizeof(peaks), &t_curve, _ok_rsort_peaks);
+    
+    int top_peaks_count = ceil(peaks_frac * ok_rivector_length(peaks));
+    
+    ok_rivector_reset_to(peaks, top_peaks_count);
+    ok_rivector_push(peaks, 0);
+    ok_rivector_push(peaks, MROWS(curve)-1);
+    ok_rivector_sort(peaks);
+    
+    double xmin, xmax, ymin, ymax;
+    xmin = MGET(curve, 0, xcol);
+    xmax = MGET(curve, MROWS(curve)-1, xcol);
+    ok_matrix_column_range(curve, ycol, &ymin, &ymax);
+    if (log_x) {
+        xmin = log10(xmin);
+        xmax = log10(xmax);
+    }
+        
+    const double area = fabs(xmax-xmin) * fabs(ymax - ymin);
+    double tol = (start_tolerance == NULL ? 1e-3 : *start_tolerance);
+    double area_tol = area * tol;
+    
+    unsigned int seed = time(NULL);
+    
+    
+    ok_rivector_append(list, peaks);
+    
+    const int len = ok_rivector_length(peaks);
+    
+    for (int i = 1; i < len; i++) {
+        _ok_reduce_curve(curve, xcol, ycol, area_tol,
+            list, list->v[i-1], list->v[i], &seed,
+                log_x);
+    }
+    
+    int steps = max_steps;
+    if (steps > 0 && len < 0.9 * max_steps) {
+        double x0 = tol;
+        double y0 = list->length;
+        
+        double x1 = *start_tolerance * 0.1;
+        double y1 = -1;
+        
+        while (steps > 0) {
+            area_tol = x1 * area;
+            ok_rivector_reset_to(list, len);
+            for (int i = 1; i < len; i++) {
+                _ok_reduce_curve(curve, xcol, ycol, area_tol,
+                    list, list->v[i-1], list->v[i], &seed,
+                        log_x);
+            }
+            
+            y1 = list->length;
+            
+            double xn = x1 - (y1 - target_points) * (x1-x0)/((y1 - target_points) - (y0 - target_points));
+            if (xn < 0)
+                xn = 0.25 * MIN(x0, x1);
+            
+            x0 = x1;
+            y0 = y1;
+            x1 = xn;
+            
+            if (fabs(y1 - target_points) < target_tolerance)
+                break;
+            
+            steps--;
+        }   
+        
+        *start_tolerance = x1;
+    } 
+    
+    ok_rivector_sort(list);
+    
+    gsl_matrix* new_curve = gsl_matrix_alloc(ok_rivector_length(list),
+            MCOLS(curve));
+    
+    ok_rivector_foreach_i(list, listidx, row) {
+        for (int j = 0; j < MCOLS(curve); j++)
+            MSET(new_curve, row, j, MGET(curve, listidx, j));
+    }
+    
+    ok_rivector_free(peaks);
+    ok_rivector_free(list);
+    return new_curve;
 }
