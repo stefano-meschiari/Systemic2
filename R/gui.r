@@ -209,7 +209,7 @@ if (! file.exists(.gui.autosave.dir)) {
 .gui.scratch_model <- NULL
 
 .gui.periodogram.tol <- double(1)
-.gui.periodogram.tol[1] <- 1e-4
+.gui.periodogram.tol[1] <- 1e-5
 .gui.rvsignal.tol <- double(1)
 .gui.rvsignal.tol[1] <- 1e-4
 
@@ -251,9 +251,9 @@ if (! file.exists(.gui.autosave.dir)) {
 			
 			if (k$nrvs > 0) {
 				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=T)
-				m <- ok_resample_curve(attr(p, "h"), 0, 1, 0.1, 10000,
+				m <- ok_resample_curve(attr(p, "h"), 0, 1, 1, 10000,
                                2000, .gui.periodogram.tol, 5, TRUE)
-        
+
 				.gui.event("periodogram", name)
 				.gui.matrix(m, free=T)
 			}
@@ -286,7 +286,7 @@ if (! file.exists(.gui.autosave.dir)) {
 				.gui.matrix(NULL)
 			} else { 
 				m <- ok_resample_curve(rvsignal, 0, 1, 1, 5000,
-                     500, .gui.rvsignal.tol, 5, FALSE)          
+                     500, .gui.rvsignal.tol, 5, FALSE)
 				.gui.event("rvcurve", name)
 				.gui.matrix(m, free=T)
 				gsl_matrix_free(rvsignal)
@@ -295,7 +295,7 @@ if (! file.exists(.gui.autosave.dir)) {
 
 			if (k$nrvs > 0) {
 				p <- kperiodogram(k, per_type="res", samples=getOption("systemic.samples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h = TRUE)
-				m <- ok_resample_curve(attr(p, "h"), 0, 1, 0.1, 10000,
+				m <- ok_resample_curve(attr(p, "h"), 0, 1, 1., 10000,
                                2000, .gui.periodogram.tol, 5, TRUE)
         
 				.gui.event("per_res", name)
