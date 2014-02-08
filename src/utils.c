@@ -868,7 +868,8 @@ static void _ok_reduce_curve(gsl_matrix* curve, const int timecol,
         _ok_reduce_curve(curve, timecol, valcol, area_tol, list,
                 n, b, seed, log);
     } else {
-        ok_rivector_push(list, n);
+        if (a != n && b != n)
+                ok_rivector_push(list, n);
     }
 }
 

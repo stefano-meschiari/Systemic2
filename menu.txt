@@ -181,8 +181,8 @@ Run|control ENTER|%edit.run
 Options
 Show current values||@ for (name in names(.Options)) if (grepl("systemic", name)) cat(name, " = ", getOption(name), "\n")
 Set RV curve smoothness...||!options(systemic.rvsamples=@ins@)
-Set minimum period...||!options(systemic.pmin = @ins@)
-Set maximum period...||!options(systemic.pmax = @ins@)
+Set periodogram minimum period...||!options(systemic.pmin = @ins@)
+Set periodogram maximum period...||!options(systemic.pmax = @ins@)
 Set periodogram samples...||!options(systemic.psamples = @ins@)
 -
 Show integration accuracy parameters||$sprintf("%e %e %e", @kernel@$abs.acc, @kernel@$rel.acc, @kernel@$dt)

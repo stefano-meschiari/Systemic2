@@ -510,8 +510,7 @@ attach(.systemic.functions)
 			rvdata <- .buf_to_R(K_compileData(k$h), k$ndata, DATA_SIZE)
 			rvdata <- rvdata[rvdata[, FLAG] == RV, ]
 			.gui.matrix(rvdata, free=TRUE)	
-			.gui.matrix(ok_resample_curve(rvsignal, 0, 1, 1, 5000,
-                     500, .gui.rvsignal.tol, 5, FALSE), free=TRUE)
+			.gui.matrix(rvsignal)
 			gsl_matrix_free(rvsignal)
 			ok_free_systems(sl, rvsamples)
 		}
