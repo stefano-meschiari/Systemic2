@@ -168,7 +168,7 @@ parseStructInfos("gsl_vector_int{LL*i*<gsl_block_int>i}size stride data block ow
 parseStructInfos("gsl_vector{LL*d*<gsl_block>i}size stride data block owner;")
 parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_rvs chi2_tts rms rms_tts jitter nsets datasets compiled params times integration integrationSamples plFlags parFlags plSteps parSteps plRanges parRanges Mstar ndata nrvs ntts npars intMethod intOptions minfunc flags rng tag tagValue progress datanames;")
 # Function signatures
-.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";",
+tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";",
 # double DEGRANGE(double angle)
 "DEGRANGE(d)d",
 # double RADRANGE(double angle)
@@ -637,7 +637,9 @@ parseStructInfos("ok_kernel{pddddddipppppippppppdiiiiippIppdpp}system chi2 chi2_
 "fwrite(pLL*<FILE>)L",
 # int fputs(const char* str, FILE* stream)
 "fputs(Z*<FILE>)i",
-""))
+""))}, error=function(e) { stop(paste(readLines("../doc/libnotfound.txt", warn=FALSE), sep="
+", collapse="
+"))  }) 
 
 TIME <- K_T_TIME + 1
 VAL <- K_T_VAL + 1

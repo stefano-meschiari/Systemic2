@@ -336,8 +336,7 @@ int mco_x2el__(doublereal* mu, doublereal* x, doublereal* y,
                doublereal* z__, doublereal* u, doublereal* v, doublereal* w,
                doublereal* q, doublereal* e, doublereal* i__, doublereal* p,
                doublereal* n, doublereal* l);
-doublereal mco_kep__(doublereal e, doublereal oldl);dyn.load("libsystemic.dylib")
-gsl_matrix* gsl_matrix_alloc(size_t n1, size_t n2);
+doublereal mco_kep__(doublereal e, doublereal oldl);gsl_matrix* gsl_matrix_alloc(size_t n1, size_t n2);
 gsl_matrix* gsl_matrix_calloc(size_t n1, size_t n2);
 void gsl_matrix_free(gsl_matrix* m);
 void gsl_vector_free(gsl_vector* v);

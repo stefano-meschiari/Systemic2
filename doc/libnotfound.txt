@@ -1,0 +1,17 @@
+----------------------------------------------------------------------
+Systemic could not find the libsystemic shared library (a file that is usually called "libsystemic.so" or "libsystemic.dylib"). 
+
+A few possible solutions:
+- Make sure that the shared library exists in the Systemic directory. Type "ls" and check. If it is not there, then:
+  * on Linux, re-run the Makefile (check the compilation instructions)
+  * on Mac, re-download the binary Systemic package.
+
+- On Linux, use Systemic.sh to start Systemic. This script sets the library path up for you.
+
+- If you are running Systemic as an R package, make sure that the LD_LIBRARY_PATH environment is set up so that R can find the library. It is as easy as
+
+export LD_LIBRARY_PATH="/path/to/systemic:$LD_LIBRARY_PATH"
+
+from your shell, before running R.
+----------------------------------------------------------------------
+@@libnotfound@@

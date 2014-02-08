@@ -6,8 +6,9 @@ if (!exists(".gui")) {
 
 options(systemic.url="http://www.stefanom.org/")
 options(help_type="html")
-options(max.print=100)
+options(max.print=200)
 options(systemic.autosave=FALSE)
+options(digits=10)
 
 .gui.version <- SYSTEMIC.VERSION
 .gui.env <- new.env()
@@ -30,10 +31,7 @@ if (.gui.os == "Linux") {
 	options(device='quartz')
 }
 
-idle <- function() {
-	if (file.exists(paste(.gui.path, "_stop", sep="")))
-		stop("Stopped by user")
-}
+
 
 .gui.event <- function(event, name = NA, size1 = NA, size2 = NA) {
 	if (.gui.debug.printevents)

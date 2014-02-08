@@ -1,6 +1,11 @@
 2.1400
 ======
-- 
+- Added a feature for smoother/faster plotting in GUI
+- Periodograms now print out the strongest peaks
+- Periodograms are zoomable
+- Fixed Cross-validation for fits with only one planet
+- New menu item to add random Gaussian noise to data
+- Smooth orbits plot from an error estimation object
 
 2.1300
 ======

@@ -905,9 +905,31 @@ ksave <- function(k, file) {
 	}
 }
 
+kfind.peaks <- function(mat, column='power') {
+    subm <- mat[which(diff(sign(diff(mat[, column]))) == -2)+1, ]
+    return(subm[order(subm[,column], decreasing=TRUE),])
+}
 
+print.periodogram <- function(x, what='peaks') {
+    
+    if (what == 'peaks') {
+        cat("# Peaks (sorted by power):\n")
+        print(attr(x, 'peaks')[, 1:3])
+        cat('# To print the full periodogram instead of power peaks, use\n',
+            '# print(var, what="periodogram")\n',
+            '# To save the periodogram, use write.f(var, file="p.txt")\n', sep="")
+    } else if (what == 'periodogram') {
+        print.matrix(x)
+        cat('# To print the power peaks instead, use\n',
+            '# print(var)\n',
+            '# To save the periodogram, use write.f(var, file="myfile.txt")\n', sep="")
+    }
+    if (is.null(attr(x, 'is.boot')))
+        cat("\n?(Note: The FAPs in this periodogram are roughly estimated analytically. Use kperiodogram.boot for a bootstrapped estimate.)\n")
 
-kperiodogram <- function(k, per_type = "all", samples = 20000, pmin = 0.5, pmax = 2e4, data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, 
+}
+
+kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 10,
 	overplot.window=TRUE, .keep.h = FALSE) {
 	# Returns a periodogram of the supplied time series. [7]
 	#
@@ -1008,11 +1030,18 @@ kperiodogram <- function(k, per_type = "all", samples = 20000, pmin = 0.5, pmax 
 	
 	if (plot)
 		plot(mat, overplot.window=overplot.window)
-		
-	return(mat)
+
+  attr(mat, "peaks") <- kfind.peaks(mat)[1:peaks, ]
+
+  if (print) {
+      print(mat, 'peaks')
+      return(invisible(mat))
+  } else {
+      return(mat)
+  }
 }
 
-kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = 20000, pmin = 0.5, pmax = 2e4, data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = 1, plot = FALSE,
+kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = 1, plot = FALSE, print = FALSE,
 	overplot.window=TRUE) {
 	# Returns a periodogram of the supplied time series, where the false alarm probabilities are estimated using a bootstrap method. [7]
 	#
@@ -1116,7 +1145,16 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = 20000
 	
 	if (plot)
 		plot(m, overplot.window=overplot.window)
-	
+
+  attr(mat, "peaks") <- kfind.peaks(mat)[1:peaks, ]
+  attr(mat, "is.boot") <- TRUE
+  if (print) {
+      print(mat, "peaks")
+      return(invisible(mat))
+  } else {
+      return(mat)
+  }
+
 	return(m)
 }
 
@@ -1255,7 +1293,7 @@ kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA) {
 		"If the output of a fit with (n+1) planets is larger than that of a fit with n planets,",
 		"it is likely the (n+1)-planets model is worse than the n-planets model \n"))
 		.k <- kclone(k)
-		kels(.k) <- kels(.k)[sort.list(kallels(.k)[, 'k'], decreasing=TRUE),]
+		kels(.k) <- kels(.k)[sort.list(kallels(.k)[, 'k'], decreasing=TRUE),,drop=FALSE]
 		.k$auto <- F
 		cat("# ", .k$nplanets, " planets\n")
 		ret <- c(kcrossval.l1o(.k))
@@ -1683,7 +1721,7 @@ krvcurve <- function(k, times=seq(from=min(ktrange(k)), to=max(ktrange(k)), leng
 	return(cbind(d[,TIME], d[,PRED]))
 }
 
-kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot=FALSE, dt=k$dt) {
+kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot=FALSE, print=FALSE, dt=k$dt) {
 	.check_kernel(k)
 	if (is.nan(k$epoch))
 		stop("Set the epoch of the kernel.")
@@ -1763,7 +1801,12 @@ kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot
 	
 	k$int.method <- .int.method
 	k$auto <- .auto
-	return(invisible(ret))
+
+  if (print) {
+      print(ret)
+      return(invisible(ret))
+  } else 
+      return(ret)
 }
 
 kel2x <- function(mu=1, q=1, e=0, i=0, p=0, n=0, l=0) {
@@ -1983,8 +2026,11 @@ print.integration <- function(int) {
 		}
 	}
 	
-	cat("\n?To access the elements evolution, use var$els[[i]]\n")
+	cat("\n?To access the elements evolution for planet i, use var$els[[i]]\n")
 	cat("?To access the cartesian evolution, use var$xyz[[i]]\n")
+  if (!is.null(int))
+      cat("?To access the transit times, use var$transits[[i]]\n")
+  cat("?To plot the results, use plot(var, what=c('a', 'ecc', 'lop', ...)\n")
 }
 
 save.systemic <- function(file) {
