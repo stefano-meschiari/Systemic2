@@ -1,5 +1,3 @@
-.systemic.loaded <- TRUE
-
 options(systemic.auto=FALSE)
 options(systemic.psamples=5e4)
 options(systemic.pmin=0.5)

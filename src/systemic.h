@@ -22,7 +22,7 @@
 #define INVALID_NUMBER (NAN)
 #define IS_INVALID(x) (isnan(x))
 
-#define SYSTEMIC_VERSION 2.1300
+#define SYSTEMIC_VERSION 2.1500
 
 #define MAX_LINE 8192
 
