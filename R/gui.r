@@ -31,8 +31,6 @@ if (.gui.os == "Linux") {
 	options(device='quartz')
 }
 
-
-
 .gui.event <- function(event, name = NA, size1 = NA, size2 = NA) {
 	if (.gui.debug.printevents)
 		cat(sprintf("%s,%s\n", event, name))
@@ -648,6 +646,7 @@ hook <- function(stage, fun) {
 .gui.path = ".temp"
 
 options(error=function() {})
+dev.off()
 
 .gui.event("start")
 .gui.startup()

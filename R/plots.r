@@ -7,8 +7,8 @@ systemic.palette <- systemic.theme.tomorrow
 systemic.palette.face <- systemic.theme.tomorrow.face
 
 systemic.plot.style <- function() {
-    par(systemic.par)
     palette(systemic.palette)
+    par(systemic.par)
 }
 
 systemic.plot.theme <- function(name) {
