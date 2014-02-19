@@ -3,12 +3,22 @@ systemic.par <- list()
 systemic.par$font.lab <- 2
 systemic.par$tck <- 0.02
 
+systemic.palette <- systemic.theme.tomorrow
+systemic.palette.face <- systemic.theme.tomorrow.face
+
 systemic.plot.style <- function() {
     par(systemic.par)
+    palette(systemic.palette)
 }
 
-plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, 
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, ...) {
+systemic.plot.theme <- function(name) {
+    systemic.palette <<- get(paste('systemic.theme.', name, sep=''))
+    systemic.palette.face <<- get(paste('systemic.theme.', name, '.face', sep=''))
+    cat("Theme set to ", name)
+}
+
+plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA,
+                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, ...) {
     .check_kernel(k)
     oldpar <- par(no.readonly=TRUE)	
     systemic.plot.style()
@@ -35,7 +45,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
         m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
 
-        ylim <- c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
+        ylim <- if (is.na(ylim)) c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
 
         if (! is.na(wrap)) {
             if (wrap == T) wrap <- k[1, 'period']
@@ -44,13 +54,13 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             m <- m[order(m[, TIME]), ]
         }
 
-        suppressWarnings(plotCI(data[,TIME], data[, SVAL], data[, ERR], xlab="Time [JD]", ylab="Radial velocity [m/s]", ylim=ylim, col=data[,SET]+2, pch=20, gap=0, ...))
+        suppressWarnings(plotCI(data[,TIME], data[, SVAL], data[, ERR], sfrac=0, xlab="Time [JD]", ylab="Radial velocity [m/s]", ylim=ylim, col=data[,SET]+2, pch=pch, gap=0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
         lines(m[,TIME], m[,VAL])
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
         
         if (plot.residuals) {
-            suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]",  col=data[,SET]+2, pch=20, gap = 0, ...))
+            suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]",  col=data[,SET]+2, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
         }
@@ -84,7 +94,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
             m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
             
-            ylim <- c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
+            ylim <- if (is.na(ylim)) c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
             
             if (! is.na(wrap)) {
                 data_i[, TIME] <- data_i[, TIME] %% k[i, 'period']
@@ -92,7 +102,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
                 m <- m[order(m[, TIME]), ]
             }
             xlim <- c(min(data_i[, TIME]), max(data_i[, TIME]))
-            plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], xlab="Time [JD]", ylab=sprintf("RV, Planet %d [m/s]", i), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=20, gap = 0)
+            plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab="Time [JD]", ylab=sprintf("RV, Planet %d [m/s]", i), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
             lines(m[,TIME], m[,VAL], xlim=xlim)
             
             axis(3, labels=FALSE)
@@ -101,7 +111,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         }
         
         if (plot.residuals) {
-            plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]",  col=data[,SET]+2, gap = 0, pch=20)
+            plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", sfrac=0, col=data[,SET]+2, gap = 0, pch=pch, pt.bg=systemic.palette.face[data[,SET]+2])
             
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
@@ -179,7 +189,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
                 warning(sprintf("Potentially misdetected period for linear ephemeris fit [P = %e d] (or huge TTVs?)\nSpecify a better initial starting guess by supplying the transiting.per argument to plot", fit$coefficients[2]))
             }
             
-            suppressWarnings(plotCI(kd[, TIME], omc, kd[, ERR], xlab="Time [d]", ylab="O-C [d]", pch=20, gap=0))
+            suppressWarnings(plotCI(kd[, TIME], omc, kd[, ERR], xlab="Time [d]", ylab="O-C [d]", pch=pch, sfrac=0, gap=0))
             
             lines(tsamp, (-fit$coefficients[1] - fit$coefficients[2] * idx2) + ret$transits[[pl]], col="red")
             

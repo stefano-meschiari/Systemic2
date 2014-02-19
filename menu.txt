@@ -165,6 +165,7 @@ Show working directory||$getwd()
 -
 Help on function||!?function@ins@
 Show function arguments||!args(@ins@)
+What caused the last error?||$traceback()
 
 Editor
 New...|meta alt N|%edit.new

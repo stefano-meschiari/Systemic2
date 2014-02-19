@@ -5,6 +5,13 @@
 # Autosave kernels in the autosave/ directory
 options(systemic.autosave = TRUE)
 
+# Change the palette here (see R/colors.r for themes)
+systemic.palette <- systemic.theme.tomorrow
+systemic.palette.face <- systemic.theme.tomorrow.face
+
+# Set the default graphic device
+
+
 # This is the startup message
 cat(sprintf('Hello master %s!\nThis is Console %.4f speaking, %s.\n(c) 2013-2014 Stefano Meschiari, >>>http://www.stefanom.org\nPlease cite >>>http://adsabs.harvard.edu/abs/2009PASP..121.1016M when you use this software.\n?* Type quickstart() to get started.\n?* Type tutorial() to view a brief tutorial.\n?* Type acknowledgments() to view the license and a list of acknowledgments.\n',
 	Sys.getenv("USER"), SYSTEMIC.VERSION, R.version.string))
