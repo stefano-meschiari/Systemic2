@@ -2,14 +2,16 @@
 # Tomorrow palette
 # https://github.com/chriskempson/tomorrow-theme
 systemic.theme.tomorrow <- c(
-    'black',
+    '#000000',
     '#4271ae',
     '#c82829',
     '#718c00',
     '#8959a8',
     '#3e999f',
     '#f5871f',
-    '#eab700'
+    '#eab700',
+    '#efefef',
+    '#d6d6d6'
 )
 
 systemic.theme.tomorrow.face <- adjustcolor(systemic.theme.tomorrow, offset=c(0.2, 0.2, 0.2, 0.2))

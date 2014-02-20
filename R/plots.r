@@ -18,7 +18,7 @@ systemic.plot.theme <- function(name) {
 }
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA,
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, ...) {
+                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, ...) {
     .check_kernel(k)
     oldpar <- par(no.readonly=TRUE)	
     systemic.plot.style()
@@ -55,7 +55,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         }
 
         suppressWarnings(plotCI(data[,TIME], data[, SVAL], data[, ERR], sfrac=0, xlab="Time [JD]", ylab="Radial velocity [m/s]", ylim=ylim, col=data[,SET]+2, pch=pch, gap=0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
-        lines(m[,TIME], m[,VAL])
+        lines(m[,TIME], m[,VAL], lwd=lwd)
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
         
@@ -103,7 +103,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             }
             xlim <- c(min(data_i[, TIME]), max(data_i[, TIME]))
             plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab="Time [JD]", ylab=sprintf("RV, Planet %d [m/s]", i), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
-            lines(m[,TIME], m[,VAL], xlim=xlim)
+            lines(m[,TIME], m[,VAL], xlim=xlim, lwd=lwd)
             
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
@@ -125,8 +125,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         pr <- kperiodogram(k, per_type="res", samples=getOption("systemic.psamples", 3e4), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4))
         
-        plot(p, overplot.window = TRUE)
-        plot(pr, overplot.window = TRUE)
+        plot(p, overplot.window = TRUE, lwd=lwd)
+        plot(pr, overplot.window = TRUE, lwd=lwd)
 
     } else if (type == "residuals") {
         
@@ -191,7 +191,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             
             suppressWarnings(plotCI(kd[, TIME], omc, kd[, ERR], xlab="Time [d]", ylab="O-C [d]", pch=pch, sfrac=0, gap=0))
             
-            lines(tsamp, (-fit$coefficients[1] - fit$coefficients[2] * idx2) + ret$transits[[pl]], col="red")
+            lines(tsamp, (-fit$coefficients[1] - fit$coefficients[2] * idx2) + ret$transits[[pl]], col="red", lwd=lwd)
             
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
@@ -231,14 +231,14 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         for (hs in h) {
             if (! density) {
                 if (! add)
-                    plot(c(hs$breaks, hs$breaks[length(hs$breaks)]), c(0, hs$density, 0), col=b, xlim=xlim, ylim=ylim, type="S", lwd=2, xlab="Normalized residuals", ylab="Density")
+                    plot(c(hs$breaks, hs$breaks[length(hs$breaks)]), c(0, hs$density, 0), col=b+1, xlim=xlim, ylim=ylim, type="S", lwd=lwd, xlab="Normalized residuals", ylab="Density")
                 else
-                    lines(c(hs$breaks, hs$breaks[length(hs$breaks)]), c(0, hs$density, 0), col=b, xlim=xlim, ylim=ylim, type="S", lwd=2)
+                    lines(c(hs$breaks, hs$breaks[length(hs$breaks)]), c(0, hs$density, 0), col=b+1, xlim=xlim, ylim=ylim, type="S", lwd=lwd)
             } else {
                 if (! add)
-                    plot(hs$x, hs$y, xlim=xlim, ylim=ylim, lwd=2, col=b, xlab="Normalized residuals", ylab="Density", type="l", ...)
+                    plot(hs$x, hs$y, xlim=xlim, ylim=ylim, lwd=lwd, col=b+1, xlab="Normalized residuals", ylab="Density", type="l", ...)
                 else
-                    lines(hs$x, hs$y, xlim=xlim, ylim=ylim, lwd=2, col=b, xlab="Normalized residuals", ylab="Density", ...)
+                    lines(hs$x, hs$y, xlim=xlim, ylim=ylim, lwd=lwd, col=b+1, xlab="Normalized residuals", ylab="Density", ...)
             }
             add <- TRUE
             b <- b+1
