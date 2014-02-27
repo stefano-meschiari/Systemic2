@@ -43,6 +43,7 @@ if (! exists('.systemic.loaded')) {
     .systemic.functions <- new.env()
     sys.source("functions.r", .systemic.functions)
     sys.source("xgrid.r", .systemic.functions)
+    sys.source("colors.r", .systemic.functions)
     sys.source("plots.r", .systemic.functions)
     sys.source("utils.r", .systemic.functions)
     attach(.systemic.functions)
