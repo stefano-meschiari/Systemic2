@@ -6,8 +6,7 @@
 options(systemic.autosave = TRUE)
 
 # Change the palette here (see R/colors.r for themes)
-systemic.palette <- systemic.theme.tomorrow
-systemic.palette.face <- systemic.theme.tomorrow.face
+systemic.plot.theme('tomorrow')
 
 # Set the default graphic device
 

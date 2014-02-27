@@ -1,4 +1,3 @@
-
 systemic.par <- list()
 systemic.par$font.lab <- 2
 systemic.par$tck <- 0.02
@@ -9,12 +8,6 @@ systemic.palette.face <- systemic.theme.tomorrow.face
 systemic.plot.style <- function() {
     palette(systemic.palette)
     par(systemic.par)
-}
-
-systemic.plot.theme <- function(name) {
-    systemic.palette <<- get(paste('systemic.theme.', name, sep=''))
-    systemic.palette.face <<- get(paste('systemic.theme.', name, '.face', sep=''))
-    cat("Theme set to ", name)
 }
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA,

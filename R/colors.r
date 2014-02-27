@@ -1,4 +1,3 @@
-
 # Tomorrow palette
 # https://github.com/chriskempson/tomorrow-theme
 systemic.theme.tomorrow <- c(
@@ -14,7 +13,7 @@ systemic.theme.tomorrow <- c(
     '#d6d6d6'
 )
 
-systemic.theme.tomorrow.face <- adjustcolor(systemic.theme.tomorrow, offset=c(0.2, 0.2, 0.2, 0.2))
+systemic.theme.tomorrow.face <- adjustcolor(systemic.theme.tomorrow, 0.75)
 
 # Default R palette
 systemic.theme.r <- palette("default")

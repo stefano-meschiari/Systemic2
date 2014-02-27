@@ -190,9 +190,12 @@ Show integration accuracy parameters||$sprintf("%e %e %e", @kernel@$abs.acc, @ke
 Set integration accuracy (RK/BS)||!@kernel@$abs.acc <- @kernel@$rel.acc <- @ins@
 Set integration dt (SWIFT)||!@kernel@$dt <- @ins@
 -
-Theme: tomorrow||!systemic.plot.theme('tomorrow') @@ You can make this permanent by editing the file R/startup.r
+Theme: tomorrow||!systemic.plot.theme('tomorrow')
+Theme: R default||!systemic.plot.theme('r')
 - 
 Turn off auto-save||!options(systemic.autosave=FALSE)
+-
+Save options||@print('?You can save these options by editing the file R/startup.r')
 
 Help
 Quickstart||$quickstart()

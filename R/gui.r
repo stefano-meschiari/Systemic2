@@ -630,7 +630,7 @@ tutorial <- function(which="rv") {
 }
 
 quickstart <- function() {
-	edit.script("doc/quickstart.txt")
+    edit.script("doc/quickstart.txt")
 }
 
 .gui.hooks <- list()
@@ -642,6 +642,22 @@ hook <- function(stage, fun) {
 		stop("stage should be one of 'before' or 'after'")
 	.gui.hooks[[stage]] <<- c(.gui.hooks[[stage]], fun)
 }
+
+systemic.plot.theme <- function(name) {
+    col2hex <- function(c) {
+        c <- col2rgb(c, alpha=TRUE)
+        return(rgb(c['red',], c['green',], c['blue',], c['alpha',], maxColorValue=255))
+    }
+    systemic.palette <<- get(paste('systemic.theme.', name, sep=''))
+    systemic.palette.face <<- get(paste('systemic.theme.', name, '.face', sep=''))
+    cat("Theme set to ", name, "\n")
+    for (i in 2:length(systemic.palette)) {
+        
+        .gui.event(paste('#palette', i, sep=""), col2hex(systemic.palette.face[i]))
+    }
+    .gui.event("#updated_palette")
+}
+    
 
 .gui.path = ".temp"
 
