@@ -77,6 +77,7 @@ Tasks
 Minimize|meta M|minimize
 Minimize 1-D|meta shift M|!kminimize1d(@kernel@, @ins@, 'period')
 Minimize, Differential Evolution||!kminimize(@kernel@, iters=5000, algo=DIFFEVOL, de.CR=0.2, de.NPfac=10, de.Fmin=0.5, de.Fmax=1.0, de.use.steps=TRUE)
+Minimize, Differential Evolution, Random IC||!kminimize(@kernel@, iters=5000, algo=DIFFEVOL, de.CR=0.2, de.NPfac=10, de.Fmin=0.5, de.Fmax=1.0, de.use.steps=FALSE)
 Minimize, Simulated Annealing||!kminimize(@kernel@, iters=5000, algo=SA, sa.T0=0.5*@kernel@$chi2, sa.alpha=2, sa.chains=4)
 Minimize using...||[[
 	cat("?Set the min.func property to change the objective function of the minimizer. Can be a string (one of: chi2, chi2_nr, rms, jitter, chi2rvs, chi2tts, loglik), or a custom function.\n\n")
