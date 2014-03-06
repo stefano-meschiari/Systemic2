@@ -1,5 +1,3 @@
-.systemic.loaded <- TRUE
-
 options(systemic.auto=FALSE)
 options(systemic.psamples=5e4)
 options(systemic.pmin=0.5)
@@ -929,7 +927,7 @@ print.periodogram <- function(x, what='peaks') {
 
 }
 
-kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 10,
+kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25,
 	overplot.window=TRUE, .keep.h = FALSE) {
 	# Returns a periodogram of the supplied time series. [7]
 	#

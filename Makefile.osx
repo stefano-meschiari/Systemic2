@@ -125,7 +125,10 @@ LUAJIT=/bin/luajit-2.0.0-beta9
 update_binding:
 	$(LUAJIT) lua/rparse.lua
 
-package: clean cleanreqs reqs macosx utils/systemic_cli 
+update_ui:
+	cd ../SystemicGui; ant
+
+package: clean cleanreqs reqs macosx utils/systemic_cli update_ui
 	$(LUA) lua/libs.lua libsystemic.dylib
 	- rm -R $(PACKAGE_DIR)/mac
 	mkdir $(PACKAGE_DIR)/mac

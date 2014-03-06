@@ -1,3 +1,13 @@
+2.1600 [March 6th, 2014]
+========================
+- New default color scheme. Color schemes can be switched (under the Options menu)
+- New menu items in periodogram plots
+- Lifted limitation on the number of planets. Performance in the user interface decreases noticeably past ~15 planets (because of data being shuttled back and forth between the core and the GUI). This will be addressed in a future update.
+
+2.1500
+======
+- Fixed a bug for users that had locale settings using "," (or another character) as their decimal separator. The dot character is now used consistently throughout the interface. (credit for reporting: Brice-Olivier Demory)
+
 2.1400
 ======
 - Added a feature for smoother/faster plotting in GUI
