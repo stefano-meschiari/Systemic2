@@ -604,7 +604,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     invisible()
 }
 
-plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE) {
+plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
     oldpar <- par(no.readonly=TRUE)	
     systemic.plot.style()
     on.exit(suppressWarnings(par(oldpar)))
@@ -621,13 +621,13 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE) {
         
         for (i in 1:int$nplanets) {
             if (i == 1)
-                plot(times, int$els[[i]][, el], col=i, 
-                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=ylab, type="l")
+                plot(times, int$els[[i]][, el], col=i+1, 
+                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=ylab, type="l", ...)
             else
-                lines(times, int$els[[i]][, el], col=i)
+                lines(times, int$els[[i]][, el], col=i+1, ...)
         }
         
-        legend("topright", inset=c(-0.35,0), col=1:int$nplanets, legend=sprintf("Planet %d", 1:int$nplanets), xpd=TRUE, lty=rep(1, int$nplanets), box.col="white")
+        legend("topright", inset=c(-0.35,0), col=(1:int$nplanets)+1, legend=sprintf("Planet %d", 1:int$nplanets), xpd=TRUE, lty=rep(1, int$nplanets), box.col="white")
     }
     
 
