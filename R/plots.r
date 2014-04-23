@@ -11,7 +11,7 @@ systemic.plot.style <- function() {
 }
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA,
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, ...) {
+                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, ...) {
     .check_kernel(k)
     oldpar <- par(no.readonly=TRUE)	
     systemic.plot.style()
@@ -23,8 +23,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     
     if (type == "rv") {
         rows <- if (plot.residuals) 2 else 1
-        
-        par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
+        if (layout)
+            par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
         
         data <- kdata(k)
         data <- data[data[, FLAG] == RV, ]
@@ -62,7 +62,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         stopifnot(k$nplanets > 0)
         np <- k$nplanets
         rows <- if (plot.residuals) np+1 else np
-        par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
+        if (layout)
+            par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
         
         k <- kclone(k)
         rvsamples <- getOption("systemic.rvsamples", 5000)
@@ -112,7 +113,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
 
     } else if (type == "periodogram") {
-        par(mfrow=c(2, 1), mar=c(4, 4, 1, 1))
+        if (layout)
+            par(mfrow=c(2, 1), mar=c(4, 4, 1, 1))
         
         p <- kperiodogram(k, samples=getOption("systemic.psamples", 3e4), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4))
         
@@ -122,8 +124,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         plot(pr, overplot.window = TRUE, lwd=lwd)
 
     } else if (type == "residuals") {
-        
-        par(mfrow=c(ceiling(k$nsets/2), 2), mar=c(4, 4, 1, 1))
+        if (layout)
+            par(mfrow=c(ceiling(k$nsets/2), 2), mar=c(4, 4, 1, 1))
         data <- kdata(k)
         kcalculate(k)
         for (i in 0:k$nsets-1) {
@@ -153,8 +155,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         if (is.na(transiting.planet)) 
             transiting.planet = unique(data[, TDS_PLANET])
-
-        par(mfrow=c(length(transiting.planet), 1), mar=c(4, 4, 1, 1))
+        if (layout)
+            par(mfrow=c(length(transiting.planet), 1), mar=c(4, 4, 1, 1))
         for (pl in transiting.planet) {
             
             kd <- data[data[, TDS_PLANET] == pl, ]			

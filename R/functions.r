@@ -963,7 +963,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 	#	time.col: the column to consider as the "time" column
 	#	err.col: the column to consider as the "uncertainty" column
 	#	pred.col: the column to consider as the "model value" column 
-	#	(used if per_res = "res")
+	#	(used if per_type = "res")
 	#	plot: plot the periodogram after the calculation
 	#	overplot.window: overplot the periodogram of the sampling 
 	#	window?
