@@ -178,32 +178,48 @@ if (! file.exists(.gui.autosave.dir)) {
 
 
 .gui.last.str <- "?"
-.gui.progress <- function(cur, max, state, str) {
-	if (! is.nullptr(state)) {
-		state <- as.struct(state, "ok_kernel")
-		.gui.event("progress", sprintf("%d|%d|%e|%s", cur, max, K_getChi2(state), .job))
-	} else {
-		if (str == "")
-			str <- .gui.last.str
-		else
-			.gui.last.str <<- str
-		.gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, str, .job))
-	}
-	
-	if (file.exists(paste(.gui.path, "_stop", sep=""))) {
-		cat("Stop requested, please wait...\n", file=stderr())
-		return(K_PROGRESS_STOP)
-	} else {
-		return(K_PROGRESS_CONTINUE)
-	}
-	
-}
+
 
 .gui.check.stop <- function() {
 	return(file.exists(paste(.gui.path, "_stop", sep="")))	
 }
 
-.gui.progresscb <- new.callback("iipZ)i", .gui.progress)
+.gui.progress.create <- function(k) {
+    k[['.progress']] <- function(cur, max, state, str) {
+        if (! is.nullptr(state)) {
+            state <- as.struct(state, "ok_kernel")
+            .gui.event("progress", sprintf("%d|%d|%e|%s", cur, max, K_getChi2(state), .job))
+        } else {
+            if (str == "")
+                str <- .gui.last.str
+            else
+                .gui.last.str <<- str
+            .gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, str, .job))
+        }
+
+       
+        
+        if (file.exists(paste(.gui.path, "_stop", sep=""))) {
+            cat("Stop requested, please wait...\n", file=stderr())
+            return(K_PROGRESS_STOP)
+        } else {
+            if (!is.null(k[['progress']])) {
+                ret <- k[['progress']](k, list(cur=cur, max=max, job=.job, str=str))
+                if (is.numeric(ret))
+                    return(ret)
+            }
+            return(K_PROGRESS_CONTINUE)
+        }
+    }
+    
+    k[['.progress.cb']] <- new.callback("iipZ)i", k[['.progress']])
+    return(k[['.progress.cb']])
+}
+
+
+
+
+
 .gui.scratch_model <- NULL
 
 .gui.periodogram.tol <- double(1)
@@ -235,7 +251,7 @@ if (! file.exists(.gui.autosave.dir)) {
 	
 	if ((! .gui.no.undo) && calculate)
 		.gui.add.undo(name, k)
-	K_setProgress(k$h, .gui.progresscb)
+	K_setProgress(k$h, .gui.progress.create(k))
 
 	ndata <- k$ndata
 	if (calculate) {
@@ -317,7 +333,7 @@ if (! file.exists(.gui.autosave.dir)) {
 detach('.systemic.functions')
 .kupdate <- .systemic.functions$kupdate
 .systemic.functions$kupdate <- function(k, calculate=TRUE) {
-	K_setProgress(k$h, .gui.progresscb)	
+	K_setProgress(k$h, .gui.progress.create(k))	
 	.kupdate(k, calculate=calculate)
 	.gui.update(k, calculate=calculate)
 	invisible()

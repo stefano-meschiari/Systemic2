@@ -1025,7 +1025,7 @@ void K_calculate(ok_kernel* k) {
             
             compiled[i][T_SCRATCH] = 0;
             int j = (int) compiled[i][T_SET];
-            compiled[i][T_SVAL] = compiled[i][T_VAL] - VGET(k->params, j) - VGET(k->params, P_RV_TREND) * (compiled[i][T_TIME] - epoch);
+            compiled[i][T_SVAL] = compiled[i][T_VAL] - VGET(k->params, j) - VGET(k->params, P_RV_TREND) * (compiled[i][T_TIME] - epoch) - VGET(k->params, P_RV_TREND_QUADRATIC) * (compiled[i][T_TIME] - epoch) * (compiled[i][T_TIME] - epoch);
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
             

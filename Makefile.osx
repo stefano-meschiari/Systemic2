@@ -4,7 +4,7 @@
 # 2012, Stefano Meschiari (http://www.stefanom.org)
 #
 # Please modify these paths:
-CC = /usr/bin/gcc
+CC = /usr/local/bin/gcc
 FORTRAN = /usr/local/bin/gfortran
 
 # If you have installed GSL & company in non-standard places, add them here:

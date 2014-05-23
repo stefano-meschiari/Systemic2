@@ -139,6 +139,8 @@
 #define P_DATA_NOISE10 19
 
 #define P_RV_TREND 20
+#define P_RV_TREND_QUADRATIC 21
+
 #define PARAMS_SIZE 100
 
 extern char * ok_orb_labels[ELEMENTS_SIZE];

@@ -150,6 +150,8 @@ Inflate uncertainty...||!d <- kdata(@kernel@); d[, ERR] <- d[, ERR] * @ins@; kda
 Select temporal subset...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
 Remove ouliers by normalized residual value...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
 Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel) <- d
+Remove median from data||$d <- kdata(@kernel@); d[,VAL] <- d[,VAL] - median(d[,VAL]); kdata(@kernel@) <- d
+Shift to JD = 2450000||$d <- kdata(@kernel@); d[,TIME] <- d[,TIME] - 2450000; kdata(@kernel@) <- d; @kernel@$epoch <- @kernel@$epoch - 2450000
 Other data manipulation examples...||$edit.script("doc/data_examples.R")
 -
 Get RV curve||!rv <- krvcurve(@kernel@)
