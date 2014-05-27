@@ -396,6 +396,7 @@ kels <- function(k, keep.first = FALSE) {
 	# * k$epoch		Epoch
 	# * k$mstar		Mass of the star
 	# * k$minimize.func	Function or property string (one of chi2, rms, jitter, chi2nr, chi2rvs, chi2tts, loglik) which specifies the value to minimize
+ # * k$progress
 	
 	if (! is.null(.kdollartable[[idx]])) {
 		.check_kernel(k)			
@@ -492,7 +493,20 @@ kget <- function(k, idx) {
 		} else 
 			stop("The second argument should either be a string (chi2, chi2_nr, rms, jitter, loglik) or a function to minimize")
 			
-	} else 
+	} else if (idx == "progress") {
+      stopifnot(is.function(value))
+      k[['.progress']] <- function(cur, max, state, str) {
+       ret <- value(k, list(cur=cur, max=max, job=.job, str=str))
+       if (!is.numeric(ret))
+           return(K_PROGRESS_CONTINUE)
+       else
+           return(ret)
+      }
+      
+      k[['.progress.cb']] <- new.callback("iipZ)i", k[['.progress']])
+      k[['progress']] <- value
+      K_setProgress(k[['h']], k[['.progress.cb']])
+  } else 
 		k[[idx]] <- value
 	return(k)
 }
