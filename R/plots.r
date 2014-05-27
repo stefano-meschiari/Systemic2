@@ -10,7 +10,7 @@ systemic.plot.style <- function() {
     par(systemic.par)
 }
 
-plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA,
+plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA, which.planets=1:k$nplanets,
                         breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, ...) {
     .check_kernel(k)
     oldpar <- par(no.readonly=TRUE)	
@@ -61,7 +61,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     } else if (type == "allrv") {
         stopifnot(k$nplanets > 0)
         np <- k$nplanets
-        rows <- if (plot.residuals) np+1 else np
+        rows <- if (plot.residuals) length(which.planets)+1 else length(which.planets)
         if (layout)
             par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
         
@@ -75,7 +75,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         ret <- list()
         
-        for (i in 1:np) {
+        for (i in which.planets) {
             masses <- k[, 'mass']
             k[i, 'mass'] <- 0
 
@@ -286,7 +286,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             q <- a*(1-e)
             rf <- a*(1-e^2)/(1+e*cos(f))
             lines(r*cos(t), r*sin(t), type='l', lwd=lwd, col=col)
-            if (plot.pericenter)
+            if (plot.pericenter && e > 0)
                 lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted", col=col)
             if (plot.planet)
                 points(rf*cos(f+pom), rf*sin(f+pom), pch=19, col=col)
@@ -457,12 +457,17 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
     }
     else if (show == "contour") {
         tmpBreaks <- breaks[breaks < 1]
+        
         contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
                 labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
                 col = col, xlim=xlim, ylim=ylim)
-        
-        if (show.points) 
+        if (show.points) {
             points(x[, 1], x[, 2], pch = pch, col = points.col)
+            contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
+                labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
+                col = col, xlim=xlim, ylim=ylim, add=TRUE)
+            
+        }
         if (! is.null(extra.points))
             points(extra.points[, 1], extra.points[, 2], pch=19, col='red')
     }

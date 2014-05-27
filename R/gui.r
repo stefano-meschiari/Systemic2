@@ -184,22 +184,29 @@ if (! file.exists(.gui.autosave.dir)) {
 	return(file.exists(paste(.gui.path, "_stop", sep="")))	
 }
 
+gui.progress <- function(cur=0, max=100, val=0, job="") {
+    .gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, val, job))
+    if (.gui.check.stop())
+        stop("User stopped the current job.")
+}
+
 .gui.progress.create <- function(k) {
     k[['.progress']] <- function(cur, max, state, str) {
-        if (! is.nullptr(state)) {
-            state <- as.struct(state, "ok_kernel")
-            .gui.event("progress", sprintf("%d|%d|%e|%s", cur, max, K_getChi2(state), .job))
-        } else {
-            if (str == "")
-                str <- .gui.last.str
-            else
-                .gui.last.str <<- str
-            .gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, str, .job))
+        if (is.null(k$silent)) {
+            if (! is.nullptr(state)) {
+                state <- as.struct(state, "ok_kernel")
+                .gui.event("progress", sprintf("%d|%d|%e|%s", cur, max, K_getChi2(state), .job))
+            } else {
+                if (str == "")
+                    str <- .gui.last.str
+                else
+                    .gui.last.str <<- str
+                .gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, str, .job))
+            }
         }
-
        
         
-        if (file.exists(paste(.gui.path, "_stop", sep=""))) {
+        if (.gui.check.stop()) {
             cat("Stop requested, please wait...\n", file=stderr())
             return(K_PROGRESS_STOP)
         } else {

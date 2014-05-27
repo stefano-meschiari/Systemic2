@@ -53,3 +53,49 @@ longest.prefix <- function(c) {
             return(ret)
         }, c), collapse=''))
 }
+
+kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, int.method=SWIFTRMVS, dt=min(k[,'period'])*0.01, criterion=NULL, print=TRUE, progress=TRUE, save=NULL) {
+
+    stable <- c()
+    
+    times <- c()
+    
+    samples <- sample(1:obj$length, sample.length)
+
+    k <- kclone(k)
+    k$silent <- TRUE
+    k$errors <- NULL
+    for (i in samples) {
+        for (j in 1:k$nplanets)
+            k[j,] <- obj[[j]][i, ]
+        io <- kintegrate(k, time, int.method=int.method, dt=dt)
+        if (!is.null(criterion))
+            st <- criterion(k, io)
+        else 
+            st <- !(io$survival.time < time)
+
+        stable <- c(stable, st)
+        if (exists('gui.progress'))
+            gui.progress(length(stable), sample.length, io$survival.time/365.25, sprintf("Integrating..."))
+                         
+        if (!st && progress) {
+            print(k)
+            cat("\n\n")
+            plot(io)
+        }                
+
+        times <- c(times, io$survival.time)
+    }
+
+    if (print)
+        cat(sprintf("%d/%d samples are unstable [fraction = %.2e]", sum(!stable), length(stable),
+                    sum(!stable)/length(stable)))
+
+    kscan.ret <- list(samples=samples, stable=stable, survival.times=times)
+    if (!is.null(save)) {
+        save(kscan.ret, file=save)
+    }
+    
+    return(invisible(kscan.ret))
+    
+}

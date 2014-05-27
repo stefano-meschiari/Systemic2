@@ -292,8 +292,13 @@ kels <- function(k, keep.first = FALSE) {
 			}
 			if (k$auto) kupdate(k)		
 			return(k)
-		}
-		stop("You must specify a second index")
+		} else {
+        for (i in PER:RADIUS)
+            K_setElement(k$h, idx1, i-1, value[[i]])
+        if (k$auto) kupdate(k)
+        return(k)
+    }
+
 	} else if (is.na(idx1)) {
 		idx2 = .label_to_index(idx2)
 
