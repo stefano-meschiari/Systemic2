@@ -553,21 +553,31 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
             MSET(k->system->elements, row, MA, TO_DEG(M));
             
         } else if (col == SEMIAMP) {
+            double Mcent = MSUN_TO_INT(k->Mstar);
             double per = MGET(k->system->elements, row, PER);
-            double K = value * 100;
-            double e = MGET(k->system->elements, row, ECC);
-            double Mstar = K_getMstar(k);
-            
-            if (k->system->flag & JACOBI)
-            for (int j = 1; j < row; j++)
+            double ecc = MGET(k->system->elements, row, ECC);
+        
+            if (k->system->flag & JACOBI) {
+             for (int j = 1; j < row; j++)
                 if (MGET(k->system->elements, j, PER) < per)
-                    Mstar += MGET(k->system->elements, j, MASS) * MJUP;
-                
-            double P = MGET(k->system->elements, row, PER);
-            double sini = sin(TO_RAD(MGET(k->system->elements, row, INC)));
+                    Mcent += MJUP_TO_INT(MGET(k->system->elements, j, MASS));
+            }   
+            double K = MPS_TO_AUPDAY(value);
+            double xi = K * cbrt(per/(2.*M_PI)) * sqrt(1.-ecc*ecc);
             
-            double Mp = K * sqrt(1-e*e) / sini * pow(Mstar, 2./3.) * pow(P*DAY/(2*M_PI*GGRAV), 1./3.) / MJUP;
-            MSET(k->system->elements, row, MASS, Mp);
+            double m = xi * pow(Mcent, 2./3.);
+            
+            int steps = 0;
+            while (abs(1-xi*pow(Mcent + m, 2./3.)/m) > 1e-6) {
+                m = xi * pow(Mcent + m, 2./3.);
+                
+                steps++;
+                if (steps > 20)
+                    break;
+            }
+            
+            MSET(k->system->elements, row, MASS, INT_TO_MJUP(m));
+            
         } else if (col == MEANLONGITUDE) {
             MSET(k->system->elements, row, MA, value - MGET(k->system->elements, row, LOP));
         } else if (col == SMA) {
@@ -640,10 +650,10 @@ double K_getElement(ok_kernel* k, int row, int col) {
                     Mcent += MGET(k->system->elements, j, MASS) * MJUP;
         }
         
-        double a = cbrt(DAY_TO_YEAR(per) * DAY_TO_YEAR(per) * (Mcent + mass)/MSUN);
-        double K = 2 * M_PI/per * mass * MJUP / Mcent * a / sqrt(1 - ecc*ecc);
+        double a = ok_acalc(per, Mcent/MSUN * K2, mass * MJUP/MSUN * K2);
+        
+        double K = 2 * M_PI/per * mass * MJUP / (Mcent + mass*MJUP) * a / sqrt(1 - ecc*ecc);
         return K * AU / (100.*DAY);
-
     } else if (col == TPERI) {
         return k->system->epoch - MGET(k->system->elements, row, MA) * MGET(k->system->elements, row, PER) / 360.;
     } else if (col == TRUEANOMALY) {

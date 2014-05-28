@@ -54,7 +54,7 @@ longest.prefix <- function(c) {
         }, c), collapse=''))
 }
 
-kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, int.method=SWIFTRMVS, dt=min(k[,'period'])*0.01, criterion=NULL, print=TRUE, progress=TRUE, save=NULL) {
+kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, int.method=SWIFTRMVS, dt=min(k[,'period'])*0.01, criterion=NULL, print=TRUE, progress=NULL, save=NULL) {
 
     stable <- c()
     
@@ -77,14 +77,11 @@ kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, i
         stable <- c(stable, st)
         if (exists('gui.progress'))
             gui.progress(length(stable), sample.length, io$survival.time/365.25, sprintf("Integrating..."))
-                         
-        if (!st && progress) {
-            print(k)
-            cat("\n\n")
-            plot(io)
-        }                
-
+                                              
         times <- c(times, io$survival.time)
+        if (!is.null(progress))
+            progress(length(stable), sample.length, stable, times)
+
     }
 
     if (print)

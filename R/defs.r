@@ -675,6 +675,7 @@ DATA.NOISE9 <- K_P_DATA_NOISE9 + 1
 DATA.NOISE10 <- K_P_DATA_NOISE10 + 1
 
 RV.TREND <- K_P_RV_TREND + 1
+RV.TREND.QUADRATIC <- K_P_RV_TREND_QUADRATIC + 1
 
 RV <- K_T_RV 
 TIMING <- K_T_TIMING
@@ -754,6 +755,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 .params[1:DATA_SETS_SIZE] <- sprintf("data%d", 1:DATA_SETS_SIZE)
 .params[(DATA_SETS_SIZE+1):(2*DATA_SETS_SIZE)] <- sprintf("data.noise%d", 1:DATA_SETS_SIZE)
 .params[RV.TREND] <- "rv.trend"
+.params[RV.TREND.QUADRATIC] <- "rv.trend.quadratic"
 
 .data <- sprintf("V%d", 1:DATA_SIZE)
 .data[TIME] <- 'time'

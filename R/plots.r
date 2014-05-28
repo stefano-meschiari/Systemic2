@@ -5,17 +5,13 @@ systemic.par$tck <- 0.02
 systemic.palette <- systemic.theme.tomorrow
 systemic.palette.face <- systemic.theme.tomorrow.face
 
-systemic.plot.style <- function() {
-    palette(systemic.palette)
-    par(systemic.par)
-}
+
+palette(systemic.palette)
+par(systemic.par)
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA, which.planets=1:k$nplanets,
                         breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, ...) {
     .check_kernel(k)
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
 
     if (is.nan(k$epoch)) {
         stop("No epoch set")
@@ -254,8 +250,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 }
 
 plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", axes=FALSE, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
+    oldpar <- par('pty')	
     par(pty="s")
     on.exit(suppressWarnings(par(oldpar)))
     
@@ -337,9 +332,6 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
 
 plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim, xlab, ylab, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
 
     ymax = max(p[, what])
     if (overplot.window)
@@ -387,11 +379,8 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
 
                                         # Replacement for ci2d
 .ci2d <- function (x, y = NULL, nbins = 400, method = c("bkde2D", "hist2d"), 
-                   bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 0.975), show = c("filled.contour", "contour", "image", "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, ...) 
+                   bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 0.975), show = c("filled.contour", "contour", "image", "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, add=FALSE, ...) 
 {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
     show <- match.arg(show)
     method <- match.arg(method)
     breaks <- unique(c(0, ci.levels, 1))
@@ -460,7 +449,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
         
         contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
                 labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
-                col = col, xlim=xlim, ylim=ylim)
+                col = col, xlim=xlim, ylim=ylim, add=add)
         if (show.points) {
             points(x[, 1], x[, 2], pch = pch, col = points.col)
             contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
@@ -482,10 +471,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
 }
 
 
-plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
+plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', ...) {
 
     x <- px
     y <- py
@@ -573,17 +559,19 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     
     if (type == "histogram") {
         a <- hist(datax, freq=FALSE, xlab=labx, main=ifelse(missing(main), labx, main), col=col, ...)
-        points(c(bfx), c(0.), pch=19,  col='red')
+        points(c(bfx), c(0.), pch=19,  col=bf.color)
         return(invisible())
     } else if (type == "scatter") {
-        plot(datax, datay, xlab=labx, ylab=laby, xlim=limx, ylim=limy, pch=pch, col=col,  ...)
-        points(c(bfx), c(bfy), pch=19, col='red')
+        if (!add) {
+            plot(datax, datay, xlab=labx, ylab=laby, xlim=limx, ylim=limy, pch=pch, col=col,  ...)
+        }
+        else 
+            points(datax, datay, pch=pch, col=col,  ...)
+        points(c(bfx), c(bfy), pch=19, col=bf.color)
         
-        axis(3, labels=FALSE)
-        axis(4, labels=FALSE)
     } else if (type == "smoothScatter") {
         smoothScatter(datax, datay, nrpoints=0, xlab=labx, ylab=laby, col=col, xlim=limx, ylim=limy, pch=pch, ...)
-        points(c(bfx), c(bfy), pch=19, col='red')
+        points(c(bfx), c(bfy), pch=19, col=bf.color)
         
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
@@ -596,7 +584,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     } else if (type == "contour") {
         fcol <- if (missing(col)) "black" else col
         
-        .ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col)
+        .ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col, add=add)
         
     } else if (type == "image") {
         fcol <- if (missing(col)) "black" else col
@@ -606,15 +594,13 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     } else if (type == "all.histograms") {
         stop("Not yet implemented.")
     }
-    title(main=ifelse(missing(main), paste(labx, "vs", laby), main))
+    if (!add)
+        title(main=ifelse(missing(main), paste(labx, "vs", laby), main))
     
     invisible()
 }
 
 plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
     par(mfrow=c(length(what), 1), mar=c(4, 4, 1, 8))
 
     all <- do.call("rbind", int$els)
