@@ -149,7 +149,7 @@ if (! file.exists(.gui.autosave.dir)) {
     dir.create(.gui.autosave.dir, showWarnings=FALSE)
 }
 .gui.autosave <- function() {
-    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > 60)) {
+    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > 120)) {
         .gui.last.autosave <<- Sys.time()
         fn <- paste(.gui.autosave.dir, "session_", .gui.session, sep="")
         .gui.event("#save_session", fn)

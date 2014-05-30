@@ -12,7 +12,7 @@ par(systemic.par)
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA, which.planets=1:k$nplanets,
                         breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, ...) {
     .check_kernel(k)
-
+    par(systemic.par)
     if (is.nan(k$epoch)) {
         stop("No epoch set")
     }
@@ -250,7 +250,9 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 }
 
 plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", axes=FALSE, ...) {
-    oldpar <- par('pty')	
+    oldpar <- par('pty')
+    par(systemic.par)
+
     par(pty="s")
     on.exit(suppressWarnings(par(oldpar)))
     
@@ -332,6 +334,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
 
 plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim, xlab, ylab, ...) {
+    par(systemic.par)
 
     ymax = max(p[, what])
     if (overplot.window)
@@ -471,7 +474,8 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
 }
 
 
-plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', ...) {
+plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', subset=1:e$length, ...) {
+    par(systemic.par)
 
     x <- px
     y <- py
@@ -525,6 +529,9 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     if (!missing(ylab)) {
         laby <- ylab
     }
+
+    datax <- datax[subset]
+    datay <- datay[subset]
     
     if (dev.factor > 0 && type=="histogram") {
         datax <- datax[datax > medx - dev.factor * devx & datax < medx + dev.factor * devx]
@@ -553,6 +560,8 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
             datax <- datax1
             datay <- datay1
         }
+        if (length(scatter.bins) == 1)
+            scatter.bins <- c(scatter.bins, scatter.bins)
         bins <- c(as.integer(diff(range(datax))/devx * scatter.bins), as.integer(diff(range(datay))/devy * scatter.bins))
     }
     
@@ -602,6 +611,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
 
 plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
     par(mfrow=c(length(what), 1), mar=c(4, 4, 1, 8))
+    par(systemic.par)
 
     all <- do.call("rbind", int$els)
     times <- (int$times-int$times[1])/(YEAR/DAY)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="88">
+<configurationDescriptor version="94">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="local">
@@ -43,8 +43,9 @@
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <codeAssistance>
       </codeAssistance>
@@ -65,8 +66,6 @@
         </cTool>
       </folder>
       <item path="local/f2c/arithchk.c" ex="false" tool="0" flavor2="2">
-        <cTool>
-        </cTool>
       </item>
       <item path="src/bootstrap.c" ex="false" tool="0" flavor2="2">
         <cTool>

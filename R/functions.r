@@ -726,6 +726,8 @@ kclone <- function(k) {
 	k2$datanames <- k$datanames
 	k2$auto <- k$auto
 	k2$.new <- TRUE
+  k2$errors <- k$errors
+  
 	reg.finalizer(k2$h, .free.kernel)
 	class(k2) <- "kernel"
 	

@@ -54,13 +54,13 @@ longest.prefix <- function(c) {
         }, c), collapse=''))
 }
 
-kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, int.method=SWIFTRMVS, dt=min(k[,'period'])*0.01, criterion=NULL, print=TRUE, progress=NULL, save=NULL) {
+kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, samples=NULL, int.method=SWIFTRMVS, dt=min(k[,'period'])*0.01, criterion=NULL, print=TRUE, progress=NULL, save=NULL) {
 
     stable <- c()
     
     times <- c()
-    
-    samples <- sample(1:obj$length, sample.length)
+    if (is.null(samples))
+        samples <- sample(1:obj$length, sample.length)
 
     k <- kclone(k)
     k$silent <- TRUE
@@ -95,4 +95,18 @@ kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, i
     
     return(invisible(kscan.ret))
     
+}
+
+kclone.from <- function(k, obj, index) {
+    .check_kernel(k)
+    stopifnot(class(obj) == "error.est")
+
+    k <- kclone(k)
+
+    for (j in 1:k$nplanets) 
+        k[j,] <- obj[[j]][index, ]
+    
+    k['par', ] <- obj$params[index, ]
+ 
+    return(k)
 }

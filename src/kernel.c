@@ -601,7 +601,7 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
                 dper = per_new - per;
                 per = per_new;
                 
-            } while (dper > 1e-10);
+            } while (abs(dper) > 1e-10);
             
             per = YEAR_TO_DAY(sqrt(a * a * a * MSUN / (Mcent + mass * MJUP)));
             MSET(k->system->elements, row, PER, per);
