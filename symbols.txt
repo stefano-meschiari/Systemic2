@@ -99,6 +99,9 @@ K_getActiveElements
 K_getNrPars
 K_setElementType
 K_getElementType
+K_getMinValue
+K_setMinimizedValues
+K_getMinimizedValues
 K_getXYZ
 K_setMstar
 K_getMstar
@@ -156,6 +159,7 @@ K_setParStep
 K_getParStep
 K_setParRange
 K_getParRange
+K_getMinimizedIndex
 K_save
 K_load
 K_addDataFromSystem

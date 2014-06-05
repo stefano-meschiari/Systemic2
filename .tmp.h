@@ -86,7 +86,7 @@ typedef struct ok_list {
     void* diags;
     int type;
 } ok_list;
-typedef struct ok_kernel_minimizer_pars {
+typedef struct ok_minimizer_pars {
     double** pars;
     double* steps;
     double* min;
@@ -206,6 +206,9 @@ int K_getActiveElements(ok_kernel* k);
 int K_getNrPars(ok_kernel* k);
 void K_setElementType(ok_kernel* k, int type);
 int K_getElementType(ok_kernel* k);
+double K_getMinValue(ok_kernel* k);
+void K_setMinimizedValues(ok_kernel* k, double* values);
+void K_getMinimizedValues(ok_kernel* k, double* values);
 gsl_matrix* K_getXYZ(ok_kernel* k);
 void K_setMstar(ok_kernel* k, double value); double K_getMstar(ok_kernel* k);
 void K_setEpoch(ok_kernel* k, double value); double K_getEpoch(ok_kernel* k);
@@ -248,6 +251,7 @@ void K_setParStep(ok_kernel* k, int idx, double value);
 double K_getParStep(ok_kernel* k, int idx);
 void K_setParRange(ok_kernel* k, int idx, double min, double max);
 void K_getParRange(ok_kernel* k, int idx, double* min, double* max);
+void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column);
 bool K_save(ok_kernel* k, FILE* fid);
 ok_kernel* K_load(FILE* fid, int skip);
 bool K_addDataFromSystem(ok_kernel* k, const char* filename);

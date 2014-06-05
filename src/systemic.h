@@ -22,7 +22,7 @@
 #define INVALID_NUMBER (NAN)
 #define IS_INVALID(x) (isnan(x))
 
-#define SYSTEMIC_VERSION 2.1600
+#define SYSTEMIC_VERSION 2.1700
 
 #define MAX_LINE 8192
 
@@ -390,7 +390,7 @@ typedef struct ok_list {
     int type;
 } ok_list;
 
-typedef struct ok_kernel_minimizer_pars {
+typedef struct ok_minimizer_pars {
     double** pars;
     double* steps;
     double* min;

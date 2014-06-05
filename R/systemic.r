@@ -45,6 +45,7 @@ if (! exists('.systemic.loaded')) {
     sys.source("xgrid.r", .systemic.functions)
     sys.source("colors.r", .systemic.functions)
     sys.source("plots.r", .systemic.functions)
+    sys.source("genoud.r", .systemic.functions)
     sys.source("utils.r", .systemic.functions)
     attach(.systemic.functions)
     .systemic.loaded <- TRUE

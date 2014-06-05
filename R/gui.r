@@ -8,6 +8,7 @@ options(systemic.url="http://www.stefanom.org/")
 options(help_type="html")
 options(max.print=200)
 options(systemic.autosave=FALSE)
+options(systemic.autosave.interval=120)
 options(digits=10)
 
 .gui.version <- SYSTEMIC.VERSION
@@ -149,7 +150,7 @@ if (! file.exists(.gui.autosave.dir)) {
     dir.create(.gui.autosave.dir, showWarnings=FALSE)
 }
 .gui.autosave <- function() {
-    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > 120)) {
+    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > getOption('systemic.autosave.interval'))) {
         .gui.last.autosave <<- Sys.time()
         fn <- paste(.gui.autosave.dir, "session_", .gui.session, sep="")
         .gui.event("#save_session", fn)

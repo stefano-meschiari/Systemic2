@@ -1349,6 +1349,16 @@ kminimize1d <- function(k, row, column, algo = NA, iters = 5000) {
 	return(k$chi2)
 }
 
+kminimized.indices <- function(k) {
+    idx1 <- integer(1)
+    idx2 <- integer(1)
+    v <- sapply(1:k$nrpars, function(i) {
+        K_getMinimizedIndex(k$h, i-1, idx1, idx2)
+        return(c(idx1, idx2+1))
+    })
+    return(v)
+}
+
 krange <- function(k, row, column) {
 	.check_kernel(k)
 
@@ -1357,7 +1367,7 @@ krange <- function(k, row, column) {
 
 	column <- .label_to_index(column)
 	
-	if (row == "par") {
+	if (row == "par" || row == -1) {
 		K_getParRange(k$h, column - 1, a, b)
 		return(c(a, b))
 	} else {
@@ -1375,7 +1385,7 @@ krange <- function(k, row, column) {
 	value[1] <- if (is.na(value[1])) NaN else value[1]
 	value[2] <- if (is.na(value[2])) NaN else value[2]
 	
-	if (row == "par") {
+	if (row == "par" || row == -1) {
 		K_setParRange(k$h, column - 1, value[1], value[2])		
 	} else {
 		stopifnot(row > 0 && row <= k$nplanets)
@@ -1407,7 +1417,7 @@ kstep <- function(k, row, column) {
 	
 	column <- .label_to_index(column)
 	
-	if (row == "par") {
+	if (row == "par" || row == -1) {
 		return(K_getParStep(k$h, column - 1))
 	} else {
 		stopifnot(row > 0 && row <= k$nplanets)

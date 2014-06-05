@@ -921,50 +921,6 @@ int K_getActivePars(ok_kernel* k) {
     return flags;
 }
 
-ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
-    ok_kernel_minimizer_pars mpars;
-    
-    mpars.npars = 0;
-    
-    // Count all the parameters to minimize on
-    for (int i = 1; i < k->system->nplanets + 1; i++)
-        for (int j = 0; j < ELEMENTS_SIZE; j++)
-            mpars.npars += (MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0);
-    for (int i = 0; i < k->parFlags->size; i++)
-        mpars.npars += (VIGET(k->parFlags, i) & MINIMIZE ? 1 : 0);
-
-    double** pars = (double**) malloc(sizeof(double*) * mpars.npars);
-    double* steps = (double*) malloc(sizeof(double) * mpars.npars);
-    int* type = (int*) malloc(sizeof(int) * mpars.npars);
-    double* min = (double*) malloc(sizeof(double) * mpars.npars);
-    double* max = (double*) malloc(sizeof(double) * mpars.npars);
-    int idx = 0;
-    for (int i = 1; i < k->system->nplanets + 1; i++)
-        for (int j = 0; j < ELEMENTS_SIZE; j++)
-            if (MIGET(k->plFlags, i, j) & MINIMIZE) {
-                pars[idx] = gsl_matrix_ptr(k->system->elements, i, j);
-                steps[idx] = MGET(k->plSteps, i, j);
-                type[idx] = j;
-                K_getElementRange(k, i, j, &(min[idx]), &(max[idx]));
-                idx++;
-            }
-    for (int i = 0; i < k->parFlags->size; i++)
-        if (VIGET(k->parFlags, i) & MINIMIZE) {
-            pars[idx] = gsl_vector_ptr(k->params, i);
-            steps[idx] = VGET(k->parSteps, i);
-            type[idx] = -1;
-            K_getParRange(k, i, &(min[idx]), &(max[idx]));
-            idx++;
-        }
-    
-    mpars.pars = pars;
-    mpars.steps = steps;
-    mpars.type = type;
-    mpars.min = min;
-    mpars.max = max;
-    return mpars;
-}
-
 int K_getNrPars(ok_kernel* k) {
     return K_getActivePars(k) + K_getActiveElements(k);
 }
@@ -1190,6 +1146,11 @@ void K_setMinFunc(ok_kernel* k, ok_callback f) {
     else
         k->minfunc = f;
 }
+
+double K_getMinValue(ok_kernel* k) {
+    return k->minfunc(k);
+};
+
 K_GET_C(minfunc, MinFunc, ok_callback)
 K_GETSET_C(intMethod, IntMethod, int)
 K_GETSET_C(intOptions, IntOptions, ok_integrator_options*)
@@ -1845,4 +1806,62 @@ void* ok_bridge_kernel_buf(void* buf, int n, ok_kernel* k) {
         ((ok_kernel**)buf)[n] = k;
     }
     return buf;
+}
+
+void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column) {
+    int npars = 0;
+    for (int i = 1; i < k->system->nplanets+1; i++)
+        for (int j = 0; j < ELEMENTS_SIZE; j++)
+            if ((MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0)) {
+                if (index == npars) {
+                    *row = i;
+                    *column = j;
+                    return;
+                }
+                npars++;
+            }
+    for (int i = 0; i < PARAMS_SIZE; i++)
+        if ((VIGET(k->parFlags, i) & MINIMIZE ? 1 : 0)) {
+            if (index == npars) {
+                *row = -1;
+                *column = i;
+                return;
+            }
+            npars++;
+        }
+    
+    *row = -1;
+    *column = -1;
+}
+
+void K_setMinimizedValues(ok_kernel* k, double* values) {
+    int npars = 0;
+    for (int i = 1; i < k->system->nplanets+1; i++)
+        for (int j = 0; j < ELEMENTS_SIZE; j++)
+            if ((MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0)) {
+                MSET(k->system->elements, i, j, values[npars]);
+                npars++;
+            }
+    for (int i = 0; i < PARAMS_SIZE; i++)
+        if ((VIGET(k->parFlags, i) & MINIMIZE ? 1 : 0)) {
+            VSET(k->params, i, values[npars]);
+            npars++;
+        }
+    k->flags |= NEEDS_COMPILE | NEEDS_SETUP;
+}
+
+void K_getMinimizedValues(ok_kernel* k, double* values) {
+    int npars = 0;
+    for (int i = 1; i < k->system->nplanets+1; i++)
+        for (int j = 0; j < ELEMENTS_SIZE; j++)
+            if ((MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0)) {
+                values[npars] = MGET(k->system->elements, i, j);
+                npars++;
+            }
+    for (int i = 0; i < PARAMS_SIZE; i++)
+        if ((VIGET(k->parFlags, i) & MINIMIZE ? 1 : 0)) {
+            values[npars] = VGET(k->params, i);
+            npars++;
+        }
+    k->flags |= NEEDS_COMPILE | NEEDS_SETUP;
 }

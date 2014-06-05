@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1600
+K_SYSTEMIC_VERSION <- 2.1700
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -122,6 +122,14 @@ K_DIFFEVOL <- 2
 K_SA <- 3
 K_INTEGRATION_SUCCESS <- 0
 K_INTEGRATORS_SIZE <- 4
+K_MV_VALUE <- 0
+K_MV_MIN <- 1
+K_MV_MAX <- 2
+K_MV_STEP <- 3
+K_MV_PARINDEX <- 4
+K_MV_PARTYPE <- 5
+K_MV_TYPE_ELEMENT <- 0
+K_MV_TYPE_PAR <- 1
 K_OK_SUCCESS <- 0
 K_OK_NOCONV <- 1
 K_PS_TIME <- 0
@@ -371,6 +379,12 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_setElementType(pi)v",
 # int K_getElementType(ok_kernel* k)
 "K_getElementType(p)i",
+# double K_getMinValue(ok_kernel* k)
+"K_getMinValue(p)d",
+# void K_setMinimizedValues(ok_kernel* k, double* values)
+"K_setMinimizedValues(p*d)v",
+# void K_getMinimizedValues(ok_kernel* k, double* values)
+"K_getMinimizedValues(p*d)v",
 # gsl_matrix* K_getXYZ(ok_kernel* k)
 "K_getXYZ(p)*<gsl_matrix>",
 # void K_setMstar(ok_kernel* k, double value)
@@ -485,6 +499,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_setParRange(pidd)v",
 # void K_getParRange(ok_kernel* k, int idx, double* min, double* max)
 "K_getParRange(pi*d*d)v",
+# void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column)
+"K_getMinimizedIndex(pi*i*i)v",
 # bool K_save(ok_kernel* k, FILE* fid)
 "K_save(p*<FILE>)B",
 # ok_kernel* K_load(FILE* fid, int skip)
