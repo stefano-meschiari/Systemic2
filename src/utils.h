@@ -203,10 +203,6 @@ gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol,
 
 bool ok_file_readable(char* fn);
 
-#ifndef PARSE
-ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k);
-#endif
-
 typedef struct {
     int length;
     int max_length;

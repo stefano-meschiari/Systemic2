@@ -178,6 +178,9 @@ ok_system** K_integrateRange(ok_kernel* k, double from, double to, unsigned int 
 gsl_matrix* K_integrateStellarVelocity(ok_kernel* k, double from, double to, unsigned int samples, ok_system** bag, int* error);
 ok_system** K_integrateProgress(ok_kernel* k, gsl_vector* times, ok_system** bag, int* error);
 
+#ifndef PARSE
+ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k);
+#endif
 
 // DEBUG
 void K_print(ok_kernel* k, FILE* f);
@@ -186,3 +189,4 @@ void K_setSeed(ok_kernel* k, unsigned long int seed);
 
 // BRIDGE UTILITIES
 void* ok_bridge_kernel_buf(void* buf, int n, ok_kernel* k);
+

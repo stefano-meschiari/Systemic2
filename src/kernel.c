@@ -1865,3 +1865,47 @@ void K_getMinimizedValues(ok_kernel* k, double* values) {
         }
     k->flags |= NEEDS_COMPILE | NEEDS_SETUP;
 }
+
+ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
+    ok_kernel_minimizer_pars mpars;
+    
+    mpars.npars = 0;
+    
+    // Count all the parameters to minimize on
+    for (int i = 1; i < k->system->nplanets + 1; i++)
+        for (int j = 0; j < ELEMENTS_SIZE; j++)
+            mpars.npars += (MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0);
+    for (int i = 0; i < k->parFlags->size; i++)
+        mpars.npars += (VIGET(k->parFlags, i) & MINIMIZE ? 1 : 0);
+
+    double** pars = (double**) malloc(sizeof(double*) * mpars.npars);
+    double* steps = (double*) malloc(sizeof(double) * mpars.npars);
+    int* type = (int*) malloc(sizeof(int) * mpars.npars);
+    double* min = (double*) malloc(sizeof(double) * mpars.npars);
+    double* max = (double*) malloc(sizeof(double) * mpars.npars);
+    int idx = 0;
+    for (int i = 1; i < k->system->nplanets + 1; i++)
+        for (int j = 0; j < ELEMENTS_SIZE; j++)
+            if (MIGET(k->plFlags, i, j) & MINIMIZE) {
+                pars[idx] = gsl_matrix_ptr(k->system->elements, i, j);
+                steps[idx] = MGET(k->plSteps, i, j);
+                type[idx] = j;
+                K_getElementRange(k, i, j, &(min[idx]), &(max[idx]));
+                idx++;
+            }
+    for (int i = 0; i < k->parFlags->size; i++)
+        if (VIGET(k->parFlags, i) & MINIMIZE) {
+            pars[idx] = gsl_vector_ptr(k->params, i);
+            steps[idx] = VGET(k->parSteps, i);
+            type[idx] = -1;
+            K_getParRange(k, i, &(min[idx]), &(max[idx]));
+            idx++;
+        }
+    
+    mpars.pars = pars;
+    mpars.steps = steps;
+    mpars.type = type;
+    mpars.min = min;
+    mpars.max = max;
+    return mpars;
+}
