@@ -159,7 +159,7 @@ kadd.planet <- function(k, period = 300, mass = 1, ma = 0, ecc = 0, lop = 0,
 	K_setElementRange(k$h, np, K_ECC, 0, 0.95)
 	K_setElementRange(k$h, np, K_MASS, 1e-4, 1e3)
 	
-	if (k$auto) kupdate(k)	
+	on.exit(if (k$auto) kupdate(k))
 	return()
 }
 
@@ -177,7 +177,7 @@ kremove.planet <- function(k, idx) {
 	K_removePlanet(k$h, idx)
 	K_compileData(k$h)
 	
-	if (k$auto) kupdate(k)	
+	on.exit(if (k$auto) kupdate(k))
 }
 
 
@@ -207,7 +207,7 @@ kels <- function(k, keep.first = FALSE) {
 	els <- kels(k, keep.first = T)
 	value <- rbind(els[1,], value)
 	K_setElements(k$h, .R_to_gsl_matrix(value, gc=F))
-	if (k$auto) kupdate(k)	
+	if (k$auto) kupdate(k)
 	return(k)
 }
 
@@ -397,7 +397,7 @@ kels <- function(k, keep.first = FALSE) {
 	# * k$mstar		Mass of the star
 	# * k$minimize.func	Function or property string (one of chi2, rms, jitter, chi2nr, chi2rvs, chi2tts, loglik) which specifies the value to minimize
  # * k$progress
-	
+  
 	if (! is.null(.kdollartable[[idx]])) {
 		.check_kernel(k)			
 		return(.kdollartable[[idx]](k$h))
@@ -1289,9 +1289,9 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
 	
 	.job <<- "Minimization"
 	stopifnot(k$ndata > 0)
-	
+  
+	on.exit(if (k$auto) kupdate(k))	
 	K_minimize(k$h, algo, iters, as.numeric(opts))
-	if (k$auto) kupdate(k)
 	
 	return(k$chi2)
 }
@@ -1341,10 +1341,7 @@ kminimize1d <- function(k, row, column, algo = NA, iters = 5000) {
 	if (row == "par") row = 0
 	K_1dminimize(k$h, algo, iters, row, column - 1, NULL)
 	
-	if (k$auto)
-		kupdate(k)
-	else
-		kcalculate(k)
+	on.exit(if (k$auto) kupdate(k))
 	
 	return(k$chi2)
 }

@@ -609,7 +609,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     invisible()
 }
 
-plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
+plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, xlab="Time - Epoch (years)", ylab='%s', ...) {
     par(mfrow=c(length(what), 1), mar=c(4, 4, 1, 8))
     par(systemic.par)
 
@@ -619,8 +619,7 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
         ymin <- min(all[, el], na.rm=TRUE)
         ymax <- max(all[, el], na.rm=TRUE)
         
-        xlab <- sprintf("Time - Epoch (years)")
-        ylab <- .elements.labels[[el]]
+        ylab <- sprintf(ylab, .elements.labels[[el]])
         
         for (i in 1:int$nplanets) {
             if (i == 1)

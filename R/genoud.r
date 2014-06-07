@@ -64,19 +64,26 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 }
 
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=50*k$nrpars,
-                         max.iterations=1000, F = 0.5, CR = 1, plot.status=NULL,
-                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), ...) {
+                         max.iterations=1000, F = 0.5, CR = 1, plot=NULL,
+                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, ...) {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
+    if (!is.null(plot)) {
+        if (length(plot) %% 2 != 0)
+            stop("Use pairs of parameter indices for the plot parameter, e.g. kminimize.de(..., plot=c(1, 2, 5, 6))")
+        par(mfrow=c(length(plot)/2, 1))
+    } 
     indices <- kminimized.indices(k)
     per.indices <- indices[1,] != -1 & indices[2,] == PER
     mass.indices <- indices[1,] != -1 & indices[2,] == MASS
     
     Domain <- kminimize.domain(k, log.period=log.period, log.mass=log.mass)
-    print(Domain)
-    print(indices)
-
-    kminimize.default <- function(v, ..., clone=mc.cores != 1) {
+    if (is.character(minimize.function) && minimize.function == 'default')
+        minimize.function <- function(k, ...) {
+            return(K_getMinValue(k$h))
+        }
+    
+    set.values <- function(v, ..., clone=mc.cores != 1) {
         if (clone)
             k2 <- kclone(k)
         else
@@ -92,31 +99,21 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             if (!check.function(k2))
                 return(NaN);
 
-        return(K_getMinValue(k2$h))
+        return(minimize.function(k2, v))
     }
 
-   
-
-    if (minimize.function=='default')
-        minimize.function <- kminimize.default
     
     x <- lapply(1:population, function(...) {
         return(runif(k$nrpars, Domain[,1], Domain[,2]))
     })
     
-    f <- unlist(mclapply(x, minimize.function, mc.cores=mc.cores))
+    f <- unlist(mclapply(x, set.values, mc.cores=mc.cores))
+    print(f)
     x <- lapply(1:length(x), function(i) c(x[[i]], f[i]))
-    
-    on.exit({ minimize.function(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
-    
-    
-    print(summary(f))
-    if (!is.null(plot.status)) {
-        pm <- sapply(x, function(p) return(p[plot.status]))
-        xrange <- range(pm[1,])
-        yrange <- range(pm[2,])
-    }
 
+    on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
+        
+    print(summary(f))
     
     for (reps in 1:max.iterations) {
         x <- mclapply(1:length(x), function(me) {
@@ -137,7 +134,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             if (!in.domain(v, Domain))
                 return(x[[me]])
             
-            fnew <- minimize.function(v, check.function=check.function)
+            fnew <- set.values(v, check.function=check.function)
             if (is.nan(fnew))
                 return(x[[me]])
 
@@ -151,13 +148,36 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         f <- sapply(x, function(v) v[length(v)])
         
         print(summary(f))
-        if (!is.null(plot.status)) {
-            pm <- sapply(x, function(p) return(p[plot.status]))
+        if (!is.null(plot)) {
+            pm <- sapply(x, function(p) return(p[plot]))
             col <- rep('black', length(x))
-            col[which.min(f)] <- 'red'
+            if (!all(is.nan(f)))
+                col[which.min(f)] <- 'red'
             plot(pm[1,], pm[2,], col=col, pch=19)
+            if (length(plot) > 2)
+                for (i in seq(3, length(plot), 2))
+                    plot(pm[i,], pm[i+1,], col=col, pch=19)
+      
         }
-        print(x[[which.min(f)]])
+        if (!all(is.nan(f))) {
+            a <- x[[which.min(f)]]
+            if (log.period)
+                a[per.indices] <- 10^a[per.indices]
+            if (log.mass)
+                a[mass.indices] <- 10^a[mass.indices]
+            print(x[[which.min(f)]])
+            if (!is.null(save)) {
+                set.values(x[[which.min(f)]], clone=FALSE)
+                ksave(k, save)
+            }
+        }
+        else {
+            print("All solutions are NaN for now (either the integrator returned NaN for all trial solutions, or no trial solutions satisfy check.function)")
+            
+        }
+
+        
+        
     }
 
     return(x[[which.min(f)]])
