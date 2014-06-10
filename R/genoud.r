@@ -64,7 +64,7 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=2*k$nrpars,
                          max.iterations=1000, F = 0.5, CR = 1, plot=NULL,
-                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, ...) {
+                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, ...) {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
@@ -138,7 +138,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             if (is.nan(fnew))
                 return(x[[me]])
 
-            if (is.nan(f[me]) || fnew < f[me]) {
+            r <- exp(-(fnew-f[me]))
+            
+            if (is.nan(f[me]) || (fnew < f[me] && !(r < runif(1))) {
                 return(c(v, fnew))
             }
             else
@@ -146,6 +148,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         }, mc.cores=mc.cores)
 
         f <- sapply(x, function(v) v[length(v)])
+
+        if (!is.nan(save.trials))
+            save(x, file=save.trials)
         
         print(summary(f))
         if (!is.null(plot)) {
@@ -171,6 +176,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
                 ksave(k, save)
             }
         }
+       
         else {
             print("All solutions are NaN for now (either the integrator returned NaN for all trial solutions, or no trial solutions satisfy check.function)")
             
