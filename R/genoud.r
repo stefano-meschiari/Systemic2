@@ -140,7 +140,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
             r <- exp(-(fnew-f[me]))
             
-            if (is.nan(f[me]) || (fnew < f[me] && !(r < runif(1))) {
+            if (is.nan(f[me]) || (fnew < f[me] && !(r < runif(1)))) {
                 return(c(v, fnew))
             }
             else
