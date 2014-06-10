@@ -226,9 +226,14 @@ kels <- function(k, keep.first = FALSE) {
 		return(kallels(k))
 	} else if (is.na(idx2)) {
 		
-		if (idx1 == "par") {
+		if (idx1 == "par" || idx1 == -1) {
 			return(kpars(k))
 		}
+
+    if (idx1 == "minimized") {
+        return(apply(kminimized.indices(k), 2, function(l) k[l[1], l[2]]))
+    }
+    
 		stopifnot(idx1 <= k$nplanets);
 		return(kallels(k)[idx1,,drop=FALSE])
 	} else if (is.na(idx1)) {
@@ -236,7 +241,7 @@ kels <- function(k, keep.first = FALSE) {
 		return(kallels(k)[,idx2,drop=FALSE])
 	} else {
 		idx2 = .label_to_index(idx2)				
-		if (idx1 == "par") {
+		if (idx1 == "par" || idx1 == -1) {
 			stopifnot(idx2 <= PARAMS_SIZE)
 			return(K_getPar(k$h, idx2-1))
 		} else {
@@ -280,24 +285,26 @@ kels <- function(k, keep.first = FALSE) {
 		return(k)
 	} else if (is.na(idx2)) {
 		if (is.null(value) || is.na(value)) {
-			kremove.planet(k, idx1)
-			if (k$auto) kupdate(k)
-			return(k)			
-		} else if (idx1 == "par") {
+			kremove.planet(k, idx1)		
+		} else if (idx1 == "par" || idx1 == -1) {
 			if (length(value) == 1) {
 				K_setPar(k$h, -1, value)	
 			} else {
 				for (i in 1:length(value))
 					K_setPar(k$h, i-1, value[[i]])
 			}
-			if (k$auto) kupdate(k)		
-			return(k)
-		} else {
+		} else if (idx1 == "minimized") {
+      nminimized.pars <- ncol(kminimized.indices(k))
+      stopifnot(nminimized.pars == length(value))
+      K_setMinimizedValues(k$h, value)
+    } else {
+        print(idx1)
         for (i in PER:RADIUS)
             K_setElement(k$h, idx1, i-1, value[[i]])
-        if (k$auto) kupdate(k)
-        return(k)
+        
     }
+    if (k$auto) kupdate(k)
+    return(k)
 
 	} else if (is.na(idx1)) {
 		idx2 = .label_to_index(idx2)
@@ -488,8 +495,10 @@ kget <- function(k, idx) {
 			k[['min.func']] <- function(h) {
 				return(value(k))
 			}
+
+      k[['.min.func']] <- new.callback("p)d", k[['min.func']])
 		
-			K_setMinFunc(k[['h']], new.callback("p)d", k[['min.func']]))
+			K_setMinFunc(k[['h']], k[['.min.func']])
 		} else 
 			stop("The second argument should either be a string (chi2, chi2_nr, rms, jitter, loglik) or a function to minimize")
 			
@@ -1290,7 +1299,7 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
 	.job <<- "Minimization"
 	stopifnot(k$ndata > 0)
   
-	on.exit(if (k$auto) kupdate(k))	
+	on.exit(if (k$auto) kupdate(k))
 	K_minimize(k$h, algo, iters, as.numeric(opts))
 	
 	return(k$chi2)
@@ -1366,11 +1375,11 @@ krange <- function(k, row, column) {
 	
 	if (row == "par" || row == -1) {
 		K_getParRange(k$h, column - 1, a, b)
-		return(c(a, b))
+		return(c(min=a, max=b))
 	} else {
 		stopifnot(row > 0 && row <= k$nplanets)
 		K_getElementRange(k$h, row, column - 1, a, b)
-		return(c(a, b))
+		return(c(min=a, max=b))
 	}
 }
 
@@ -1396,6 +1405,21 @@ krange <- function(k, row, column) {
 	if (k$auto) kupdate(k)
 	
 	return(k)
+}
+
+kranges <- function(k) {
+    .check_kernel(k)
+
+    min <- kels(k)
+    max <- kels(k)
+    for (i in 1:k$nplanets)
+        for (j in 1:ELEMENTS_SIZE) {
+            r <- krange(k, i, j)
+            min[i, j] <- r[1]
+            max[i, j] <- r[2]
+        }
+
+    return(list(min=min, max=max))
 }
 
 ksteps <- function(k, row, column) {

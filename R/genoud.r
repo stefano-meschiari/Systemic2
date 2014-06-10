@@ -49,12 +49,11 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 
         K_setMinimizedValues(k$h, v)
         K_calculate(k$h)
-
-        return(K_getMinValue(k$h))
+        if (minimize.function == 'default')
+            return(K_getMinValue(k$h))
+        else
+            minimize.function(k, v)
     }
-
-    if (minimize.function == 'default')
-        minimize.function = kminimize.default
 
     Domain <- kminimize.domain(k, log.period=log.period, log.mass=log.mass)
         
@@ -88,6 +87,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             k2 <- kclone(k)
         else
             k2 <- k
+        
         if (log.period)
             v[per.indices] = 10^v[per.indices]
         if (log.mass)
@@ -112,7 +112,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     x <- lapply(1:length(x), function(i) c(x[[i]], f[i]))
 
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
-        
+
     print(summary(f))
     
     for (reps in 1:max.iterations) {
@@ -175,9 +175,6 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             print("All solutions are NaN for now (either the integrator returned NaN for all trial solutions, or no trial solutions satisfy check.function)")
             
         }
-
-        
-        
     }
 
     return(x[[which.min(f)]])

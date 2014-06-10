@@ -65,6 +65,7 @@ Deselect all parameters|meta shift G|$kdeselect(@kernel@, 'all', 'all')
 -
 Set ranges...||!krange(@kernel@, 1, 'period') <- c(min@ins@, max)
 Set steps...||!kstep(@kernel@, 1, 'period') <- @ins@
+Show ranges||$kranges(@kernel@)
 Show steps||$ksteps(@kernel@)
 -
 Execute shell command||!! @ins@
@@ -132,8 +133,6 @@ Plot orbit||$plot.orbit(@kernel@)
 -
 Plot normalized residuals (histogram)||$plot(@kernel@, 'normres', density=FALSE)
 Plot normalized residuals (density)||$plot(@kernel@, 'normres', density=TRUE)
--
-Quantile-quantile plot of residuals||
 
 Data
 Print all data||$kdata(@kernel@)
