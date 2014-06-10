@@ -62,7 +62,7 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
     return(invisible(v))
 }
 
-kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=50*k$nrpars,
+kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=2*k$nrpars,
                          max.iterations=1000, F = 0.5, CR = 1, plot=NULL,
                          wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, ...) {
     .check_kernel(k)
