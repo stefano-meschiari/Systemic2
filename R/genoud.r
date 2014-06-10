@@ -62,9 +62,9 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
     return(invisible(v))
 }
 
-kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=2*k$nrpars,
-                         max.iterations=1000, F = 0.5, CR = 1, plot=NULL,
-                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, ...) {
+kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=min(40, 10*k$nrpars),
+                         max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
+                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, min.f.spread=1e-3, ...) {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
@@ -113,10 +113,16 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
 
+    dither <- F=='dither'
     print(summary(f))
     
     for (reps in 1:max.iterations) {
-        x <- mclapply(1:length(x), function(me) {
+        if (! any(is.nan(f))) 
+            min.f <- which.min(f)
+        else
+            min.f <- 1
+        
+        x <- mclapply(1:length(x), function(me, ...) {
             
             repeat {
                 idx <- sample(1:length(x), 3)
@@ -125,6 +131,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
             R <- sample(1:k$nrpars, 1)
             v <- sapply(1:k$nrpars, function(i) {
+                if (dither)
+                    F <- runif(1, 0.5, 1)
+                
                 if (runif(1) < CR || i == R)
                     return(x[[idx[1]]][i] + F * (x[[idx[2]]][i] - x[[idx[3]]][i]))
                 else
@@ -137,10 +146,20 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             fnew <- set.values(v, check.function=check.function)
             if (is.nan(fnew))
                 return(x[[me]])
-
-            r <- exp(-(fnew-f[me]))
             
-            if (is.nan(f[me]) || (fnew < f[me] && !(r < runif(1)))) {
+            ## if (me != min.f && !is.nan(f[me]) && fnew > f[me]) {
+            ##     spread <- 1/sd(f, na.rm=TRUE)
+            ##     r <- (exp(-(fnew-f[me])/spread) > runif(1))
+
+            ##     if (r) {
+            ##         print(c(spread, fnew-f[me]))
+            ##         stop()
+            ##     }
+            ## } else
+            ##     r <- FALSE
+            
+            r <- FALSE
+            if (is.nan(f[me]) || (fnew < f[me]) || r) {
                 return(c(v, fnew))
             }
             else
@@ -149,7 +168,8 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
         f <- sapply(x, function(v) v[length(v)])
 
-        if (!is.nan(save.trials))
+
+        if (!is.null(save.trials))
             save(x, file=save.trials)
         
         print(summary(f))
