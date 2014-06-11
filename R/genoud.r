@@ -132,7 +132,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
             R <- sample(1:k$nrpars, 1)
             if (dither)
-                    F <- runif(1, 0.5, 1)
+                F <- runif(1, 0.5, 1)
                 
             v <- sapply(1:k$nrpars, function(i) {
                 
@@ -170,7 +170,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
         f <- sapply(x, function(v) v[length(v)])
 
-        iters <- rbind(reps, min.f)
+        iters <- rbind(iters, c(reps, min.f))
         if (!is.null(save.trials)) {
             de.pars <- list(pop=x, iters=iters)
             save(de.pars, file=save.trials)
