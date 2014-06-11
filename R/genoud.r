@@ -115,7 +115,8 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
     dither <- F=='dither'
     print(summary(f))
-    
+
+    iters <- c(0, min(f))
     for (reps in 1:max.iterations) {
         if (! any(is.nan(f))) 
             min.f <- which.min(f)
@@ -130,9 +131,10 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             }
 
             R <- sample(1:k$nrpars, 1)
-            v <- sapply(1:k$nrpars, function(i) {
-                if (dither)
+            if (dither)
                     F <- runif(1, 0.5, 1)
+                
+            v <- sapply(1:k$nrpars, function(i) {
                 
                 if (runif(1) < CR || i == R)
                     return(x[[idx[1]]][i] + F * (x[[idx[2]]][i] - x[[idx[3]]][i]))
@@ -168,10 +170,11 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
         f <- sapply(x, function(v) v[length(v)])
 
-
-        if (!is.null(save.trials))
-            save(x, file=save.trials)
-        
+        iters <- rbind(reps, min.f)
+        if (!is.null(save.trials)) {
+            de.pars <- list(pop=x, iters=iters)
+            save(de.pars, file=save.trials)
+        }
         print(summary(f))
         if (!is.null(plot)) {
             pm <- sapply(x, function(p) return(p[plot]))
@@ -182,7 +185,6 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             if (length(plot) > 2)
                 for (i in seq(3, length(plot), 2))
                     plot(pm[i,], pm[i+1,], col=col, pch=19)
-      
         }
         if (!all(is.nan(f))) {
             a <- x[[which.min(f)]]
