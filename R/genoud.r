@@ -62,7 +62,7 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
     return(invisible(v))
 }
 
-kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=min(40, 10*k$nrpars),
+kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
                          max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
                          wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, min.f.spread=1e-3, ...) {
     .check_kernel(k)
@@ -170,7 +170,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
         f <- sapply(x, function(v) v[length(v)])
 
-        iters <- rbind(iters, c(reps, min.f))
+        iters <- rbind(iters, c(reps, min(f)))
         if (!is.null(save.trials)) {
             de.pars <- list(pop=x, iters=iters)
             save(de.pars, file=save.trials)
