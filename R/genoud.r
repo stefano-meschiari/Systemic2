@@ -1,3 +1,4 @@
+
 default.ranges <- list()
 default.ranges[[PER]] = c(0.1, 1e4)
 default.ranges[[MASS]] = c(1e-4, 1e3)
@@ -64,7 +65,8 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
                          max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
-                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, min.f.spread=1e-3, ...) {
+                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL,
+                         min.f.spread=1e-3, ..., initial.pop=NULL, type='rand') {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
@@ -102,14 +104,22 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         return(minimize.function(k2, v))
     }
 
-    
-    x <- lapply(1:population, function(...) {
-        return(runif(k$nrpars, Domain[,1], Domain[,2]))
-    })
+    if (is.null(initial.pop)) {
+        x <- lapply(1:population, function(...) {
+            return(runif(k$nrpars, Domain[,1], Domain[,2]))
+        })
+        initial.pop <- x
+    } else {
+        x <- initial.pop
+    }
     
     f <- unlist(mclapply(x, set.values, mc.cores=mc.cores))
-    print(f)
-    x <- lapply(1:length(x), function(i) c(x[[i]], f[i]))
+    if (mc.cores == 1)
+        apply.function <- lapply
+    else
+        apply.function <- mclapply
+
+    x <- apply.function(1:length(x), function(i) c(x[[i]], f[i]))
 
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
 
@@ -122,8 +132,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             min.f <- which.min(f)
         else
             min.f <- 1
-        
-        x <- mclapply(1:length(x), function(me, ...) {
+        if (dither)
+            F <- runif(1, 0.5, 1)
+        x <- apply.function(1:length(x), function(me, ...) {
             
             repeat {
                 idx <- sample(1:length(x), 3)
@@ -131,13 +142,19 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             }
 
             R <- sample(1:k$nrpars, 1)
-            if (dither)
-                F <- runif(1, 0.5, 1)
+
                 
             v <- sapply(1:k$nrpars, function(i) {
                 
-                if (runif(1) < CR || i == R)
-                    return(x[[idx[1]]][i] + F * (x[[idx[2]]][i] - x[[idx[3]]][i]))
+                if (runif(1) < CR || i == R) {
+                    if (type == 'rand') {
+                        return(x[[idx[1]]][i] + F * (x[[idx[2]]][i] - x[[idx[3]]][i]))
+                    } else if (type == 'best') {
+                        return(x[[min.f]][i] + F * (x[[idx[2]]][i] - x[[idx[3]]][i]))
+                    } else if (type == "current-to-best") {
+                        return(x[[me]][i] + F * (x[[min.f]][i] - x[[me]][i]) + F * (x[[idx[2]]][i] - x[[idx[3]]][i]))
+                    }
+                }
                 else
                     return(x[[me]][i])
             })
@@ -205,5 +222,5 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         }
     }
 
-    return(x[[which.min(f)]])
+    return(list(best=x[[which.min(f)]], initial.pop=initial.pop, iters=iters))
 }

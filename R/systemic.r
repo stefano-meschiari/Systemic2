@@ -25,6 +25,7 @@ if (! exists('.systemic.loaded')) {
     .require.library('MASS', hush=TRUE)
     .require.library('KernSmooth', hush=TRUE)
     .require.library('Hmisc', hush=TRUE)
+    .require.library('parallel', hush=TRUE)
 
     if (exists('.systemic.env')) {
         tryCatch({
