@@ -123,13 +123,13 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         
     }
 
-
-    f <- unlist(mclapply(x, set.values, mc.cores=mc.cores))
-
     if (mc.cores == 1)
         apply.function <- lapply
     else
         apply.function <- mclapply
+
+    f <- unlist(apply.function(x, set.values, mc.cores=mc.cores))
+
 
     x <- apply.function(1:length(x), function(i) c(x[[i]], f[i]))
 
