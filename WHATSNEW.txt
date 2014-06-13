@@ -1,3 +1,10 @@
+2.1700 [June 13th, 2014]
+========================
+- Fixed a bug in simplex that would crash the application if the minimizer encountered a NaN value.
+- Fixed a bug in the GUI that would crash the application in case of excessive text output.
+- Fixed naming of columns in the matrix returned by kdata().
+
+
 2.1600 [March 6th, 2014]
 ========================
 - New default color scheme. Color schemes can be switched (under the Options menu)

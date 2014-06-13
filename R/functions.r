@@ -640,7 +640,7 @@ kremove.data <- function(k, idx = -1) {
 }
 
 
-.kdata.names <- c("TIME", "VAL", "ERR", "TDS_PLANET", "TDS_FLAG", "FLAG", "SVAL", "PRED", "SET", "", "")
+.kdata.names <- c("TIME", "VAL", "ERR", "TDS_PLANET", "TDS_FLAG", "", "FLAG", "SVAL", "PRED", "SET", "")
 kdata <- function(k, idx = 'all') {
 	# Returns or sets the idx-th dataset (or all the data) contained in a kernel as a matrix. [5]
 	#

@@ -1,7 +1,7 @@
 write.f <- function(m, file="", col.names=TRUE, format="%18.10e", sformat="%18s", comments=NULL) {
     f <- file(file, "w")
 
-    if (!isOpen(file))
+    if (!isOpen(f))
         stop(sprintf("Could not open %s", file))
 
     if (!is.null(comments)) 
