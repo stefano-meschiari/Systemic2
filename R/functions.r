@@ -1323,6 +1323,7 @@ kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA) {
 		.k <- kclone(k)
 		kels(.k) <- kels(.k)[sort.list(kallels(.k)[, 'k'], decreasing=TRUE),,drop=FALSE]
 		.k$auto <- F
+
 		cat("# ", .k$nplanets, " planets\n")
 		ret <- c(kcrossval.l1o(.k))
 		print(ret[1])
@@ -1786,6 +1787,7 @@ kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot
 	.int.method <- k$int.method
 	
 	k$auto <- FALSE
+  on.exit(k$auto <- .auto)
 	k$int.method <- int.method
 	k$dt <- dt
 	stopifnot(length(times) >= 2, ! any(is.na(times)))

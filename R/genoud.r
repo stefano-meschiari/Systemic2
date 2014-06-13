@@ -66,7 +66,7 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
                          max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
                          wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL,
-                         min.f.spread=1e-3, ..., initial.pop=NULL, type='rand') {
+                         min.f.spread=1e-3, ..., initial.pop=NULL, use.k=FALSE, type='rand') {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
@@ -77,6 +77,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     indices <- kminimized.indices(k)
     per.indices <- indices[1,] != -1 & indices[2,] == PER
     mass.indices <- indices[1,] != -1 & indices[2,] == MASS
+    vinitial <- k['minimized']
     
     Domain <- kminimize.domain(k, log.period=log.period, log.mass=log.mass)
     if (is.character(minimize.function) && minimize.function == 'default')
@@ -112,8 +113,19 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     } else {
         x <- initial.pop
     }
-    
+
+    if (use.k) {
+        x[[1]] <- vinitial
+        if (log.period)
+            x[[1]][per.indices] <- log10(x[[1]][per.indices])
+        if (log.mass)
+            x[[1]][mass.indices] <- log10(x[[1]][mass.indices])
+        
+    }
+
+
     f <- unlist(mclapply(x, set.values, mc.cores=mc.cores))
+
     if (mc.cores == 1)
         apply.function <- lapply
     else

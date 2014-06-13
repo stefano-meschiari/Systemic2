@@ -199,7 +199,7 @@ Theme: R default||!systemic.plot.theme('r')
 - 
 Turn off auto-save||!options(systemic.autosave=FALSE)
 -
-Save options||@print('?You can save these options by editing the file R/startup.r')
+Save options||@cat('?You can save these options in the file R/startup.r\n')
 
 Help
 Quickstart||$quickstart()
