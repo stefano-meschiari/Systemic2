@@ -272,7 +272,7 @@ gui.progress <- function(cur=0, max=100, val=0, job="") {
 			flush(stdout())
 			
 			if (k$nrvs > 0) {
-				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=T)
+				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=TRUE)
 				m <- ok_resample_curve(attr(p, "h"), 0, 1, 1, 10000,
                                2000, .gui.periodogram.tol, 5, TRUE)
 

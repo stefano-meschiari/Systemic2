@@ -619,12 +619,12 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, xlab="Time - 
         ymin <- min(all[, el], na.rm=TRUE)
         ymax <- max(all[, el], na.rm=TRUE)
         
-        ylab <- sprintf(ylab, .elements.labels[[el]])
+        .ylab <- sprintf(ylab, .elements.labels[[el]])
         
         for (i in 1:int$nplanets) {
             if (i == 1)
                 plot(times, int$els[[i]][, el], col=i+1, 
-                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=ylab, type="l", ...)
+                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=.ylab, type="l", ...)
             else
                 lines(times, int$els[[i]][, el], col=i+1, ...)
         }

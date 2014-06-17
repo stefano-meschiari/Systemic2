@@ -21,7 +21,7 @@ options(systemic.pmax=1e4)
 }
 
 # Used internally to convert from a gsl_matrix (double) to an R matrix
-.gsl_matrix_to_R <- function(m, free = F, .keep.h = F) {
+.gsl_matrix_to_R <- function(m, free = FALSE, .keep.h = FALSE) {
 	dm <- c(ok_matrix_rows(m), ok_matrix_cols(m))
 	len <- dm[1] * dm[2]
 	v <- numeric(len)
