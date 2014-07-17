@@ -3,7 +3,8 @@
 - Fixed a bug in simplex that would crash the application if the minimizer encountered a NaN value.
 - Fixed a bug in the GUI that would crash the application in case of excessive text output.
 - Fixed naming of columns in the matrix returned by kdata().
-
+- Fixed a bug where the radial velocity curve or periodogram would look excessively jagged.
+- Fixed a bug in kperiodogram.boot where the function could crash.
 
 2.1600 [March 6th, 2014]
 ========================

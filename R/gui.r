@@ -236,6 +236,11 @@ gui.progress <- function(cur=0, max=100, val=0, job="") {
 .gui.rvsignal.tol[1] <- 1e-4
 
 .gui.update <- function(k, name = NA, calculate=TRUE) {
+    if (!is.finite(.gui.periodogram.tol[1]) || .gui.periodogram.tol[1] < 1e-7)
+        .gui.periodogram.tol[1] <- 1e-5
+    if (!is.finite(.gui.rvsignal.tol[1]) || .gui.rvsignal.tol[1] < 1e-7)
+        .gui.rvsignal.tol[1] <- 1e-4
+
 	if (class(k) == "character" && k == "all") {
 		for (v in ls(envir=globalenv())) {
 			k2 <- get(v, envir=globalenv())
