@@ -371,6 +371,7 @@ gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trial
         w[i] = (ok_periodogram_workspace*) malloc(sizeof(ok_periodogram_workspace));
         w[i]->per = NULL;
         w[i]->buf = NULL;
+        w[i]->calc_z_fap = false;
         mock[i] = ok_matrix_copy(data);
         if (i > 0) {
             rng[i] = gsl_rng_alloc(gsl_rng_default);

@@ -10,7 +10,7 @@ palette(systemic.palette)
 par(systemic.par)
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA, which.planets=1:k$nplanets,
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, ...) {
+                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, ...) {
     .check_kernel(k)
     par(systemic.par)
     if (is.nan(k$epoch)) {
@@ -205,8 +205,15 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         h <- list()
         cat("# Median, mad and results of K-S test compared to a unit gaussian\n")
         m <- matrix(nrow=k$nsets, ncol=4)
-        for (set in 1:k$nsets) {
-            ns <- nr[kd[, SET]==(set-1)]
+        nsets <- k$nsets
+        if (!separate.sets)
+            nsets <- 1
+        
+        for (set in 1:nsets) {
+            if (separate.sets)
+                ns <- nr[kd[, SET]==(set-1)]
+            else
+                ns <- nr
             m[set, 1] <- median(ns)
             m[set, 2] <- mad(ns)
             ks <- ks.test(ns, "pnorm")
@@ -237,7 +244,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         x <- seq(min(xlim), max(xlim), length.out=40)
         lines(x, dnorm(x), lty="dotted")
         
-        legend("topright", col=1:k$nsets, legend=sapply(k$datanames, basename), lty=rep(1, k$nsets), box.col="white")
+        legend("topright", col=1:nsets, legend=sapply(k$datanames, basename), lty=rep(1, k$nsets), box.col="white")
         colnames(m) <- c("median", "mad", "p.value", "statistic")
         rownames(m) <- sapply(k$datanames, basename)
         print(m)
@@ -249,7 +256,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     axis(3, labels=FALSE)
 }
 
-plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", axes=FALSE, ...) {
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, ...) {
     oldpar <- par('pty')
     par(systemic.par)
 
@@ -288,6 +295,18 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             if (plot.planet)
                 points(rf*cos(f+pom), rf*sin(f+pom), pch=19, col=col)
         }
+
+        if (plot.scale) {
+            span <- par('usr')
+            w <- diff(range(span))
+            da <- 2^ceil(log2(0.1*w))
+            x <- 0.9 * span[2]
+            y <- 0.9 * span[3]
+            lines(c(x-da, x),
+                  c(y, y), col='black', lwd=2)
+            text(x-0.5*da, y-0.05*w, adj=c(0.5, 0), labels=paste(da, 'AU'))
+        }
+        
     } else if ("error.est" %in% class(k)) {
         if (!is.null(k$element.type) && k$element.type != ASTROCENTRIC)
             stop("Currently only plots orbits for ASTROCENTRIC orbital elements.");
@@ -318,13 +337,13 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
                 obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
 
             plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE)
+                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE)
         }
 
         obj <- k$fit.els
         class(obj) <- c('matrix', '.orbit')
         plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                   lwd=lwd, col=col, xlab=xlab, ylab=ylab, add=TRUE)
+                   lwd=lwd, col=best.col, xlab=xlab, ylab=ylab, add=TRUE)
         
         
     } else {
@@ -477,8 +496,23 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
 plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', subset=1:e$length, ...) {
     par(systemic.par)
 
+    if (!is.null(px)) {
+        if (is.character(px[[2]]) && px[1] != 'par')
+            px[[2]] <- which(.allelements == px[[2]])
+        else
+            px[[2]] <- which(.params == px[[2]])
+    }
+    if (!is.null(py)) {
+        if (is.character(py[[2]]) && py[1] != 'par')
+            py[[2]] <- which(.allelements == py[[2]])
+        else
+            py[[2]] <- which(.params == py[[2]])
+    }
+
     x <- px
     y <- py
+
+    
     bfx <- 0
     bfy <- 0
     datax <- NULL
@@ -568,7 +602,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     
     if (type == "histogram") {
         a <- hist(datax, freq=FALSE, xlab=labx, main=ifelse(missing(main), labx, main), col=col, ...)
-        points(c(bfx), c(0.), pch=19,  col=bf.color)
+        points(c(bfx), c(0.), pch=19,  col=bf.color, ...)
         return(invisible())
     } else if (type == "scatter") {
         if (!add) {
@@ -576,7 +610,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
         }
         else 
             points(datax, datay, pch=pch, col=col,  ...)
-        points(c(bfx), c(bfy), pch=19, col=bf.color)
+        points(c(bfx), c(bfy), pch=19, col=bf.color, ...)
         
     } else if (type == "smoothScatter") {
         smoothScatter(datax, datay, nrpoints=0, xlab=labx, ylab=laby, col=col, xlim=limx, ylim=limy, pch=pch, ...)
@@ -619,12 +653,12 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, xlab="Time - 
         ymin <- min(all[, el], na.rm=TRUE)
         ymax <- max(all[, el], na.rm=TRUE)
         
-        ylab <- sprintf(ylab, .elements.labels[[el]])
+        .ylab <- sprintf(ylab, .elements.labels[[el]])
         
         for (i in 1:int$nplanets) {
             if (i == 1)
                 plot(times, int$els[[i]][, el], col=i+1, 
-                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=ylab, type="l", ...)
+                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=.ylab, type="l", ...)
             else
                 lines(times, int$els[[i]][, el], col=i+1, ...)
         }

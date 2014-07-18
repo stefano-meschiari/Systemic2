@@ -236,6 +236,11 @@ gui.progress <- function(cur=0, max=100, val=0, job="") {
 .gui.rvsignal.tol[1] <- 1e-4
 
 .gui.update <- function(k, name = NA, calculate=TRUE) {
+    if (!is.finite(.gui.periodogram.tol[1]) || .gui.periodogram.tol[1] < 1e-7)
+        .gui.periodogram.tol[1] <- 1e-5
+    if (!is.finite(.gui.rvsignal.tol[1]) || .gui.rvsignal.tol[1] < 1e-7)
+        .gui.rvsignal.tol[1] <- 1e-4
+
 	if (class(k) == "character" && k == "all") {
 		for (v in ls(envir=globalenv())) {
 			k2 <- get(v, envir=globalenv())
@@ -272,7 +277,7 @@ gui.progress <- function(cur=0, max=100, val=0, job="") {
 			flush(stdout())
 			
 			if (k$nrvs > 0) {
-				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=T)
+				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=TRUE)
 				m <- ok_resample_curve(attr(p, "h"), 0, 1, 1, 10000,
                                2000, .gui.periodogram.tol, 5, TRUE)
 

@@ -3,6 +3,23 @@ options(systemic.psamples=5e4)
 options(systemic.pmin=0.5)
 options(systemic.pmax=1e4)
 
+.sparse <- function(...) {
+    b <- names
+}
+
+
+systemic.names <- c(period='Period', mass='Mass', ma='Mean anomaly', ecc='Eccentricity',
+                    lop='Longitude of pericenter', inc='Inclination', node='Node',
+                    a='Semi-major axis', k='Semiamplitude', rv.trend='Linear trend',
+                    rv.quadratic.trend='Quadratic trend')
+systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
+                    lop='[deg]', inc='[deg]', node='[deg]',
+                    a='[AU]', k='[m/s]',
+                    rv.trend='[m/s]', rv.quadratic.trend='[m/s^2]')
+
+systemic.parnames <- c()
+systemic.parunits <- c()
+
 .free.gsl_matrix <- function(m) {
 	gsl_matrix_free(m)
 }
@@ -21,7 +38,7 @@ options(systemic.pmax=1e4)
 }
 
 # Used internally to convert from a gsl_matrix (double) to an R matrix
-.gsl_matrix_to_R <- function(m, free = F, .keep.h = F) {
+.gsl_matrix_to_R <- function(m, free = FALSE, .keep.h = FALSE) {
 	dm <- c(ok_matrix_rows(m), ok_matrix_cols(m))
 	len <- dm[1] * dm[2]
 	v <- numeric(len)
@@ -1070,7 +1087,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 }
 
 kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = 1, plot = FALSE, print = FALSE,
-	overplot.window=TRUE) {
+	overplot.window=TRUE, peaks=25) {
 	# Returns a periodogram of the supplied time series, where the false alarm probabilities are estimated using a bootstrap method. [7]
 	#
 	# If the first parameter is a kernel, then this function will return 
@@ -1174,11 +1191,11 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	if (plot)
 		plot(m, overplot.window=overplot.window)
 
-  attr(mat, "peaks") <- kfind.peaks(mat)[1:peaks, ]
-  attr(mat, "is.boot") <- TRUE
+  attr(m, "peaks") <- kfind.peaks(m)[1:peaks, ]
+  attr(m, "is.boot") <- TRUE
   if (print) {
-      print(mat, "peaks")
-      return(invisible(mat))
+      print(m, "peaks")
+      return(invisible(m))
   } else {
       return(mat)
   }
@@ -1549,7 +1566,7 @@ kactivate <- function(k, row = "all", column = "all") {
 			for (i in 1:k$nsets)
 				kactivate(k, "par", i)
 		else
-			kflag(k, "par", column) <- bitOr(kflag(k, "par", column), bitOr(ACTIVE))
+			kflag(k, "par", column) <- bitOr(kflag(k, "par", column), ACTIVE)
 		
 	} else {
 		if (length(row) == 1 &&  row == "all") {
@@ -1564,7 +1581,7 @@ kactivate <- function(k, row = "all", column = "all") {
 					kactivate(k, row, j)
 				}
 			} else {
-				kflag(k, row, column) <- bitOr(kflag(k, row, column), bitOr(ACTIVE))
+				kflag(k, row, column) <- bitOr(kflag(k, row, column), ACTIVE)
 			}
 		}
 	}

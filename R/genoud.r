@@ -98,16 +98,30 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
         K_setMinimizedValues(k2$h, v)
         K_calculate(k2$h)
+        if (!is.null(accept.function))
+            if (!accept.function(v))
+                return(NaN)
         if (!is.null(check.function)) 
             if (!check.function(k2))
                 return(NaN);
-
+        
         return(minimize.function(k2, v))
     }
 
     if (is.null(initial.pop)) {
         x <- lapply(1:population, function(...) {
-            return(runif(k$nrpars, Domain[,1], Domain[,2]))
+            while (true) {
+                vals <- runif(k$nrpars, Domain[,1], Domain[,2])
+                vals2 <- vals
+                if (log.period)
+                    vals2[per.indices] <- 10^vals2[per.indices]
+                if (log.mass)
+                    vals2[mass.indices] <- 10^vals2[mass.indices]
+                
+                if (accept.function(vals2))
+                    break
+            }
+            return(vals)
         })
         initial.pop <- x
     } else {
