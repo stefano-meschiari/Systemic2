@@ -47,6 +47,9 @@
         <dependencyChecking>false</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-g -O3 -fopenmp -std=c99"/>
+      </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
       <makefileType>
@@ -364,28 +367,22 @@
           </incDir>
         </cTool>
       </item>
-      <item path="src/systemic_cli.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+      <item path="src/systemic_cli.c" ex="false" tool="0" flavor2="3">
+        <cTool flags="0">
           <incDir>
             <pElem>deps/include</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
-      <item path="src/test.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+      <item path="src/test.c" ex="false" tool="0" flavor2="3">
+        <cTool flags="0">
           <incDir>
-            <pElem>local/include</pElem>
+            <pElem>deps/include</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/utils.c" ex="false" tool="0" flavor2="2">

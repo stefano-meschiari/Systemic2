@@ -580,7 +580,9 @@ kadd.data <- function(k, data, type = NA) {
 	#	data: either the path to a data file in textual format, or a matrix containing data
 	#	type: type of data contained in the data argument. One of the RV or TIMING constants
 	.check_kernel(k)
-	
+	if (k$nsets >= DATA_SETS_SIZE)
+      stop(sprintf("You cannot add more than %d data sets.", DATA_SETS_SIZE))
+  
 	if (length(data) > 1 && ! class(data) == "matrix") {
 		.mute(k)
 		
@@ -1021,10 +1023,17 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 	#	unnormalized power, tau, power of the sampling window at that 
 	#	period
 	d <- NULL
-	
+
+  
+  if (! per_type %in% c('all', 'res'))
+      stop("per_type should be one of ['all', 'res']") 
+  
 	if (class(k) == "kernel") {
 		.check_kernel(k)
-		stopifnot(k$ndata > 0)
+
+    if (k$ndata == 0)
+        stop("No data contained in the kernel.")
+
 		d <- kdata(k)
 		n <- kpars(k)[DATA.NOISE1:DATA.NOISE10]
 		d[, err.col] <- sqrt(d[, err.col]^2 + n[d[, SET]+1]^2)

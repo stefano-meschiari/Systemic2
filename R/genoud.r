@@ -150,7 +150,6 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
 
     dither <- F=='dither'
-    print(summary(f))
 
     iters <- c(0, min(f))
     for (reps in 1:max.iterations) {

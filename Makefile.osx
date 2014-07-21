@@ -30,7 +30,7 @@ LUA=/opt/local/bin/lua
 
 
 macosx: src/*.c src/*.h $(ALLOBJECTS) utils/systemic_cli
-	gcc $(SYSFLAGS) $(CCFLAGS) -undefined dynamic_lookup -dynamiclib  -o libsystemic.dylib objects/*.o $(LIBNAMES)
+	$(CC) $(SYSFLAGS) $(CCFLAGS) -undefined dynamic_lookup -dynamiclib  -o libsystemic.dylib objects/*.o $(LIBNAMES)
 	cp libsystemic.dylib R
 
 javascript_tester: macosx
@@ -121,12 +121,12 @@ reqs: ./deps ./deps/lib/libswift.a  ./deps/lib/libf2c.a
 cleanreqs:
 	- rm -rf deps
 
-LUAJIT=/bin/luajit-2.0.0-beta9
+LUAJIT=luajit
 update_binding:
 	$(LUAJIT) lua/rparse.lua
 
 update_ui:
-	cd ../SystemicGui; ant
+	cd ../SystemicGui; ant jar
 
 package: clean cleanreqs reqs macosx utils/systemic_cli update_ui
 	$(LUA) lua/libs.lua libsystemic.dylib
