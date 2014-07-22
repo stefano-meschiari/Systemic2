@@ -121,6 +121,14 @@ Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res"
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
 
+Fit
+Show fit parameters||$ktable(@kernel@)
+Plot fit parameters||$plot(ktable(@kernel@))
+-
+Save fit table as LaTeX||$print(xtable(ktable(@kernel@)), type='latex', file='myfile.tex@ins@')
+Save fit table as HTML||$print(xtable(ktable(@kernel@)), type='html', file='myfile.html@ins@')
+
+
 Plots
 New plot window|meta alt P|$dev.new()
 Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file_save@")

@@ -26,7 +26,8 @@ if (! exists('.systemic.loaded')) {
     .require.library('KernSmooth', hush=TRUE)
     .require.library('Hmisc', hush=TRUE)
     .require.library('parallel', hush=TRUE)
-
+    .require.library('xtable', hush=TRUE)
+    
     if (exists('.systemic.env')) {
         tryCatch({
             detach('.systemic.env')
@@ -48,6 +49,8 @@ if (! exists('.systemic.loaded')) {
     sys.source("plots.r", .systemic.functions)
     sys.source("genoud.r", .systemic.functions)
     sys.source("utils.r", .systemic.functions)
+    sys.source("table.r", .systemic.functions)
+    
     attach(.systemic.functions)
     .systemic.loaded <- TRUE
 }

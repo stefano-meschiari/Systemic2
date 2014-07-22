@@ -1,11 +1,13 @@
 2.1700 [June 13th, 2014]
 ========================
-- Fixed a bug in simplex that would crash the application if the minimizer encountered a NaN value.
-- Fixed a bug in the GUI that would crash the application in case of excessive text output.
+- NEW: ktable function for showing the fit values as a table, for exporting to TeX or HTML
+- FIXED: bug in simplex that would crash the application if the minimizer encountered a NaN value.
+- FIXED: bug in the GUI that would crash the application in case of excessive text output.
 - Fixed naming of columns in the matrix returned by kdata().
-- Fixed a bug where the radial velocity curve or periodogram would look excessively jagged.
-- Fixed a bug in kperiodogram.boot where the function could crash.
-- Fixed a bug in the GUI periodogram routine, where you could receive an error for certain power spectra.
+- FIXED: bug where the radial velocity curve or periodogram would look excessively jagged.
+- FIXED: bug in kperiodogram.boot where the function could crash.
+- FIXED: bug in kperiodogram.boot where the function would only calculate the 'full' periodogram (instead of the periodogram of residuals)
+- FIXED: bug in the GUI periodogram routine, where you could receive an error for certain power spectra.
 - Kernel plot using plot() respects the chosen xlim.
 
 
@@ -17,7 +19,7 @@
 
 2.1500
 ======
-- Fixed a bug for users that had locale settings using "," (or another character) as their decimal separator. The dot character is now used consistently throughout the interface. (credit for reporting: Brice-Olivier Demory)
+- FIXED: bug for users that had locale settings using "," (or another character) as their decimal separator. The dot character is now used consistently throughout the interface. (credit for reporting: Brice-Olivier Demory)
 
 2.1400
 ======

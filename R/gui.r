@@ -388,8 +388,8 @@ attach(.systemic.functions)
 		
 		con <- file(paste(.gui.path, name, "_stats", sep=""), open="w")
 		
-		for (field in names(.kdollartable)) {
-			cat(sprintf("%s = %.15e\n", field, .kdollartable[[field]](k$h)), file=con)
+		for (field in names(.properties)) {
+			cat(sprintf("%s = %.15e\n", field, .properties[[field]](k$h)), file=con)
 		}
 		for (field in ls(envir=k)) {
 			if (class(k[[field]]) == "numeric")
