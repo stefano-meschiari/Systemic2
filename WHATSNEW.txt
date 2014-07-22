@@ -6,6 +6,8 @@
 - Fixed a bug where the radial velocity curve or periodogram would look excessively jagged.
 - Fixed a bug in kperiodogram.boot where the function could crash.
 - Fixed a bug in the GUI periodogram routine, where you could receive an error for certain power spectra.
+- Kernel plot using plot() respects the chosen xlim.
+
 
 2.1600 [March 6th, 2014]
 ========================

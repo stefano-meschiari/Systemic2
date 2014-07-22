@@ -66,7 +66,7 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
                          max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
                          wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL,
-                         min.f.spread=1e-3, ..., initial.pop=NULL, use.k=FALSE, type='rand', accept.function=NULL) {
+                         min.f.spread=1e-3, ..., initial.pop=NULL, use.k=FALSE, type='rand', break.if=NULL) {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
@@ -150,7 +150,6 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
 
     dither <- F=='dither'
-    print(summary(f))
 
     iters <- c(0, min(f))
     for (reps in 1:max.iterations) {
@@ -245,6 +244,14 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         else {
             print("All solutions are NaN for now (either the integrator returned NaN for all trial solutions, or no trial solutions satisfy check.function)")
             
+        }
+
+        if (!is.null(break.if)) {
+            set.values(x[[which.min(f)]], clone=FALSE)
+            kupdate(k)
+            if (break.if(k)) {
+                break
+            }
         }
     }
 

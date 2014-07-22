@@ -4,10 +4,12 @@ write.f <- function(m, file="", col.names=TRUE, format="%18.10e", sformat="%18s"
     if (!isOpen(f))
         stop(sprintf("Could not open %s", file))
 
+    on.exit(close(f))
     if (!is.null(comments)) 
         writeLines(sprintf("# %s", comments))
     
-    if (is.matrix(m)) {
+    if (is.matrix(m) || is.data.frame(m)) {
+        cat('# ', file=f)
         if (col.names && !is.null(colnames(m)))
             writeLines(Reduce(paste, sprintf(sformat, colnames(m))), con=f)
 
@@ -18,7 +20,7 @@ write.f <- function(m, file="", col.names=TRUE, format="%18.10e", sformat="%18s"
     } else {
         stop(sprintf("I don't know how to write out object of class %s; try to use the write, dump or save functions instead"))
     }
-    close(f)
+
 }
 
 
