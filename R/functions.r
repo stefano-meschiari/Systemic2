@@ -1075,8 +1075,11 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 	
 	if (plot)
 		plot(mat, overplot.window=overplot.window)
-
-  attr(mat, "peaks") <- kfind.peaks(mat)[1:peaks, ]
+  peaks.m <- kfind.peaks(mat)
+  if (nrow(peaks.m) > 0) {
+      peaks <- min(peaks, nrow(peaks.m))
+      attr(mat, "peaks") <- peaks.m[1:peaks, ]
+  }
 
   if (print) {
       print(mat, 'peaks')
@@ -1191,7 +1194,11 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	if (plot)
 		plot(m, overplot.window=overplot.window)
 
-  attr(m, "peaks") <- kfind.peaks(m)[1:peaks, ]
+  peaks.m <- kfind.peaks(m)
+  if (nrow(peaks.m) > 0) {
+      peaks <- min(peaks, nrow(peaks.m))
+      attr(m, "peaks") <- peaks.m[1:peaks, ]
+  }
   attr(m, "is.boot") <- TRUE
   if (print) {
       print(m, "peaks")

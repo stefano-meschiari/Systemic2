@@ -141,7 +141,7 @@ package: clean cleanreqs reqs macosx utils/systemic_cli update_ui
 	cp -RH deps/lib/* $(PACKAGE_DIR)/mac/Systemic/deps/lib
 	cp -R ../SystemicGui/dist/SystemicGui.jar ../SystemicGui/dist/lib $(PACKAGE_DIR)/mac/Systemic/gui
 	tar -cvzf $(PACKAGE_DIR)/mac/Systemic/src.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' src objects Makefile.osx
-	echo >$(PACKAGE_DIR)/mac/Systemic/gui/java_cmd.txt "/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin/java -server -Xmx1g -jar "
+	echo >$(PACKAGE_DIR)/mac/Systemic/gui/java_cmd.txt "/usr/libexec/java_home -v 1.6 --exec java -server -Xmx1g -jar "
 	- cp packaging/formac/* $(PACKAGE_DIR)/mac
 	- cp packaging/formac/*.txt $(PACKAGE_DIR)/mac/Systemic
 	- cp -R deps/lib/* $(PACKAGE_DIR)/mac/Systemic/R/deps/lib
