@@ -1058,7 +1058,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 		d[, val.col] <- d[, val.col] - d[, pred.col]
 	} 
 	
- 	if (! is.null(data.flag)) {
+ 	if (! is.null(data.flag) && FLAG <= ncol(d)) {
 		d <- d[d[, FLAG] == data.flag, ]
 	
 		if (data.flag == T_TIMING && per_type == "all") {
@@ -1086,8 +1086,19 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 
 	m <- .R_to_gsl_matrix(d)
 	per <- ok_periodogram_ls(m, samples, pmin, pmax, 0, time.col-1, val.col-1, err.col-1, NULL)
-	
-	mat <- .gsl_matrix_to_R(per, free = T, .keep.h = .keep.h)
+
+  if (samples > 1e4) {
+      .periodogram.tol <- double(1)
+      .periodogram.tol[1] <- 1e-5
+
+      resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, 1, 10000,
+                         2000, .periodogram.tol, 5, TRUE), free=TRUE)
+      colnames(resampled) <- .periodogram
+  } else 
+      resampled <- NULL
+  
+  
+	mat <- .gsl_matrix_to_R(per, free = TRUE, .keep.h = .keep.h)
 	
 	colnames(mat) <- .periodogram
 	class(mat) <- "periodogram"
@@ -1100,10 +1111,13 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
       attr(mat, "peaks") <- peaks.m[1:peaks, ]
   }
 
+  
+
   attr(mat, 'pmin') <- pmin
   attr(mat, 'pmax') <- pmax
   attr(mat, 'samples') <- samples
-
+  attr(mat, 'resampled') <- resampled
+  
   if (print) {
       print(mat, 'peaks')
       return(invisible(mat))
@@ -1208,7 +1222,18 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	m <- .R_to_gsl_matrix(d)
 	per <- ok_periodogram_boot(m, trials, samples, pmin, pmax, 0, time.col-1, val.col-1, err.col-1, seed, NULL, K_getProgress(k$h))
 	.job <<- "Bootstrap periodogram"
-	
+
+
+  if (samples > 1e4) {
+      .periodogram.tol <- double(1)
+      .periodogram.tol[1] <- 1e-5
+
+      resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, 1, 10000,
+                         2000, .periodogram.tol, 5, TRUE), free=TRUE)
+      colnames(resampled) <- .periodogram
+  } else
+      resampled <- NULL
+  
 	m <- .gsl_matrix_to_R(per, free = T)
 	colnames(m) <- .periodogram
 
@@ -1228,6 +1253,7 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
   attr(m, 'pmax') <- pmax
   attr(m, 'samples') <- samples
   attr(m, 'trials') <- trials
+  attr(m, 'resampled') <- resampled
   
   if (print) {
       print(m, "peaks")

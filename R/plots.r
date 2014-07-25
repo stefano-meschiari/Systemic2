@@ -20,7 +20,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     if (type == "rv") {
         rows <- if (plot.residuals) 2 else 1
         if (layout)
-            par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
+            par(mfrow=c(rows, 1), mar=c(4.1, 5.1, 2.1, 2.1))
         
         data <- kdata(k)
         data <- data[data[, FLAG] == RV, ]
@@ -270,7 +270,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
         # Eliminates weird "pattern"
         r <- runif(1, max=2*pi)
-        t <- seq(r, 2*pi+r, length.out=500)
+        t <- seq(r, 2*pi+r, length.out=250)
         
         if (planet == -1)
             planet = 1:nplanets
@@ -304,7 +304,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             y <- 0.9 * span[3]
             lines(c(x-da, x),
                   c(y, y), col='black', lwd=2)
-            text(x-0.5*da, y-0.05*w, adj=c(0.5, 0), labels=paste(da, 'AU'))
+            text(x-0.5*da, y-0.05*w, adj=c(0.5, 0), labels=paste(da, 'AU'), cex=par('cex.lab'))
         }
         
     } else if ("error.est" %in% class(k)) {
@@ -352,9 +352,18 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 }
 
 
-plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim, xlab, ylab, ...) {
+plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=FALSE, ...) {
     par(systemic.par)
 
+    if (!is.null(attr(p, 'resampled')) && !(show.resampled)) {
+        cat(sprintf("# Note: this periodogram samples a lot of frequencies [%d]\n", nrow(p)))
+        cat(sprintf("# To avoid large files and slow PDFs, specify show.resampled=TRUE as a parameter to only plot important frequencies.\n"))
+    } else if (show.resampled) {
+        cat(sprintf("# Using resampled periodogram with %d frequencies instead of %d.\n",
+                    nrow(attr(p, 'resampled')), nrow(p)))
+        p <- attr(p, 'resampled')
+    }
+    
     ymax = max(p[, what])
     if (overplot.window)
         ymax = max(ymax, p[, 'window'])
@@ -373,7 +382,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
         lines(p[, 'period'], p[, 'window'], col="red")
     }
     
-    if (sum(p[, 'fap'] < 0.1) > 3) {
+    if (plot.fap && sum(p[, 'fap'] < 0.1) > 3) {
         
         faps <- approx(log(p[,'fap']), p[,what], log(c(1e-1, 1e-2, 1e-3)))
         

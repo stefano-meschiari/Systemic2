@@ -110,10 +110,21 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
     return(df)
 }
 
-print.systemic.table <- function(df) {
-    cat("\n")
-    print(noquote(.systemic.table.display(df)))
-    cat("\n")
+print.systemic.table <- function(df, type="text", file=stdout()) {
+    if (class(file) == "character") {
+        file <- file(file)
+        on.exit(close(file))
+    }
+        
+    if (type == "text") {
+        sink(file)
+        cat("\n")
+        print(noquote(.systemic.table.display(df)))
+        cat("\n")
+        sink()
+    } else if (type == "latex") {
+
+    }
 }
 
 plot.systemic.table <- function(df, ...) {
