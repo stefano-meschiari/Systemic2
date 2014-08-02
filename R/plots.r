@@ -19,9 +19,10 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     
     if (type == "rv") {
         rows <- if (plot.residuals) 2 else 1
-        if (layout)
+        if (layout) {
+            par(mfrow=c(1,1))
             par(mfrow=c(rows, 1), mar=c(4.1, 5.1, 2.1, 2.1))
-        
+        }
         data <- kdata(k)
         data <- data[data[, FLAG] == RV, ]
         rvsamples <- getOption("systemic.rvsamples", 5000)
@@ -33,6 +34,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
         m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
+        ok_free_systems(sl, rvsamples)
 
         ylim <- if (is.null(ylim)) c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
 
@@ -83,6 +85,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 						
             sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
             m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
+            ok_free_systems(sl, rvsamples)
             
             ylim <- if (is.null(ylim)) c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
             
@@ -410,7 +413,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = 
 
                                         # Replacement for ci2d
 .ci2d <- function (x, y = NULL, nbins = 400, method = c("bkde2D", "hist2d"), 
-                   bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 0.975), show = c("filled.contour", "contour", "image", "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, add=FALSE, ...) 
+                   bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 0.975), show = c("filled.contour", "contour", "image", "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, lwd=1, add=FALSE, ...) 
 {
     show <- match.arg(show)
     method <- match.arg(method)
@@ -480,12 +483,12 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = 
         
         contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
                 labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
-                col = col, xlim=xlim, ylim=ylim, add=add)
+                col = col, xlim=xlim, ylim=ylim, add=add, lwd=lwd)
         if (show.points) {
             points(x[, 1], x[, 2], pch = pch, col = points.col)
             contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
                 labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
-                col = col, xlim=xlim, ylim=ylim, add=TRUE)
+                col = col, xlim=xlim, ylim=ylim, add=TRUE, lwd=lwd)
             
         }
         if (! is.null(extra.points))
@@ -504,7 +507,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = 
 
 plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', subset=1:e$length, ...) {
     par(systemic.par)
-
+    
     if (!is.null(px)) {
         if (is.character(px[[2]]) && px[1] != 'par')
             px[[2]] <- which(.allelements == px[[2]])
@@ -521,6 +524,8 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     x <- px
     y <- py
 
+    pars <- list(...)
+    lwd <- if (is.null(pars$lwd)) 1 else pars$lwd
     
     bfx <- 0
     bfy <- 0
@@ -636,7 +641,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     } else if (type == "contour") {
         fcol <- if (missing(col)) "black" else col
         
-        .ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col, add=add)
+        .ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col, add=add, lwd=lwd)
         
     } else if (type == "image") {
         fcol <- if (missing(col)) "black" else col
@@ -645,6 +650,8 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
         
     } else if (type == "all.histograms") {
         stop("Not yet implemented.")
+    } else {
+        stop(sprintf("Type '%s' not recognized.", type))
     }
     if (!add)
         title(main=ifelse(missing(main), paste(labx, "vs", laby), main))

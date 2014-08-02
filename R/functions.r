@@ -50,12 +50,12 @@ options(systemic.pmax=1e4)
 systemic.names <- c(period='Period', mass='Mass', ma='Mean anomaly', ecc='Eccentricity',
                     lop='Longitude of pericenter', inc='Inclination', node='Node',
                     a='Semi-major axis', k='Semiamplitude', tperi='Periastron passage time', rv.trend='Linear trend',
-                    rv.quadratic.trend='Quadratic trend', mstar='Stellar mass',
+                    rv.trend.quadratic='Quadratic trend', mstar='Stellar mass',
                     chi2='\\Chi^2', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations')
 systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
                     lop='[deg]', inc='[deg]', node='[deg]',
                     a='[AU]', k='[m/s]', tperi='[JD]',
-                    rv.trend='[m/s]', rv.quadratic.trend='[m/s^2]',
+                    rv.trend='[m/s]', rv.trend.quadratic='[m/s^2]',
                     mstar = '[M_{sun}]', chi2='', jitter='[m/s]', rms='[m/s]',
                     epoch = '[JD]', ndata='', trange='[JD]')
 
@@ -363,7 +363,6 @@ kels <- function(k, keep.first = FALSE) {
       stopifnot(nminimized.pars == length(value))
       K_setMinimizedValues(k$h, value)
     } else {
-        print(idx1)
         for (i in PER:RADIUS)
             K_setElement(k$h, idx1, i-1, value[[i]])
         
@@ -1723,7 +1722,9 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
 	debug.verbose.level = 1, random.log=TRUE) {
 
 	.job <<- "MCMC"
-	
+
+  stopifnot(discard > 1)
+  
 	ka <- list()
 	if (class(k) == "kernel") {
 		.check_kernel(k)
@@ -2091,7 +2092,7 @@ print.error.est <- function(e, all.pars = FALSE) {
 		else 
 			print(e$params.stats[bitAnd(e$par.flags, MINIMIZE) == MINIMIZE, , drop=F ])
 		
-		cat("\n(Use print(name, all.pars = TRUE) to see all parameters)")
+		cat("\n(Use print(name, all.pars = TRUE) to see all parameters)\n")
 	} else 
 		print(e$params.stats[, ])
 }

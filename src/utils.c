@@ -917,7 +917,7 @@ static int _ok_rsort_peaks(void* curve_v, const void* a_v, const void* b_v) {
  * (The caller is responsible with freeing both the old and the new matrix.)
  */
 
-gsl_matrix* ok_resample_curve(const gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
+gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
     const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x) {
     const int max_points = MROWS(curve);
     

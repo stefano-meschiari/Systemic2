@@ -106,7 +106,7 @@ ok_kernel* K_alloc() {
         VSET(k->parSteps, i, 1e-2);
     for (int i = 0; i <= P_DATA_NOISE10; i++)
         VSET(k->parSteps, i, 5e-2);
-    
+    VSET(k->parSteps, P_RV_TREND_QUADRATIC, 1e-4);
     k->intOptions = (ok_integrator_options*) malloc(sizeof(ok_integrator_options));
     memcpy(k->intOptions, &defoptions, sizeof(ok_integrator_options));
     k->intOptions->buffer = NULL;

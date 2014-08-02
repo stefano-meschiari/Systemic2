@@ -1,6 +1,8 @@
 require('stringr')
 require('xtable')
 
+
+
 nformat <- function(n, err=0, digits=2, fmt="%s \\pm{} %s") {
     if (err != 0) {
         e10 <- floor(log10(abs(err)))
@@ -41,13 +43,13 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
             p <- p[!is.na(systemic.names[names(p)])]
             return(names(p))
         })
-
+        
         if (length(parnames[[1]]) > 0) {
-            what <- c(what[-idx], parnames)
+            what <- c(what[-idx], unlist(parnames))
         } else
             what <- what[-idx]
     }
-
+    
     planet.labels <- unlist(lapply(1:length(k), function(i) str_join(star.names[i], letters[1+1:k[[i]]$nplanets])))
     
     row.labels <- sapply(what, function(n) sprintf("%s %s", systemic.names[n], systemic.units[n]))
@@ -104,7 +106,8 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
 
 .systemic.table.display <- function(df) {
     class(df) <- "matrix"
-    df <- gsub("(\\\\pm\\{\\})", "\u00B1", df)
+    df <- gsub("(\\\\pm\\{\\})", "+-", df)
+    df <- gsub("(\\\\times)", "x", df)
     rownames(df) <- gsub("[\\{\\}]", "", rownames(df))
     
     return(df)

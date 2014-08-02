@@ -89,13 +89,13 @@ Minimize using...||[[
 -
 Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = 5000@ins@, print=TRUE)
 Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
-MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=k$nrpars*10, print=TRUE)
+MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=@kernel@$nrpars*10, print=TRUE)
 -
 Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE, print=TRUE)
 -
 F-test compare kernels|meta F|!var.test(kdata(@kernel@, 'res')[, VAL], kdata(@ins@, 'res')[, VAL])@@Type the name of the second kernel to compare to 
 F-test, all planets||[[
-	stopifnot(k$nplanets >= 1)
+	stopifnot(.kernel$nplanets >= 1)
 	.k <- kclone(.kernel) 
 	.k$auto <- F
 	invisible(kcalculate(.k))
@@ -109,6 +109,7 @@ F-test, all planets||[[
 			cat("# ", "Chi2 (", .k$nplanets, " planets) = ", .k$chi2, ", RMS = ", .k$rms, "\n")
 			print(var.test(a[,2], b[,2])) 
 	}
+  .k <- NULL
 ]]
 Cross-validation, single fit||$kcrossval.l1o(@kernel@)
 Cross-validation, all planets||$kcrossval.l1o(@kernel@, type="auto")
@@ -222,4 +223,5 @@ Acknowledgments||@acknowledgments()
 Systemic2 homepage||@browseURL('http://www.stefanom.org/?systemic')
 Systemic2 on GitHub||@browseURL('https://github.com/stefano-meschiari/Systemic2')
 -
-Report a bug||>BUGS.txt
+Report a bug||>REPORT_BUGS.txt
+Known bugs||@edit.script("BUGS.txt")
