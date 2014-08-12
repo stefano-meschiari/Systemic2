@@ -3,7 +3,7 @@
 - NEW: ktable function for showing the fit values as a table, suitable for exporting to TeX or HTML
 - NEW: Bayesian Information Criterion menu item
 - NEW: Quadratic trend term
-- NEW: Periodograms now report the normalized power as in Zechmeister et al., 2009
+- NEW: Periodograms now report the normalized power in the manner of Zechmeister et al., 2009 (0 < p < 1, where power = 1 is a perfect fit).
 - FIXED: bug where the semi-amplitude would be calculated incorrectly for massive bodies. (credit: Trifon Trifonov)
 - FIXED: bug in simplex that would crash the application if the minimizer encountered a NaN value.
 - FIXED: bug in the GUI that would crash the application in case of excessive text output.
