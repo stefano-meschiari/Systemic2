@@ -32,7 +32,7 @@ Clone kernel|meta shift C|!@ins@ <- kclone(@kernel@)
 -
 Open old Systemic fit|meta alt shift O|!@kernel@ <- kload.old("@file@")
 -
-Run script||source("@ins@")
+Run script||!source("@ins@")
 -
 Close session|Meta W|closeSession
 
@@ -65,6 +65,7 @@ Deselect all parameters|meta shift G|$kdeselect(@kernel@, 'all', 'all')
 -
 Set ranges...||!krange(@kernel@, 1, 'period') <- c(min@ins@, max)
 Set steps...||!kstep(@kernel@, 1, 'period') <- @ins@
+Show ranges||$kranges(@kernel@)
 Show steps||$ksteps(@kernel@)
 -
 Execute shell command||!! @ins@
@@ -88,13 +89,13 @@ Minimize using...||[[
 -
 Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = 5000@ins@, print=TRUE)
 Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
-MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=k$nrpars*10, print=TRUE)
+MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=@kernel@$nrpars*10, print=TRUE)
 -
-Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE); print(i_@var@)
+Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE, print=TRUE)
 -
 F-test compare kernels|meta F|!var.test(kdata(@kernel@, 'res')[, VAL], kdata(@ins@, 'res')[, VAL])@@Type the name of the second kernel to compare to 
 F-test, all planets||[[
-	stopifnot(k$nplanets >= 1)
+	stopifnot(.kernel$nplanets >= 1)
 	.k <- kclone(.kernel) 
 	.k$auto <- F
 	invisible(kcalculate(.k))
@@ -108,9 +109,36 @@ F-test, all planets||[[
 			cat("# ", "Chi2 (", .k$nplanets, " planets) = ", .k$chi2, ", RMS = ", .k$rms, "\n")
 			print(var.test(a[,2], b[,2])) 
 	}
+  .k <- NULL
 ]]
 Cross-validation, single fit||$kcrossval.l1o(@kernel@)
 Cross-validation, all planets||$kcrossval.l1o(@kernel@, type="auto")
+BIC||$2*@kernel@$loglik - @kernel@$nrpars*(log(@kernel@$ndata)-log(2*pi))
+BIC, all planets||[[
+  stopifnot(.kernel$nplanets >= 1)
+	.k <- kclone(.kernel) 
+	.k$auto <- F
+	invisible(kcalculate(.k))
+  .m <- matrix(nrow=.k$nplanets+1, ncol=4)
+  rownames(.m) <- sprintf("%d planets", .k$nplanets:0)
+  colnames(.m) <- c("BIC", "dBIC", "npars", "chi2")
+  bic <- 2*.k$loglik - .k$nrpars*(log(.k$ndata)-log(2*pi))
+	for (.i in 1:(.k$nplanets+1)) { 
+    bic2 <- 2*.k$loglik - .k$nrpars*(log(.k$ndata)-log(2*pi))
+    .m[.i, 'BIC'] <- bic2
+    .m[.i, 'dBIC'] <- bic2-bic
+    .m[.i, 'npars'] <- .k$nrpars
+    .m[.i, 'chi2'] <- .k$chi2
+    bic2 <- bic
+    if (.k$nplanets == 0)
+       break
+	  kremove.planet(.k, .k$nplanets)
+	  invisible(kminimize(.k))    
+	}
+
+  print(.m)
+  .k <- NULL
+]]
 -
 Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
 Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
@@ -119,6 +147,14 @@ Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res"
 -
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
+
+Fit
+Show fit parameters||$ktable(@kernel@)
+Plot fit parameters||$plot(ktable(@kernel@))
+-
+Save fit table as LaTeX||$print(xtable(ktable(@kernel@)), type='latex', file='myfile.tex@ins@')
+Save fit table as HTML||$print(xtable(ktable(@kernel@)), type='html', file='myfile.html@ins@')
+
 
 Plots
 New plot window|meta alt P|$dev.new()
@@ -150,6 +186,8 @@ Inflate uncertainty...||!d <- kdata(@kernel@); d[, ERR] <- d[, ERR] * @ins@; kda
 Select temporal subset...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
 Remove ouliers by normalized residual value...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
 Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel) <- d
+Remove median from data||$d <- kdata(@kernel@); d[,VAL] <- d[,VAL] - median(d[,VAL]); kdata(@kernel@) <- d
+Shift to JD = 2450000||$d <- kdata(@kernel@); d[,TIME] <- d[,TIME] - 2450000; kdata(@kernel@) <- d; @kernel@$epoch <- @kernel@$epoch - 2450000
 Other data manipulation examples...||$edit.script("doc/data_examples.R")
 -
 Get RV curve||!rv <- krvcurve(@kernel@)
@@ -196,7 +234,7 @@ Theme: R default||!systemic.plot.theme('r')
 - 
 Turn off auto-save||!options(systemic.autosave=FALSE)
 -
-Save options||@print('?You can save these options by editing the file R/startup.r')
+Save options||@cat('?You can save these options in the file R/startup.r\n')
 
 Help
 Quickstart||$quickstart()
@@ -211,4 +249,6 @@ Acknowledgments||@acknowledgments()
 Systemic2 homepage||@browseURL('http://www.stefanom.org/?systemic')
 Systemic2 on GitHub||@browseURL('https://github.com/stefano-meschiari/Systemic2')
 -
-Report a bug||>BUGS.txt
+Set path to R...||setRPath
+Report a bug||>REPORT_BUGS.txt
+Known bugs||@edit.script("BUGS.txt")

@@ -3,6 +3,71 @@ options(systemic.psamples=5e4)
 options(systemic.pmin=0.5)
 options(systemic.pmax=1e4)
 
+.properties <- list(
+	nplanets = K_getNplanets,
+	chi2 = K_getChi2,
+	rms = K_getRms,
+	chi2nr = K_getChi2_nr,
+	loglik = K_getLoglik,
+	jitter = K_getJitter,
+	mstar = K_getMstar,
+	ndata = K_getNdata,
+	epoch = K_getEpoch,
+	nplanets = K_getNplanets,
+	int.method = K_getIntMethod,
+	ntts = K_getNtts,
+	nrvs = K_getNrvs,
+	nsets = K_getNsets,
+	chi2rvs = K_getChi2_rvs,
+	chi2tts = K_getChi2_tts,
+	rmstts = K_getRms_tts,
+	nrpars = K_getNrPars,
+	element.type = K_getElementType,
+	abs.acc = K_getIntAbsAcc,
+	rel.acc = K_getIntRelAcc,	
+	dt = K_getIntDt,
+	trange = function(h) {
+		a <- NaN
+		b <- NaN
+
+		K_getRange(h, a, b)
+		return(c(a, b))
+	},
+	ks.pvalue = function(h) {
+		nd <- K_getNdata(h)
+		if (nd <= 0)
+			return(NaN)
+		m <- .buf_to_R(K_compileData(h), K_getNdata(h), DATA_SIZE)
+		p <- .gsl_vector_to_R(K_getPars(h))
+		n <- p[m[, SET]+1+10]^2
+		err <- sqrt(m[, ERR]^2 + n)
+		return (suppressWarnings(ks.test((m[, PRED]-m[, SVAL])/err, 'pnorm')$p.value))
+	}
+)
+
+
+
+systemic.names <- c(period='Period', mass='Mass', ma='Mean anomaly', ecc='Eccentricity',
+                    lop='Longitude of pericenter', inc='Inclination', node='Node',
+                    a='Semi-major axis', k='Semiamplitude', tperi='Periastron passage time', rv.trend='Linear trend',
+                    rv.trend.quadratic='Quadratic trend', mstar='Stellar mass',
+                    chi2='\\Chi^2', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations')
+systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
+                    lop='[deg]', inc='[deg]', node='[deg]',
+                    a='[AU]', k='[m/s]', tperi='[JD]',
+                    rv.trend='[m/s]', rv.trend.quadratic='[m/s^2]',
+                    mstar = '[M_{sun}]', chi2='', jitter='[m/s]', rms='[m/s]',
+                    epoch = '[JD]', ndata='', trange='[JD]')
+
+ELEMENT <- 0
+PARAMETER <- 1
+PROPERTY <- 2
+
+systemic.type <- rep(ELEMENT, times=length(systemic.names))
+names(systemic.type) <- names(systemic.units)
+systemic.type[names(systemic.type) %in% .params] <- PARAMETER
+systemic.type[names(systemic.type) %in% names(.properties)] <- PROPERTY
+
 .free.gsl_matrix <- function(m) {
 	gsl_matrix_free(m)
 }
@@ -21,7 +86,7 @@ options(systemic.pmax=1e4)
 }
 
 # Used internally to convert from a gsl_matrix (double) to an R matrix
-.gsl_matrix_to_R <- function(m, free = F, .keep.h = F) {
+.gsl_matrix_to_R <- function(m, free = FALSE, .keep.h = FALSE) {
 	dm <- c(ok_matrix_rows(m), ok_matrix_cols(m))
 	len <- dm[1] * dm[2]
 	v <- numeric(len)
@@ -127,7 +192,7 @@ knew <- function() {
 	k$min.func <- "chi2"
 	
 	class(k) <- "kernel"
-	
+  
 	reg.finalizer(k$h, .free.kernel)
 	kupdate(k)
 	return(k)
@@ -159,7 +224,7 @@ kadd.planet <- function(k, period = 300, mass = 1, ma = 0, ecc = 0, lop = 0,
 	K_setElementRange(k$h, np, K_ECC, 0, 0.95)
 	K_setElementRange(k$h, np, K_MASS, 1e-4, 1e3)
 	
-	if (k$auto) kupdate(k)	
+	on.exit(if (k$auto) kupdate(k))
 	return()
 }
 
@@ -177,7 +242,7 @@ kremove.planet <- function(k, idx) {
 	K_removePlanet(k$h, idx)
 	K_compileData(k$h)
 	
-	if (k$auto) kupdate(k)	
+	on.exit(if (k$auto) kupdate(k))
 }
 
 
@@ -207,7 +272,7 @@ kels <- function(k, keep.first = FALSE) {
 	els <- kels(k, keep.first = T)
 	value <- rbind(els[1,], value)
 	K_setElements(k$h, .R_to_gsl_matrix(value, gc=F))
-	if (k$auto) kupdate(k)	
+	if (k$auto) kupdate(k)
 	return(k)
 }
 
@@ -226,9 +291,14 @@ kels <- function(k, keep.first = FALSE) {
 		return(kallels(k))
 	} else if (is.na(idx2)) {
 		
-		if (idx1 == "par") {
+		if (idx1 == "par" || idx1 == -1) {
 			return(kpars(k))
 		}
+
+    if (idx1 == "minimized") {
+        return(apply(kminimized.indices(k), 2, function(l) k[l[1], l[2]]))
+    }
+    
 		stopifnot(idx1 <= k$nplanets);
 		return(kallels(k)[idx1,,drop=FALSE])
 	} else if (is.na(idx1)) {
@@ -236,7 +306,7 @@ kels <- function(k, keep.first = FALSE) {
 		return(kallels(k)[,idx2,drop=FALSE])
 	} else {
 		idx2 = .label_to_index(idx2)				
-		if (idx1 == "par") {
+		if (idx1 == "par" || idx1 == -1) {
 			stopifnot(idx2 <= PARAMS_SIZE)
 			return(K_getPar(k$h, idx2-1))
 		} else {
@@ -280,20 +350,26 @@ kels <- function(k, keep.first = FALSE) {
 		return(k)
 	} else if (is.na(idx2)) {
 		if (is.null(value) || is.na(value)) {
-			kremove.planet(k, idx1)
-			if (k$auto) kupdate(k)
-			return(k)			
-		} else if (idx1 == "par") {
+			kremove.planet(k, idx1)		
+		} else if (idx1 == "par" || idx1 == -1) {
 			if (length(value) == 1) {
 				K_setPar(k$h, -1, value)	
 			} else {
 				for (i in 1:length(value))
 					K_setPar(k$h, i-1, value[[i]])
 			}
-			if (k$auto) kupdate(k)		
-			return(k)
-		}
-		stop("You must specify a second index")
+		} else if (idx1 == "minimized") {
+      nminimized.pars <- ncol(kminimized.indices(k))
+      stopifnot(nminimized.pars == length(value))
+      K_setMinimizedValues(k$h, value)
+    } else {
+        for (i in PER:RADIUS)
+            K_setElement(k$h, idx1, i-1, value[[i]])
+        
+    }
+    if (k$auto) kupdate(k)
+    return(k)
+
 	} else if (is.na(idx1)) {
 		idx2 = .label_to_index(idx2)
 
@@ -321,47 +397,6 @@ kels <- function(k, keep.first = FALSE) {
 	}
 }
 
-.kdollartable <- list(
-	nplanets = K_getNplanets,
-	chi2 = K_getChi2,
-	rms = K_getRms,
-	chi2nr = K_getChi2_nr,
-	loglik = K_getLoglik,
-	jitter = K_getJitter,
-	mstar = K_getMstar,
-	ndata = K_getNdata,
-	epoch = K_getEpoch,
-	nplanets = K_getNplanets,
-	int.method = K_getIntMethod,
-	ntts = K_getNtts,
-	nrvs = K_getNrvs,
-	nsets = K_getNsets,
-	chi2rvs = K_getChi2_rvs,
-	chi2tts = K_getChi2_tts,
-	rmstts = K_getRms_tts,
-	nrpars = K_getNrPars,
-	element.type = K_getElementType,
-	abs.acc = K_getIntAbsAcc,
-	rel.acc = K_getIntRelAcc,	
-	dt = K_getIntDt,
-	trange = function(h) {
-		a <- NaN
-		b <- NaN
-
-		K_getRange(h, a, b)
-		return(c(a, b))
-	},
-	ks.pvalue = function(h) {
-		nd <- K_getNdata(h)
-		if (nd <= 0)
-			return(NaN)
-		m <- .buf_to_R(K_compileData(h), K_getNdata(h), DATA_SIZE)
-		p <- .gsl_vector_to_R(K_getPars(h))
-		n <- p[m[, SET]+1+10]^2
-		err <- sqrt(m[, ERR]^2 + n)
-		return (suppressWarnings(ks.test((m[, PRED]-m[, SVAL])/err, 'pnorm')$p.value))
-	}
-)
 
 
 `$.kernel` <- function(k, idx) {
@@ -391,10 +426,11 @@ kels <- function(k, keep.first = FALSE) {
 	# * k$epoch		Epoch
 	# * k$mstar		Mass of the star
 	# * k$minimize.func	Function or property string (one of chi2, rms, jitter, chi2nr, chi2rvs, chi2tts, loglik) which specifies the value to minimize
-	
-	if (! is.null(.kdollartable[[idx]])) {
+ # * k$progress
+  
+	if (! is.null(.properties[[idx]])) {
 		.check_kernel(k)			
-		return(.kdollartable[[idx]](k$h))
+		return(.properties[[idx]](k$h))
 	} else if (idx == "custom.model") {
 		return(k[["custom.model.function"]])
 	} else if (idx == "last.error") {
@@ -471,7 +507,7 @@ kget <- function(k, idx) {
 		if (k$auto) kupdate(k)
 	} else if (idx == "min.func") {
 		if (is.character(value)) {
-			if (is.null(.kdollartable[[value]])) stop(sprintf("Could not find property %s", value))
+			if (is.null(.properties[[value]])) stop(sprintf("Could not find property %s", value))
 			if (value == "chi2")
 				K_setMinFunc(k[['h']], NULL)
 			else
@@ -482,12 +518,28 @@ kget <- function(k, idx) {
 			k[['min.func']] <- function(h) {
 				return(value(k))
 			}
+
+      k[['.min.func']] <- new.callback("p)d", k[['min.func']])
 		
-			K_setMinFunc(k[['h']], new.callback("p)d", k[['min.func']]))
+			K_setMinFunc(k[['h']], k[['.min.func']])
 		} else 
 			stop("The second argument should either be a string (chi2, chi2_nr, rms, jitter, loglik) or a function to minimize")
 			
-	} else 
+	} else if (idx == "progress") {
+      stopifnot(is.function(value))
+      k[['.progress']] <- function(cur, max, state, str) {
+       ret <- value(k, list(cur=cur, max=max, job=.job, str=str))
+                       
+       if (!is.numeric(ret))
+           return(K_PROGRESS_CONTINUE)
+       else
+           return(ret)
+      }
+      
+      k[['.progress.cb']] <- new.callback("iipZ)i", k[['.progress']])
+      k[['progress']] <- value
+      K_setProgress(k[['h']], k[['.progress.cb']])
+  } else 
 		k[[idx]] <- value
 	return(k)
 }
@@ -535,7 +587,9 @@ kadd.data <- function(k, data, type = NA) {
 	#	data: either the path to a data file in textual format, or a matrix containing data
 	#	type: type of data contained in the data argument. One of the RV or TIMING constants
 	.check_kernel(k)
-	
+	if (k$nsets >= DATA_SETS_SIZE)
+      stop(sprintf("You cannot add more than %d data sets.", DATA_SETS_SIZE))
+  
 	if (length(data) > 1 && ! class(data) == "matrix") {
 		.mute(k)
 		
@@ -612,7 +666,7 @@ kremove.data <- function(k, idx = -1) {
 }
 
 
-.kdata.names <- c("TIME", "VAL", "ERR", "TDS_PLANET", "TDS_FLAG", "FLAG", "SVAL", "PRED", "SET", "", "")
+.kdata.names <- c("TIME", "VAL", "ERR", "TDS_PLANET", "TDS_FLAG", "", "FLAG", "SVAL", "PRED", "SET", "")
 kdata <- function(k, idx = 'all') {
 	# Returns or sets the idx-th dataset (or all the data) contained in a kernel as a matrix. [5]
 	#
@@ -707,6 +761,8 @@ kclone <- function(k) {
 	k2$datanames <- k$datanames
 	k2$auto <- k$auto
 	k2$.new <- TRUE
+  k2$errors <- k$errors
+  
 	reg.finalizer(k2$h, .free.kernel)
 	class(k2) <- "kernel"
 	
@@ -909,7 +965,8 @@ kfind.peaks <- function(mat, column='power') {
 }
 
 print.periodogram <- function(x, what='peaks') {
-    
+    cat(sprintf("# Periodogram: pmin = %.2e, pmax = %.2e, samples = %d\n",
+                attr(x, 'pmin'), attr(x, 'pmax'), attr(x, 'samples')))
     if (what == 'peaks') {
         cat("# Peaks (sorted by power):\n")
         print(attr(x, 'peaks')[, 1:3])
@@ -924,7 +981,8 @@ print.periodogram <- function(x, what='peaks') {
     }
     if (is.null(attr(x, 'is.boot')))
         cat("\n?(Note: The FAPs in this periodogram are roughly estimated analytically. Use kperiodogram.boot for a bootstrapped estimate.)\n")
-
+    else
+        cat(sprintf("\n# Trials: %d\n", attr(x, 'trials')))
 }
 
 kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25,
@@ -974,10 +1032,17 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 	#	unnormalized power, tau, power of the sampling window at that 
 	#	period
 	d <- NULL
-	
+
+  
+  if (! per_type %in% c('all', 'res'))
+      stop("per_type should be one of ['all', 'res']") 
+  
 	if (class(k) == "kernel") {
 		.check_kernel(k)
-		stopifnot(k$ndata > 0)
+
+    if (k$ndata == 0)
+        stop("No data contained in the kernel.")
+
 		d <- kdata(k)
 		n <- kpars(k)[DATA.NOISE1:DATA.NOISE10]
 		d[, err.col] <- sqrt(d[, err.col]^2 + n[d[, SET]+1]^2)
@@ -992,7 +1057,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 		d[, val.col] <- d[, val.col] - d[, pred.col]
 	} 
 	
- 	if (! is.null(data.flag)) {
+ 	if (! is.null(data.flag) && FLAG <= ncol(d)) {
 		d <- d[d[, FLAG] == data.flag, ]
 	
 		if (data.flag == T_TIMING && per_type == "all") {
@@ -1020,17 +1085,38 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 
 	m <- .R_to_gsl_matrix(d)
 	per <- ok_periodogram_ls(m, samples, pmin, pmax, 0, time.col-1, val.col-1, err.col-1, NULL)
-	
-	mat <- .gsl_matrix_to_R(per, free = T, .keep.h = .keep.h)
+
+  if (samples > 1e4) {
+      .periodogram.tol <- double(1)
+      .periodogram.tol[1] <- 1e-5
+
+      resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, 1, 10000,
+                         2000, .periodogram.tol, 5, TRUE), free=TRUE)
+      colnames(resampled) <- .periodogram
+  } else 
+      resampled <- NULL
+  
+  
+	mat <- .gsl_matrix_to_R(per, free = TRUE, .keep.h = .keep.h)
 	
 	colnames(mat) <- .periodogram
 	class(mat) <- "periodogram"
 	
 	if (plot)
 		plot(mat, overplot.window=overplot.window)
+  peaks.m <- kfind.peaks(mat)
+  if (nrow(peaks.m) > 0) {
+      peaks <- min(peaks, nrow(peaks.m))
+      attr(mat, "peaks") <- peaks.m[1:peaks, ]
+  }
 
-  attr(mat, "peaks") <- kfind.peaks(mat)[1:peaks, ]
+  
 
+  attr(mat, 'pmin') <- pmin
+  attr(mat, 'pmax') <- pmax
+  attr(mat, 'samples') <- samples
+  attr(mat, 'resampled') <- resampled
+  
   if (print) {
       print(mat, 'peaks')
       return(invisible(mat))
@@ -1040,7 +1126,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 }
 
 kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = 1, plot = FALSE, print = FALSE,
-	overplot.window=TRUE) {
+	overplot.window=TRUE, peaks=25) {
 	# Returns a periodogram of the supplied time series, where the false alarm probabilities are estimated using a bootstrap method. [7]
 	#
 	# If the first parameter is a kernel, then this function will return 
@@ -1087,7 +1173,7 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	#	period
 	
 	.job <<- "Bootstrap periodogram"
-	valcol <- K_T_SVAL
+	
 	d <- NULL
 	rng <- NULL
 	
@@ -1103,9 +1189,9 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	}
 	
 	if (per_type == "res") {
-		valcol <- K_T_PRED
+		val.col <- PRED
 		
-		d[, K_T_PRED+1] <- d[, K_T_SVAL+1] - d[, K_T_PRED+1]
+		d[, PRED] <- d[, SVAL] - d[, PRED]
 	}
 	
 	 if (! is.null(data.flag)) {
@@ -1135,7 +1221,18 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	m <- .R_to_gsl_matrix(d)
 	per <- ok_periodogram_boot(m, trials, samples, pmin, pmax, 0, time.col-1, val.col-1, err.col-1, seed, NULL, K_getProgress(k$h))
 	.job <<- "Bootstrap periodogram"
-	
+
+
+  if (samples > 1e4) {
+      .periodogram.tol <- double(1)
+      .periodogram.tol[1] <- 1e-5
+
+      resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, 1, 10000,
+                         2000, .periodogram.tol, 5, TRUE), free=TRUE)
+      colnames(resampled) <- .periodogram
+  } else
+      resampled <- NULL
+  
 	m <- .gsl_matrix_to_R(per, free = T)
 	colnames(m) <- .periodogram
 
@@ -1144,13 +1241,24 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 	if (plot)
 		plot(m, overplot.window=overplot.window)
 
-  attr(mat, "peaks") <- kfind.peaks(mat)[1:peaks, ]
-  attr(mat, "is.boot") <- TRUE
+  peaks.m <- kfind.peaks(m)
+  if (nrow(peaks.m) > 0) {
+      peaks <- min(peaks, nrow(peaks.m))
+      attr(m, "peaks") <- peaks.m[1:peaks, ]
+  }
+  attr(m, "is.boot") <- TRUE
+
+  attr(m, 'pmin') <- pmin
+  attr(m, 'pmax') <- pmax
+  attr(m, 'samples') <- samples
+  attr(m, 'trials') <- trials
+  attr(m, 'resampled') <- resampled
+  
   if (print) {
-      print(mat, "peaks")
-      return(invisible(mat))
+      print(m, "peaks")
+      return(invisible(m))
   } else {
-      return(mat)
+      return(m)
   }
 
 	return(m)
@@ -1224,9 +1332,9 @@ kflags <- function(k, what = "all", type='standard') {
 	}
 	
 	if (type == "human") {
-		m[m == 6] <- "M"
+		m[m == 6] <- "M+A"
 		m[m == "2"] <- "A"
-		m[m == "4"] <- "m"
+		m[m == "4"] <- "M"
 		m[m == "0"] <- ""
 	}
 	
@@ -1268,9 +1376,9 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
 	
 	.job <<- "Minimization"
 	stopifnot(k$ndata > 0)
-	
+  
+	on.exit(if (k$auto) kupdate(k))
 	K_minimize(k$h, algo, iters, as.numeric(opts))
-	if (k$auto) kupdate(k)
 	
 	return(k$chi2)
 }
@@ -1293,6 +1401,7 @@ kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA) {
 		.k <- kclone(k)
 		kels(.k) <- kels(.k)[sort.list(kallels(.k)[, 'k'], decreasing=TRUE),,drop=FALSE]
 		.k$auto <- F
+
 		cat("# ", .k$nplanets, " planets\n")
 		ret <- c(kcrossval.l1o(.k))
 		print(ret[1])
@@ -1320,12 +1429,19 @@ kminimize1d <- function(k, row, column, algo = NA, iters = 5000) {
 	if (row == "par") row = 0
 	K_1dminimize(k$h, algo, iters, row, column - 1, NULL)
 	
-	if (k$auto)
-		kupdate(k)
-	else
-		kcalculate(k)
+	on.exit(if (k$auto) kupdate(k))
 	
 	return(k$chi2)
+}
+
+kminimized.indices <- function(k) {
+    idx1 <- integer(1)
+    idx2 <- integer(1)
+    v <- sapply(1:k$nrpars, function(i) {
+        K_getMinimizedIndex(k$h, i-1, idx1, idx2)
+        return(c(idx1, idx2+1))
+    })
+    return(v)
 }
 
 krange <- function(k, row, column) {
@@ -1336,13 +1452,13 @@ krange <- function(k, row, column) {
 
 	column <- .label_to_index(column)
 	
-	if (row == "par") {
+	if (row == "par" || row == -1) {
 		K_getParRange(k$h, column - 1, a, b)
-		return(c(a, b))
+		return(c(min=a, max=b))
 	} else {
 		stopifnot(row > 0 && row <= k$nplanets)
 		K_getElementRange(k$h, row, column - 1, a, b)
-		return(c(a, b))
+		return(c(min=a, max=b))
 	}
 }
 
@@ -1354,7 +1470,7 @@ krange <- function(k, row, column) {
 	value[1] <- if (is.na(value[1])) NaN else value[1]
 	value[2] <- if (is.na(value[2])) NaN else value[2]
 	
-	if (row == "par") {
+	if (row == "par" || row == -1) {
 		K_setParRange(k$h, column - 1, value[1], value[2])		
 	} else {
 		stopifnot(row > 0 && row <= k$nplanets)
@@ -1368,6 +1484,21 @@ krange <- function(k, row, column) {
 	if (k$auto) kupdate(k)
 	
 	return(k)
+}
+
+kranges <- function(k) {
+    .check_kernel(k)
+
+    min <- kels(k)
+    max <- kels(k)
+    for (i in 1:k$nplanets)
+        for (j in 1:ELEMENTS_SIZE) {
+            r <- krange(k, i, j)
+            min[i, j] <- r[1]
+            max[i, j] <- r[2]
+        }
+
+    return(list(min=min, max=max))
 }
 
 ksteps <- function(k, row, column) {
@@ -1386,7 +1517,7 @@ kstep <- function(k, row, column) {
 	
 	column <- .label_to_index(column)
 	
-	if (row == "par") {
+	if (row == "par" || row == -1) {
 		return(K_getParStep(k$h, column - 1))
 	} else {
 		stopifnot(row > 0 && row <= k$nplanets)
@@ -1496,7 +1627,7 @@ kactivate <- function(k, row = "all", column = "all") {
 			for (i in 1:k$nsets)
 				kactivate(k, "par", i)
 		else
-			kflag(k, "par", column) <- bitOr(kflag(k, "par", column), bitOr(ACTIVE))
+			kflag(k, "par", column) <- bitOr(kflag(k, "par", column), ACTIVE)
 		
 	} else {
 		if (length(row) == 1 &&  row == "all") {
@@ -1511,7 +1642,7 @@ kactivate <- function(k, row = "all", column = "all") {
 					kactivate(k, row, j)
 				}
 			} else {
-				kflag(k, row, column) <- bitOr(kflag(k, row, column), bitOr(ACTIVE))
+				kflag(k, row, column) <- bitOr(kflag(k, row, column), ACTIVE)
 			}
 		}
 	}
@@ -1591,7 +1722,9 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
 	debug.verbose.level = 1, random.log=TRUE) {
 
 	.job <<- "MCMC"
-	
+
+  stopifnot(discard > 1)
+  
 	ka <- list()
 	if (class(k) == "kernel") {
 		.check_kernel(k)
@@ -1734,6 +1867,7 @@ kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot
 	.int.method <- k$int.method
 	
 	k$auto <- FALSE
+  on.exit(k$auto <- .auto)
 	k$int.method <- int.method
 	k$dt <- dt
 	stopifnot(length(times) >= 2, ! any(is.na(times)))
@@ -1958,7 +2092,7 @@ print.error.est <- function(e, all.pars = FALSE) {
 		else 
 			print(e$params.stats[bitAnd(e$par.flags, MINIMIZE) == MINIMIZE, , drop=F ])
 		
-		cat("\n(Use print(name, all.pars = TRUE) to see all parameters)")
+		cat("\n(Use print(name, all.pars = TRUE) to see all parameters)\n")
 	} else 
 		print(e$params.stats[, ])
 }
@@ -1991,6 +2125,7 @@ print.kernel <- function(k, all.pars = FALSE) {
 	if (! is.null(k$errors)) {
 		cat("\n# Last error estimation run results:\n")
 		print(k$errors)
+    cat("\n")
 	}
 }
 

@@ -1,9 +1,6 @@
+See REPORT_BUGS.txt (or Help -> Report a bug) for information on how to report a bug.
 
-Reporting a bug
-===============
-Please click on >>>https://github.com/stefano-meschiari/Systemic2/issues to file a bug.
-
-When you file a bug, please include:
-* Steps to reproduce bug, and any diagnostic output;
-* Version of Systemic;
-* Operating system and R version.
+Known bugs
+==========
+- TTV calculations may fail for some ranges of inclination.
+- The SWIFTRMVS method will sometimes calculate the dynamical evolution incorrectly (as of 2.17). Please use RK89 in the meantime.

@@ -8,6 +8,7 @@ options(systemic.url="http://www.stefanom.org/")
 options(help_type="html")
 options(max.print=200)
 options(systemic.autosave=FALSE)
+options(systemic.autosave.interval=120)
 options(digits=10)
 
 .gui.version <- SYSTEMIC.VERSION
@@ -149,7 +150,7 @@ if (! file.exists(.gui.autosave.dir)) {
     dir.create(.gui.autosave.dir, showWarnings=FALSE)
 }
 .gui.autosave <- function() {
-    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > 60)) {
+    if (getOption('systemic.autosave') && (as.numeric(difftime(Sys.time(), .gui.last.autosave), unit="secs") > getOption('systemic.autosave.interval'))) {
         .gui.last.autosave <<- Sys.time()
         fn <- paste(.gui.autosave.dir, "session_", .gui.session, sep="")
         .gui.event("#save_session", fn)
@@ -178,32 +179,55 @@ if (! file.exists(.gui.autosave.dir)) {
 
 
 .gui.last.str <- "?"
-.gui.progress <- function(cur, max, state, str) {
-	if (! is.nullptr(state)) {
-		state <- as.struct(state, "ok_kernel")
-		.gui.event("progress", sprintf("%d|%d|%e|%s", cur, max, K_getChi2(state), .job))
-	} else {
-		if (str == "")
-			str <- .gui.last.str
-		else
-			.gui.last.str <<- str
-		.gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, str, .job))
-	}
-	
-	if (file.exists(paste(.gui.path, "_stop", sep=""))) {
-		cat("Stop requested, please wait...\n", file=stderr())
-		return(K_PROGRESS_STOP)
-	} else {
-		return(K_PROGRESS_CONTINUE)
-	}
-	
-}
+
 
 .gui.check.stop <- function() {
 	return(file.exists(paste(.gui.path, "_stop", sep="")))	
 }
 
-.gui.progresscb <- new.callback("iipZ)i", .gui.progress)
+gui.progress <- function(cur=0, max=100, val=0, job="") {
+    .gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, val, job))
+    if (.gui.check.stop())
+        stop("User stopped the current job.")
+}
+
+.gui.progress.create <- function(k) {
+    k[['.progress']] <- function(cur, max, state, str) {
+        if (is.null(k$silent)) {
+            if (! is.nullptr(state)) {
+                state <- as.struct(state, "ok_kernel")
+                .gui.event("progress", sprintf("%d|%d|%e|%s", cur, max, K_getChi2(state), .job))
+            } else {
+                if (str == "")
+                    str <- .gui.last.str
+                else
+                    .gui.last.str <<- str
+                .gui.event("progress", sprintf("%d|%d|%s|%s", cur, max, str, .job))
+            }
+        }
+       
+        
+        if (.gui.check.stop()) {
+            cat("Stop requested, please wait...\n", file=stderr())
+            return(K_PROGRESS_STOP)
+        } else {
+            if (!is.null(k[['progress']])) {
+                ret <- k[['progress']](k, list(cur=cur, max=max, job=.job, str=str))
+                if (is.numeric(ret))
+                    return(ret)
+            }
+            return(K_PROGRESS_CONTINUE)
+        }
+    }
+    
+    k[['.progress.cb']] <- new.callback("iipZ)i", k[['.progress']])
+    return(k[['.progress.cb']])
+}
+
+
+
+
+
 .gui.scratch_model <- NULL
 
 .gui.periodogram.tol <- double(1)
@@ -212,6 +236,11 @@ if (! file.exists(.gui.autosave.dir)) {
 .gui.rvsignal.tol[1] <- 1e-4
 
 .gui.update <- function(k, name = NA, calculate=TRUE) {
+    if (!is.finite(.gui.periodogram.tol[1]) || .gui.periodogram.tol[1] < 1e-7)
+        .gui.periodogram.tol[1] <- 1e-5
+    if (!is.finite(.gui.rvsignal.tol[1]) || .gui.rvsignal.tol[1] < 1e-7)
+        .gui.rvsignal.tol[1] <- 1e-4
+
 	if (class(k) == "character" && k == "all") {
 		for (v in ls(envir=globalenv())) {
 			k2 <- get(v, envir=globalenv())
@@ -235,7 +264,7 @@ if (! file.exists(.gui.autosave.dir)) {
 	
 	if ((! .gui.no.undo) && calculate)
 		.gui.add.undo(name, k)
-	K_setProgress(k$h, .gui.progresscb)
+	K_setProgress(k$h, .gui.progress.create(k))
 
 	ndata <- k$ndata
 	if (calculate) {
@@ -248,7 +277,7 @@ if (! file.exists(.gui.autosave.dir)) {
 			flush(stdout())
 			
 			if (k$nrvs > 0) {
-				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=T)
+				p <- kperiodogram(k, samples=getOption("systemic.psamples", 50000), pmin=getOption("systemic.pmin", 0.5), pmax=getOption("systemic.pmax", 2e4), .keep.h=TRUE)
 				m <- ok_resample_curve(attr(p, "h"), 0, 1, 1, 10000,
                                2000, .gui.periodogram.tol, 5, TRUE)
 
@@ -317,7 +346,7 @@ if (! file.exists(.gui.autosave.dir)) {
 detach('.systemic.functions')
 .kupdate <- .systemic.functions$kupdate
 .systemic.functions$kupdate <- function(k, calculate=TRUE) {
-	K_setProgress(k$h, .gui.progresscb)	
+	K_setProgress(k$h, .gui.progress.create(k))	
 	.kupdate(k, calculate=calculate)
 	.gui.update(k, calculate=calculate)
 	invisible()
@@ -359,8 +388,8 @@ attach(.systemic.functions)
 		
 		con <- file(paste(.gui.path, name, "_stats", sep=""), open="w")
 		
-		for (field in names(.kdollartable)) {
-			cat(sprintf("%s = %.15e\n", field, .kdollartable[[field]](k$h)), file=con)
+		for (field in names(.properties)) {
+			cat(sprintf("%s = %.15e\n", field, .properties[[field]](k$h)), file=con)
 		}
 		for (field in ls(envir=k)) {
 			if (class(k[[field]]) == "numeric")

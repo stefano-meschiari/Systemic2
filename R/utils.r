@@ -1,13 +1,15 @@
 write.f <- function(m, file="", col.names=TRUE, format="%18.10e", sformat="%18s", comments=NULL) {
     f <- file(file, "w")
 
-    if (!isOpen(file))
+    if (!isOpen(f))
         stop(sprintf("Could not open %s", file))
 
+    on.exit(close(f))
     if (!is.null(comments)) 
         writeLines(sprintf("# %s", comments))
     
-    if (is.matrix(m)) {
+    if (is.matrix(m) || is.data.frame(m)) {
+        cat('# ', file=f)
         if (col.names && !is.null(colnames(m)))
             writeLines(Reduce(paste, sprintf(sformat, colnames(m))), con=f)
 
@@ -18,7 +20,7 @@ write.f <- function(m, file="", col.names=TRUE, format="%18.10e", sformat="%18s"
     } else {
         stop(sprintf("I don't know how to write out object of class %s; try to use the write, dump or save functions instead"))
     }
-    close(f)
+
 }
 
 
@@ -52,4 +54,61 @@ longest.prefix <- function(c) {
 
             return(ret)
         }, c), collapse=''))
+}
+
+kscan.error.est <- function(k, obj, sample.length=obj$length, time=1e3*365.25, samples=NULL, int.method=SWIFTRMVS, dt=min(k[,'period'])*0.01, criterion=NULL, print=TRUE, progress=NULL, save=NULL) {
+
+    stable <- c()
+    
+    times <- c()
+    if (is.null(samples))
+        samples <- sample(1:obj$length, sample.length)
+
+    k <- kclone(k)
+    k$silent <- TRUE
+    k$errors <- NULL
+    for (i in samples) {
+        for (j in 1:k$nplanets)
+            k[j,] <- obj[[j]][i, ]
+        io <- kintegrate(k, time, int.method=int.method, dt=dt)
+        if (!is.null(criterion))
+            st <- criterion(k, io)
+        else 
+            st <- !(io$survival.time < time)
+
+        stable <- c(stable, st)
+        if (exists('gui.progress'))
+            gui.progress(length(stable), sample.length, io$survival.time/365.25, sprintf("Integrating..."))
+                                              
+        times <- c(times, io$survival.time)
+        if (!is.null(progress))
+            progress(length(stable), sample.length, stable, times)
+
+    }
+
+    if (print)
+        cat(sprintf("%d/%d samples are unstable [fraction = %.2e]", sum(!stable), length(stable),
+                    sum(!stable)/length(stable)))
+
+    kscan.ret <- list(samples=samples, stable=stable, survival.times=times)
+    if (!is.null(save)) {
+        save(kscan.ret, file=save)
+    }
+    
+    return(invisible(kscan.ret))
+    
+}
+
+kclone.from <- function(k, obj, index) {
+    .check_kernel(k)
+    stopifnot(class(obj) == "error.est")
+
+    k <- kclone(k)
+
+    for (j in 1:k$nplanets) 
+        k[j,] <- obj[[j]][index, ]
+    
+    k['par', ] <- obj$params[index, ]
+ 
+    return(k)
 }

@@ -4,14 +4,20 @@
 #include "utils.h"
 #include "kernel.h"
 
+#define SIMPLEX_NON_FINITE_VALUE 1
+
 typedef struct  {
     ok_kernel* k;
     double** pars;
+    int flag;
 } ok_simplex_params;
 
 double K_simplex_f(const gsl_vector* cur, void* params) {
-    ok_simplex_params* sp = (ok_simplex_params*) params;
     
+    ok_simplex_params* sp = (ok_simplex_params*) params;
+    if (sp->flag != 0) {
+        return 0.;
+    }
     ok_kernel* k = sp->k;
     double** pars = sp->pars;
     
@@ -21,7 +27,10 @@ double K_simplex_f(const gsl_vector* cur, void* params) {
     k->flags |= NEEDS_SETUP;
     K_calculate(k);
     double res = k->minfunc(k);
-    
+    if (IS_NOT_FINITE(res)) {
+        res = 0.;
+        sp->flag = SIMPLEX_NON_FINITE_VALUE;
+    }
     return res;
 }
 
@@ -92,6 +101,7 @@ int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
     ok_simplex_params sp;
     sp.k = k;
     sp.pars = pars;
+    sp.flag = 0;
     
     // Initialize minimizer
     gsl_multimin_fminimizer* s = gsl_multimin_fminimizer_alloc(gsl_multimin_fminimizer_nmsimplex2,
@@ -116,10 +126,11 @@ int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
         iter++;
         status = gsl_multimin_fminimizer_iterate(s);
         
-        if (status)
+        if (status || sp.flag != 0)
             break;
         double size = gsl_multimin_fminimizer_size(s);
         status = gsl_multimin_test_size(size, eps);
+        
         if (status == GSL_SUCCESS)
             break;
         
@@ -131,6 +142,10 @@ int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
             }
         }
     } while (iter < maxiter);
+    
+    if (sp.flag != 0) {
+        fprintf(stderr, "Non-finite value encountered by minimizer [%d].\n", sp.flag);
+    }
     
     K_calculate(k);
     gsl_multimin_fminimizer_free(s);

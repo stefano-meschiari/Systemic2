@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1600
+K_SYSTEMIC_VERSION <- 2.1700
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -83,6 +83,7 @@ K_P_DATA_NOISE8 <- 17
 K_P_DATA_NOISE9 <- 18
 K_P_DATA_NOISE10 <- 19
 K_P_RV_TREND <- 20
+K_P_RV_TREND_QUADRATIC <- 21
 K_PARAMS_SIZE <- 100
 K_OPT_EPS <- 0
 K_OPT_ECC_LAST <- 1
@@ -121,6 +122,14 @@ K_DIFFEVOL <- 2
 K_SA <- 3
 K_INTEGRATION_SUCCESS <- 0
 K_INTEGRATORS_SIZE <- 4
+K_MV_VALUE <- 0
+K_MV_MIN <- 1
+K_MV_MAX <- 2
+K_MV_STEP <- 3
+K_MV_PARINDEX <- 4
+K_MV_PARTYPE <- 5
+K_MV_TYPE_ELEMENT <- 0
+K_MV_TYPE_PAR <- 1
 K_OK_SUCCESS <- 0
 K_OK_NOCONV <- 1
 K_PS_TIME <- 0
@@ -370,6 +379,12 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_setElementType(pi)v",
 # int K_getElementType(ok_kernel* k)
 "K_getElementType(p)i",
+# double K_getMinValue(ok_kernel* k)
+"K_getMinValue(p)d",
+# void K_setMinimizedValues(ok_kernel* k, double* values)
+"K_setMinimizedValues(p*d)v",
+# void K_getMinimizedValues(ok_kernel* k, double* values)
+"K_getMinimizedValues(p*d)v",
 # gsl_matrix* K_getXYZ(ok_kernel* k)
 "K_getXYZ(p)*<gsl_matrix>",
 # void K_setMstar(ok_kernel* k, double value)
@@ -484,6 +499,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_setParRange(pidd)v",
 # void K_getParRange(ok_kernel* k, int idx, double* min, double* max)
 "K_getParRange(pi*d*d)v",
+# void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column)
+"K_getMinimizedIndex(pi*i*i)v",
 # bool K_save(ok_kernel* k, FILE* fid)
 "K_save(p*<FILE>)B",
 # ok_kernel* K_load(FILE* fid, int skip)
@@ -650,30 +667,9 @@ SET <- K_T_SET + 1
 TDS_PLANET <- K_T_TDS_PLANET + 1
 TDS_FLAG <- K_T_TDS_FLAG + 1
 
-DATA1 <- K_P_DATA1 + 1
-DATA2 <- K_P_DATA2 + 1
-DATA3 <- K_P_DATA3 + 1
-DATA4 <- K_P_DATA4 + 1
-DATA5 <- K_P_DATA5 + 1
-DATA6 <- K_P_DATA6 + 1
-DATA7 <- K_P_DATA7 + 1
-DATA8 <- K_P_DATA8 + 1
-DATA9 <- K_P_DATA9 + 1
-DATA10 <- K_P_DATA10 + 1
-
-DATA.NOISE1 <- K_P_DATA_NOISE1 + 1
-DATA.NOISE2 <- K_P_DATA_NOISE2 + 1
-DATA.NOISE3 <- K_P_DATA_NOISE3 + 1
-DATA.NOISE4 <- K_P_DATA_NOISE4 + 1
-DATA.NOISE5 <- K_P_DATA_NOISE5 + 1
-DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
-DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
-DATA.NOISE7 <- K_P_DATA_NOISE7 + 1
-DATA.NOISE8 <- K_P_DATA_NOISE8 + 1
-DATA.NOISE9 <- K_P_DATA_NOISE9 + 1
-DATA.NOISE10 <- K_P_DATA_NOISE10 + 1
 
 RV.TREND <- K_P_RV_TREND + 1
+RV.TREND.QUADRATIC <- K_P_RV_TREND_QUADRATIC + 1
 
 RV <- K_T_RV 
 TIMING <- K_T_TIMING
@@ -743,6 +739,31 @@ YEAR <- K_YEAR
 GGRAV <- K_GGRAV
 K2 <- ((GGRAV * MSUN * DAY * DAY) / (AU*AU*AU))
 
+DATA1 <- K_P_DATA1 + 1
+DATA2 <- K_P_DATA2 + 1
+DATA3 <- K_P_DATA3 + 1
+DATA4 <- K_P_DATA4 + 1
+DATA5 <- K_P_DATA5 + 1
+DATA6 <- K_P_DATA6 + 1
+DATA7 <- K_P_DATA7 + 1
+DATA8 <- K_P_DATA8 + 1
+DATA9 <- K_P_DATA9 + 1
+DATA10 <- K_P_DATA10 + 1
+
+DATA.NOISE1 <- K_P_DATA_NOISE1 + 1
+DATA.NOISE2 <- K_P_DATA_NOISE2 + 1
+DATA.NOISE3 <- K_P_DATA_NOISE3 + 1
+DATA.NOISE4 <- K_P_DATA_NOISE4 + 1
+DATA.NOISE5 <- K_P_DATA_NOISE5 + 1
+DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
+DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
+DATA.NOISE7 <- K_P_DATA_NOISE7 + 1
+DATA.NOISE8 <- K_P_DATA_NOISE8 + 1
+DATA.NOISE9 <- K_P_DATA_NOISE9 + 1
+DATA.NOISE10 <- K_P_DATA_NOISE10 + 1
+
+
+
 SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 
 # Labels
@@ -753,6 +774,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 .params[1:DATA_SETS_SIZE] <- sprintf("data%d", 1:DATA_SETS_SIZE)
 .params[(DATA_SETS_SIZE+1):(2*DATA_SETS_SIZE)] <- sprintf("data.noise%d", 1:DATA_SETS_SIZE)
 .params[RV.TREND] <- "rv.trend"
+.params[RV.TREND.QUADRATIC] <- "rv.trend.quadratic"
 
 .data <- sprintf("V%d", 1:DATA_SIZE)
 .data[TIME] <- 'time'

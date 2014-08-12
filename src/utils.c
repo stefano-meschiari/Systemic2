@@ -9,6 +9,7 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_sort_vector.h>
+#include <gsl/gsl_randist.h>
 #include "systemic.h"
 #include "utils.h"
 #include "stdio.h"
@@ -189,9 +190,13 @@ void ok_bootstrap_matrix_mean(const gsl_matrix* matrix, int timecol, int valcol,
     //for (int i = 0; i < matrix->size1; i++)
       //  mean += MGET(matrix, i, valcol);
     //mean /= (double) matrix->size1;
+    int a[matrix->size1];
+    for (int i = 0; i < matrix->size1; i++)
+        a[i] = i;
+    gsl_ran_shuffle(r, a, matrix->size1, sizeof(int));
     
     for (int i = 0; i < matrix->size1; i++) {
-        int k = gsl_rng_uniform_int(r, matrix->size1);
+        int k = a[i];
         
         for (int j = 0; j < matrix->size2; j++) {
             if (j == timecol) 
@@ -1015,3 +1020,4 @@ gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol,
     ok_rivector_free(list);
     return new_curve;
 }
+
