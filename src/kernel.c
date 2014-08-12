@@ -558,7 +558,7 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
             double ecc = MGET(k->system->elements, row, ECC);
         
             if (k->system->flag & JACOBI) {
-             for (int j = 1; j < row; j++)
+             for (int j = 1; j < k->system->nplanets+1; j++)
                 if (MGET(k->system->elements, j, PER) < per)
                     Mcent += MJUP_TO_INT(MGET(k->system->elements, j, MASS));
             }   
@@ -591,7 +591,7 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
                 Mcent = k->Mstar * MSUN;
 
                 if (k->system->flag & JACOBI) {
-                    for (int j = 1; j < row; j++)
+                    for (int j = 1; j < k->system->nplanets+1; j++)
                         if (MGET(k->system->elements, j, PER) < per)
                             Mcent += MGET(k->system->elements, j, MASS) * MJUP;
                 } else
@@ -631,7 +631,7 @@ double K_getElement(ok_kernel* k, int row, int col) {
         double mass = MGET(k->system->elements, row, MASS);
         
         if (k->system->flag & JACOBI) {
-            for (int j = 1; j < row; j++)
+            for (int j = 1; j < k->system->nplanets+1; j++)
                 if (MGET(k->system->elements, j, PER) < per)
                     Mcent += MGET(k->system->elements, j, MASS) * MJUP;
         }
@@ -645,7 +645,7 @@ double K_getElement(ok_kernel* k, int row, int col) {
         double ecc = MGET(k->system->elements, row, ECC);
         
         if (k->system->flag & JACOBI) {
-            for (int j = 1; j < row; j++)
+            for (int j = 1; j < k->system->nplanets+1; j++)
                 if (MGET(k->system->elements, j, PER) < per)
                     Mcent += MGET(k->system->elements, j, MASS) * MJUP;
         }

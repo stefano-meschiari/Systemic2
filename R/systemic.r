@@ -47,7 +47,7 @@ if (! exists('.systemic.loaded')) {
     sys.source("xgrid.r", .systemic.functions)
     sys.source("colors.r", .systemic.functions)
     sys.source("plots.r", .systemic.functions)
-    sys.source("genoud.r", .systemic.functions)
+    # sys.source("genoud.r", .systemic.functions)
     sys.source("utils.r", .systemic.functions)
     sys.source("table.r", .systemic.functions)
     
