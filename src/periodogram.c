@@ -108,7 +108,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
     double W = 2.*M_PI*gsl_stats_sd(bufv->data, 1, ndata)/Pmin;
     gsl_matrix_get_col(bufv, data, valcol);
     double avg = gsl_stats_mean(bufv->data, 1, ndata);
-    double z1_max = 0.;
+    double znorm_max = 0.;
     double xa[ndata];
     
     // pre-calculate cdf, sdf
@@ -179,29 +179,32 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
             denb += s * s * sig;
             chi2_h += x*x * sig;
             
-            numa_w += c * sig;
-            numb_w += s * sig;
-            dena_w += c*c * sig;
-            denb_w += s*s * sig;
+            numa_w += c;
+            numb_w += s;
+            dena_w += c*c;
+            denb_w += s*s;
             
-            chi2_h_w += sig;
+            chi2_h_w += 1;
         }
         
         
         double z = 0.5 * (numa*numa/dena + numb*numb/denb);
         double z_1 = z * ndata / chi2_h;
+        double z_norm = 2*z/chi2_h;
+        
+        double w_norm = (numa_w * numa_w / dena_w + numb_w * numb_w / denb_w) / chi2_h_w;
         
         double fap_single = pow(1.-2.*z_1/(double)ndata, 0.5*(double)(ndata - 3.));
         double tau_z = W * fap_single * sqrt(z_1);
         
         MSET(ret, samples-i-1, PS_TIME, 1./f);
-        MSET(ret, samples-i-1, PS_Z, z_1);
+        MSET(ret, samples-i-1, PS_Z, z_norm);
         MSET(ret, samples-i-1, PS_Z_LS, z);
         MSET(ret, samples-i-1, PS_FAP, MIN(fap_single + tau_z, 1.));
         MSET(ret, samples-i-1, PS_TAU, tau);
-        MSET(ret, samples-i-1, PS_WIN, 0.5 * (numa_w * numa_w / dena_w + numb_w * numb_w / denb_w) * ndata / chi2_h_w);
+        MSET(ret, samples-i-1, PS_WIN, w_norm);
         
-        z1_max = MAX(z1_max, z_1);
+        znorm_max = MAX(znorm_max, z_norm);
     }
     
     if (p != NULL && p->calc_z_fap) {
@@ -215,7 +218,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         F.function = _baluev_tau;
         F.params = pars;
         
-        double zz = z1_max;
+        double zz = znorm_max;
         while (_baluev_tau(zz, pars) > 1e-3)
             zz *= 2;
         
@@ -233,7 +236,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
     } else {
         p->per = ret;
         p->buf = buf;
-        p->zmax = z1_max;
+        p->zmax = znorm_max;
     };
     
     gsl_vector_free(bufv);
@@ -371,6 +374,7 @@ gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trial
         w[i] = (ok_periodogram_workspace*) malloc(sizeof(ok_periodogram_workspace));
         w[i]->per = NULL;
         w[i]->buf = NULL;
+        w[i]->calc_z_fap = false;
         mock[i] = ok_matrix_copy(data);
         if (i > 0) {
             rng[i] = gsl_rng_alloc(gsl_rng_default);

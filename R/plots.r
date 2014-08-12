@@ -5,27 +5,20 @@ systemic.par$tck <- 0.02
 systemic.palette <- systemic.theme.tomorrow
 systemic.palette.face <- systemic.theme.tomorrow.face
 
-systemic.plot.style <- function() {
-    palette(systemic.palette)
-    par(systemic.par)
-}
-
-plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NA, ylim=NA,
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, ...) {
+plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets,
+                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, ...) {
     .check_kernel(k)
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
-
+    par(systemic.par)
     if (is.nan(k$epoch)) {
         stop("No epoch set")
     }
     
     if (type == "rv") {
         rows <- if (plot.residuals) 2 else 1
-        if (layout)
-            par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
-        
+        if (layout) {
+            par(mfrow=c(1,1))
+            par(mfrow=c(rows, 1), mar=c(4.1, 5.1, 2.1, 2.1))
+        }
         data <- kdata(k)
         data <- data[data[, FLAG] == RV, ]
         rvsamples <- getOption("systemic.rvsamples", 5000)
@@ -37,8 +30,9 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
         m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
+        ok_free_systems(sl, rvsamples)
 
-        ylim <- if (is.na(ylim)) c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
+        ylim <- if (is.null(ylim)) c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
 
         if (! is.na(wrap)) {
             if (wrap == T) wrap <- k[1, 'period']
@@ -47,13 +41,13 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             m <- m[order(m[, TIME]), ]
         }
 
-        suppressWarnings(plotCI(data[,TIME], data[, SVAL], data[, ERR], sfrac=0, xlab="Time [JD]", ylab="Radial velocity [m/s]", ylim=ylim, col=data[,SET]+2, pch=pch, gap=0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
+        suppressWarnings(plotCI(data[,TIME], data[, SVAL], data[, ERR], sfrac=0, xlab="Time [JD]", ylab="Radial velocity [m/s]", xlim=xlim, ylim=ylim, col=data[,SET]+2, pch=pch, gap=0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
         lines(m[,TIME], m[,VAL], lwd=lwd)
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
         
         if (plot.residuals) {
-            suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]",  col=data[,SET]+2, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
+            suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
         }
@@ -61,7 +55,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     } else if (type == "allrv") {
         stopifnot(k$nplanets > 0)
         np <- k$nplanets
-        rows <- if (plot.residuals) np+1 else np
+        rows <- if (plot.residuals) length(which.planets)+1 else length(which.planets)
         if (layout)
             par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
         
@@ -75,7 +69,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         ret <- list()
         
-        for (i in 1:np) {
+        for (i in which.planets) {
             masses <- k[, 'mass']
             k[i, 'mass'] <- 0
 
@@ -87,8 +81,9 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
 						
             sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
             m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
+            ok_free_systems(sl, rvsamples)
             
-            ylim <- if (is.na(ylim)) c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
+            ylim <- if (is.null(ylim)) c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
             
             if (! is.na(wrap)) {
                 data_i[, TIME] <- data_i[, TIME] %% k[i, 'period']
@@ -203,14 +198,21 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             h2 <- hist(nr, plot=FALSE)
             breaks <- h2$breaks
         }
-        xlim <- if (is.na(xlim)) c(min(nr), max(nr)) else xlim
+        xlim <- if (is.null(xlim)) c(min(nr), max(nr)) else xlim
         ylim <- c(0, -1e10)
         
         h <- list()
         cat("# Median, mad and results of K-S test compared to a unit gaussian\n")
         m <- matrix(nrow=k$nsets, ncol=4)
-        for (set in 1:k$nsets) {
-            ns <- nr[kd[, SET]==(set-1)]
+        nsets <- k$nsets
+        if (!separate.sets)
+            nsets <- 1
+        
+        for (set in 1:nsets) {
+            if (separate.sets)
+                ns <- nr[kd[, SET]==(set-1)]
+            else
+                ns <- nr
             m[set, 1] <- median(ns)
             m[set, 2] <- mad(ns)
             ks <- ks.test(ns, "pnorm")
@@ -241,7 +243,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         x <- seq(min(xlim), max(xlim), length.out=40)
         lines(x, dnorm(x), lty="dotted")
         
-        legend("topright", col=1:k$nsets, legend=sapply(k$datanames, basename), lty=rep(1, k$nsets), box.col="white")
+        legend("topright", col=1:nsets, legend=sapply(k$datanames, basename), lty=rep(1, k$nsets), box.col="white")
         colnames(m) <- c("median", "mad", "p.value", "statistic")
         rownames(m) <- sapply(k$datanames, basename)
         print(m)
@@ -253,9 +255,10 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     axis(3, labels=FALSE)
 }
 
-plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', xlab="", ylab="", axes=FALSE, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, ...) {
+    oldpar <- par('pty')
+    par(systemic.par)
+
     par(pty="s")
     on.exit(suppressWarnings(par(oldpar)))
     
@@ -266,7 +269,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
         # Eliminates weird "pattern"
         r <- runif(1, max=2*pi)
-        t <- seq(r, 2*pi+r, length.out=500)
+        t <- seq(r, 2*pi+r, length.out=250)
         
         if (planet == -1)
             planet = 1:nplanets
@@ -286,11 +289,23 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             q <- a*(1-e)
             rf <- a*(1-e^2)/(1+e*cos(f))
             lines(r*cos(t), r*sin(t), type='l', lwd=lwd, col=col)
-            if (plot.pericenter)
+            if (plot.pericenter && e > 0)
                 lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted", col=col)
             if (plot.planet)
                 points(rf*cos(f+pom), rf*sin(f+pom), pch=19, col=col)
         }
+
+        if (plot.scale) {
+            span <- par('usr')
+            w <- diff(range(span))
+            da <- 2^ceil(log2(0.1*w))
+            x <- 0.9 * span[2]
+            y <- 0.9 * span[3]
+            lines(c(x-da, x),
+                  c(y, y), col='black', lwd=2)
+            text(x-0.5*da, y-0.05*w, adj=c(0.5, 0), labels=paste(da, 'AU'), cex=par('cex.lab'))
+        }
+        
     } else if ("error.est" %in% class(k)) {
         if (!is.null(k$element.type) && k$element.type != ASTROCENTRIC)
             stop("Currently only plots orbits for ASTROCENTRIC orbital elements.");
@@ -321,13 +336,13 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
                 obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
 
             plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE)
+                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE)
         }
 
         obj <- k$fit.els
         class(obj) <- c('matrix', '.orbit')
         plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                   lwd=lwd, col=col, xlab=xlab, ylab=ylab, add=TRUE)
+                   lwd=lwd, col=best.col, xlab=xlab, ylab=ylab, add=TRUE)
         
         
     } else {
@@ -336,11 +351,18 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 }
 
 
-plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim, xlab, ylab, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
+plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=FALSE, ...) {
+    par(systemic.par)
 
+    if (!is.null(attr(p, 'resampled')) && !(show.resampled)) {
+        cat(sprintf("# Note: this periodogram samples a lot of frequencies [%d]\n", nrow(p)))
+        cat(sprintf("# To avoid large files and slow PDFs, specify show.resampled=TRUE as a parameter to only plot important frequencies.\n"))
+    } else if (show.resampled) {
+        cat(sprintf("# Using resampled periodogram with %d frequencies instead of %d.\n",
+                    nrow(attr(p, 'resampled')), nrow(p)))
+        p <- attr(p, 'resampled')
+    }
+    
     ymax = max(p[, what])
     if (overplot.window)
         ymax = max(ymax, p[, 'window'])
@@ -359,7 +381,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
         lines(p[, 'period'], p[, 'window'], col="red")
     }
     
-    if (sum(p[, 'fap'] < 0.1) > 3) {
+    if (plot.fap && sum(p[, 'fap'] < 0.1) > 3) {
         
         faps <- approx(log(p[,'fap']), p[,what], log(c(1e-1, 1e-2, 1e-3)))
         
@@ -387,11 +409,8 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
 
                                         # Replacement for ci2d
 .ci2d <- function (x, y = NULL, nbins = 400, method = c("bkde2D", "hist2d"), 
-                   bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 0.975), show = c("filled.contour", "contour", "image", "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, ...) 
+                   bandwidth, factor = 1, ci.levels = c(0.5, 0.75, 0.9, 0.95, 0.975), show = c("filled.contour", "contour", "image", "none"), col = topo.colors(length(breaks) - 1), show.points = FALSE, pch = par("pch"), points.col = "black", xlab, ylab, xlim, ylim, extra.points=NULL, lwd=1, add=FALSE, ...) 
 {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
     show <- match.arg(show)
     method <- match.arg(method)
     breaks <- unique(c(0, ci.levels, 1))
@@ -457,12 +476,17 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
     }
     else if (show == "contour") {
         tmpBreaks <- breaks[breaks < 1]
+        
         contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
                 labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
-                col = col, xlim=xlim, ylim=ylim)
-        
-        if (show.points) 
+                col = col, xlim=xlim, ylim=ylim, add=add, lwd=lwd)
+        if (show.points) {
             points(x[, 1], x[, 2], pch = pch, col = points.col)
+            contour(h2d$x, h2d$y, h2d$cumDensity, levels = tmpBreaks, 
+                labels = tmpBreaks, xlab = xlab, ylab = ylab, nlevels = length(tmpBreaks), 
+                col = col, xlim=xlim, ylim=ylim, add=TRUE, lwd=lwd)
+            
+        }
         if (! is.null(extra.points))
             points(extra.points[, 1], extra.points[, 2], pch=19, col='red')
     }
@@ -477,13 +501,28 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', xlim, ylim,
 }
 
 
-plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
+plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', subset=1:e$length, ...) {
+    par(systemic.par)
+    
+    if (!is.null(px)) {
+        if (is.character(px[[2]]) && px[1] != 'par')
+            px[[2]] <- which(.allelements == px[[2]])
+        else
+            px[[2]] <- which(.params == px[[2]])
+    }
+    if (!is.null(py)) {
+        if (is.character(py[[2]]) && py[1] != 'par')
+            py[[2]] <- which(.allelements == py[[2]])
+        else
+            py[[2]] <- which(.params == py[[2]])
+    }
 
     x <- px
     y <- py
+
+    pars <- list(...)
+    lwd <- if (is.null(pars$lwd)) 1 else pars$lwd
+    
     bfx <- 0
     bfy <- 0
     datax <- NULL
@@ -534,6 +573,9 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     if (!missing(ylab)) {
         laby <- ylab
     }
+
+    datax <- datax[subset]
+    datay <- datay[subset]
     
     if (dev.factor > 0 && type=="histogram") {
         datax <- datax[datax > medx - dev.factor * devx & datax < medx + dev.factor * devx]
@@ -562,23 +604,27 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
             datax <- datax1
             datay <- datay1
         }
+        if (length(scatter.bins) == 1)
+            scatter.bins <- c(scatter.bins, scatter.bins)
         bins <- c(as.integer(diff(range(datax))/devx * scatter.bins), as.integer(diff(range(datay))/devy * scatter.bins))
     }
     
     
     if (type == "histogram") {
         a <- hist(datax, freq=FALSE, xlab=labx, main=ifelse(missing(main), labx, main), col=col, ...)
-        points(c(bfx), c(0.), pch=19,  col='red')
+        points(c(bfx), c(0.), pch=19,  col=bf.color, ...)
         return(invisible())
     } else if (type == "scatter") {
-        plot(datax, datay, xlab=labx, ylab=laby, xlim=limx, ylim=limy, pch=pch, col=col,  ...)
-        points(c(bfx), c(bfy), pch=19, col='red')
+        if (!add) {
+            plot(datax, datay, xlab=labx, ylab=laby, xlim=limx, ylim=limy, pch=pch, col=col,  ...)
+        }
+        else 
+            points(datax, datay, pch=pch, col=col,  ...)
+        points(c(bfx), c(bfy), pch=19, col=bf.color, ...)
         
-        axis(3, labels=FALSE)
-        axis(4, labels=FALSE)
     } else if (type == "smoothScatter") {
         smoothScatter(datax, datay, nrpoints=0, xlab=labx, ylab=laby, col=col, xlim=limx, ylim=limy, pch=pch, ...)
-        points(c(bfx), c(bfy), pch=19, col='red')
+        points(c(bfx), c(bfy), pch=19, col=bf.color)
         
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
@@ -591,7 +637,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     } else if (type == "contour") {
         fcol <- if (missing(col)) "black" else col
         
-        .ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col)
+        .ci2d(datax, datay, show="contour", xlab=labx, ylab=laby, col=fcol, show.points=show.points, extra.points=cbind(bfx, bfy), xlim=limx, ylim=limy, nbins=bins,  ci.levels=breaks, pch=pch, points.col=points.col, add=add, lwd=lwd)
         
     } else if (type == "image") {
         fcol <- if (missing(col)) "black" else col
@@ -600,17 +646,18 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
         
     } else if (type == "all.histograms") {
         stop("Not yet implemented.")
+    } else {
+        stop(sprintf("Type '%s' not recognized.", type))
     }
-    title(main=ifelse(missing(main), paste(labx, "vs", laby), main))
+    if (!add)
+        title(main=ifelse(missing(main), paste(labx, "vs", laby), main))
     
     invisible()
 }
 
-plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
-    oldpar <- par(no.readonly=TRUE)	
-    systemic.plot.style()
-    on.exit(suppressWarnings(par(oldpar)))
+plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, xlab="Time - Epoch (years)", ylab='%s', ...) {
     par(mfrow=c(length(what), 1), mar=c(4, 4, 1, 8))
+    par(systemic.par)
 
     all <- do.call("rbind", int$els)
     times <- (int$times-int$times[1])/(YEAR/DAY)
@@ -618,13 +665,12 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, ...) {
         ymin <- min(all[, el], na.rm=TRUE)
         ymax <- max(all[, el], na.rm=TRUE)
         
-        xlab <- sprintf("Time - Epoch (years)")
-        ylab <- .elements.labels[[el]]
+        .ylab <- sprintf(ylab, .elements.labels[[el]])
         
         for (i in 1:int$nplanets) {
             if (i == 1)
                 plot(times, int$els[[i]][, el], col=i+1, 
-                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=ylab, type="l", ...)
+                     xlim=c(0, max(times)), ylim=c(ymin, ymax), xlab=xlab, ylab=.ylab, type="l", ...)
             else
                 lines(times, int$els[[i]][, el], col=i+1, ...)
         }

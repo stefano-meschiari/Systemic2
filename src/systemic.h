@@ -22,7 +22,9 @@
 #define INVALID_NUMBER (NAN)
 #define IS_INVALID(x) (isnan(x))
 
-#define SYSTEMIC_VERSION 2.1600
+#define IS_NOT_FINITE(x) (isnan(x) || isinf(x))
+
+#define SYSTEMIC_VERSION 2.1700
 
 #define MAX_LINE 8192
 
@@ -139,6 +141,8 @@
 #define P_DATA_NOISE10 19
 
 #define P_RV_TREND 20
+#define P_RV_TREND_QUADRATIC 21
+
 #define PARAMS_SIZE 100
 
 extern char * ok_orb_labels[ELEMENTS_SIZE];
@@ -388,7 +392,7 @@ typedef struct ok_list {
     int type;
 } ok_list;
 
-typedef struct ok_kernel_minimizer_pars {
+typedef struct ok_minimizer_pars {
     double** pars;
     double* steps;
     double* min;

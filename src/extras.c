@@ -195,7 +195,7 @@ double K_crossval_l1o(ok_kernel* k, int minalgo, int maxiter, double params[]) {
         K_free(ks[p]);
     }
     if (invalid)
-        return -1;
+        return INVALID_NUMBER;
     
-    return fabs(lh2);
+    return lh2;
 }
