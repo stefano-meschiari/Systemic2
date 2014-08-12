@@ -65,7 +65,7 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
 
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
                          max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
-                         wait=10, check.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL,
+                         wait=10, check.function=NULL, accept.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL,
                          min.f.spread=1e-3, ..., initial.pop=NULL, use.k=FALSE, type='rand', break.if=NULL) {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
@@ -109,20 +109,29 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     }
 
     if (is.null(initial.pop)) {
-        x <- lapply(1:population, function(...) {
-            while (true) {
+        cat("Initial population is NULL, trying to find suitable population...\n")
+        
+        x <- lapply(1:population, function(i, ...) {
+            while (TRUE) {
                 vals <- runif(k$nrpars, Domain[,1], Domain[,2])
                 vals2 <- vals
                 if (log.period)
                     vals2[per.indices] <- 10^vals2[per.indices]
                 if (log.mass)
                     vals2[mass.indices] <- 10^vals2[mass.indices]
-                
-                if (accept.function(vals2))
+                if (!is.null(accept.function)) {
+                    if (!accept.function(vals2)) {
+                        next
+                    } else {
+                        break
+                    }
+                } else
                     break
             }
+            cat(sprintf("[%d/%d] ", i, population))
             return(vals)
         })
+        cat("Done.\n")
         initial.pop <- x
     } else {
         x <- initial.pop
@@ -217,7 +226,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             de.pars <- list(pop=x, iters=iters)
             save(de.pars, file=save.trials)
         }
+
         print(summary(f))
+        
         if (!is.null(plot)) {
             pm <- sapply(x, function(p) return(p[plot]))
             col <- rep('black', length(x))
