@@ -266,5 +266,5 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         }
     }
 
-    return(list(best=x[[which.min(f)]], initial.pop=initial.pop, iters=iters))
+    return(list(best=x[[which.min(f)]], initial.pop=initial.pop, iters=iters, x))
 }

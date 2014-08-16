@@ -5,6 +5,9 @@ systemic.par$tck <- 0.02
 systemic.palette <- systemic.theme.tomorrow
 systemic.palette.face <- systemic.theme.tomorrow.face
 
+palette(systemic.palette)
+par(systemic.par)
+
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets,
                         breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, ...) {
     .check_kernel(k)
@@ -58,6 +61,11 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         rows <- if (plot.residuals) length(which.planets)+1 else length(which.planets)
         if (layout)
             par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
+
+        fpars <- list(...)
+        xlab <- if (!is.null(fpars$xlab)) fpars$xlab else 'Time [JD]'
+        ylab <- if (!is.null(fpars$ylab)) fpars$ylab else 'RV, Planet %d [m/s]'
+        
         
         k <- kclone(k)
         rvsamples <- getOption("systemic.rvsamples", 5000)
@@ -71,6 +79,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         
         for (i in which.planets) {
             masses <- k[, 'mass']
+            krange(k, i, 'mass') <- c(0, NaN)
             k[i, 'mass'] <- 0
 
             kcalculate(k)
@@ -91,7 +100,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
                 m <- m[order(m[, TIME]), ]
             }
             xlim <- c(min(data_i[, TIME]), max(data_i[, TIME]))
-            plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab="Time [JD]", ylab=sprintf("RV, Planet %d [m/s]", i), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
+            plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab=xlab, ylab=sprintf(ylab, i), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
             lines(m[,TIME], m[,VAL], xlim=xlim, lwd=lwd)
             
             axis(3, labels=FALSE)
@@ -100,6 +109,9 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         }
         
         if (plot.residuals) {
+            if (!is.na(wrap)) {
+                data[,TIME] <- data[,TIME] %% k[which.planets[length(which.planets)], 'period']
+            }
             plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", sfrac=0, col=data[,SET]+2, gap = 0, pch=pch, pt.bg=systemic.palette.face[data[,SET]+2])
             
             axis(3, labels=FALSE)

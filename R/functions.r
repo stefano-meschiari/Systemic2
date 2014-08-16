@@ -1088,7 +1088,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
 
   if (samples > 1e4) {
       .periodogram.tol <- double(1)
-      .periodogram.tol[1] <- 1e-5
+      .periodogram.tol[1] <- 1e-4
 
       resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, 1, 10000,
                          2000, .periodogram.tol, 5, TRUE), free=TRUE)
@@ -1572,7 +1572,8 @@ kselect <- function(k, row = "all", column = "all") {
 		} else {
 			stopifnot(row > 0 && row <= k$nplanets)
 			if (length(column) == 1 && column == "all") {
-				for (j in PER:LOP) {
+        activateable <- which(bitAnd(kflags(k)$els[row,], ACTIVE) == ACTIVE)
+				for (j in activateable) {
 					kselect(k, row, j)
 				}
 			} else {
