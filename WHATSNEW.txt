@@ -1,7 +1,9 @@
 2.172
 =====
+- NEW: Systemic checks whether new updates are available at startup.
 - FIXED: Periodogram was reporting unnormalized periodogram. Fixed.
 - FIXED: kselect(k, n, 'all') -- used to select all parameters for minimization -- will only select parameters that are flagged ACTIVE. If a parameter is not flagged ACTIVE (e.g. if the user decided to deactivate ECC and LOP to derive a circular fit), those parameters will not be selected for minimization.
+
 
 2.1700 [August 12th, 2014]
 ==========================

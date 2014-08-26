@@ -22,5 +22,11 @@ cat(sprintf('Hello master %s!\nThis is Console %.4f speaking, %s.\n(c) 2013-2014
 # Set the default CRAN repository
 options(repos=c(CRAN="http://cran.us.r-project.org"))
 
+# Check if there is a more recent version available
+ver <- scan(file=url('http://www.stefanom.org/d/systemic2/version'), quiet=TRUE)
+if (ver > SYSTEMIC.VERSION) {
+    cat(sprintf("\nUPDATE AVAILABLE: A new version (%.4f) is available for download.\n\n", ver))
+}
+
 if (file.exists("../private/startup.r"))
 	source("../private/startup.r")
