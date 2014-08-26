@@ -108,7 +108,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
     double W = 2.*M_PI*gsl_stats_sd(bufv->data, 1, ndata)/Pmin;
     gsl_matrix_get_col(bufv, data, valcol);
     double avg = gsl_stats_mean(bufv->data, 1, ndata);
-    double znorm_max = 0.;
+    double z1_max = 0.;
     double xa[ndata];
     
     // pre-calculate cdf, sdf
@@ -203,7 +203,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         MSET(ret, samples-i-1, PS_TAU, tau);
         MSET(ret, samples-i-1, PS_WIN, w_norm);
         
-        znorm_max = MAX(znorm_max, z_norm);
+        z1_max = MAX(z1_max, z_1);
     }
     
     if (p != NULL && p->calc_z_fap) {
@@ -217,7 +217,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         F.function = _baluev_tau;
         F.params = pars;
         
-        double zz = znorm_max;
+        double zz = z1_max;
         while (_baluev_tau(zz, pars) > 1e-3)
             zz *= 2;
         
@@ -235,7 +235,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
     } else {
         p->per = ret;
         p->buf = buf;
-        p->zmax = znorm_max;
+        p->zmax = z1_max;
     };
     
     gsl_vector_free(bufv);
