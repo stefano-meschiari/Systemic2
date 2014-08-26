@@ -190,7 +190,6 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         
         double z = 0.5 * (numa*numa/dena + numb*numb/denb);
         double z_1 = z * ndata / chi2_h;
-        double z_norm = 2*z/chi2_h;
         
         double w_norm = (numa_w * numa_w / dena_w + numb_w * numb_w / denb_w) / chi2_h_w;
         
@@ -198,7 +197,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         double tau_z = W * fap_single * sqrt(z_1);
         
         MSET(ret, samples-i-1, PS_TIME, 1./f);
-        MSET(ret, samples-i-1, PS_Z, z_norm);
+        MSET(ret, samples-i-1, PS_Z, z_1);
         MSET(ret, samples-i-1, PS_Z_LS, z);
         MSET(ret, samples-i-1, PS_FAP, MIN(fap_single + tau_z, 1.));
         MSET(ret, samples-i-1, PS_TAU, tau);
