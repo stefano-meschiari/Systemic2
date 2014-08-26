@@ -1,14 +1,13 @@
-2.1800
-======
+2.172
+=====
+- FIXED: Periodogram was reporting unnormalized periodogram. Fixed.
 - FIXED: kselect(k, n, 'all') -- used to select all parameters for minimization -- will only select parameters that are flagged ACTIVE. If a parameter is not flagged ACTIVE (e.g. if the user decided to deactivate ECC and LOP to derive a circular fit), those parameters will not be selected for minimization.
-
 
 2.1700 [August 12th, 2014]
 ==========================
 - NEW: ktable function for showing the fit values as a table, suitable for exporting to TeX or HTML
 - NEW: Bayesian Information Criterion menu item
 - NEW: Quadratic trend term
-- NEW: Periodograms now report the normalized power in the manner of Zechmeister et al., 2009 (0 < p < 1, where power = 1 is a perfect fit).
 - FIXED: bug where the semi-amplitude would be calculated incorrectly for massive bodies. (credit: Trifon Trifonov)
 - FIXED: bug in simplex that would crash the application if the minimizer encountered a NaN value.
 - FIXED: bug in the GUI that would crash the application in case of excessive text output.
