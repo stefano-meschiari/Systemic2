@@ -46,3 +46,5 @@ CVS
 #autosave
 /BUGS.org
 .tmp.h
+
+doc/doc_todo.md

@@ -15,7 +15,18 @@ if (! exists('.systemic.loaded')) {
         }
     }
 
-    .require.library('rdyncall')
+
+    req <- suppressMessages(require('rdyncall', warn.conflicts = FALSE, character.only = TRUE, quietly = TRUE))
+    if (! req) {
+        if (Sys.info()["sysname"] == "Darwin") {
+            install.packages('rdyncall_0.7.5.tgz', repos=NULL)
+            require('rdyncall', character.only = TRUE)
+        } else {
+            error("Please install rdyncall. See the README for details.")
+        }
+    }
+    
+    
     .require.library('bitops')
     .require.library('gdata', hush=TRUE)
     .require.library('gplots', hush=TRUE)
@@ -24,6 +35,7 @@ if (! exists('.systemic.loaded')) {
     .require.library('lattice')
     .require.library('MASS', hush=TRUE)
     .require.library('KernSmooth', hush=TRUE)
+    .require.library('stringr', hush=TRUE)
     .require.library('Hmisc', hush=TRUE)
     .require.library('parallel', hush=TRUE)
     .require.library('xtable', hush=TRUE)

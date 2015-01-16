@@ -779,16 +779,20 @@ ok_system** ok_integrate_kep(ok_system* initial, const gsl_vector* times,
     ok_system* prevSystem = initial;
     
     double n[NDIMS];
-    for (int i = 1; i < NDIMS; i++)
+    double n_lop[NDIMS];
+    for (int i = 1; i < NDIMS; i++) {
         n[i] = 2*M_PI/MGET(prevSystem->orbits, i, PER);
-    
+        n_lop[i] = MGET(prevSystem->orbits, i, PRECESSION_RATE);
+    }
     // Loop through the times vector
     for (int i = 0; i < SAMPLES; i++) {
         
         double dt = times->data[i] - prevTime;
         for (int j = 1; j < NDIMS; j++) {
             double ma = RADRANGE(MGET(prevSystem->orbits, j, MA) + n[j] * dt);
+            double lop = RADRANGE(MGET(prevSystem->orbits, j, LOP) + n_lop[j] * dt);
             MSET(bag[i]->orbits, j, MA, ma);
+            MSET(bag[i]->orbits, j, LOP, lop);
         }
         
         bag[i]->time = times->data[i];

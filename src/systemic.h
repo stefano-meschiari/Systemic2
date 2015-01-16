@@ -24,7 +24,7 @@
 
 #define IS_NOT_FINITE(x) (isnan(x) || isinf(x))
 
-#define SYSTEMIC_VERSION 2.1720
+#define SYSTEMIC_VERSION 2.1730
 
 #define MAX_LINE 8192
 
@@ -108,6 +108,7 @@
 #define NODE 6
 #define RADIUS 7
 #define ORD 8
+#define PRECESSION_RATE 9
 // Extra elements that are calculated on-the-fly
 #define SMA 13
 #define SEMIAMP 14

@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1720
+K_SYSTEMIC_VERSION <- 2.1730
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -55,6 +55,7 @@ K_INC <- 5
 K_NODE <- 6
 K_RADIUS <- 7
 K_ORD <- 8
+K_PRECESSION_RATE <- 9
 K_SMA <- 13
 K_SEMIAMP <- 14
 K_TPERI <- 15
@@ -686,6 +687,7 @@ INC <- K_INC + 1
 NODE <- K_NODE + 1
 RADIUS <- K_RADIUS + 1
 ORD <- K_ORD + 1
+PRECESSION_RATE <- K_PRECESSION_RATE + 1
 SMA <- K_SMA + 1
 SEMIAMP <- K_SEMIAMP + 1
 TPERI <- K_TPERI + 1
@@ -768,7 +770,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 
 # Labels
 
-.elements <- c("period", "mass", "ma", "ecc", "lop", "inc", "node", "radius", "ord", "u1", "u2", "u3", "u4")
+.elements <- c("period", "mass", "ma", "ecc", "lop", "inc", "node", "radius", "ord", "precession_rate", "u2", "u3", "u4")
 .allelements <- c(.elements, "a", "k", "tperi", "trueanomaly", "meanlongitude", "j1", "j2")
 .params <- c(sprintf("par%d", 1:PARAMS_SIZE))
 .params[1:DATA_SETS_SIZE] <- sprintf("data%d", 1:DATA_SETS_SIZE)
@@ -787,7 +789,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 
 .periodogram <- c("period", "power", "fap", "ls_power", "tau", "window")
 .elements.labels <- c(period="Period", mass="Mass", ma="Mean anomaly", ecc="Eccentricity", lop="Longitude of periastron", 
-	inc="Inclination", node="Node", radius="Radius", ord="Label", u1="u1", u2="u2", u3="u3", u4="u4",
+	inc="Inclination", node="Node", radius="Radius", ord="Label", precession_rate="precession_rate", u2="u2", u3="u3", u4="u4",
 	a="Semi-major axis", k="Semiamplitude", tperi="Time of periastron passage", trueanomaly="True anomaly", 
 	meanlongitude="Mean longitude", j1="j1", j2="j2")
 
