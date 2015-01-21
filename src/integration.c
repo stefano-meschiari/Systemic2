@@ -8,6 +8,7 @@
 #include <gsl/gsl_odeiv2.h>
 #include "integration.h"
 #include "ode.h"
+#include "float.h"
 #include "odex.h"
 
 #ifndef JAVASCRIPT
@@ -782,7 +783,7 @@ ok_system** ok_integrate_kep(ok_system* initial, const gsl_vector* times,
     double n_lop[NDIMS];
     for (int i = 1; i < NDIMS; i++) {
         n[i] = 2*M_PI/MGET(prevSystem->orbits, i, PER);
-        n_lop[i] = MGET(prevSystem->orbits, i, PRECESSION_RATE);
+        n_lop[i] = MGET(prevSystem->orbits, i, PRECESSION_RATE) * M_PI / 180.;
     }
     // Loop through the times vector
     for (int i = 0; i < SAMPLES; i++) {
@@ -921,7 +922,7 @@ gsl_matrix* ok_get_els(ok_system** bag, int len, bool internal) {
  * @param eps tolerance on the time
  * @return Closest transit to the time specified in state
  */
-int ok_find_closest_transit(ok_system* state, const int plidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error) {
+int ok_find_closest_time_to_transit(ok_system* state, const int plidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error) {
     // Find planet tagged with the specified index (ORD column), since internally we might keep planets sorted
     // by period.
     
@@ -1048,7 +1049,19 @@ gsl_vector* ok_find_transits(ok_system** bag, const int len, const int pidx, con
     o.calc_elements = false;
     
     for (int i = 0; i < len; i++) {
-        ok_find_closest_transit(bag[i], pidx, &o, intMethod, eps, (flag == NULL ? TDS_PRIMARY : flag[i]), &(times->data[i]), error);
+        ok_find_closest_time_to_transit(bag[i], pidx, &o, intMethod, eps, (flag == NULL ? TDS_PRIMARY : flag[i]), &(times->data[i]), error);
+    }
+    return times;
+}
+
+gsl_vector* ok_find_phases(ok_system** bag, const int len, const int pidx, const int intMethod, const double eps, const int flag[], int* error) {
+    gsl_vector* times = gsl_vector_alloc(len);
+    ok_integrator_options o;
+    memcpy(&o, &defoptions, sizeof(ok_integrator_options));
+    o.calc_elements = false;
+    
+    for (int i = 0; i < len; i++) {
+        ok_find_closest_time_to_transit(bag[i], pidx, &o, intMethod, eps, (flag == NULL ? TDS_PRIMARY : flag[i]), &(times->data[i]), error);
     }
     return times;
 }

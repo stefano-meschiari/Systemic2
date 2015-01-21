@@ -37,7 +37,7 @@ char * ok_all_orb_labels[ALL_ELEMENTS_SIZE] =  { "P", "M", "MA", "E", "LOP", "I"
 
 
 double ok_default_steps[ELEMENTS_SIZE] = {[PER] = 1e-3, [MASS] = 1e-3, [MA] = 1e-2,
-    [ECC] = 1e-2, [LOP] = 1e-2, [INC] = 1e-2, [NODE] = 1e-2, [RADIUS] = 1e-2, 0, 0, 0, 0, 0};
+    [ECC] = 1e-2, [LOP] = 1e-2, [INC] = 1e-2, [NODE] = 1e-2, [RADIUS] = 1e-2, 0, [PRECESSION_RATE] = 1e-4, 0, 0};
 
 /**
  * An internal function used to make sure the internal state of the kernel is
@@ -1010,7 +1010,7 @@ void K_calculate(ok_kernel* k) {
             
             if (integrate && k->integration != NULL && ((int) compiled[i][T_SCRATCH] < 0)) {
                 double to = 0.;
-                ok_find_closest_transit(k->integration[i],
+                ok_find_closest_time_to_transit(k->integration[i],
                     pidx, &o, k->intMethod, o.eps_tr, compiled[i][T_TDS_FLAG], &to, &k->last_error);
                 compiled[i][T_PRED] += to;
             } 
