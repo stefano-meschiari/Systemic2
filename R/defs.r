@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1730
+K_SYSTEMIC_VERSION <- 2.1740
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -566,10 +566,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_to_cm(*<ok_system>*<gsl_matrix>)v",
 # void ok_to_star(ok_system* system, gsl_matrix* xyz)
 "ok_to_star(*<ok_system>*<gsl_matrix>)v",
-# int ok_find_closest_time_to_phase(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const double phase, double* timeout, int* error)
-"ok_find_closest_time_to_phase(*<ok_system>i*<ok_integrator_options>idd*d*i)i",
-# gsl_vector* ok_find_phases(ok_system** bag, const int len, const int pidx, const int intMethod, const double eps, const double phase, int* error)
-"ok_find_phases(piiidd*i)*<gsl_vector>",
+# int ok_find_closest_time_to_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error)
+"ok_find_closest_time_to_transit(*<ok_system>i*<ok_integrator_options>idi*d*i)i",
 # double ok_pcalc(const double a, const double Mcenter, const double Mp)
 "ok_pcalc(ddd)d",
 # double ok_acalc(const double P, const double Mcenter, const double Mp)

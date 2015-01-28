@@ -62,6 +62,7 @@ if (! exists('.systemic.loaded')) {
     # sys.source("genoud.r", .systemic.functions)
     sys.source("utils.r", .systemic.functions)
     sys.source("table.r", .systemic.functions)
+    sys.source("phases.r", .systemic.functions)
     
     attach(.systemic.functions)
     .systemic.loaded <- TRUE
