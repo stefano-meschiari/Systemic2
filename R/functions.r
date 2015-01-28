@@ -51,13 +51,13 @@ systemic.names <- c(period='Period', mass='Mass', ma='Mean anomaly', ecc='Eccent
                     lop='Longitude of pericenter', inc='Inclination', node='Node',
                     a='Semi-major axis', k='Semiamplitude', tperi='Periastron passage time', rv.trend='Linear trend',
                     rv.trend.quadratic='Quadratic trend', mstar='Stellar mass',
-                    chi2='\\Chi^2', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations')
+                    chi2='\\Chi^2', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations', data.noise1='Noise for dataset 1', data.noise2='Noise for dataset 2')
 systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
                     lop='[deg]', inc='[deg]', node='[deg]',
                     a='[AU]', k='[m/s]', tperi='[JD]',
                     rv.trend='[m/s]', rv.trend.quadratic='[m/s^2]',
                     mstar = '[M_{sun}]', chi2='', jitter='[m/s]', rms='[m/s]',
-                    epoch = '[JD]', ndata='', trange='[JD]')
+                    epoch = '[JD]', ndata='', trange='[JD]', data.noise1='[m/s]', data.noise2='[m/s]')
 
 ELEMENT <- 0
 PARAMETER <- 1

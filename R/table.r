@@ -25,7 +25,10 @@ nformat <- function(n, err=0, digits=2, fmt="%s \\pm{} %s") {
     }
 }
 
-ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', 'mstar', 'rms', 'jitter', 'epoch', 'ndata', 'trange', 'pars.minimized'), labels=systemic.names, units=systemic.units, star.names=NULL, default.format="%.2f") {
+ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', 'mstar', 'rms', 'jitter', 'epoch', 'ndata', 'trange', 'pars.minimized'), labels=systemic.names, units=systemic.units, star.names=NULL, default.format="%.2f", default.nf="%s \\pm{} %s") {
+    systemic.names <- labels
+    systemic.units <- units
+    
     if (class(k) == 'kernel')
         k <- list(k)
     if (is.null(star.names))
@@ -69,7 +72,7 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
                     if (systemic.type[what[j]] == ELEMENT) {
                         if (!is.null(kk$errors)) 
                             df[j, col] <- nformat(kk$errors$stats[[pl]][what[j], 'median'],
-                                              kk$errors$stats[[pl]][what[j], 'mad'])
+                                              kk$errors$stats[[pl]][what[j], 'mad'], fmt=default.nf)
                         else
                             df[j, col] <- nformat(kk[pl, what[j]])
                         

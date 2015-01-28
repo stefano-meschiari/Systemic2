@@ -9,7 +9,7 @@ palette(systemic.palette)
 par(systemic.par)
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets,
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, ...) {
+                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, ...) {
     .check_kernel(k)
     par(systemic.par)
     if (is.nan(k$epoch)) {
@@ -29,14 +29,16 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         if (is.nan(trange[1])) {
             trange <- c(1, 1000)
         }
-        
+
+        xlab <- if (!is.null(xlab)) xlab else 'Time [JD]'
+        ylab <- if (!is.null(ylab)) ylab else 'Radial velocity [m/s]'
         
         sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
         m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
         ok_free_systems(sl, rvsamples)
 
         ylim <- if (is.null(ylim)) c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
-
+        ylim <- ylim + yshift
         if (! is.na(wrap)) {
             if (wrap == T) wrap <- k[1, 'period']
             data[, TIME] <- data[, TIME] %% wrap
@@ -44,13 +46,13 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             m <- m[order(m[, TIME]), ]
         }
 
-        suppressWarnings(plotCI(data[,TIME], data[, SVAL], data[, ERR], sfrac=0, xlab="Time [JD]", ylab="Radial velocity [m/s]", xlim=xlim, ylim=ylim, col=data[,SET]+2, pch=pch, gap=0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
-        lines(m[,TIME], m[,VAL], lwd=lwd)
+        suppressWarnings(plotCI(data[,TIME], data[, SVAL]+yshift, data[, ERR], sfrac=0, xlab=xlab, ylab=ylab, xlim=xlim, ylim=ylim, col=data[,SET]+2+col, pch=pch, gap=0, pt.bg=systemic.palette.face[data[,SET]+2+col], ...))
+        lines(m[,TIME], m[,VAL] + yshift, lwd=lwd)
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
         
         if (plot.residuals) {
-            suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED], data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2], ...))
+            suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED] + yshift, data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2+col, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2+col], ...))
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
         }
@@ -76,10 +78,13 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         trange <- c(min(data[,TIME]), max(data[,TIME]))
         
         ret <- list()
+        for (i in 1:k$nplanets)
+            krange(k, i, 'mass') <- c(0, NaN)
         
         for (i in which.planets) {
             masses <- k[, 'mass']
-            krange(k, i, 'mass') <- c(0, NaN)
+
+            
             k[i, 'mass'] <- 0
 
             kcalculate(k)
@@ -87,7 +92,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             data_i <- data_i[data_i[, FLAG] == RV, ]			
             k[,'mass'] <- masses
             k[-i, 'mass'] <- 0
-						
+						print(k)
+            print(i)
             sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
             m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
             ok_free_systems(sl, rvsamples)
