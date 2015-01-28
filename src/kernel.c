@@ -29,15 +29,15 @@
 #include <libgen.h>
 
 
-ok_minimizer ok_minimizers[] = { K_minimize_simplex, K_minimize_lm, K_minimize_de, K_minimize_sa, NULL, NULL, NULL, NULL };
-char * ok_orb_labels[ELEMENTS_SIZE] =  { "P", "M", "MA", "E", "LOP", "I", "NODE", "RADIUS", "ORD",
-"UNUSED1_", "UNUSED2_", "UNUSED3_", "UNUSED4_"};
-char * ok_all_orb_labels[ALL_ELEMENTS_SIZE] =  { "P", "M", "MA", "E", "LOP", "I", "NODE", "RADIUS", "ORD",
-"UNUSED1_", "UNUSED2_", "UNUSED3_", "UNUSED4_", "SMA", "K", "TPERI", "TRUEANOM", "UNUSED5_", "UNUSED6_", "UNUSED7_"};
+ok_minimizer ok_minimizers[] = {K_minimize_simplex, K_minimize_lm, K_minimize_de, K_minimize_sa, NULL, NULL, NULL, NULL};
+char * ok_orb_labels[ELEMENTS_SIZE] = {"P", "M", "MA", "E", "LOP", "I", "NODE", "RADIUS", "ORD",
+    "UNUSED1_", "UNUSED2_", "UNUSED3_", "UNUSED4_"};
+char * ok_all_orb_labels[ALL_ELEMENTS_SIZE] = {"P", "M", "MA", "E", "LOP", "I", "NODE", "RADIUS", "ORD",
+    "UNUSED1_", "UNUSED2_", "UNUSED3_", "UNUSED4_", "SMA", "K", "TPERI", "TRUEANOM", "UNUSED5_", "UNUSED6_", "UNUSED7_"};
 
 
 double ok_default_steps[ELEMENTS_SIZE] = {[PER] = 1e-3, [MASS] = 1e-3, [MA] = 1e-2,
-    [ECC] = 1e-2, [LOP] = 1e-2, [INC] = 1e-2, [NODE] = 1e-2, [RADIUS] = 1e-2, 0, 0, 0, 0, 0};
+    [ECC] = 1e-2, [LOP] = 1e-2, [INC] = 1e-2, [NODE] = 1e-2, [RADIUS] = 1e-2, 0, [PRECESSION_RATE] = 1e-4, 0, 0};
 
 /**
  * An internal function used to make sure the internal state of the kernel is
@@ -61,14 +61,13 @@ double ok_default_steps[ELEMENTS_SIZE] = {[PER] = 1e-3, [MASS] = 1e-3, [MA] = 1e
  */
 void K_validate(ok_kernel* k);
 
-
 /**
  * Allocates a new kernel with 0 planets and an empty dataset.
  * @return A new kernel object.
  */
 ok_kernel* K_alloc() {
     ok_kernel* k = (ok_kernel*) malloc(sizeof (ok_kernel));
-    memset(k, 0, sizeof(ok_kernel));
+    memset(k, 0, sizeof (ok_kernel));
     k->chi2 = INVALID_NUMBER;
     k->chi2_rvs = INVALID_NUMBER;
     k->chi2_tts = INVALID_NUMBER;
@@ -87,17 +86,17 @@ ok_kernel* K_alloc() {
     k->system = ok_alloc_system(0);
     MSET(k->system->elements, 0, MASS, 1.);
     k->compiled = NULL;
-    k->plRanges = (gsl_matrix**) calloc(2, sizeof(gsl_matrix*));
-    k->parRanges = (gsl_vector**) calloc(2, sizeof(gsl_vector*));
-    
+    k->plRanges = (gsl_matrix**) calloc(2, sizeof (gsl_matrix*));
+    k->parRanges = (gsl_vector**) calloc(2, sizeof (gsl_vector*));
+
     k->times = NULL;
     k->datasets = (gsl_matrix**) calloc(PARAMS_SIZE, sizeof (gsl_matrix*));
-    
+
     for (int i = 0; i < DATA_SETS_SIZE; i++)
-        sprintf(k->datanames[i], "data%d", i+1);
-    
+        sprintf(k->datanames[i], "data%d", i + 1);
+
     k->params = gsl_vector_calloc(PARAMS_SIZE);
-    
+
     k->integration = NULL;
     k->plFlags = NULL;
     k->parFlags = gsl_vector_int_calloc(PARAMS_SIZE);
@@ -107,17 +106,17 @@ ok_kernel* K_alloc() {
     for (int i = 0; i <= P_DATA_NOISE10; i++)
         VSET(k->parSteps, i, 5e-2);
     VSET(k->parSteps, P_RV_TREND_QUADRATIC, 1e-4);
-    k->intOptions = (ok_integrator_options*) malloc(sizeof(ok_integrator_options));
-    memcpy(k->intOptions, &defoptions, sizeof(ok_integrator_options));
+    k->intOptions = (ok_integrator_options*) malloc(sizeof (ok_integrator_options));
+    memcpy(k->intOptions, &defoptions, sizeof (ok_integrator_options));
     k->intOptions->buffer = NULL;
     k->intOptions->ibuffer = NULL;
     k->intOptions->progress = NULL;
-    
+
     k->flags = 0;
 
     k->progress = NULL;
     k->model_function = NULL;
-    
+
     k->rng = gsl_rng_alloc(gsl_rng_default);
     gsl_rng_set(k->rng, clock());
     return k;
@@ -130,16 +129,16 @@ ok_kernel* K_alloc() {
 void K_free(ok_kernel* k) {
     if (k == NULL)
         return;
-    
-    if (! (k->flags & SHARE_FLAGS)) {
+
+    if (!(k->flags & SHARE_FLAGS)) {
         gsl_matrix_int_free(k->plFlags);
         gsl_vector_int_free(k->parFlags);
     }
-    if (! (k->flags & SHARE_STEPS)) {
+    if (!(k->flags & SHARE_STEPS)) {
         gsl_matrix_free(k->plSteps);
         gsl_vector_free(k->parSteps);
     }
-    if (! (k->flags & SHARE_RANGES)) {
+    if (!(k->flags & SHARE_RANGES)) {
         gsl_matrix_free(k->plRanges[0]);
         gsl_matrix_free(k->plRanges[1]);
         gsl_vector_free(k->parRanges[0]);
@@ -147,15 +146,15 @@ void K_free(ok_kernel* k) {
         free(k->parRanges);
         free(k->plRanges);
     }
-    
-    if (! (k->flags & SHARE_DATA)) {
+
+    if (!(k->flags & SHARE_DATA)) {
         for (int i = 0; i < k->nsets; i++) {
             gsl_matrix_free(k->datasets[i]);
         }
         free(k->datasets);
-        
+
         gsl_vector_free(k->times);
-        
+
         if (k->integration != NULL) {
             for (int i = 0; i < k->integrationSamples; i++)
                 ok_free_system(k->integration[i]);
@@ -167,8 +166,8 @@ void K_free(ok_kernel* k) {
         gsl_vector_free(k->intOptions->buffer);
     if (k->intOptions->ibuffer != NULL)
         gsl_vector_int_free(k->intOptions->ibuffer);
-    
-    assert(! (k->system->flag & FREED));
+
+    assert(!(k->system->flag & FREED));
     k->system->flag = FREED;
     ok_free_system(k->system);
     gsl_vector_free(k->params);
@@ -181,7 +180,7 @@ void K_free(ok_kernel* k) {
 int K_compile_sort(const void* elem1, const void* elem2) {
     double* e1 = *(double**) elem1;
     double* e2 = *(double**) elem2;
-    
+
     return (e1[T_TIME] - e2[T_TIME] < 0 ? -1 : 1);
 }
 
@@ -199,35 +198,34 @@ double** K_compileData(ok_kernel* k) {
     }
     if (k->times != NULL)
         gsl_vector_free(k->times);
-    
+
     int ndata = 0;
     int ncols = MCOLS(k->datasets[0]);
 
     k->nrvs = 0;
     k->ntts = 0;
-    
+
     for (int i = 0; i < k->nsets; i++) {
         ndata += MROWS(k->datasets[i]);
         ncols = MIN(ncols, MCOLS(k->datasets[i]));
-        
+
         if (MROWS(k->datasets[i]) > 0) {
-            
+
             if ((int) MGET(k->datasets[i], 0, T_FLAG) == T_RV) {
-                k->nrvs+= MROWS(k->datasets[i]);
-            }
-            else if ((int) MGET(k->datasets[i], 0, T_FLAG) == T_TIMING)
-                k->ntts+= MROWS(k->datasets[i]);
+                k->nrvs += MROWS(k->datasets[i]);
+            } else if ((int) MGET(k->datasets[i], 0, T_FLAG) == T_TIMING)
+                k->ntts += MROWS(k->datasets[i]);
         }
     }
-    
+
     ncols++;
 
     double** compiled = k->compiled;
     if (k->compiled == NULL || k->ndata != ndata) {
-        compiled = (double**) malloc(sizeof(double*) * ndata);
+        compiled = (double**) malloc(sizeof (double*) * ndata);
         free(k->compiled);
     }
-    
+
     int nr = 0;
 
     for (int i = 0; i < k->nsets; i++) {
@@ -238,9 +236,9 @@ double** K_compileData(ok_kernel* k) {
             nr++;
         }
     }
-    
+
     if (k->flags & BOOTSTRAP_DATA) {
-        k->compiled = (double**) malloc(sizeof(double*) * ndata);
+        k->compiled = (double**) malloc(sizeof (double*) * ndata);
         for (int i = 0; i < ndata; i++) {
             k->compiled[i] = compiled[gsl_rng_uniform_int(k->rng, ndata)];
         }
@@ -249,19 +247,19 @@ double** K_compileData(ok_kernel* k) {
         k->flags &= ~BOOTSTRAP_DATA;
     } else
         k->compiled = compiled;
-    
-    qsort(compiled, ndata, sizeof(double*), K_compile_sort);
-    
+
+    qsort(compiled, ndata, sizeof (double*), K_compile_sort);
+
     k->times = gsl_vector_calloc(ndata);
     for (int i = 0; i < ndata; i++) {
         VSET(k->times, i, k->compiled[i][T_TIME]);
     }
-    
+
     if (IS_INVALID(k->system->epoch)) {
         k->system->epoch = k->system->time = VGET(k->times, 0);
     }
     k->ndata = ndata;
-    
+
     k->flags &= ~NEEDS_COMPILE;
     return k->compiled;
 }
@@ -283,14 +281,14 @@ double** K_compileData(ok_kernel* k) {
 gsl_matrix* K_addDataTable(ok_kernel* k, gsl_matrix* table, const char* name, int type) {
     if (MCOLS(table) < DATA_SIZE) {
         table = ok_matrix_resize(table, MROWS(table), DATA_SIZE);
-    } 
-    
+    }
+
     k->datasets[k->nsets] = table;
     strcpy(k->datanames[k->nsets], name);
-    
+
     for (int i = 0; i < MROWS(table); i++)
         MSET(table, i, T_FLAG, type);
-    
+
     k->nsets++;
     k->flags |= NEEDS_COMPILE;
     if (type == T_RV)
@@ -316,13 +314,13 @@ gsl_matrix* K_addDataFile(ok_kernel* k, const char* path, int type) {
     assert(fid != NULL);
     if (fid == NULL)
         return NULL;
-    
-    
+
+
     k->datasets[k->nsets] = ok_read_table(fid);
-    
+
     for (int i = 0; i < MROWS(k->datasets[k->nsets]); i++)
         MSET(k->datasets[k->nsets], i, T_FLAG, type);
-    
+
     if (type == T_TIMING) {
         for (int i = 0; i < MROWS(k->datasets[k->nsets]); i++) {
             MSET(k->datasets[k->nsets], i, T_TDS_FLAG, MGET(k->datasets[k->nsets], i,
@@ -330,10 +328,10 @@ gsl_matrix* K_addDataFile(ok_kernel* k, const char* path, int type) {
             MSET(k->datasets[k->nsets], i, T_ERR, MGET(k->datasets[k->nsets], i,
                     T_VAL));
             MSET(k->datasets[k->nsets], i, T_VAL, MGET(k->datasets[k->nsets], i,
-                    T_TIME)); 
+                    T_TIME));
         }
     }
-    
+
     k->nsets++;
     fclose(fid);
 
@@ -342,12 +340,12 @@ gsl_matrix* K_addDataFile(ok_kernel* k, const char* path, int type) {
         VISET(k->parFlags, k->nsets - 1, ACTIVE | MINIMIZE);
     else
         VISET(k->parFlags, k->nsets - 1, ACTIVE);
-    
+
     VSET(k->parSteps, k->nsets - 1, 0.05);
     VSET(k->params, k->nsets - 1, 0.);
-    strcpy(k->datanames[k->nsets-1], path);
-    
-    return k->datasets[k->nsets-1];
+    strcpy(k->datanames[k->nsets - 1], path);
+
+    return k->datasets[k->nsets - 1];
 }
 
 /**
@@ -356,7 +354,7 @@ gsl_matrix* K_addDataFile(ok_kernel* k, const char* path, int type) {
  * @param idx Index of the dataset
  */
 void K_removeData(ok_kernel* k, int idx) {
-    
+
     if (idx == -1) {
         for (int i = 0; i < k->nsets; i++) {
             gsl_matrix_free(k->datasets[i]);
@@ -370,21 +368,21 @@ void K_removeData(ok_kernel* k, int idx) {
         k->flags |= NEEDS_COMPILE | NEEDS_SETUP;
         return;
     }
-    
+
     gsl_matrix_free(k->datasets[idx]);
     k->datasets[idx] = NULL;
-    sprintf(k->datanames[idx], "data%d", idx+1);
-    
-    for (int i = idx+1; i < k->nsets; i++) {
-        k->datasets[i-1] = k->datasets[i];
-        k->params->data[i-1] = k->params->data[i];
-        k->parFlags->data[i-1] = k->parFlags->data[i];
-        k->parSteps->data[i-1] = k->parSteps->data[i];
-        strcpy(k->datanames[i-1], k->datanames[i]);
+    sprintf(k->datanames[idx], "data%d", idx + 1);
+
+    for (int i = idx + 1; i < k->nsets; i++) {
+        k->datasets[i - 1] = k->datasets[i];
+        k->params->data[i - 1] = k->params->data[i];
+        k->parFlags->data[i - 1] = k->parFlags->data[i];
+        k->parSteps->data[i - 1] = k->parSteps->data[i];
+        strcpy(k->datanames[i - 1], k->datanames[i]);
     }
-    k->parFlags->data[k->nsets-1] = 0;
-    k->parSteps->data[k->nsets-1] = 1e-2;
-    
+    k->parFlags->data[k->nsets - 1] = 0;
+    k->parSteps->data[k->nsets - 1] = 1e-2;
+
     k->nsets--;
     k->flags |= NEEDS_COMPILE | NEEDS_SETUP;
     K_validate(k);
@@ -406,15 +404,15 @@ int K_getDataType(ok_kernel* k, int idx) {
 }
 
 int K_getDataSize(ok_kernel* k, int idx) {
-    return MROWS(k->datasets[idx]); 
+    return MROWS(k->datasets[idx]);
 }
 
 gsl_matrix* K_getCompiledDataMatrix(ok_kernel* k) {
     if (k->compiled == NULL)
         K_compileData(k);
-    
+
     gsl_matrix* res = gsl_matrix_alloc(k->ndata, DATA_SIZE);
-    
+
     for (int i = 0; i < k->ndata; i++) {
         for (int j = 0; j < DATA_SIZE; j++)
             MSET(res, i, j, k->compiled[i][j]);
@@ -437,37 +435,37 @@ void K_addPlanet(ok_kernel* k, const double elements[]) {
 
     ok_resize_system(k->system, k->system->nplanets + 1);
 
-    k->plFlags = ok_matrix_int_resize(k->plFlags, k->system->nplanets+1, MCOLS(k->system->elements));
-    k->plSteps = ok_matrix_resize(k->plSteps, k->system->nplanets+1, MCOLS(k->system->elements));
-    
+    k->plFlags = ok_matrix_int_resize(k->plFlags, k->system->nplanets + 1, MCOLS(k->system->elements));
+    k->plSteps = ok_matrix_resize(k->plSteps, k->system->nplanets + 1, MCOLS(k->system->elements));
+
     MSET(k->system->elements, row, ORD, -1);
     MSET(k->system->elements, row, INC, 90.);
-    
+
     if (elements != NULL) {
         int i = 0;
         while (true) {
             if (elements[i] == DONE)
                 break;
             else
-                MSET(k->system->elements, row, (int) elements[i], elements[i+1]);
-            i+=2;
+                MSET(k->system->elements, row, (int) elements[i], elements[i + 1]);
+            i += 2;
         }
     }
 
     if (MGET(k->system->elements, row, ORD) < 0)
         MSET(k->system->elements, row, ORD, row);
-    
-    
-    for (int i = 0; i < 5; i++) 
+
+
+    for (int i = 0; i < 5; i++)
         MISET(k->plFlags, row, i, ACTIVE | MINIMIZE);
     for (int i = 0; i < ELEMENTS_SIZE; i++) {
         MSET(k->plSteps, row, i, ok_default_steps[i]);
     }
-    
+
     K_setElementRange(k, row, PER, 0.1, 1e4);
     K_setElementRange(k, row, MASS, 1e-4, 2e3);
     K_setElementRange(k, row, ECC, 0, 0.99);
-    
+
     ok_sort_matrix(k->system->elements, ORD);
     k->flags |= NEEDS_SETUP;
     K_validate(k);
@@ -483,31 +481,31 @@ void K_addPlanet(ok_kernel* k, const double elements[]) {
 void K_removePlanet(ok_kernel* k, int idx) {
     if (k->system->nplanets == 0)
         return;
-    
+
     if (idx == -1) {
         while (k->system->nplanets > 0) {
             K_removePlanet(k, 0);
         }
-        k->flags |= NEEDS_SETUP;        
+        k->flags |= NEEDS_SETUP;
         return;
     }
-    
-    
-    
+
+
+
     gsl_matrix_free(k->system->xyz);
     k->system->xyz = NULL;
     gsl_matrix_free(k->system->orbits);
     k->system->orbits = NULL;
-    
-    
+
+
     gsl_matrix* els = ok_matrix_remove_row(k->system->elements, idx);
     gsl_matrix_free(k->system->elements);
     k->system->elements = els;
-    
+
     gsl_matrix_int* plFlags = ok_matrix_int_remove_row(k->plFlags, idx);
     gsl_matrix_int_free(k->plFlags);
     k->plFlags = plFlags;
-    
+
     if (k->plRanges[0] != NULL) {
         gsl_matrix* plRanges0 = ok_matrix_remove_row(k->plRanges[0], idx);
         gsl_matrix_free(k->plRanges[0]);
@@ -516,10 +514,10 @@ void K_removePlanet(ok_kernel* k, int idx) {
         gsl_matrix_free(k->plRanges[1]);
         k->plRanges[1] = plRanges1;
     }
-    
+
     for (int i = 0; i < k->system->elements->size1; i++)
         MSET(k->system->elements, i, ORD, i);
-    
+
     k->system->nplanets--;
     k->flags |= NEEDS_SETUP;
 }
@@ -533,7 +531,7 @@ void K_removePlanet(ok_kernel* k, int idx) {
  * @param value New value
  */
 void K_setElement(ok_kernel* k, int row, int col, double value) {
-    
+
     if (row == -1) {
         for (int i = 1; i < MROWS(k->system->elements); i++)
             K_setElement(k, i, col, value);
@@ -541,47 +539,48 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
         if (col >= 0 && col < ELEMENTS_SIZE)
             MSET(k->system->elements, row, col, value);
         else if (col == TPERI) {
-            double M = 360./MGET(k->system->elements, row, PER) * (k->system->epoch - value);
-            MSET(k->system->elements, row, MA, M);
+            double M = 360. / MGET(k->system->elements, row, PER) * (k->system->epoch - value);
+            MSET(k->system->elements, row, MA, DEGRANGE(M));
         } else if (col == TRUEANOMALY) {
             double e = MGET(k->system->elements, row, ECC);
             double f = RADRANGE(TO_RAD(value));
-            double E = 2.*atan(sqrt((1-e)/(1+e)) * tan(0.5*f));
-            if (f > 0.5*M_PI && f < 1.5 * M_PI)
-                E += M_PI;
-            double M = E-e*sin(E);
+
+            double E = 2 * atan2(sqrt(1 - e) * sin(0.5 * f),
+                    sqrt(1 + e) * cos(0.5 * f));
+
+            double M = E - e * sin(E);
             MSET(k->system->elements, row, MA, TO_DEG(M));
-            
+
         } else if (col == SEMIAMP) {
             double Mcent = MSUN_TO_INT(k->Mstar);
             double per = MGET(k->system->elements, row, PER);
             double ecc = MGET(k->system->elements, row, ECC);
-        
+
             if (k->system->flag & JACOBI) {
-             for (int j = 1; j < k->system->nplanets+1; j++)
-                if (MGET(k->system->elements, j, PER) < per)
-                    Mcent += MJUP_TO_INT(MGET(k->system->elements, j, MASS));
-            }   
+                for (int j = 1; j < k->system->nplanets + 1; j++)
+                    if (MGET(k->system->elements, j, PER) < per)
+                        Mcent += MJUP_TO_INT(MGET(k->system->elements, j, MASS));
+            }
             double K = MPS_TO_AUPDAY(value);
-            double xi = K * cbrt(per/(2.*M_PI)) * sqrt(1.-ecc*ecc);
-            
-            double m = xi * pow(Mcent, 2./3.);
-            
+            double xi = K * cbrt(per / (2. * M_PI)) * sqrt(1. - ecc * ecc);
+
+            double m = xi * pow(Mcent, 2. / 3.);
+
             int steps = 0;
-            while (abs(1-xi*pow(Mcent + m, 2./3.)/m) > 1e-6) {
-                m = xi * pow(Mcent + m, 2./3.);
-                
+            while (abs(1 - xi * pow(Mcent + m, 2. / 3.) / m) > 1e-6) {
+                m = xi * pow(Mcent + m, 2. / 3.);
+
                 steps++;
                 if (steps > 20)
                     break;
             }
-            
+
             MSET(k->system->elements, row, MASS, INT_TO_MJUP(m));
-            
+
         } else if (col == MEANLONGITUDE) {
             MSET(k->system->elements, row, MA, value - MGET(k->system->elements, row, LOP));
         } else if (col == SMA) {
-            
+
             double mass = MGET(k->system->elements, row, MASS);
             double a = value;
             double per = MGET(k->system->elements, row, PER);
@@ -591,7 +590,7 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
                 Mcent = k->Mstar * MSUN;
 
                 if (k->system->flag & JACOBI) {
-                    for (int j = 1; j < k->system->nplanets+1; j++)
+                    for (int j = 1; j < k->system->nplanets + 1; j++)
                         if (MGET(k->system->elements, j, PER) < per)
                             Mcent += MGET(k->system->elements, j, MASS) * MJUP;
                 } else
@@ -600,18 +599,17 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
                 double per_new = YEAR_TO_DAY(sqrt(a * a * a * MSUN / (Mcent + mass * MJUP)));
                 dper = per_new - per;
                 per = per_new;
-                
+
             } while (abs(dper) > 1e-10);
-            
+
             per = YEAR_TO_DAY(sqrt(a * a * a * MSUN / (Mcent + mass * MJUP)));
             MSET(k->system->elements, row, PER, per);
         }
     }
-        
+
     k->flags |= NEEDS_SETUP;
     K_validate(k);
 }
-
 
 /**
  * Returns the element specified by col (one of PER, MASS, ECC, MA,
@@ -629,40 +627,43 @@ double K_getElement(ok_kernel* k, int row, int col) {
         double Mcent = k->Mstar * MSUN;
         double per = MGET(k->system->elements, row, PER);
         double mass = MGET(k->system->elements, row, MASS);
-        
+
         if (k->system->flag & JACOBI) {
-            for (int j = 1; j < k->system->nplanets+1; j++)
+            for (int j = 1; j < k->system->nplanets + 1; j++)
                 if (MGET(k->system->elements, j, PER) < per)
                     Mcent += MGET(k->system->elements, j, MASS) * MJUP;
         }
-        
-        double a = ok_acalc(per, Mcent/MSUN * K2, mass * MJUP/MSUN * K2);
+
+        double a = ok_acalc(per, Mcent / MSUN * K2, mass * MJUP / MSUN * K2);
         return a;
     } else if (col == SEMIAMP) {
         double Mcent = k->Mstar * MSUN;
         double per = MGET(k->system->elements, row, PER);
         double mass = MGET(k->system->elements, row, MASS);
         double ecc = MGET(k->system->elements, row, ECC);
-        
+
         if (k->system->flag & JACOBI) {
-            for (int j = 1; j < k->system->nplanets+1; j++)
+            for (int j = 1; j < k->system->nplanets + 1; j++)
                 if (MGET(k->system->elements, j, PER) < per)
                     Mcent += MGET(k->system->elements, j, MASS) * MJUP;
         }
-        
-        double a = ok_acalc(per, Mcent/MSUN * K2, mass * MJUP/MSUN * K2);
-        
-        double K = 2 * M_PI/per * mass * MJUP / (Mcent + mass*MJUP) * a / sqrt(1 - ecc*ecc);
-        return K * AU / (100.*DAY);
+
+        double a = ok_acalc(per, Mcent / MSUN * K2, mass * MJUP / MSUN * K2);
+
+        double K = 2 * M_PI / per * mass * MJUP / (Mcent + mass * MJUP) * a / sqrt(1 - ecc * ecc);
+        return K * AU / (100. * DAY);
     } else if (col == TPERI) {
-        return k->system->epoch - MGET(k->system->elements, row, MA) * MGET(k->system->elements, row, PER) / 360.;
+        double n = 360./MGET(k->system->elements, row, PER);
+        return k->system->epoch - MGET(k->system->elements, row, MA) / n;
     } else if (col == TRUEANOMALY) {
         double e = MGET(k->system->elements, row, ECC);
         double ma = TO_RAD(MGET(k->system->elements, row, MA));
         double E = mco_kep__(e, ma);
-        
-        double f = 2.*atan2(sqrt((1.+e)/(1.-e*cos(E))) * sin(0.5*E),
-                sqrt((1.-e)/(1-e*cos(E))) * cos(0.5*E));
+
+        double f = 2. * atan2(
+                sqrt(1 + e) * sin(0.5 * E),
+                sqrt(1 - e) * cos(0.5 * E));
+
         return TO_DEG(f);
     } else if (col == MEANLONGITUDE) {
         return DEGRANGE(MGET(k->system->elements, row, MA) + MGET(k->system->elements, row, LOP));
@@ -692,13 +693,12 @@ gsl_matrix* K_getElements(ok_kernel* k) {
 void K_setElements(ok_kernel* k, gsl_matrix* elements) {
     if (elements != k->system->elements)
         gsl_matrix_free(k->system->elements);
-    
+
     k->system->nplanets = MROWS(elements) - 1;
     k->system->elements = elements;
     k->flags |= NEEDS_SETUP;
     K_validate(k);
 }
-
 
 /**
  * Returns a matrix of the internal elements (like getElements), plus other derived
@@ -710,18 +710,17 @@ void K_setElements(ok_kernel* k, gsl_matrix* elements) {
  */
 gsl_matrix* K_getAllElements(ok_kernel* k) {
     K_validate(k);
-    
+
     gsl_matrix* ret = ok_matrix_copy(k->system->elements);
     ret = ok_matrix_resize(ret, MROWS(k->system->elements), ALL_ELEMENTS_SIZE);
-    
+
     for (int i = 0; i < MROWS(ret); i++)
         for (int j = ELEMENTS_SIZE; j < ALL_ELEMENTS_SIZE; j++) {
             MSET(ret, i, j, K_getElement(k, i, j));
         }
-    
+
     return ret;
 }
-
 
 /**
  * Sets the parameters of the kernel (the meaning of "parameter" depends on the index
@@ -776,6 +775,7 @@ double K_getPar(ok_kernel* k, int idx) {
 void K_setParFlag(ok_kernel* k, int idx, int value) {
     VSET(k->parFlags, idx, value);
 }
+
 int K_getParFlag(ok_kernel* k, int idx) {
     return VGET(k->parFlags, idx);
 }
@@ -788,7 +788,6 @@ void K_setParStep(ok_kernel* k, int idx, double value) {
     VSET(k->parSteps, idx, value);
 }
 
-
 void K_setParRange(ok_kernel* k, int par, double min, double max) {
     if (k->parRanges[0] == NULL) {
         k->parRanges[0] = gsl_vector_alloc(PARAMS_SIZE);
@@ -799,14 +798,14 @@ void K_setParRange(ok_kernel* k, int par, double min, double max) {
         gsl_vector_set_all(k->parRanges[1], INVALID_NUMBER);
     }
     K_validate(k);
-    
+
     VSET(k->parRanges[0], par, min);
     VSET(k->parRanges[1], par, max);
 }
 
 void K_getParRange(ok_kernel* k, int idx, double* min, double* max) {
     K_validate(k);
-    
+
     if (k->parRanges[0] == NULL)
         *min = INVALID_NUMBER;
     else
@@ -818,30 +817,30 @@ void K_getParRange(ok_kernel* k, int idx, double* min, double* max) {
 }
 
 void K_validate(ok_kernel* k) {
-    
+
     for (int i = k->nsets; i < DATA_SETS_SIZE; i++)
         VSET(k->parFlags, i, 0);
-    
-    
+
+
     if (k->flags & NEEDS_COMPILE) {
         K_compileData(k);
     }
-    
-    
+
+
     if (k->plFlags == NULL || (MROWS(k->plFlags) != MROWS(k->system->elements))) {
         k->plFlags = ok_matrix_int_resize(k->plFlags, MROWS(k->system->elements), MCOLS(k->system->elements));
     }
-    
+
     if ((k->plSteps == NULL) || MROWS(k->plSteps) != MROWS(k->system->elements)) {
         k->plSteps = ok_matrix_resize(k->plSteps, MROWS(k->system->elements), MCOLS(k->system->elements));
-    } 
-    
-    
+    }
+
+
     if (k->plRanges[0] != NULL && MROWS(k->plRanges[0]) != MROWS(k->system->elements)) {
         k->plRanges[0] = ok_matrix_resize_pad(k->plRanges[0], MROWS(k->system->elements), ELEMENTS_SIZE, INVALID_NUMBER);
         k->plRanges[1] = ok_matrix_resize_pad(k->plRanges[1], MROWS(k->system->elements), ELEMENTS_SIZE, INVALID_NUMBER);
     }
-    
+
     if (k->parRanges[0] != NULL)
         for (int i = 0; i < PARAMS_SIZE; i++) {
             if (!IS_INVALID(VGET(k->parRanges[0], i)))
@@ -849,55 +848,55 @@ void K_validate(ok_kernel* k) {
             if (!IS_INVALID(VGET(k->parRanges[1], i)))
                 VSET(k->params, i, MIN(VGET(k->parRanges[1], i), VGET(k->params, i)));
         }
-    
-    
-    for (int i = 1; i < k->system->nplanets+1; i++) {
-        
+
+
+    for (int i = 1; i < k->system->nplanets + 1; i++) {
+
         double ecc = MGET(k->system->elements, i, ECC);
         if (ecc < 0) {
             MSET(k->system->elements, i, ECC, -ecc);
-            MINC(k->system->elements, i, MA, - 180.);
-            MINC(k->system->elements, i, LOP, + 180.);
+            MINC(k->system->elements, i, MA, -180.);
+            MINC(k->system->elements, i, LOP, +180.);
         }
-        
+
         double mass = MGET(k->system->elements, i, MASS);
-        
+
         if (mass < 0) {
             MSET(k->system->elements, i, MASS, -mass);
             MINC(k->system->elements, i, MA, -180.);
         }
         if (k->plRanges[0] != NULL) {
             for (int j = 0; j < ELEMENTS_SIZE; j++) {
-                if (! IS_INVALID(MGET(k->plRanges[0], i, j)))
+                if (!IS_INVALID(MGET(k->plRanges[0], i, j)))
                     MSET(k->system->elements, i, j, MAX(MGET(k->system->elements, i, j), MGET(k->plRanges[0], i, j)));
-                if (! IS_INVALID(MGET(k->plRanges[1], i, j)))
+                if (!IS_INVALID(MGET(k->plRanges[1], i, j)))
                     MSET(k->system->elements, i, j, MIN(MGET(k->system->elements, i, j), MGET(k->plRanges[1], i, j)));
-            }       
+            }
         }
-        
+
     }
-    
+
     for (int i = P_DATA_NOISE1; i <= P_DATA_NOISE10; i++)
         VSET(k->params, i, fabs(VGET(k->params, i)));
 
     MSET(k->system->elements, 0, MASS, k->Mstar);
-    
-    
+
+
     // If the coordinate system is jacobian, ensure the bodies are sorted by period.
     // If they were not sorted, then start a new setup (recalculate xyz coordinates + orbits).
     if (k->system->flag & JACOBI) {
         gsl_matrix* el = k->system->elements;
         ok_sort_matrix(el, PER);
-        
+
         for (int i = 0; i < k->system->nplanets + 1; i++)
             if (MGET(k->system->elements, i, ORD) != i) {
                 k->flags |= NEEDS_SETUP;
                 MSET(k->system->elements, i, ORD, i);
             }
     }
-    
-    
-    
+
+
+
     if (k->flags & NEEDS_SETUP)
         ok_setup(k->system);
 }
@@ -930,15 +929,15 @@ void K_calculate(ok_kernel* k) {
 
     int ppars = K_getActiveElements(k);
     int vpars = K_getActivePars(k);
-    
+
     double pars = k->ndata - ppars - vpars;
     k->nrpars = pars;
-    
+
     bool integrate = (k->system->nplanets > 0);
-    
+
     if (k->ndata <= 0)
         return;
-    
+
     if ((!integrate && k->integration != NULL) || ((k->integration != NULL) && (k->times->size != k->integrationSamples ||
             MROWS(k->integration[0]->elements) != MROWS(k->system->elements)))) {
         for (int i = 0; i < k->integrationSamples; i++)
@@ -946,96 +945,95 @@ void K_calculate(ok_kernel* k) {
         free(k->integration);
         k->integration = NULL;
         k->integrationSamples = 0;
-        
+
     }
 
     for (int i = 0; i < k->ndata; i++) {
         k->compiled[i][T_PRED] = 0.;
         k->compiled[i][T_SCRATCH] = -1.;
     }
-    
+
     if (integrate) {
         k->integration = ok_integrate(k->system, k->times, k->intOptions, k->intMethod, k->integration,
                 &k->last_error);
-    } 
-    
+    }
+
     k->chi2_rvs = 0.;
     k->chi2_tts = 0.;
     k->chi2_other = 0.;
-    
+
     k->rms = 0.;
     k->rms_tts = 0.;
     k->jitter = 0.;
     k->nrvs = 0;
     k->ntts = 0;
-    
+
     ok_integrator_options o;
-    memcpy(&o, k->intOptions, sizeof(ok_integrator_options));
+    memcpy(&o, k->intOptions, sizeof (ok_integrator_options));
     o.calc_elements = false;
-    
-    
+
+
     double** compiled = k->compiled;
     int ndata = k->ndata;
     double epoch = k->system->epoch;
-    
+
     if (k->model_function != NULL)
         k->model_function(k, compiled, ndata);
-    
+
     for (int i = 0; i < ndata; i++) {
         int set = (int) compiled[i][T_SET];
         double n = K_getPar(k, set + DATA_SETS_SIZE);
-        
+
         if ((int) compiled[i][T_FLAG] == T_RV) {
             if ((int) compiled[i][T_SCRATCH] < 0)
                 compiled[i][T_PRED] += (integrate && k->integration != NULL ? ok_get_rv(k->integration[i]) : 0.0);
-            
+
             compiled[i][T_SCRATCH] = 0;
             int j = (int) compiled[i][T_SET];
             compiled[i][T_SVAL] = compiled[i][T_VAL] - VGET(k->params, j) - VGET(k->params, P_RV_TREND) * (compiled[i][T_TIME] - epoch) - VGET(k->params, P_RV_TREND_QUADRATIC) * (compiled[i][T_TIME] - epoch) * (compiled[i][T_TIME] - epoch);
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
-            
+
             k->chi2_rvs += diff * diff / (s * s + n * n);
             k->rms += diff * diff;
             k->jitter += s*s;
-            k->nrvs ++;
+            k->nrvs++;
         } else if ((int) compiled[i][T_FLAG] == T_TIMING) {
             int pidx = (int) compiled[i][T_TDS_PLANET];
             compiled[i][T_SVAL] = compiled[i][T_VAL];
-             
+
             if (pidx <= 0)
                 pidx = 1;
             if (pidx >= k->system->nplanets + 1)
                 continue;
-            
+
             if (integrate && k->integration != NULL && ((int) compiled[i][T_SCRATCH] < 0)) {
                 double to = 0.;
-                ok_find_closest_transit(k->integration[i],
-                    pidx, &o, k->intMethod, o.eps_tr, compiled[i][T_TDS_FLAG], &to, &k->last_error);
+                ok_find_closest_time_to_transit(k->integration[i],
+                        pidx, &o, k->intMethod, o.eps_tr, compiled[i][T_TDS_FLAG], &to, &k->last_error);
                 compiled[i][T_PRED] += to;
-            } 
+            }
             compiled[i][T_SCRATCH] = 0;
-            
+
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
             k->chi2_tts += diff * diff / (s * s + n * n);
             k->rms_tts += diff * diff;
-            k->ntts ++;
+            k->ntts++;
         } else if ((int) compiled[i][T_FLAG] == T_DUMMY) {
             // do nothing
-        }
-        else {
+        } else {
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
             k->chi2_other += diff * diff / (s * s + n * n);
         }
     }
-    
+
     k->chi2 = (k->chi2_rvs + k->chi2_tts + k->chi2_other) / pars;
     k->rms = sqrt(k->rms / (double) k->nrvs);
     k->rms_tts = sqrt(k->rms_tts / (double) k->ntts);
     k->jitter = sqrt(k->rms * k->rms - k->jitter / (double) k->nrvs);
-    
+
     k->integrationSamples = k->times->size;
     k->flags &= ~NEEDS_COMPILE;
     k->flags &= ~NEEDS_SETUP;
@@ -1050,14 +1048,14 @@ ok_system** K_integrateProgress(ok_kernel* k, gsl_vector* times, ok_system** bag
     k->intOptions->progress = k->progress;
     ok_system** bag2 = K_integrate(k, times, bag, error);
     k->intOptions->progress = NULL;
-    
+
     return bag2;
 }
 
 ok_system** K_integrateRange(ok_kernel* k, double from, double to, unsigned int samples, ok_system** bag, int* error) {
     gsl_vector* times = gsl_vector_alloc(samples);
     for (int i = 0; i < samples; i++)
-        VSET(times, i, i * (to-from)/(samples-1) + from);
+        VSET(times, i, i * (to - from) / (samples - 1) + from);
     ok_system** sl = K_integrate(k, times, bag, error);
     gsl_vector_free(times);
     return sl;
@@ -1066,42 +1064,39 @@ ok_system** K_integrateRange(ok_kernel* k, double from, double to, unsigned int 
 gsl_matrix* K_integrateStellarVelocity(ok_kernel* k, double from, double to, unsigned int samples, ok_system** bag, int* error) {
     ok_system** sl = K_integrateRange(k, from, to, samples, NULL, error);
     gsl_matrix* m;
-    
+
     if (sl == NULL && k->system->nplanets > 0)
         return NULL;
     else if (sl == NULL || k->system->nplanets == 0) {
         m = gsl_matrix_calloc(samples, 2);
         for (int i = 0; i < samples; i++) {
-            MSET(m, i, 0, i * (to-from)/(samples-1) + from);
+            MSET(m, i, 0, i * (to - from) / (samples - 1) + from);
         }
-    }
-    else 
+    } else
         m = ok_get_rvs(sl, samples);
-    
+
     if (k->model_function != NULL) {
-        double** dr = (double**) malloc(samples * sizeof(double*));
+        double** dr = (double**) malloc(samples * sizeof (double*));
         for (int i = 0; i < samples; i++) {
-            dr[i] = (double*) malloc(DATA_SIZE * sizeof(double));
+            dr[i] = (double*) malloc(DATA_SIZE * sizeof (double));
             dr[i][0] = MGET(m, i, 0);
             dr[i][T_SET] = -1;
             dr[i][T_FLAG] = T_RV;
             dr[i][T_PRED] = 0.;
         }
-        
+
         k->model_function(k, dr, samples);
-        
+
         for (int i = 0; i < samples; i++) {
             MSET(m, i, 1, MGET(m, i, 1) + dr[i][T_PRED]);
             free(dr[i]);
         }
         free(dr);
     }
-    
+
     ok_free_systems(sl, samples);
     return m;
 }
-
-
 
 K_GETSET_C(Mstar, Mstar, double)
 K_GETSETW_C(epoch, Epoch, double, k->system->epoch)
@@ -1118,16 +1113,16 @@ double K_getChi2_nr(ok_kernel* k) {
 
 double K_getLoglik(ok_kernel* k) {
     double chi2 = k->chi2_rvs + k->chi2_tts + k->chi2_other;
-    
+
     double A = 0;
     for (int i = 0; i < k->ndata; i++) {
         int set = (int) k->compiled[i][T_SET];
         double n = VGET(k->params, set + DATA_SETS_SIZE);
-        
-        A += log(SQR(k->compiled[i][T_ERR]) + n*n);
+
+        A += log(SQR(k->compiled[i][T_ERR]) + n * n);
     }
-    
-    return 0.5 * A + 0.5*chi2;
+
+    return 0.5 * A + 0.5 * chi2;
 };
 
 K_GET_C(rms, Rms, double)
@@ -1137,8 +1132,8 @@ K_GET_C(nrvs, Nrvs, unsigned int)
 K_GET_C(ntts, Ntts, unsigned int)
 K_GET_C(nsets, Nsets, unsigned int)
 K_GET_C(chi2_rvs, Chi2_rvs, double)
-K_GET_C(chi2_tts, Chi2_tts, double)        
-K_GET_C(rms_tts, Rms_tts, double)        
+K_GET_C(chi2_tts, Chi2_tts, double)
+K_GET_C(rms_tts, Rms_tts, double)
 
 void K_setMinFunc(ok_kernel* k, ok_callback f) {
     if (f == NULL)
@@ -1187,14 +1182,14 @@ int K_getVoffFlag(ok_kernel* k, int idx) {
 
 void K_setElementStep(ok_kernel* k, int row, int col, double value) {
     K_validate(k);
-    
+
     if (row == -1 && col == -1 && IS_INVALID(value)) {
-        for (int i = 1; i < MROWS(k->system->elements); i++) 
+        for (int i = 1; i < MROWS(k->system->elements); i++)
             for (int j = 0; j < ELEMENTS_SIZE; j++)
                 MSET(k->plSteps, i, j, ok_default_steps[j]);
         return;
     }
-    
+
     if (row == -1) {
         for (int i = 1; i < MROWS(k->system->elements); i++)
             MSET(k->plSteps, i, col, value);
@@ -1217,7 +1212,7 @@ void K_setElementRange(ok_kernel* k, int row, int col, double min, double max) {
         gsl_matrix_set_all(k->plRanges[1], INVALID_NUMBER);
     }
     K_validate(k);
-    
+
     if (row == -1) {
         for (int i = 1; i < MROWS(k->system->elements); i++) {
             MSET(k->plRanges[0], i, col, min);
@@ -1231,12 +1226,12 @@ void K_setElementRange(ok_kernel* k, int row, int col, double min, double max) {
 
 void K_getElementRange(ok_kernel* k, int row, int col, double* min, double* max) {
     K_validate(k);
-    
+
     if (k->plRanges[0] == NULL)
         *min = INVALID_NUMBER;
     else
         *min = MGET(k->plRanges[0], row, col);
-    
+
     if (k->plRanges[1] == NULL)
         *max = INVALID_NUMBER;
     else
@@ -1258,59 +1253,59 @@ ok_kernel* K_clone(ok_kernel* k) {
 }
 
 ok_kernel* K_cloneFlags(ok_kernel* k, unsigned int flags) {
-    ok_kernel* k2 = (ok_kernel*) malloc(sizeof(ok_kernel));
-    memcpy(k2, k, sizeof(ok_kernel));
-    
-    if (! (flags & SHARE_DATA)) {
-        k2->datasets = (gsl_matrix**) malloc(sizeof(gsl_matrix*) * PARAMS_SIZE);
+    ok_kernel* k2 = (ok_kernel*) malloc(sizeof (ok_kernel));
+    memcpy(k2, k, sizeof (ok_kernel));
+
+    if (!(flags & SHARE_DATA)) {
+        k2->datasets = (gsl_matrix**) malloc(sizeof (gsl_matrix*) * PARAMS_SIZE);
 
         for (int i = 0; i < k->nsets; i++) {
             k2->datasets[i] = ok_matrix_copy(k->datasets[i]);
             strcpy(k2->datanames[i], k->datanames[i]);
         }
-        
+
         k2->compiled = NULL;
         k2->flags |= NEEDS_COMPILE;
         k2->times = NULL;
         k2->integration = NULL;
         k2->integrationSamples = -1;
     }
-    if (!( flags & SHARE_RANGES)) {
-        k2->plRanges = (gsl_matrix**) calloc(2, sizeof(gsl_matrix*));
+    if (!(flags & SHARE_RANGES)) {
+        k2->plRanges = (gsl_matrix**) calloc(2, sizeof (gsl_matrix*));
         if (k->plRanges[0] != NULL) {
             k2->plRanges[0] = ok_matrix_copy(k->plRanges[0]);
             k2->plRanges[1] = ok_matrix_copy(k->plRanges[1]);
         }
-        k2->parRanges = (gsl_vector**) calloc(2, sizeof(gsl_vector*));
+        k2->parRanges = (gsl_vector**) calloc(2, sizeof (gsl_vector*));
         if (k->parRanges[0] != NULL) {
             k2->parRanges[0] = ok_vector_copy(k->parRanges[0]);
             k2->parRanges[1] = ok_vector_copy(k->parRanges[1]);
-        }      
+        }
     }
-    
-    if (! (flags & SHARE_STEPS)) {
+
+    if (!(flags & SHARE_STEPS)) {
         k2->plSteps = ok_matrix_copy(k->plSteps);
         k2->parSteps = ok_vector_copy(k->parSteps);
     }
-    if (! (flags & SHARE_FLAGS)) {
+    if (!(flags & SHARE_FLAGS)) {
         k2->plFlags = ok_matrix_int_copy(k->plFlags);
         k2->parFlags = ok_vector_int_copy(k->parFlags);
     }
-    
+
     k2->system = ok_copy_system(k->system);
-    
+
     k2->params = ok_vector_copy(k->params);
-    
+
     k2->system->epoch = k->system->epoch;
     k2->system->time = k->system->time;
     k2->tag = k->tag;
     k2->rng = gsl_rng_alloc(gsl_rng_default);
     gsl_rng_set(k2->rng, clock());
-    k2->flags |= flags; 
+    k2->flags |= flags;
     k2->progress = k->progress;
     k2->model_function = k->model_function;
-    k2->intOptions = (ok_integrator_options*) malloc(sizeof(ok_integrator_options));
-    memcpy(k2->intOptions, k->intOptions, sizeof(ok_integrator_options));
+    k2->intOptions = (ok_integrator_options*) malloc(sizeof (ok_integrator_options));
+    memcpy(k2->intOptions, k->intOptions, sizeof (ok_integrator_options));
     k2->intOptions->buffer = NULL;
     k2->intOptions->ibuffer = NULL;
     k2->intOptions->progress = NULL;
@@ -1319,37 +1314,37 @@ ok_kernel* K_cloneFlags(ok_kernel* k, unsigned int flags) {
 
 int K_minimize(ok_kernel* k, int algo, int maxiter, double params[]) {
     int ret = ok_minimizers[algo](k, maxiter, params);
-    
+
     for (int i = 1; i < k->system->elements->size1; i++) {
         MSET(k->system->elements, i, MA, DEGRANGE(MGET(k->system->elements, i, MA)));
         MSET(k->system->elements, i, LOP, DEGRANGE(MGET(k->system->elements, i, LOP)));
         MSET(k->system->elements, i, INC, DEGRANGE(MGET(k->system->elements, i, INC)));
         MSET(k->system->elements, i, NODE, DEGRANGE(MGET(k->system->elements, i, NODE)));
     }
-    
+
     return ret;
 }
 
 int K_1dminimize(ok_kernel* k, int algo, int maxiter, int row, int column, double params[]) {
     gsl_matrix_int* m = ok_matrix_int_copy(k->plFlags);
     gsl_vector_int* p = ok_vector_int_copy(k->parFlags);
-    
+
     for (int i = 0; i < m->size1; i++)
         for (int j = 0; j < m->size2; j++)
             MISET(m, i, j, MIGET(m, i, j) & ~MINIMIZE);
     for (int i = 0; i < p->size; i++)
         VISET(p, i, VIGET(p, i) & ~MINIMIZE);
-    
+
     gsl_matrix_int* old_plFlags = k->plFlags;
     gsl_vector_int* old_parFlags = k->parFlags;
-    
+
     if (row > 0) {
         MISET(m, row, column, ACTIVE | MINIMIZE);
     } else if (row == -1) {
         VISET(p, column, ACTIVE | MINIMIZE);
     }
-    
-    
+
+
     k->plFlags = m;
     k->parFlags = p;
     int ret = K_minimize(k, algo, maxiter, params);
@@ -1377,29 +1372,27 @@ void K_print(ok_kernel* k, FILE* f) {
     fflush(f);
 }
 
-
-
 void K_save_old(ok_kernel* k, const char* stem) {
     K_validate(k);
-    
-    
+
+
     char* fitName = ok_str_cat(stem, ".fit");
     char dataName[k->nsets][255];
     for (int i = 0; i < k->nsets; i++) {
         sprintf(dataName[i], "%s_%d.vels", stem, i);
     }
     char* sysName = ok_str_cat(stem, ".sys");
-    
+
     FILE* fit = fopen(fitName, "w");
     fprintf(fit, "# InitialEpoch: %e\n\n", k->system->epoch);
-    fprintf(fit, "Components %d\n", k->system->nplanets-1);
+    fprintf(fit, "Components %d\n", k->system->nplanets - 1);
     fprintf(fit, "PrimaryRVSet \"%s\"\n", dataName[0]);
     fprintf(fit, "OverallRVOffset %e\n", VGET(k->params, 0));
     fprintf(fit, "RelativeRVOffsets {\n");
     for (int i = 1; i < k->nsets; i++)
         fprintf(fit, "\t\"%s\" %e\n", dataName[i], VGET(k->params, 1));
     fprintf(fit, "\t\"Trend\" %e\n}\n", 0.);
-    
+
     for (int i = 1; i < k->system->nplanets + 1; i++) {
         fprintf(fit, "\"\" {\n");
         fprintf(fit, "\tPeriod %e\n", K_getElement(k, i, PER));
@@ -1413,13 +1406,13 @@ void K_save_old(ok_kernel* k, const char* stem) {
         fprintf(fit, "}\n");
     }
     fclose(fit);
-    
+
     for (int i = 0; i < k->nsets; i++) {
         FILE* vels = fopen(dataName[i], "w");
         ok_fprintf_buf(k->compiled, vels, "%e ", k->ndata, DATA_SIZE);
         fclose(vels);
     }
-    
+
     FILE* sys = fopen(sysName, "w");
     fprintf(sys, "Data {\n");
     for (int i = 0; i < k->nsets; i++)
@@ -1430,12 +1423,11 @@ void K_save_old(ok_kernel* k, const char* stem) {
     free(sysName);
 }
 
-
 bool K_save(ok_kernel* k, FILE* fid) {
     int digits = 15;
     int fract = 15;
     char fmt[] = "%15.15e ";
-    
+
     fid = (fid != NULL ? fid : stdout);
     fprintf(fid, "@Kernel\n\n");
     fprintf(fid, "Epoch = %*.*e\n", digits, fract, k->system->epoch);
@@ -1445,29 +1437,29 @@ bool K_save(ok_kernel* k, FILE* fid) {
     fprintf(fid, "Jitter = %*.*e\n", digits, fract, k->jitter);
     fprintf(fid, "IntMethod = %d\n", k->intMethod);
     fprintf(fid, "Version = %.4f\n", SYSTEMIC_VERSION);
-    
+
     fprintf(fid, "\nElements = %zu\n", k->system->elements->size1);
     ok_fprintf_matrix(k->system->elements, fid, fmt);
-    
+
     fprintf(fid, "\nParams = \n");
     ok_fprintf_vector(k->params, fid, fmt);
-    
+
     if (k->plFlags != NULL) {
         fprintf(fid, "\nPlFlags = %zu\n", k->plFlags->size1);
         ok_fprintf_matrix_int(k->plFlags, fid, "%d ");
     }
-    
+
     fprintf(fid, "\nParFlags = \n");
     ok_fprintf_vector_int(k->parFlags, fid, "%d ");
-    
+
     if (k->plSteps != NULL) {
         fprintf(fid, "\nPlSteps = %zu\n", k->plSteps->size1);
         ok_fprintf_matrix(k->plSteps, fid, fmt);
     }
     fprintf(fid, "\nParSteps = \n");
     ok_fprintf_vector(k->parSteps, fid, fmt);
-    
-    
+
+
     if (k->plRanges[0] != NULL) {
         fprintf(fid, "\nPlRanges_min = %zu\n", k->plRanges[0]->size1);
         ok_fprintf_matrix(k->plRanges[0], fid, fmt);
@@ -1484,19 +1476,19 @@ bool K_save(ok_kernel* k, FILE* fid) {
         fprintf(fid, "\nParRanges_max =\n");
         ok_fprintf_vector(k->parRanges[1], fid, fmt);
     }
-    
+
     for (int i = 0; i < k->nsets; i++) {
         fprintf(fid, "\nData = %zu\n", k->datasets[i]->size1);
         ok_fprintf_matrix(k->datasets[i], fid, fmt);
     }
-    
+
     fprintf(fid, "Flags = %d\n", k->flags);
     fprintf(fid, "System_Flags = %d\n", k->system->flag);
-    
+
     for (int i = 0; i < k->nsets; i++)
-        fprintf(fid, "Data_Name = %s\n", 
-                k->datanames[i]);
-    
+        fprintf(fid, "Data_Name = %s\n",
+            k->datanames[i]);
+
     fprintf(fid, "\n@End\n");
     return true;
 }
@@ -1505,45 +1497,45 @@ ok_kernel* K_load(FILE* fid, int skip) {
     fid = (fid != NULL ? fid : stdin);
     char line[MAX_LINE];
     for (int i = 0; i < skip; i++) {
-        while (fgets(line, sizeof(line), fid)) 
+        while (fgets(line, sizeof (line), fid))
             if (strcmp(line, "@End\n") == 0)
                 break;
         if (feof(fid))
             return NULL;
     }
-    
+
     bool found = false;
     char* ret;
     while (!found) {
-       while ((ret = fgets(line, sizeof(line), fid)) != NULL) {
+        while ((ret = fgets(line, sizeof (line), fid)) != NULL) {
             if (strcmp(line, "@Kernel\n") == 0) {
                 found = true;
                 break;
             }
             if (feof(fid))
                 return NULL;
-       }
+        }
 
         if (ret == NULL) {
             return NULL;
         }
-            
+
     }
-    
+
     ok_kernel* k = K_alloc();
-    
-    
+
+
     double v;
     int r;
     k->nsets = 0;
     int data_name_counter = 0;
-    
+
     while (true) {
-        if ((fgets(line, sizeof(line), fid) == NULL) || feof(fid) || strcmp(line, "@End\n") == 0)
+        if ((fgets(line, sizeof (line), fid) == NULL) || feof(fid) || strcmp(line, "@End\n") == 0)
             break;
         char tag[100] = {0};
         sscanf(line, "%s =", tag);
-        
+
         if (strcmp(tag, "Epoch") == 0) {
             sscanf(line, "%*s = %le", &v);
             K_setEpoch(k, v);
@@ -1608,22 +1600,22 @@ ok_kernel* K_load(FILE* fid, int skip) {
             k->datasets[k->nsets] = d;
             k->nsets++;
         } else if (strcmp(tag, "Data_Name") == 0) {
-            line[strlen(line)-1] = '\0';
+            line[strlen(line) - 1] = '\0';
             strcpy(k->datanames[data_name_counter], line + 12);
             data_name_counter++;
         }
     }
-    
+
     k->flags = NEEDS_SETUP | NEEDS_COMPILE;
     K_validate(k);
-    
+
     return k;
-    
+
 }
 
 bool K_addDataFromSystem(ok_kernel* k, const char* filename) {
     K_removeData(k, -1);
-    
+
     FILE* fid = fopen(filename, "r");
     if (fid == NULL)
         return false;
@@ -1631,34 +1623,34 @@ bool K_addDataFromSystem(ok_kernel* k, const char* filename) {
     char token[MAX_LINE];
     char value[MAX_LINE];
     char path[MAX_LINE];
-    
+
     char* fn = strdup(filename);
     char* dn = dirname(fn);
-    
-    while (fgets(line, sizeof(line), fid) != 0) {
+
+    while (fgets(line, sizeof (line), fid) != 0) {
         if (sscanf(line, "%s", token) == 1) {
             if ((strcmp(token, "RV[]") == 0) || (strcmp(token, "TD[]") == 0)) {
                 if (sscanf(line, "%*s %s", value) == 1) {
-                    value[strlen(value)-1] = '\0';
-                    
-                    char* df = value+1;
+                    value[strlen(value) - 1] = '\0';
+
+                    char* df = value + 1;
                     char* ext = strrchr(df, '.');
-                    
-                    if (! ok_file_readable(df))
+
+                    if (!ok_file_readable(df))
                         sprintf(path, "%s/%s", dn, df);
                     else
                         strcpy(path, df);
-                    
+
                     if (ok_file_readable(path)) {
                         int type = T_RV;
                         if (strcmp(ext, ".vels") == 0)
                             type = T_RV;
                         else if (strcmp(ext, ".tds") == 0)
                             type = T_TIMING;
-                        
+
                         K_addDataFile(k, path, type);
                     }
-                    
+
                 }
             } else if (strcmp(token, "Mass") == 0) {
                 double mass = 1.;
@@ -1668,16 +1660,14 @@ bool K_addDataFromSystem(ok_kernel* k, const char* filename) {
             }
         }
     }
-    
+
     free(fn);
     return true;
 }
 
-
 void K_setSeed(ok_kernel* k, unsigned long int seed) {
     gsl_rng_set(k->rng, seed);
 }
-
 
 unsigned int K_getNplanets(ok_kernel* k) {
     return k->system->nplanets;
@@ -1690,13 +1680,13 @@ unsigned int K_getNdata(ok_kernel* k) {
 
 void K_getRange(ok_kernel* k, double* from, double* to) {
     K_compileData(k);
-    
+
     if (k->ndata < 1) {
         *from = INVALID_NUMBER;
         *to = INVALID_NUMBER;
     } else {
         *from = k->compiled[0][0];
-        *to = k->compiled[k->ndata-1][0];
+        *to = k->compiled[k->ndata - 1][0];
     }
 }
 
@@ -1734,7 +1724,7 @@ gsl_matrix* K_combineData(ok_kernel* k, const int data_type) {
     }
     return filt;
 }
-*/
+ */
 
 gsl_matrix* K_getXYZ(ok_kernel* k) {
     K_validate(k);
@@ -1753,12 +1743,11 @@ void K_setElementType(ok_kernel* k, int type) {
     if (type == JACOBI) {
         k->system->flag |= JACOBI;
     } else {
-        k->system->flag &= ~JACOBI; 
+        k->system->flag &= ~JACOBI;
     }
     if (flag != k->system->flag)
         K_validate(k);
 }
-
 
 /**
  * Returns the coordinate type used by the kernel (one of ASTROCENTRIC or JACOBI).
@@ -1794,23 +1783,21 @@ void K_perturb(ok_kernel* k) {
     K_validate(k);
 }
 
-
-
 void* ok_bridge_kernel_buf(void* buf, int n, ok_kernel* k) {
     if (buf == NULL) {
-        return (malloc(sizeof(ok_kernel*) * n));
+        return (malloc(sizeof (ok_kernel*) * n));
     } else if (n < 0) {
         free(buf);
         buf = NULL;
     } else {
-        ((ok_kernel**)buf)[n] = k;
+        ((ok_kernel**) buf)[n] = k;
     }
     return buf;
 }
 
 void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column) {
     int npars = 0;
-    for (int i = 1; i < k->system->nplanets+1; i++)
+    for (int i = 1; i < k->system->nplanets + 1; i++)
         for (int j = 0; j < ELEMENTS_SIZE; j++)
             if ((MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0)) {
                 if (index == npars) {
@@ -1829,14 +1816,14 @@ void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column) {
             }
             npars++;
         }
-    
+
     *row = -1;
     *column = -1;
 }
 
 void K_setMinimizedValues(ok_kernel* k, double* values) {
     int npars = 0;
-    for (int i = 1; i < k->system->nplanets+1; i++)
+    for (int i = 1; i < k->system->nplanets + 1; i++)
         for (int j = 0; j < ELEMENTS_SIZE; j++)
             if ((MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0)) {
                 MSET(k->system->elements, i, j, values[npars]);
@@ -1852,7 +1839,7 @@ void K_setMinimizedValues(ok_kernel* k, double* values) {
 
 void K_getMinimizedValues(ok_kernel* k, double* values) {
     int npars = 0;
-    for (int i = 1; i < k->system->nplanets+1; i++)
+    for (int i = 1; i < k->system->nplanets + 1; i++)
         for (int j = 0; j < ELEMENTS_SIZE; j++)
             if ((MIGET(k->plFlags, i, j) & MINIMIZE ? 1 : 0)) {
                 values[npars] = MGET(k->system->elements, i, j);
@@ -1868,9 +1855,9 @@ void K_getMinimizedValues(ok_kernel* k, double* values) {
 
 ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
     ok_kernel_minimizer_pars mpars;
-    
+
     mpars.npars = 0;
-    
+
     // Count all the parameters to minimize on
     for (int i = 1; i < k->system->nplanets + 1; i++)
         for (int j = 0; j < ELEMENTS_SIZE; j++)
@@ -1878,11 +1865,11 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
     for (int i = 0; i < k->parFlags->size; i++)
         mpars.npars += (VIGET(k->parFlags, i) & MINIMIZE ? 1 : 0);
 
-    double** pars = (double**) malloc(sizeof(double*) * mpars.npars);
-    double* steps = (double*) malloc(sizeof(double) * mpars.npars);
-    int* type = (int*) malloc(sizeof(int) * mpars.npars);
-    double* min = (double*) malloc(sizeof(double) * mpars.npars);
-    double* max = (double*) malloc(sizeof(double) * mpars.npars);
+    double** pars = (double**) malloc(sizeof (double*) * mpars.npars);
+    double* steps = (double*) malloc(sizeof (double) * mpars.npars);
+    int* type = (int*) malloc(sizeof (int) * mpars.npars);
+    double* min = (double*) malloc(sizeof (double) * mpars.npars);
+    double* max = (double*) malloc(sizeof (double) * mpars.npars);
     int idx = 0;
     for (int i = 1; i < k->system->nplanets + 1; i++)
         for (int j = 0; j < ELEMENTS_SIZE; j++)
@@ -1901,7 +1888,7 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
             K_getParRange(k, i, &(min[idx]), &(max[idx]));
             idx++;
         }
-    
+
     mpars.pars = pars;
     mpars.steps = steps;
     mpars.type = type;

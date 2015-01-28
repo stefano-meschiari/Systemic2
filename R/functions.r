@@ -190,8 +190,9 @@ knew <- function() {
 	k$.new <- TRUE
 	k$datanames <- c()
 	k$min.func <- "chi2"
-	
 	class(k) <- "kernel"
+	k$epoch <- 2450000
+  k$.epoch.set <- FALSE
   
 	reg.finalizer(k$h, .free.kernel)
 	kupdate(k)
@@ -450,7 +451,8 @@ kget <- function(k, idx) {
 	if (idx == "mstar") {
 		K_setMstar(k$h, value)
 		if (k$auto) kupdate(k)
-	} else if (idx == "epoch") {
+} else if (idx == "epoch") {
+    k$.epoch.set <- TRUE
 		K_setEpoch(k$h, value)
 		if (k$auto) kupdate(k)	
 	} else if (idx == "abs.acc") {
@@ -586,7 +588,10 @@ kadd.data <- function(k, data, type = NA) {
 	#	k: kernel to add data to
 	#	data: either the path to a data file in textual format, or a matrix containing data
 	#	type: type of data contained in the data argument. One of the RV or TIMING constants
-	.check_kernel(k)
+    .check_kernel(k)
+    if (! k$.epoch.set)
+        k$epoch <- NaN
+    
 	if (k$nsets >= DATA_SETS_SIZE)
       stop(sprintf("You cannot add more than %d data sets.", DATA_SETS_SIZE))
   
@@ -853,8 +858,8 @@ kload.datafile <- function(k, datafile) {
     dir <- getwd()
     on.exit(setwd(dir))
     
-	if (! file.exists(datafile))
-		stop(paste("Cannot open", datafile, ", current directory:", getwd()))
+    if (! file.exists(datafile))
+        stop(paste("Cannot open", datafile, ", current directory:", getwd()))
 
     datafile.dir <- dirname(datafile)
 	lines <- readLines(datafile)
@@ -918,6 +923,7 @@ kload <- function(file, skip = 0, chdir=TRUE) {
 
 	class(k) <- "kernel"	
 	k$datanames = sprintf("data%d", 1:k$nsets)
+  k$.epoch.set <- TRUE
 	fclose(fid)
 	kupdate(k)
 	return(k)
@@ -2108,7 +2114,7 @@ print.kernel <- function(k, all.pars = FALSE) {
 		
 	if (k$nplanets > 0) {
 		cat("\n# Orbital elements\n")
-		print(kels(k))
+		print(kallels(k))
 		cat("\n# Flags\n")
 		print(kflags(k, what="els", type='human'))
 	}
@@ -2169,8 +2175,9 @@ print.integration <- function(int) {
 
 save.systemic <- function(file) {
 	for (kn in ls(envir=globalenv())) {
-		ka <- get(kn, envir=globalenv())
-		if (class(ka) == "kernel") {
+      ka <- get(kn, envir=globalenv())
+      
+		if ("kernel" %in% class(ka)) {
 			fn <- tempfile()
 			p <- fopen(fn, "w")
 			K_save(ka$h, p)

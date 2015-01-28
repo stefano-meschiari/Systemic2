@@ -77,7 +77,7 @@ void ok_to_cm(ok_system* system, gsl_matrix* xyz);
 /// Moves the origin to the central star
 void ok_to_star(ok_system* system, gsl_matrix* xyz);
 
-int ok_find_closest_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error);
+int ok_find_closest_time_to_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error);
 
 double ok_pcalc(const double a, const double Mcenter, const double Mp);
 double ok_acalc(const double P, const double Mcenter, const double Mp);

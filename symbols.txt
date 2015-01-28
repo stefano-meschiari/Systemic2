@@ -192,7 +192,7 @@ ok_get_els
 ok_find_transits
 ok_to_cm
 ok_to_star
-ok_find_closest_transit
+ok_find_closest_time_to_transit
 ok_pcalc
 ok_acalc
 KL_alloc
