@@ -128,7 +128,7 @@ update_binding:
 update_ui:
 	cd ../SystemicGui; ant jar
 
-package: clean cleanreqs reqs macosx utils/systemic_cli update_ui
+package: clean cleanreqs reqs macosx utils/systemic_cli update_ui 
 	$(LUA) lua/libs.lua libsystemic.dylib
 	- rm -R $(PACKAGE_DIR)/mac
 	mkdir $(PACKAGE_DIR)/mac

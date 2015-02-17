@@ -24,7 +24,7 @@
 
 #define IS_NOT_FINITE(x) (isnan(x) || isinf(x))
 
-#define SYSTEMIC_VERSION 2.1740
+#define SYSTEMIC_VERSION 2.1800
 
 #define MAX_LINE 8192
 

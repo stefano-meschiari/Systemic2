@@ -15,10 +15,8 @@ phases <- function(k, from, to, phases=c(0, 0.25, 0.5, 0.75), save=NULL, print=T
         
         t <- k1[plIndex, 'ma'] * P/360 + k[1, 'tperi']
         times <- c(times, t)
-        cat(phase, t - times[1] - P, '\n')
     }
-    stop()
-
+    
     if (!is.null(save))
         save <- file(save, 'w')
     

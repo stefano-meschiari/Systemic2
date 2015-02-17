@@ -1,0 +1,505 @@
+<h2 id="creatingopeningsaving-kernel-objects">Creating/opening/saving kernel objects</h2>
+<ul>
+<li><a href="#knew">knew</a> - Creates a new kernel object.</li>
+<li><a href="#kclone">kclone</a> - Returns a new, independent copy of the kernel, with the same data and planets loaded.</li>
+<li><a href="#kload.old">kload.old</a> - Loads an old-style fit (from the previous version of Systemic).</li>
+<li><a href="#kload.datafile">kload.datafile</a> - Loads the datafiles contained in a .sys file (see, e.g., the .sys files contained in the datafiles folder).</li>
+<li><a href="#kload">kload</a> - Loads a kernel (previously saved with <a href="#ksave">ksave</a>) from disk.</li>
+<li><a href="#ksave">ksave</a> - Saves a kernel (or a list of kernels) to a file.</li>
+</ul>
+<h2 id="setting-fit-parameters-planets-offsets-etc.">Setting fit parameters (planets, offsets, etc.)</h2>
+<ul>
+<li><a href="#kadd.planet">kadd.planet</a> - Adds a new body with the given elements (you can specify period, mass, ecc, lop, inc, node)</li>
+<li><a href="#kremove.planet">kremove.planet</a> - Removes the idx-th planet</li>
+<li><a href="#kels">kels</a> - Returns a matrix of orbital elements</li>
+<li><a href="#kels&lt;-">kels&lt;-</a> - Sets the orbital elements of the kernel</li>
+<li><a href="#kernel[idx1,%20idx2]">kernel[idx1, idx2]</a> - Subsetting a kernel object with brackets returns the values of the orbital elements.</li>
+<li><a href="#k[idx1,%20idx2]%20&lt;-%20value">k[idx1, idx2] &lt;- value</a> - The parameters of a kernel object can be set by subsetting it with brackets and assigning values.<br /></li>
+<li><a href="#kallels">kallels</a> - Returns a matrix of orbital elements, including derived orbital elements</li>
+<li><a href="#kpars">kpars</a> - Returns a vector of parameters</li>
+<li><a href="#kflag">kflag</a> - Returns/sets the flag (active, minimized or inactive) for an orbital element or parameter.</li>
+<li><a href="#krange">krange</a> - Returns the allowed range of the given parameter.</li>
+<li><a href="#krange&lt;-">krange&lt;-</a> - Sets the allowed range of the given parameter.</li>
+<li><a href="#keltype">keltype</a> - Sets the orbital elements format.</li>
+</ul>
+<h2 id="minimization">Minimization</h2>
+<ul>
+<li><a href="#kminimize">kminimize</a> - Minimizes the chi^2 of the fit.</li>
+<li><a href="#kminimize1d">kminimize1d</a> - Minimizes the specified parameter</li>
+</ul>
+<h2 id="error-estimation">Error estimation</h2>
+<ul>
+<li><a href="#kcrossval.l1o">kcrossval.l1o</a> - Runs the &quot;leave-one-out&quot; cross validation algorithm.</li>
+<li><a href="#kbootstrap">kbootstrap</a> - Runs the bootstrap routine on the given kernel.</li>
+<li><a href="#kmcmc">kmcmc</a> - Runs the MCMC routine on the given kernel.</li>
+</ul>
+<h2 id="loading-and-manipulating-data">Loading and manipulating data</h2>
+<ul>
+<li><a href="#kadd.data">kadd.data</a> - Adds a new dataset to the kernel.</li>
+<li><a href="#kdata">kdata</a> - Returns a matrix containing the idx-th dataset (or all the data)</li>
+<li><a href="#kdata&lt;-">kdata&lt;-</a> - Sets a matrix containing the idx-th dataset (or all the data)</li>
+</ul>
+<h2 id="fit-parameters-chi2-jitter-etc.">Fit parameters (chi^2, jitter, etc.)</h2>
+<ul>
+<li><a href="#k$property">k$property</a> - Use the $ operator to access the following properties of the kernel.</li>
+<li><a href="#k$property%20&lt;-%20value">k$property &lt;- value</a> - Use the $ operator to set the following properties of the kernel.</li>
+<li><a href="#kcalculate">kcalculate</a> - Recalculates or updates the statistics for the kernel (e.g. chi^2, rms, jitter, radial velocity response, etc.).</li>
+</ul>
+<h2 id="periodogram">Periodogram</h2>
+<ul>
+<li><a href="#kperiodogram">kperiodogram</a> - Returns a periodogram of the supplied time series.</li>
+<li><a href="#kperiodogram.boot">kperiodogram.boot</a> - Returns a periodogram of the supplied time series, where the false alarm probabilities are estimated using a bootstrap method.</li>
+</ul>
+<h2 id="constants">Constants</h2>
+<h2 id="other">Other</h2>
+<ul>
+<li><a href="#kstep">kstep</a> - Returns the &quot;step&quot; for a given parameter.</li>
+<li><a href="#kstep&lt;-">kstep&lt;-</a> - Sets the &quot;step&quot; for a given parameter.</li>
+<li><a href="#kselect">kselect</a> - Selects (make available for minimization) the given parameters.</li>
+<li><a href="#kdeselect">kdeselect</a> - Deselects (exclude from minimization) the given parameters.</li>
+<li><a href="#kxyz">kxyz</a> - Returns the cartesian coordinates of the bodies in the system.</li>
+<li><a href="#krvcurve">krvcurve</a> - Calculates the radial velocity curve over the specified time vector.</li>
+</ul>
+<hr>
+<p><a name='knew'></a></p>
+<h2 id="knew">knew</h2>
+<p><strong>knew() </strong></p>
+<p>Creates a new kernel object.</p>
+<h3 id="returns">Returns:</h3>
+<p>A new kernel object. A kernel object contains both the fit parameters and the data.</p>
+<hr>
+<p><a name='kadd.planet'></a></p>
+<h2 id="kadd.planet">kadd.planet</h2>
+<p><strong>kadd.planet(k, period = 300, mass = 1, ma = 0, ecc = 0, lop = 0, inc = 90, node = 0, tperi = NA, K = NA, a = NA) </strong></p>
+<p>Adds a new body with the given elements (you can specify period, mass, ecc, lop, inc, node)</p>
+<p>Alternative syntax: k[] &lt;- c(period = 300, mass = 1, ...)</p>
+<h3 id="arguments">Arguments:</h3>
+<ul>
+<li>k: the kernel to add the planet to</li>
+<li><p>period: period of planet (days)</p></li>
+<li>mass: mass of planet (Jupiter masses)</li>
+<li><p>ma: mean anomaly (deg)</p></li>
+<li>ecc: eccentricity</li>
+<li><p>lop: longitude of pericenter (deg)</p></li>
+<li>inc: inclination (deg)</li>
+<li><p>node: node (deg)</p></li>
+<li>tperi: time of passage through pericenter (days)</li>
+<li><p>K: semi-amplitude (m/s)</p></li>
+<li><p>a: semi-major axis (AU)</p></li>
+</ul>
+<hr>
+<p><a name='kremove.planet'></a></p>
+<h2 id="kremove.planet">kremove.planet</h2>
+<p><strong>kremove.planet(k, idx) </strong></p>
+<p>Removes the idx-th planet Alternative syntax: k[idx] &lt;- NULL</p>
+<h3 id="arguments-1">Arguments:</h3>
+<ul>
+<li>k: kernel to remove the planet from</li>
+<li>idx: index of the planet to remove (starting at 1)</li>
+</ul>
+<hr>
+<p><a name='kels'></a></p>
+<h2 id="kels">kels</h2>
+<p><strong>kels(k, keep.first = FALSE) </strong></p>
+<p>Returns a matrix of orbital elements Alternative syntax: k[]</p>
+<h3 id="arguments-2">Arguments:</h3>
+<p>k: kernel to read the orbital elements from</p>
+<h3 id="returns-1">Returns:</h3>
+<p>A matrix of orbital elements; each row is a planet's orbital elements.</p>
+<hr>
+<p><a name='kels<-'></a></p>
+<h2 id="kels-">kels&lt;-</h2>
+<p><strong><code>kels</code>(k) &lt;- value</strong></p>
+<p>Sets the orbital elements of the kernel</p>
+<h3 id="arguments-3">Arguments:</h3>
+<ul>
+<li>k: kernel where the orbital elements should be set</li>
+<li>elements: a matrix of orbital elements</li>
+</ul>
+<hr>
+<p><a name='kernel\[idx1, idx2\]'></a></p>
+<h2 id="kernelidx1-idx2">kernel[idx1, idx2]</h2>
+<p><strong>kernel[idx1, idx2]</strong></p>
+<p>Subsetting a kernel object with brackets returns the values of the orbital elements.</p>
+<ul>
+<li>k[] returns a matrix of elements (like kels)</li>
+<li><p>k[n, ] returns the elements for the n-th planet</p></li>
+<li>k[, m] returns the m-th element for all planets</li>
+<li><p>k[n, m] returns the m-th element for the n-th planet</p></li>
+<li>k['par'] returns a vector of all the parameters (e.g. offsets, linear trend, etc.)</li>
+<li><p>k['par', j] returns the j-th parameter</p></li>
+</ul>
+<hr>
+<p><a name='k\[idx1, idx2\] <- value'></a></p>
+<h2 id="kidx1-idx2---value">k[idx1, idx2] &lt;- value</h2>
+<p><strong>k[idx1, idx2] &lt;- value</strong></p>
+<p>The parameters of a kernel object can be set by subsetting it with brackets and assigning values.</p>
+<ul>
+<li>k[] &lt;- matrix sets the orbital elements to the specified matrix</li>
+<li><p>k[] &lt;- c(period=..., mass=..., ...) adds a new planet with the specified orbital elements</p></li>
+<li>k[n] &lt;- NULL removes the n-th planet</li>
+<li><p>k[n, m] &lt;- v sets the m-th element for the n-th planet to v</p></li>
+<li>k[, m] &lt;- v sets the m-th element to v for all planets</li>
+<li><p>k['par'] &lt;- v sets parameter values to the vector v</p></li>
+<li><p>k['par', n] &lt;- v sets the n-th parameter to v</p></li>
+</ul>
+<hr>
+<p><a name='k\$property'></a></p>
+<h2 id="kproperty">k$property</h2>
+<p><strong>k$property</strong></p>
+<p>Use the $ operator to access the following properties of the kernel. Read-only properties:</p>
+<ul>
+<li>k$nplanets Number of planets</li>
+<li><p>k$chi2 Current reduced chi^2 value (normalized by (k$ndata - k$nrpars))</p></li>
+<li>k$chi2nr Non-reduced chi^2</li>
+<li><p>k$rms Current RMS value</p></li>
+<li>k$jitter Current jitter value</li>
+<li><p>k$loglik Current log likelihood (multiplied by -1)</p></li>
+<li>k$ks.pvalue Current p-value of the KS test comparing normalized residuals to a unit gaussian</li>
+<li><p>k$ndata Number of data points</p></li>
+<li>k$nrvs Number of RV data points</li>
+<li><p>k$ntts Number of central transits</p></li>
+<li>k$nsets Number of data sets loaded</li>
+<li><p>k$chi2rvs Chi^2 (RVs only)</p></li>
+<li>k$chi2tts Chi^2 (central transits only)</li>
+<li><p>k$trange Time range of the compiled dataset</p></li>
+<li>k$epoch Epoch of the fit (JD)</li>
+<li><p>k$mstar Mass of the star (Msun)</p></li>
+<li>k$int.method Integration method (possible values: KEPLER, RK45, RK89)</li>
+<li><p>k$element.type Coordinate type (possible values: ASTROCENTRIC, JACOBI)</p></li>
+<li>k$min.func Function minimized by <a href="#kminimize.">kminimize.</a> Possible values are &quot;chi2&quot; (default), &quot;rms&quot;, or a function that takes a kernel and returns a number.</li>
+<li><p>k$nrpars &quot;Degrees of freedom&quot; parameter used to calculate reduced chi^2. It is equal to the number of all the parameters that are marked as ACTIVE or MINIMIZE</p></li>
+</ul>
+<hr>
+<p><a name='k\$property <- value'></a></p>
+<h2 id="kproperty---value">k$property &lt;- value</h2>
+<p><strong>k$property &lt;- value</strong></p>
+<p>Use the $ operator to set the following properties of the kernel. Settable properties:</p>
+<ul>
+<li>k$int.method Integration method (possible values: KEPLER, RK45, RK89)</li>
+<li><p>k$element.type Coordinate type (possible values: ASTROCENTRIC, JACOBI)</p></li>
+<li>k$epoch Epoch in JD</li>
+<li><p>k$mstar Mass of the star in solar masses</p></li>
+<li>k$minimize.func Function or property string (one of chi2, rms, jitter, chi2nr, chi2rvs, chi2tts, loglik) which specifies the value to minimize</li>
+<li><p>k$min.func Function minimized by <a href="#kminimize.">kminimize.</a> Possible values are &quot;chi2&quot; (default), &quot;rms&quot;, or a function that takes a kernel and returns a number.</p></li>
+</ul>
+<hr>
+<p><a name='kallels'></a></p>
+<h2 id="kallels">kallels</h2>
+<p><strong>kallels(k, keep.first = F) </strong></p>
+<p>Returns a matrix of orbital elements, including derived orbital elements</p>
+<h3 id="arguments-4">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+</ul>
+<h3 id="returns-2">Returns:</h3>
+<p>A matrix with all orbital elements (including semi-major axis, K, etc.)</p>
+<hr>
+<p><a name='kpars'></a></p>
+<h2 id="kpars">kpars</h2>
+<p><strong>kpars(k) </strong></p>
+<p>Returns a vector of parameters</p>
+<h3 id="arguments-5">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+</ul>
+<h3 id="returns-3">Returns:</h3>
+<p>A vector of parameters (e.g. offsets, trends)</p>
+<hr>
+<p><a name='kadd.data'></a></p>
+<h2 id="kadd.data">kadd.data</h2>
+<p><strong>kadd.data(k, data, type = NA) </strong></p>
+<p>Adds a new dataset to the kernel.</p>
+<h3 id="arguments-6">Arguments:</h3>
+<ul>
+<li>k: kernel to add data to</li>
+<li><p>data: either the path to a data file in textual format, or a matrix containing data</p></li>
+<li><p>type: type of data contained in the data argument. One of the RV or TIMING constants</p></li>
+</ul>
+<hr>
+<p><a name='kdata'></a></p>
+<h2 id="kdata">kdata</h2>
+<p><strong>kdata(k, idx = 'all') </strong></p>
+<p>Returns a matrix containing the idx-th dataset (or all the data). The columns are:</p>
+<ul>
+<li>TIME (time of observation)</li>
+<li><p>VAL (measurement)</p></li>
+<li>ERR (uncertainty on the measurement)</li>
+<li><p>SVAL (measurement, shifted vertically by the offset parameters)</p></li>
+<li>PRED (value of the fit at the time of measurement)</li>
+<li><p>SET (index of the dataset that contains the data point)</p></li>
+</ul>
+<h3 id="arguments-7">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+<li>idx: either the index of the dataset you are interested in, or 'all' to get all the data compiled from the loaded datasets.</li>
+</ul>
+<hr>
+<p><a name='kdata<-'></a></p>
+<h2 id="kdata-">kdata&lt;-</h2>
+<p><strong><code>kdata</code>(k, idx=&quot;all&quot;) &lt;- value</strong></p>
+<p>Sets a matrix containing the idx-th dataset (or all the data). See also <a href="#kdata.">kdata.</a></p>
+<h3 id="arguments-8">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+<li><p>idx: either the index of the dataset you are interested in, or 'all' to get all the data compiled from the loaded datasets.</p></li>
+<li><p>value: a matrix of observations.</p></li>
+</ul>
+<hr>
+<p><a name='kcalculate'></a></p>
+<h2 id="kcalculate">kcalculate</h2>
+<p><strong>kcalculate(k) </strong></p>
+<p>Recalculates or updates the statistics for the kernel (e.g. chi^2, rms, jitter, radial velocity response, etc.).</p>
+<h3 id="arguments-9">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+</ul>
+<hr>
+<p><a name='kclone'></a></p>
+<h2 id="kclone">kclone</h2>
+<p><strong>kclone(k) </strong></p>
+<p>Returns a new, independent copy of the kernel, with the same data and planets loaded.</p>
+<h3 id="arguments-10">Arguments:</h3>
+<p>k: a kernel</p>
+<h3 id="returns-4">Returns:</h3>
+<p>A new kernel object that clones the input kernel object.</p>
+<hr>
+<p><a name='kload.old'></a></p>
+<h2 id="kload.old">kload.old</h2>
+<p><strong>kload.old(file, datafiles.dir=paste(dirname(file), &quot;/datafiles&quot;)) </strong></p>
+<p>Loads an old-style fit (from the previous version of Systemic).</p>
+<h3 id="arguments-11">Arguments:</h3>
+<p>file: path to the fit to be loaded datafiles.dir: path to the datafiles (.sys and .vels files)</p>
+<h3 id="returns-5">Returns:</h3>
+<p>A new kernel object with data and parameters loaded according to the contents of file InitialEpoch:&quot;)) { InitialEpoch:&quot;)</p>
+<hr>
+<p><a name='kload.datafile'></a></p>
+<h2 id="kload.datafile">kload.datafile</h2>
+<p><strong>kload.datafile(k, datafile) </strong></p>
+<p>Loads the datafiles contained in a .sys file (see, e.g., the .sys files contained in the datafiles folder).</p>
+<h3 id="arguments-12">Arguments:</h3>
+<ul>
+<li>k: kernel to load data into</li>
+<li>datafile: path to the .sys file</li>
+</ul>
+<hr>
+<p><a name='kload'></a></p>
+<h2 id="kload">kload</h2>
+<p><strong>kload(file, skip = 0, chdir=TRUE) </strong></p>
+<p>Loads a kernel (previously saved with <a href="#ksave">ksave</a>) from disk.</p>
+<h3 id="arguments-13">Arguments:</h3>
+<ul>
+<li>file: path to the file</li>
+<li>skip: if multiple kernels are saved in a single file, the index of the kernel to read (usually only one kernel is saved per file, so specify 0)</li>
+</ul>
+<hr>
+<p><a name='ksave'></a></p>
+<h2 id="ksave">ksave</h2>
+<p><strong>ksave(k, file) </strong></p>
+<p>Saves a kernel (or a list of kernels) to a file.</p>
+<h3 id="arguments-14">Arguments:</h3>
+<ul>
+<li>k: a single kernel, or a list of kernels to save</li>
+<li>file: file to save to. Multiple kernels might be saved to the same file.</li>
+</ul>
+<hr>
+<p><a name='kperiodogram'></a></p>
+<h2 id="kperiodogram">kperiodogram</h2>
+<p><strong>kperiodogram(k, per_type = &quot;all&quot;, samples = getOption(&quot;systemic.psamples&quot;, 50000), pmin = getOption(&quot;systemic.pmin&quot;, 0.5), pmax = getOption(&quot;systemic.pmax&quot;, 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25, overplot.window=TRUE, .keep.h = FALSE) </strong></p>
+<p>Returns a periodogram of the supplied time series. If the first parameter is a kernel, then this function will return periodogram of the loaded datasets (if per_type = &quot;all&quot;) or the residuals (if per_type = &quot;res&quot;). If the first parameter is a matrix, then this function will return a periodogram of the columns of the matrix. The periodogram function will need three columns of data: a timestamp column, a value column (e.g. the RV amplitude at that timestamp), and an uncertainty column. The default indexes for those columns are TIME [1], SVAL and ERR. The false alarm probability returned is only an analytical estimate. For more accurate false alarm probabilities, use kperiodogram.boot (which uses a bootstrap method to estimate the false alarm probabilities).</p>
+<h3 id="arguments-15">Arguments:</h3>
+<ul>
+<li>k: either a kernel object, or a matrix</li>
+<li><p>per_type: if k is a kernel object, one of &quot;all&quot; (periodogram of the full compiled dataset) or &quot;res&quot; (periodogram of the residuals)</p></li>
+<li><p>samples: number of periods (frequencies) at which to sample the periodogram</p></li>
+<li>peaks: identifies the N tallest peaks in the periodogram</li>
+<li><p>pmin: minimum period at which to sample the periodogram</p></li>
+<li>pmax: maximum period at which to sample the periodogram</li>
+<li><p>data.flag: type of data (T_RV or T_TIMING)</p></li>
+<li><p>timing.planet: if the data is of type T_TIMING, specifies which transits to use to calculate the periodogram</p></li>
+<li>val.col: the column to consider as the &quot;value&quot; column (by default, the SVAL column)</li>
+<li><p>time.col: the column to consider as the &quot;time&quot; column (by default, the TIME column)</p></li>
+<li>err.col: the column to consider as the &quot;uncertainty&quot; column (by default, the ERR column)</li>
+<li><p>pred.col: the column to consider as the &quot;model value&quot; column (used if per_type = &quot;res&quot;) (by default, the PRED column)</p></li>
+<li>plot: if TRUE, plot the periodogram after the calculation</li>
+<li><p>overplot.window: if TRUE, overplot the periodogram of the sampling window</p></li>
+<li><p>print: if TRUE, pretty-prints the periodogram sorted by power.</p></li>
+</ul>
+<h3 id="returns-6">Returns:</h3>
+<p>A matrix with columns containing, respectively: period, power at that period, (analytical) false alarm probability, unnormalized power, tau, power of the sampling window at that period</p>
+<hr>
+<p><a name='kperiodogram.boot'></a></p>
+<h2 id="kperiodogram.boot">kperiodogram.boot</h2>
+<p><strong>kperiodogram.boot(k, per_type = &quot;all&quot;, trials = 1e5, samples = getOption(&quot;systemic.psamples&quot;, 50000), pmin = getOption(&quot;systemic.pmin&quot;, 0.5), pmax = getOption(&quot;systemic.pmax&quot;, 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = 1, plot = FALSE, print = FALSE, overplot.window=TRUE, peaks=25) </strong></p>
+<p>Returns a periodogram of the supplied time series, where the false alarm probabilities are estimated using a bootstrap method. If the first parameter is a kernel, then this function will return periodogram of the loaded datasets (if per_type = &quot;all&quot;) or the residuals (if per_type = &quot;res&quot;). If the first parameter is a matrix, then this function will return a periodogram of the columns of the matrix. The periodogram function will need three columns of data: a timestamp column, a value column (e.g. the RV amplitude at that timestamp), and an uncertainty column. The default indexes for those columns are TIME [1], SVAL and ERR. The false alarm probabilities are estimated by computing &quot;trials&quot; periodograms of gaussian noise. The routine is automatically parallelized.</p>
+<h3 id="arguments-16">Arguments:</h3>
+<p>The arguments are the same as the <a href="#kperiodogram">kperiodogram</a> function, plus the following:</p>
+<ul>
+<li>trials: number of periodograms to use in the boostrap estimation</li>
+<li>samples: number of periods (frequencies) at which to sample the periodogram</li>
+</ul>
+<h3 id="returns-7">Returns:</h3>
+<p>A matrix with columns containing, respectively: period, power at that period, false alarm probability (calculated in the bootstrap procedure), unnormalized power, tau, power of the sampling window at that period</p>
+<hr>
+<p><a name='kflag'></a></p>
+<h2 id="kflag">kflag</h2>
+<p><strong>kflag(k, row, column) </strong></p>
+<p>Returns/sets the flag (active, minimized or inactive) for an orbital element or parameter. This corresponds to clicking one of the &quot;semaphore&quot; buttons next to the fit parameters in the user interface. The value set can be one of INACTIVE (not minimized over, not counted as a parameter in reduced chi^2), ACTIVE (not minimized over, counted as a parameter in reduced chi^2), MINIMIZE (minimized over). By default, many orbital elements are ACTIVE + MINIMIZE (these appear as green in the GUI).</p>
+<h3 id="arguments-17">Arguments:</h3>
+<ul>
+<li>k: kernel object</li>
+<li><p>row: either the planet index, or &quot;par&quot; to specify a parameter (e.g. an RV offset)</p></li>
+<li>col: either the orbital element index (one of <code>constants</code>)</li>
+<li><p>value: one of INACTIVE, ACTIVE, MINIMIZE, or ACTIVE + MINIMIZE</p></li>
+</ul>
+<hr>
+<p><a name='kminimize'></a></p>
+<h2 id="kminimize">kminimize</h2>
+<p><strong>kminimize(k, iters = 5000, algo = NA, de.CR = 0.2, de.NPfac = 10, de.Fmin = 0.5, de.Fmax = 1.0, de.use.steps = FALSE, sa.T0 = k$chi2, sa.alpha=2, sa.auto=TRUE, sa.chains=4) </strong></p>
+<p>Minimizes the chi^2 of the fit. kminimize uses one of the built-in algorithms to minimize the reduced chi^2 of the fit. The algorithm is one of the following:</p>
+<ul>
+<li><p>SIMPLEX uses the Nelder-Meade algorithm (as implemented in GSL) to search for a local minimum.</p></li>
+<li><p>LM uses the Levenberg-Marquardt algorithm (as implemented in GSL) to search for a local minimum.</p></li>
+<li><p>SA uses a simple implementation of the simulated annealing algorithm.</p></li>
+<li><p>DE uses a simple implementation of the differential evolution algorithm. The minimization algorithms may use the parameter steps set by <a href="#kstep">kstep</a> as initial scale parameters to explore the chi^2 landscape. The target function to be minimized is defined by k$min.func, which has a value of &quot;chi2&quot; by default.</p></li>
+</ul>
+<h3 id="arguments-18">Arguments:</h3>
+<ul>
+<li>k: kernel to minimize</li>
+<li><p>iters: maximum number of iterations</p></li>
+<li><p>algo: one of SIMPLEX, LM, SA or DE. If none is specified, uses the value in k$min.method</p></li>
+<li>sa.T0: for SA, the initial temperature of the annealer</li>
+<li><p>sa.alpha: the index of the annealer (T = T0 (1 - (n/N)^alpha))</p></li>
+<li>sa.auto: automatically derive steps that produce a variation of chi^2 = 10% T0</li>
+<li><p>de.CR: crossover probability for DE</p></li>
+<li><p>de.Fmin, de.Fmax: differential weight for DE</p></li>
+</ul>
+<hr>
+<p><a name='kcrossval.l1o'></a></p>
+<h2 id="kcrossval.l1o">kcrossval.l1o</h2>
+<p><strong>kcrossval.l1o(k, iters = 5000, algo = NA, type=NA) </strong></p>
+<p>Runs the &quot;leave-one-out&quot; cross validation algorithm.</p>
+<h3 id="arguments-19">Arguments:</h3>
+<ul>
+<li>k: the kernel to run the routine on.</li>
+<li><p>iters: number of iterations (see <a href="#kminimize">kminimize</a>)</p></li>
+<li>algo: minimization algorithm (see <span class="citation" data-cites="kminimize">@kminimize</span>)</li>
+<li><p>type: if NA, returns the result of the cross-validation algorithm; otherwise, runs the cross-validation algorithm by removing planets of progressively smaller k. &quot;, .k$nplanets, &quot; planets&quot;) &quot;, .k$nplanets, &quot; planets&quot;)</p></li>
+</ul>
+<hr>
+<p><a name='kminimize1d'></a></p>
+<h2 id="kminimize1d">kminimize1d</h2>
+<p><strong>kminimize1d(k, row, column, algo = NA, iters = 5000) </strong></p>
+<p>Minimizes the specified parameter</p>
+<h3 id="arguments-20">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+<li><p>row: either the index of the planet, or &quot;par&quot; to minimize a data parameter</p></li>
+<li>column: the planet parameter (e.g. 'period', 'ma', 'ecc') or the data parameter</li>
+<li><p>algo, iters: see <a href="#kminimize.">kminimize.</a></p></li>
+</ul>
+<hr>
+<p><a name='krange'></a></p>
+<h2 id="krange">krange</h2>
+<p><strong>krange(k, row, column) </strong></p>
+<p>Returns the allowed range of the given parameter. See <a href="#krange">krange</a>&lt;-.</p>
+<hr>
+<p><a name='krange<-'></a></p>
+<h2 id="krange-">krange&lt;-</h2>
+<p><strong><code>krange</code>(k, row, column) &lt;- value</strong></p>
+<p>Sets the allowed range of the given parameter. A parameter range forces a parameter to lie within a specified interval. The interval is specified as a two-element vector, c(min, max). If either (or both) min or max is NaN, then the minimum/maximum is not enforced.</p>
+<h3 id="arguments-21">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+<li><p>row: Either the index of the planet, or 'par' to specify the range of a data parameter.</p></li>
+<li>column: Either the name of the planet parameter (e.g. 'period', 'ma', etc.) or the name of the data parameter.</li>
+<li><p>value: A two-element vector c(min, max). min and max can be NaN.</p></li>
+</ul>
+<hr>
+<p><a name='kstep'></a></p>
+<h2 id="kstep">kstep</h2>
+<p><strong>kstep(k, row, column) </strong></p>
+<p>Returns the &quot;step&quot; for a given parameter. See @<code>kstep&lt;-</code>.</p>
+<hr>
+<p><a name='kstep<-'></a></p>
+<h2 id="kstep-">kstep&lt;-</h2>
+<p><strong><code>kstep</code>(k, row, column) &lt;- value</strong></p>
+<p>Sets the &quot;step&quot; for a given parameter. The &quot;step&quot; for a parameter specifies the typical step taken by minimization routines for the parameter. For the SIMPLEX algorithm, it represents the initial size of the simplex; for the LM algorithm, it specifies the step over which gradients are calculated.</p>
+<h3 id="arguments-22">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+<li><p>row: either the planet index, or 'par' to specify the step of a data parameter.</p></li>
+<li>column: Either the name of the planet parameter (e.g. 'period', 'ma', etc.) or the name of the data parameter.</li>
+<li><p>value: The value of the step.</p></li>
+</ul>
+<hr>
+<p><a name='kselect'></a></p>
+<h2 id="kselect">kselect</h2>
+<p><strong>kselect(k, row = &quot;all&quot;, column = &quot;all&quot;) </strong></p>
+<p>Selects (make available for minimization) the given parameters. This corresponds to the action of clicking on the semaphore buttons in the user interface to select a parameter for minimization.</p>
+<h3 id="arguments-23">Arguments:</h3>
+<ul>
+<li>k: the kernel</li>
+<li><p>row: either the planet index, or 'par' to specify a data parameter.</p></li>
+<li><p>column: either the name of the planet parameter (e.g. 'period', 'ma', etc.) or the name of the data parameter.</p></li>
+</ul>
+<hr>
+<p><a name='kdeselect'></a></p>
+<h2 id="kdeselect">kdeselect</h2>
+<p><strong>kdeselect(k, row = &quot;all&quot;, column = &quot;all&quot;) </strong></p>
+<p>Deselects (exclude from minimization) the given parameters. See <a href="#kselect.">kselect.</a></p>
+<hr>
+<p><a name='kbootstrap'></a></p>
+<h2 id="kbootstrap">kbootstrap</h2>
+<p><strong>kbootstrap(k, algo = NA, trials = 5000, warmup = 0, min_iter = 2000, plot = FALSE, print = FALSE, save=NA) </strong></p>
+<p>Runs the bootstrap routine on the given kernel. This function runs the bootstrap algorithm to estimate the uncertainty on the parameters.</p>
+<h3 id="arguments-24">Arguments:</h3>
+<ul>
+<li>k: the kernel to run bootstrap on</li>
+<li><p>algo: the algorithm to use in minimization passes (see <a href="#kminimize">kminimize</a>)</p></li>
+<li>trials: the number of resampling trials</li>
+<li><p>plot: plots the resulting uncertainty object</p></li>
+<li><p>print: prints the resulting uncertainty object</p></li>
+</ul>
+<hr>
+<p><a name='kmcmc'></a></p>
+<h2 id="kmcmc">kmcmc</h2>
+<p><strong>kmcmc(k, chains= 2, temps = 1, start = &quot;perturb&quot;, noise=TRUE, skip.first = 1000, discard = k$nrpars * 10, R.stop = 1.1, min.length = 5000, max.iters = -1, auto.steps = TRUE, acc.ratio = 0.44, plot = FALSE, print = FALSE, save=NA, debug.verbose.level = 1, random.log=TRUE) </strong></p>
+<p>Runs the MCMC routine on the given kernel. This function runs a simple implementation of MCMC on the kernel to estimate uncertainty on the parameters.</p>
+<h3 id="arguments-25">Arguments:</h3>
+<ul>
+<li>k: the kernel to run bootstrap on, or a list of kernels with different parameters which represent the starting initial conditions.</li>
+<li><p>chains: number of chains to run in parallel</p></li>
+<li>skip.first: discard the first iterations</li>
+<li><p>R.stop: the Gelman-Rubin statistic used to estimate when to stop the routine.</p></li>
+<li>discard: only retain every n-th element of the chain</li>
+<li><p>min.length: minimum number of iterations</p></li>
+<li>acc.ratio: the acceptance ratio</li>
+<li><p>print: prints the resulting uncertainty object</p></li>
+<li><p>plot: plots the resulting uncertainty object</p></li>
+</ul>
+<hr>
+<p><a name='kxyz'></a></p>
+<h2 id="kxyz">kxyz</h2>
+<p><strong>kxyz(k) </strong></p>
+<p>Returns the cartesian coordinates of the bodies in the system. Coordinates are returned in internal units (Msun, AU, and day)</p>
+<hr>
+<p><a name='keltype'></a></p>
+<h2 id="keltype">keltype</h2>
+<p><strong>keltype(k, value) </strong></p>
+<p>Sets the orbital elements format.</p>
+<h3 id="arguments-26">Arguments:</h3>
+<ul>
+<li>k: kernel</li>
+<li>value: one of ASTROCENTRIC for astrocentric elements, or JACOBI for Jacobi elements.</li>
+</ul>
+<hr>
+<p><a name='krvcurve'></a></p>
+<h2 id="krvcurve">krvcurve</h2>
+<p><strong>krvcurve(k, times=seq(from=min(ktrange(k)), to=max(ktrange(k)), length.out=getOption(&quot;systemic.rvsamples&quot;, 5000))) </strong></p>
+<p>Calculates the radial velocity curve over the specified time vector.</p>
+<h3 id="arguments-27">Arguments:</h3>
+<ul>
+<li>k: the kernel</li>
+<li>times: a vector of times where to sample the radial velocity curve.</li>
+</ul>
