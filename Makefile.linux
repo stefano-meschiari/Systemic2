@@ -116,7 +116,7 @@ cleanreqs:
 	-rm -rf deps
 
 # For GSL
-gsl:	untardeps
+gsl:	./deps
 	cd deps/gsl; tar -xvzf gsl-1.15.tar.gz; cd gsl-1.15; ./configure --prefix='$(shell pwd)/deps'; make; make install
 
 
