@@ -944,7 +944,8 @@ kload.old <- function(file, datafiles.dir=paste(dirname(file), "/datafiles")) {
     return(k)
 }
 
-kload.datafile <- function(k, datafile) {
+
+kload.system <- function(k, datafile) {
     ## Loads the datafiles contained in a .sys file (see, e.g., the .sys files contained in the datafiles folder). [1]
     #
     # Args:
@@ -977,6 +978,7 @@ kload.datafile <- function(k, datafile) {
     kcalculate(k)
 }
 
+kload.datafile <- kload.system
 kload <- function(file, skip = 0, chdir=TRUE) {
     ## Loads a kernel (previously saved with @ksave) from disk. [1]
     #
@@ -1750,9 +1752,12 @@ kselect <- function(k, row = "all", column = "all") {
     } else {
         
         if (length(row) == 1 &&  row == "all") {
-            for (i in 1:k$nplanets) {
-                kselect(k, i, column)
+            if (k$nplanets > 0) {
+                for (i in 1:k$nplanets) {
+                    kselect(k, i, column)
+                }
             }
+            
             
         } else {
             stopifnot(row > 0 && row <= k$nplanets)
@@ -1787,9 +1792,10 @@ kdeselect <- function(k, row = "all", column = "all") {
             kflag(k, "par", column) <- bitAnd(kflag(k, "par", column), bitFlip(MINIMIZE))
     } else {
         if (length(row) == 1 && row == "all") {
-            for (i in 1:k$nplanets) {
-                kdeselect(k, i, column)
-            }
+            if (k$nplanets > 0)
+                for (i in 1:k$nplanets) {
+                    kdeselect(k, i, column)
+                }
         } else {
             stopifnot(row > 0 && row <= k$nplanets)
             if (length(column) == 1 && column == "all") {
@@ -1820,9 +1826,10 @@ kactivate <- function(k, row = "all", column = "all") {
         
     } else {
         if (length(row) == 1 &&  row == "all") {
-            for (i in 1:k$nplanets) {
-                kactivate(k, i, column)
-            }
+            if (k$nplanets > 0)
+                for (i in 1:k$nplanets) {
+                    kactivate(k, i, column)
+                }
             
         } else {
             stopifnot(row > 0 && row <= k$nplanets)
