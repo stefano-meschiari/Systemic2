@@ -1,9 +1,14 @@
 require('stringr')
 require('xtable')
 
+systemic.units.latex <- c(period='[days]', mass='[$\\mass_{jup}$]', ma='[deg]', ecc='',
+                   lop='[deg]', inc='[deg]', node='[deg]',
+                   a='[AU]', k='[$\\mathrm{m s}^{-1}$]', tperi='[JD]',
+                   rv.trend='[$\\mathrm{m s}^{-1}$]', rv.trend.quadratic='[$\\mathrm{m s}^{-1}$^2]',
+                   mstar = '[$\\mass_\\odot$]', chi2='', jitter='[$\\mathrm{m s}^{-1}$]', rms='[$\\mathrm{m s}^{-1}$]',
+                   epoch = '[JD]', ndata='', trange='[JD]', data.noise1='[$\\mathrm{m s}^{-1}$]', data.noise2='$\\mathrm{m s}^{-1}$')
 
-
-nformat <- function(n, err=0, digits=2, fmt="%s \\pm{} %s") {
+nformat <- function(n, err=0, digits=2, fmt="%s [%s]") {
     if (err != 0) {
         e10 <- floor(log10(abs(err)))
         if (e10 > 0) {
@@ -25,7 +30,7 @@ nformat <- function(n, err=0, digits=2, fmt="%s \\pm{} %s") {
     }
 }
 
-ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', 'mstar', 'rms', 'jitter', 'epoch', 'ndata', 'trange', 'pars.minimized'), labels=systemic.names, units=systemic.units, star.names=NULL, default.format="%.2f", default.nf="%s \\pm{} %s") {
+ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', 'mstar', 'rms', 'jitter', 'epoch', 'ndata', 'trange', 'pars.minimized'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, star.names=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE) {
     systemic.names <- labels
     systemic.units <- units
     

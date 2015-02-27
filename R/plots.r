@@ -62,7 +62,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         np <- k$nplanets
         rows <- if (plot.residuals) length(which.planets)+1 else length(which.planets)
         if (layout)
-            par(mfrow=c(rows, 1), mar=c(4, 4, 2, 2))
+            par(mfrow=c(rows, 1))
 
         fpars <- list(...)
         xlab <- if (!is.null(fpars$xlab)) fpars$xlab else 'Time [JD]'
