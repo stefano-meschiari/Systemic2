@@ -48,13 +48,10 @@ if (! exists('.systemic.loaded')) {
     }
 
     .job <- ""
-    .systemic.env <- new.env()
-    sys.source("defs.r", .systemic.env)
 
-    attach(.systemic.env)
     enableJIT(3)
-
     .systemic.functions <- new.env()
+    sys.source("defs.r", .systemic.functions)
     sys.source("functions.r", .systemic.functions)
     sys.source("xgrid.r", .systemic.functions)
     sys.source("colors.r", .systemic.functions)
@@ -63,7 +60,7 @@ if (! exists('.systemic.loaded')) {
     sys.source("utils.r", .systemic.functions)
     sys.source("table.r", .systemic.functions)
     sys.source("phases.r", .systemic.functions)
-    
+    sys.source("auto.r", .systemic.functions)    
     attach(.systemic.functions)
     .systemic.loaded <- TRUE
 }

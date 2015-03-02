@@ -89,6 +89,7 @@ systemic.type[names(systemic.type) %in% names(.properties)] <- PROPERTY
 .gsl_matrix_to_R <- function(m, free = FALSE, .keep.h = FALSE) {
     dm <- c(ok_matrix_rows(m), ok_matrix_cols(m))
     len <- dm[1] * dm[2]
+
     v <- numeric(len)
     ok_block_to_ptr(ok_matrix_block(m), v)
     
@@ -1073,7 +1074,7 @@ print.periodogram <- function(x, what='peaks') {
                 attr(x, 'pmin'), attr(x, 'pmax'), attr(x, 'samples')))
     if (what == 'peaks') {
         cat("# Peaks (sorted by power):\n")
-        print(attr(x, 'peaks')[, 1:3])
+        print(attr(x, 'peaks')[, c('period', 'power', 'fap', 'window')])
         cat('# To print the full periodogram instead of power peaks, use\n',
             '# print(var, what="periodogram")\n',
             '# To save the periodogram, use write.f(var, file="p.txt")\n', sep="")
