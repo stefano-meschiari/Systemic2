@@ -40,9 +40,8 @@ if (! exists('.systemic.loaded')) {
     .require.library('parallel', hush=TRUE)
     .require.library('xtable', hush=TRUE)
     
-    if (exists('.systemic.env')) {
+    if (exists('.systemic.functions')) {
         tryCatch({
-            detach('.systemic.env')
             detach('.systemic.functions')
         }, error=function(...) {})
     }

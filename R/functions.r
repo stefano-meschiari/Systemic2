@@ -292,7 +292,7 @@ kels <- function(k, keep.first = FALSE) {
     #
     # Args:
     # - k: kernel where the orbital elements should be set
-    # - elements: a matrix of orbital elements
+    # - value: a matrix of orbital elements
     #
     # Example:
     # elements <- kels(k)
@@ -306,7 +306,7 @@ kels <- function(k, keep.first = FALSE) {
         elements <- value[,1:ELEMENTS_SIZE,drop=F]
     
     els <- kels(k, keep.first = T)
-    value <- rbind(els[1,], elements)
+    elements <- rbind(els[1,], value)
     K_setElements(k$h, .R_to_gsl_matrix(elements, gc=F))
     if (k$auto) kupdate(k)
     return(k)
