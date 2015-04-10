@@ -16,15 +16,13 @@ phases <- function(k, from, to, phases=c(0, 0.25, 0.5, 0.75), save=NULL, print=T
         t <- k1[plIndex, 'ma'] * P/360 + k[1, 'tperi']
         times <- c(times, t)
     }
-    
-    if (!is.null(save))
-        save <- file(save, 'w')
-    
-    
+            
     out <- list()
 
-    if (print)
-        cat(sprintf("# Between JD = %f and JD = %f:\n", from, to))
+    out$from <- from
+    out$to <- to
+    out$phases <- list()
+    
     
     for (i in 1:length(phases)) {
         phase <- phases[i]
@@ -37,18 +35,52 @@ phases <- function(k, from, to, phases=c(0, 0.25, 0.5, 0.75), save=NULL, print=T
             }
             t <- t + P
         }
-        
-        out[[paste(phase)]] <- t.phase
-        if (!is.null(save))
-            cat(sprintf("# %f\n", phase), sprintf("%10.8e\n", t.phase), file=save)
+        out$phases[[paste(phase)]] <- t.phase
+    }
 
-        if (print) {
-            cat(sprintf("# phase = %f\n", phase), sprintf("%10.5f\n", t.phase))
-            cat("\n")
+    if (!is.null(save)) {
+        cat(file=save, toString(out))
+    }
+
+    class(out) <- 'phases'
+    return(out)
+}
+
+toString.phases <- function(p) {
+
+    a <- c(sprintf("# Between JD = %f and JD = %f:\n", p$from, p$to))
+
+    for (phase in names(p$phases)) {
+        a <- c(a, sprintf("# %s\n", phase))
+        if (is.null(p$errors)) {
+            a <- c(a, sprintf("%10.6f\n", p$phases[[phase]]))
+        } else {
+            a <- c(a, sprintf("%10.6f\t%e\n", p$phases[[phase]], p$errors[[phase]]))
         }
     }
-    if (!is.null(save))
-        close(save)
+    return(paste(a, collapse='', sep=''))
+}
+
+print.phases <- function(p) {
+    cat(toString(p))
+}
+
+phases.avg <- function(plist) {
+    pout <- plist[[1]]
     
-    return(invisible(out))
+    for (phase in names(plist[[1]]$phases)) {        
+        ts <- plist[[1]]$phases[[phase]]
+        pout$phases[[phase]] <- sapply(1:length(ts), function(i) {
+            return(mean(sapply(plist, function(p) {
+                return(p$phases[[phase]][i])
+            })))
+        })
+        pout$errors[[phase]] <- sapply(1:length(ts), function(i) {
+            return(sd(sapply(plist, function(p) {
+                return(p$phases[[phase]][i])
+            })))
+        })
+    }
+
+    return(pout)
 }
