@@ -180,7 +180,7 @@ double K_crossval_l1o(ok_kernel* k, int minalgo, int maxiter, double params[]) {
         lh[p] += log10(diff/s);
         ks[p]->compiled[i][T_ERR] = err;
         
-        printf("%10.2e %10.2e\n", diff/s, log10(diff/s));
+        
         if (prog != NULL && omp_get_thread_num() == 0) {
             int ret = prog(i * np, nd, ks[p],
                     "K_crossVal_l1o");

@@ -40,21 +40,17 @@ if (! exists('.systemic.loaded')) {
     .require.library('parallel', hush=TRUE)
     .require.library('xtable', hush=TRUE)
     
-    if (exists('.systemic.env')) {
+    if (exists('.systemic.functions')) {
         tryCatch({
-            detach('.systemic.env')
             detach('.systemic.functions')
         }, error=function(...) {})
     }
 
     .job <- ""
-    .systemic.env <- new.env()
-    sys.source("defs.r", .systemic.env)
 
-    attach(.systemic.env)
     enableJIT(3)
-
     .systemic.functions <- new.env()
+    sys.source("defs.r", .systemic.functions)
     sys.source("functions.r", .systemic.functions)
     sys.source("xgrid.r", .systemic.functions)
     sys.source("colors.r", .systemic.functions)
@@ -63,7 +59,7 @@ if (! exists('.systemic.loaded')) {
     sys.source("utils.r", .systemic.functions)
     sys.source("table.r", .systemic.functions)
     sys.source("phases.r", .systemic.functions)
-    
+    sys.source("auto.r", .systemic.functions)    
     attach(.systemic.functions)
     .systemic.loaded <- TRUE
 }
