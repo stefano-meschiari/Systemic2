@@ -1,3 +1,4 @@
+
 options(systemic.auto=FALSE)
 options(systemic.psamples=5e4)
 options(systemic.pmin=0.5)
@@ -1074,8 +1075,9 @@ print.periodogram <- function(x, what='peaks') {
     cat(sprintf("# Periodogram: pmin = %.2e, pmax = %.2e, samples = %d\n",
                 attr(x, 'pmin'), attr(x, 'pmax'), attr(x, 'samples')))
     if (what == 'peaks') {
-        cat("# Peaks (sorted by power):\n")
+        cat(sprintf("# Peaks (sorted by power; window.cutoff = %e):\n", attr(x, 'window.cutoff')))
         print(attr(x, 'peaks')[, c('period', 'power', 'fap', 'window')])
+        
         cat('# To print the full periodogram instead of power peaks, use\n',
             '# print(var, what="periodogram")\n',
             '# To save the periodogram, use write.f(var, file="p.txt")\n', sep="")
@@ -1214,8 +1216,18 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
         plot(mat, overplot.window=overplot.window)
     peaks.m <- kfind.peaks(mat)
     if (nrow(peaks.m) > 0) {
+        mfap <- mat[mat[,'fap'] < 1, , drop=FALSE]
+        if (nrow(mfap) > 5) {
+            window.cutoff <- 10^approxfun(log10(mfap[,'fap']), log10(mfap[,'power']))(log10(1e-2))
+            if (!is.na(window.cutoff)) {
+                peaks.m <- peaks.m[peaks.m[,'window'] < window.cutoff, , drop=FALSE]
+                if (print)
+                    cat(sprintf("# Peaks with power in window > %e ignored\n", window.cutoff))
+                attr(mat, 'window.cutoff') <- window.cutoff
+            }
+        }
         peaks <- min(peaks, nrow(peaks.m))
-        attr(mat, "peaks") <- peaks.m[1:peaks, ]
+        attr(mat, "peaks") <- peaks.m[1:peaks, , drop=FALSE]
     }
 
     

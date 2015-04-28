@@ -612,7 +612,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     if (!missing(ylim))
         limy <- ylim
 		
-    if (type != "histogram" && type != "scatter" && type != "smoothScatter") {
+    if (type != "histogram" && type != "scatter" && type != "smoothScatter" && type != 'scatter.hist') {
 
         if (is.numeric(cut.outliers)) {
             idx <- datax > medx - cut.outliers * devx & datax < medx + cut.outliers * devx & datay > medy - cut.outliers*devy & datay < medy + cut.outliers*devy
@@ -638,6 +638,14 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
         }
         else 
             points(datax, datay, pch=pch, col=col,  ...)
+        points(c(bfx), c(bfy), pch=19, col=bf.color, ...)
+        
+    } else if (type == "scatter.hist") {
+        if (!add) {
+            scatter.hist(datax, datay, xlab=labx, ylab=laby, pch=pch, col=col, smooth=F, correl=F, density=F, ellipse=F,  ...)
+        }
+#        else 
+#            points(datax, datay, pch=pch, col=col,  ...)
         points(c(bfx), c(bfy), pch=19, col=bf.color, ...)
         
     } else if (type == "smoothScatter") {
