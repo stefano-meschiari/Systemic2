@@ -1068,9 +1068,7 @@ ksave <- function(k, file) {
 
 kfind.peaks <- function(mat, column='power') {
     subm <- mat[which(diff(sign(diff(mat[, column]))) == -2)+1, ]
-    if (mat[nrow(mat), column] > mat[nrow(mat)-1, column])
-        subm <- rbind(subm, mat[nrow(mat),])
-return(subm[order(subm[,column], decreasing=TRUE),])
+    return(subm[order(subm[,column], decreasing=TRUE),])
 }
 
 print.periodogram <- function(x, what='peaks') {
