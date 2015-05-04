@@ -255,13 +255,21 @@ kremove.planet <- function(k, idx) {
     # Args:
     # - k: kernel to remove the planet from
     # - idx: index of the planet to remove (starting at 1)
+    on.exit(if (k$auto) kupdate(k))
     .check_kernel(k)
+    if (idx == 'all') {
+        if (k$nplanets > 0) {
+            for (i in 1:k$nplanets) {
+                kremove.planet(k, 1)
+            }
+        }
+        return()
+    }
     stopifnot(idx >= 1 && idx <= k$nplanets)
 
     K_removePlanet(k$h, idx)
     K_compileData(k$h)
-    
-    on.exit(if (k$auto) kupdate(k))
+   
 }
 
 
@@ -449,6 +457,7 @@ kels <- function(k, keep.first = FALSE) {
     # * k$rms		Current RMS value
     # * k$jitter	Current jitter value
     # * k$loglik	Current log likelihood (multiplied by -1)
+    # * k$bic Current value of BIC
     # * k$ks.pvalue	Current p-value of the KS test comparing normalized residuals to a unit gaussian
     # * k$ndata		Number of data points
     # * k$nrvs		Number of RV data points
@@ -473,6 +482,8 @@ kels <- function(k, keep.first = FALSE) {
         return(.integration.errors[[k$last.error.code+1]])	
     } else if (idx == "min.func") {
         return(k[['min.func']])
+    } else if (idx == 'bic') {
+        return(2*k$loglik + k$nrpars*(log(k$ndata)))
     } else
         return(k[[idx]])	
 }
@@ -1220,7 +1231,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
     if (nrow(peaks.m) > 0) {
         mfap <- mat[mat[,'fap'] < 1, , drop=FALSE]
         if (nrow(mfap) > 5) {
-            window.cutoff <- 10^approxfun(log10(mfap[,'fap']), log10(mfap[,'power']))(log10(1e-2))
+            window.cutoff <- 10^approxfun(log10(mfap[,'fap']), log10(mfap[,'power']))(log10(1e-6))
             if (!is.na(window.cutoff)) {
                 peaks.m <- peaks.m[peaks.m[,'window'] < window.cutoff, , drop=FALSE]
                 if (print)

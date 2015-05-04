@@ -113,7 +113,7 @@ F-test, all planets||[[
 ]]
 Cross-validation, single fit||$kcrossval.l1o(@kernel@)
 Cross-validation, all planets||$kcrossval.l1o(@kernel@, type="auto")
-BIC||$2*@kernel@$loglik - @kernel@$nrpars*(log(@kernel@$ndata)-log(2*pi))
+BIC||$@kernel@$bic
 BIC, all planets||[[
   stopifnot(.kernel$nplanets >= 1)
 	.k <- kclone(.kernel) 
@@ -122,9 +122,9 @@ BIC, all planets||[[
   .m <- matrix(nrow=.k$nplanets+1, ncol=4)
   rownames(.m) <- sprintf("%d planets", .k$nplanets:0)
   colnames(.m) <- c("BIC", "dBIC", "npars", "chi2")
-  bic <- 2*.k$loglik - .k$nrpars*(log(.k$ndata)-log(2*pi))
+  bic <- .k$bic
 	for (.i in 1:(.k$nplanets+1)) { 
-    bic2 <- 2*.k$loglik - .k$nrpars*(log(.k$ndata)-log(2*pi))
+    bic2 <- .k$bic
     .m[.i, 'BIC'] <- bic2
     .m[.i, 'dBIC'] <- bic2-bic
     .m[.i, 'npars'] <- .k$nrpars
@@ -133,7 +133,8 @@ BIC, all planets||[[
     if (.k$nplanets == 0)
        break
 	  kremove.planet(.k, .k$nplanets)
-	  invisible(kminimize(.k))    
+	  invisible(kminimize(.k))
+    
 	}
 
   print(.m)
