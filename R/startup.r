@@ -17,7 +17,7 @@ cat(sprintf('Hello master %s!\nThis is Console %.4f speaking, %s.\n(c) 2013-2014
 	Sys.getenv("USER"), SYSTEMIC.VERSION, R.version.string))
 
 # Window title
-.gui.title(sprintf("Systemic %.4f", SYSTEMIC.VERSION))
+.gui.title(paste(sprintf("Systemic %.4f", SYSTEMIC.VERSION), " - %F "))
 
 # Set the default CRAN repository
 options(repos=c(CRAN="http://cran.us.r-project.org"))

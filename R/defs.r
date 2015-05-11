@@ -279,9 +279,9 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 # double ok_mad(double* v, const int length, const double med)
 "ok_mad(*did)d",
 # char* ok_str_copy(const char* src)
-"ok_str_copy(Z)*<char>",
+"ok_str_copy(Z)*c",
 # char* ok_str_cat(const char* a1, const char* a2)
-"ok_str_cat(ZZ)*<char>",
+"ok_str_cat(ZZ)*c",
 # void ok_avevar(const double* v, int len, double* ave, double* var)
 "ok_avevar(*di*d*d)v",
 # gsl_matrix* ok_ptr_to_matrix(double* v, unsigned int rows, unsigned int cols)
@@ -312,6 +312,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_resample_curve(*<gsl_matrix>iidii*diB)*<gsl_matrix>",
 # bool ok_file_readable(char* fn)
 "ok_file_readable(*c)B",
+# bool ok_str_iequals(const char* s1, const char* s2)
+"ok_str_iequals(ZZ)B",
 # ok_rivector* ok_rivector_alloc(const int maxlength)
 "ok_rivector_alloc(i)*<ok_rivector>",
 # ok_kernel* K_alloc()
@@ -522,6 +524,16 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_integrateStellarVelocity(pddIp*i)*<gsl_matrix>",
 # ok_system** K_integrateProgress(ok_kernel* k, gsl_vector* times, ok_system** bag, int* error)
 "K_integrateProgress(p*<gsl_vector>p*i)p",
+# void K_setInfo(ok_kernel* k, const char* tag, const char* info)
+"K_setInfo(pZZ)v",
+# int K_getInfo(ok_kernel* k, const char* tag, char* out)
+"K_getInfo(pZ*c)i",
+# char* K_getInfoTag(ok_kernel* k, int n)
+"K_getInfoTag(pi)*c",
+# char* K_getInfo(ok_kernel* k, const char* tag)
+"K_getInfo(pZ)*c",
+# bool K_infoExists(ok_kernel* k, const char * tag)
+"K_infoExists(pZ)B",
 # void K_print(ok_kernel* k, FILE* f)
 "K_print(p*<FILE>)v",
 # void K_save_old(ok_kernel* k, const char* stem)

@@ -351,6 +351,12 @@ detach('.systemic.functions')
 	.gui.update(k, calculate=calculate)
 	invisible()
 }
+.kprop <- .systemic.functions[['kprop<-']]
+.systemic.functions[['kprop<-']] <- function(k, idx, value) {
+    .kprop(k, idx, value)
+    kupdate(k, calculate=FALSE)
+    return(k)
+}
 
 
 # Used to hide matrix attributes when printing
@@ -394,7 +400,13 @@ attach(.systemic.functions)
 		for (field in ls(envir=k)) {
 			if (class(k[[field]]) == "numeric")
 				cat(sprintf("%s = %.15e\n", field, k[[field]]), file=con)
-		}
+  }
+
+    props <- kprop(k)
+    for (field in names(props)) {
+        cat(sprintf("$%s = %s\n", field, props[[field]]), file=con)
+    }
+
 		
 		if (nsets > 0)
 			for (i in 1:nsets) {
@@ -418,7 +430,6 @@ attach(.systemic.functions)
 		.gui.matrix(K_getElementSteps(k$h))
 		.gui.vector(K_getParSteps(k$h))
 	}
-	
 }
 
 . <<- knew()

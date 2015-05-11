@@ -65,6 +65,7 @@ ok_vector_block
 ok_matrix_block
 ok_resample_curve
 ok_file_readable
+ok_str_iequals
 ok_rivector_alloc
 K_alloc
 K_free
@@ -170,6 +171,11 @@ K_integrate
 K_integrateRange
 K_integrateStellarVelocity
 K_integrateProgress
+K_setInfo
+K_getInfo
+K_getInfoTag
+K_getInfo
+K_infoExists
 K_print
 K_save_old
 K_setSeed

@@ -293,6 +293,12 @@ typedef void(*ok_model_function)(ok_kernel*, double** data, int ndata);
 typedef ok_system**(*ok_integrator)(ok_system*, const gsl_vector*, ok_integrator_options*, ok_system** bag);
 typedef int(*ok_minimizer)(ok_kernel*, int, double[]);
 
+typedef struct ok_info ok_info;
+struct ok_info {
+    char* tag;
+    char* info;
+    ok_info* next;
+};
 
 struct ok_kernel {
     // initial conditions
@@ -365,14 +371,11 @@ struct ok_kernel {
     // progress callback
     ok_progress progress;
     
-    // dataset names
-    char datanames[DATA_SETS_SIZE][MAX_LINE];
-    
     // custom model function
     ok_model_function model_function;
     int last_error;
     
-    
+    ok_info* info;
 };
 
 typedef struct ok_list_item {

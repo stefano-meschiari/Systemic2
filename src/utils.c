@@ -18,6 +18,7 @@
 #include "assert.h"
 #include "kernel.h"
 #include "time.h"
+#include "ctype.h"
 
 double DEGRANGE(double angle) {
     return (fmod((angle < 0. ? angle + (floor(-angle/360.) + 1.) * 360. : angle), 360.));
@@ -450,6 +451,38 @@ char* ok_str_copy(const char* src) {
     char* d = (char*) malloc(strlen(src) * sizeof(char*));
     strcpy(d, src);
     return d;
+}
+
+// From http://stackoverflow.com/questions/122616/how-do-i-trim-leading-trailing-whitespace-in-a-standard-way
+char* ok_str_trim(char *str)
+{
+  char *end;
+
+  // Trim leading space
+  while(isspace(*str)) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && isspace(*end)) end--;
+
+  // Write new null terminator
+  *(end+1) = 0;
+
+  return str;
+}
+
+bool ok_str_iequals(const char* s1, const char* s2) {
+    if (s1 == NULL && s2 == NULL)
+        return true;
+    if (strlen(s1) != strlen(s2) || s1 == NULL || s2 == NULL)
+        return false;
+    for (int i = 0; i < strlen(s1); i++)
+        if (tolower(s1[i]) != tolower(s2[i]))
+            return false;
+    return true;
 }
 
 char* ok_str_cat(const char* a1, const char* a2) {
