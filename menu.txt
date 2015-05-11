@@ -26,6 +26,7 @@ Clone session||cloneSession
 New kernel|meta N|!@ins@ <- knew()
 Open kernel...|meta O|openKernel
 Save kernel...|meta S|saveKernel
+Save kernel as...|meta shift S|saveAsKernel
 Rename kernel...||renameKernel
 Select kernel...|meta K|!`@ins@ @@Type `kernelname <ENTER> to quickly switch between kernels. "." represents the currently selected kernel.
 Clone kernel|meta shift C|!@ins@ <- kclone(@kernel@)
@@ -143,8 +144,8 @@ BIC, all planets||[[
 -
 Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
 Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
-Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
-Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
 -
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
@@ -186,7 +187,7 @@ Add uncertainty in quadrature...||!d <- kdata(@kernel@); d[, ERR] <- sqrt(d[, ER
 Inflate uncertainty...||!d <- kdata(@kernel@); d[, ERR] <- d[, ERR] * @ins@; kdata(@kernel@) <- d
 Select temporal subset...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
 Remove ouliers by normalized residual value...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
-Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel) <- d
+Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel@) <- d
 Remove median from data||$d <- kdata(@kernel@); d[,VAL] <- d[,VAL] - median(d[,VAL]); kdata(@kernel@) <- d
 Shift to JD = 2450000||$d <- kdata(@kernel@); d[,TIME] <- d[,TIME] - 2450000; kdata(@kernel@) <- d; @kernel@$epoch <- @kernel@$epoch - 2450000
 Other data manipulation examples...||$edit.script("doc/data_examples.R")

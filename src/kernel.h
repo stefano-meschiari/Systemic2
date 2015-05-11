@@ -182,6 +182,12 @@ ok_system** K_integrateProgress(ok_kernel* k, gsl_vector* times, ok_system** bag
 ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k);
 #endif
 
+void K_setInfo(ok_kernel* k, const char* tag, const char* info);
+char* K_getInfoTag(ok_kernel* k, int n);
+char* K_getInfo(ok_kernel* k, const char* tag);
+void K_clearInfo(ok_kernel* k);
+bool K_infoExists(ok_kernel* k, const char * tag);
+
 // DEBUG
 void K_print(ok_kernel* k, FILE* f);
 void K_save_old(ok_kernel* k, const char* stem);

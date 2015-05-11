@@ -188,7 +188,6 @@ knew <- function() {
     k$min.method <- SIMPLEX
     k$last.error.code <- integer(1)
     k$.new <- TRUE
-    k$datanames <- c()
     k$min.func <- "chi2"
     class(k) <- "kernel"
     k$epoch <- 2450000
@@ -457,7 +456,7 @@ kels <- function(k, keep.first = FALSE) {
     # * k$rms		Current RMS value
     # * k$jitter	Current jitter value
     # * k$loglik	Current log likelihood (multiplied by -1)
-    # * k$bic Current value of BIC
+    # * k$bic Current value of BIC (multiplied by -1)
     # * k$ks.pvalue	Current p-value of the KS test comparing normalized residuals to a unit gaussian
     # * k$ndata		Number of data points
     # * k$nrvs		Number of RV data points
@@ -483,13 +482,54 @@ kels <- function(k, keep.first = FALSE) {
     } else if (idx == "min.func") {
         return(k[['min.func']])
     } else if (idx == 'bic') {
-        return(2*k$loglik + k$nrpars*(log(k$ndata)))
+        return(2*k$loglik - k$nrpars*(log(k$ndata)))
+    } else if (idx == 'datanames') {
+        if (k$nsets == 0) return(c())
+        c <- sprintf("data-%d", 1:k$nsets)
+        for (i in 1:k$nsets)
+            if (K_infoExists(k$h, sprintf("DataFileName%d", i-1)))
+                c[i] <- K_getInfo(k$h, sprintf("DataFileName%d", i-1))
+        return(c)
+    } else if (idx == 'filename') {
+        if (K_infoExists(k$h, "FileName"))
+            return(K_getInfo(k$h, "FileName"))
+        else
+            return("")
     } else
         return(k[[idx]])	
 }
 
+
 kget <- function(k, idx) {
     return(`$.kernel`(k, idx))
+}
+
+kprop <- function(k, idx = 'all') {    
+    idx <- as.character(idx)
+
+    if (idx != 'all') {
+        if (K_infoExists(k$h, idx))
+            return(K_getInfo(k$h, idx))
+        else
+            return(NULL)
+    } else {
+        i <- 0
+        s <- K_getInfoTag(k$h, i)
+        out <- c()
+        while (s != "") {
+            out[s] <- K_getInfo(k$h, s)
+            i <- i +1
+            s <- K_getInfoTag(k$h, i)
+        }
+        return(out)
+    }
+}
+
+`kprop<-` <- function(k, idx, value) {
+    idx <- as.character(idx)
+    value <- as.character(value)
+    K_setInfo(k$h, idx, value)
+    return(k)
 }
 
 `$<-.kernel` <- function(k, idx, value) {
@@ -598,6 +638,8 @@ kget <- function(k, idx) {
         k[['.progress.cb']] <- new.callback("iipZ)i", k[['.progress']])
         k[['progress']] <- value
         K_setProgress(k[['h']], k[['.progress.cb']])
+    } else if (idx == 'filename') {
+        K_setInfo(k[['h']], 'FileName', value)
     } else 
         k[[idx]] <- value
     return(k)
@@ -685,7 +727,6 @@ kadd.data <- function(k, data, type = NA) {
             stop("Specify the type of data (one of RV or TIMING)")
         
         if (! is.nullptr(K_addDataFile(k$h, data, type))) {
-            k$datanames = c(k$datanames, data)
         } else {
             stop("Could not open datafile")
         }
@@ -700,7 +741,6 @@ kadd.data <- function(k, data, type = NA) {
         else if (type == TIMING)
             name <- paste(name, ".tds")
         
-        k$datanames = c(k$datanames, name)
     } else {
         stop("Data should be a string or a matrix")
     }
@@ -720,11 +760,9 @@ kremove.data <- function(k, idx = -1) {
     
     if (idx == -1 || idx == "all") {
         K_removeData(k$h, -1)
-        k$datanames = c()
     } else {
         stopifnot(idx <= k$nsets && idx >= 1)
         K_removeData(k$h, idx-1)
-        k$datanames = k$datanames[-idx]
     }
 
     K_compileData(k$h)
@@ -867,7 +905,6 @@ kclone <- function(k) {
         k2[[n]] <- k[[n]]
     
     k2$h <- K_clone(k$h)
-    k2$datanames <- k$datanames
     k2$auto <- k$auto
     k2$.new <- TRUE
     k2$errors <- k$errors
@@ -967,29 +1004,12 @@ kload.system <- function(k, datafile) {
     #	- datafile: path to the .sys file
 
     dir <- getwd()
-    on.exit(setwd(dir))
     
     if (! file.exists(datafile))
         stop(paste("Cannot open", datafile, ", current directory:", getwd()))
 
-    datafile.dir <- dirname(datafile)
-    lines <- readLines(datafile)
-    for (line in lines) {
-        line <- .trim(line)
-
-        if (startsWith(line, "RV[]") || startsWith(line, "TD[]")) {
-            dn <- .trim(regmatches(line, regexec("\"(.+)\"", line))[[1]][2])
-            if (!file.exists(dn) && file.exists(paste(datafile.dir, '/', dn, sep=''))) {
-                dn <- paste(datafile.dir, '/', dn, sep='');
-            }
-            
-            cat("Loading ", dn, " (current dir: ", getwd(), ")\n")
-            kadd.data(k, dn)
-        }
-        else if (startsWith(line, "Mass")) 
-            k$mstar <- as.numeric(gsub("Mass", "", line))
-    }
-    kcalculate(k)
+    K_addDataFromSystem(k$h, datafile)
+    kupdate(k)
 }
 
 kload.datafile <- kload.system
@@ -1012,7 +1032,6 @@ kload <- function(file, skip = 0, chdir=TRUE) {
     }
     k <- new.env()
     k$auto <- getOption("systemic.auto", F)
-    k$datanames <- c()
     k$min.method <- LM
     k$.new <- TRUE
     k$last.error.code <- integer(1)
@@ -1034,10 +1053,10 @@ kload <- function(file, skip = 0, chdir=TRUE) {
     
 
     class(k) <- "kernel"	
-    k$datanames = sprintf("data%d", 1:k$nsets)
     k$.epoch.set <- TRUE
     fclose(fid)
     kupdate(k)
+    k$filename <- file
     return(k)
 }
 
@@ -1058,9 +1077,10 @@ ksave <- function(k, file) {
         if (is.nullptr(fid)) {
             stop(paste("Could not open file ", file))
         }
-        
+        k$filename <- file
         K_save(k$h, fid)
         fclose(fid)
+        
         return(invisible(k))
     } else if (class(k) == "list") {
         fid <- fopen(file, "w")
@@ -1069,7 +1089,8 @@ ksave <- function(k, file) {
         }
 
         for (ki in k) {
-            .check_kernel(ki)			
+            .check_kernel(ki)
+            ki$filename <- file
             K_save(ki$h, fid)
         }
         
