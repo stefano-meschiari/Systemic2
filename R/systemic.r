@@ -22,7 +22,7 @@ if (! exists('.systemic.loaded')) {
             install.packages('rdyncall_0.7.5.tgz', repos=NULL)
             require('rdyncall', character.only = TRUE)
         } else {
-            error("Please install rdyncall. See the README for details.")
+            stop("Please install rdyncall. See the README for details.")
         }
     }
     
