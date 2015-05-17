@@ -1286,7 +1286,8 @@ ok_kernel* K_cloneFlags(ok_kernel* k, unsigned int flags) {
         ok_info* last = NULL;
         while (ptr != NULL) {
             ok_info* n = (ok_info*) malloc(sizeof(ok_info));
-            n->next = n->tag = n->info = NULL;
+            n->next = NULL;
+            n->tag = n->info = NULL;
             
             if (ptr->info != NULL && ptr->tag != NULL) {
                 n->tag = strdup(ptr->tag);
@@ -1466,8 +1467,12 @@ char* K_getInfoTag(ok_kernel* k, int n) {
     ok_info* el = k->info;
     int i = 0;
     while (el != NULL) {
-        if (i == n)
+        if (i == n) {
+            if (el->info == NULL)
+                return "";
+            
             return el->tag;
+        }
         el = el->next;
         i++;
     }

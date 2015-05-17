@@ -1501,7 +1501,7 @@ kflags <- function(k, what = "all", type='standard') {
 
 kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
                       de.NPfac = 10, de.Fmin = 0.5, de.Fmax = 1.0, de.use.steps = FALSE,
-                      sa.T0 = k$chi2, sa.alpha=2, sa.auto=TRUE, sa.chains=4) {
+                      sa.T0 = k$chi2, sa.alpha=2, sa.auto=TRUE, sa.chains=4, repeat.steps = 10) {
     ## Minimizes the chi^2 of the fit. [3]
     #
     # kminimize uses one of the built-in algorithms to minimize the
@@ -1532,6 +1532,7 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
     # - sa.auto: automatically derive steps that produce a variation of chi^2 = 10% T0
     # - de.CR: crossover probability for DE
     # - de.Fmin, de.Fmax: differential weight for DE
+    # - repeat.steps: repeats the minimization algorithm if there is a change in chi^2 for max number of steps
     
     .check_kernel(k)
     
@@ -1552,8 +1553,13 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
     stopifnot(k$ndata > 0)
     
     on.exit(if (k$auto) kupdate(k))
-    K_minimize(k$h, algo, iters, as.numeric(opts))
-    
+    old <- K_getMinValue(k$h)
+    for (i in 1:repeat.steps) {
+        K_minimize(k$h, algo, iters, as.numeric(opts))
+        if (abs(K_getMinValue(k$h) - old) < 1e-6)
+            break
+        old <- K_getMinValue(k$h)
+    }
     return(k$chi2)
 }
 

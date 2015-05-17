@@ -403,10 +403,11 @@ attach(.systemic.functions)
   }
 
     props <- kprop(k)
-    for (field in names(props)) {
-        cat(sprintf("$%s = %s\n", field, props[[field]]), file=con)
+    if (!is.null(props)) {
+        for (field in names(props)) {
+            cat(sprintf("$%s = %s\n", field, props[[field]]), file=con)
+        }
     }
-
 		
 		if (nsets > 0)
 			for (i in 1:nsets) {

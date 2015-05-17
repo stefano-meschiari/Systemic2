@@ -664,7 +664,7 @@ ok_system** ok_integrate_gsl(ok_system* initial, const gsl_vector* times, ok_int
                         }
                         
                         for (int j = 0; j < SAMPLES; j++)
-                            ok_free_system(bag[i]);
+                            ok_free_system(bag[j]);
                         free(bag);
                         
                         

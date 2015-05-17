@@ -6,11 +6,13 @@
 #include "time.h"
 
 int main() {
-    FILE* fid = fopen("/Users/sm52286/Dropbox/Projects/HJST/psidraa.k", "r");
+    FILE* fid = fopen("/Users/sm52286/Dropbox/Projects/HJST/psidraa_b.k", "r");
     
     ok_kernel* k = K_load(fid, 0);
-    ok_kernel* kbuf[4];
-    for (int i = 0; i < 4; i++)
-        kbuf[i] = K_clone(k);
-    K_mcmc_mult(kbuf, 4, 1, 100, 100, NULL, 1.1, NULL);
+    K_calculate(k);
+    printf("%e\n", k->chi2);
+    K_setIntMethod(k, RK89);
+    K_calculate(k);
+    printf("%e\n", k->chi2);
+    
 }
