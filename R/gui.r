@@ -305,10 +305,8 @@ gui.progress <- function(cur=0, max=100, val=0, job="") {
 			rvsignal <- K_integrateStellarVelocity(k$h, trange[1], trange[2], rvsamples, NULL, a)
       K_setIntDt(k$h, dt)
       
-			if (a[1] != K_INTEGRATION_SUCCESS)
-				print(.integration.errors[a[1]])
 			if (is.nullptr(rvsignal)) {
-				print("Error during integration")
+        warning("Error during integration: ", .integration.errors[[a[1]+1]], " [", a, "]")
 				.gui.event("rvcurve", name)
 				.gui.matrix(NULL)
 			} else { 

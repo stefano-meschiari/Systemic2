@@ -26,6 +26,8 @@ int ok_last_error(ok_system* system) {
 
 
 double ok_min_distance = RJUP / AU;
+
+
 ok_system* ok_alloc_system(int nplanets) {
     ok_system* system = (ok_system*) malloc(sizeof(ok_system));
     system->nplanets = nplanets;
@@ -326,8 +328,7 @@ int ok_force(double t, const double y[], double f[], void* params) {
                 sqr(y[i * 7 + 3] - y[j * 7 + 3]));
             
             double i_r = sqrt(i_rsq);
-            
-            if (i_r < ok_min_distance) {
+            if (i_r > 1./ok_min_distance) {
                 if (i == 0 || j == 0) {
                     system->flag |= INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR;
                     return INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR;
@@ -377,8 +378,9 @@ int ok_force_on(double t, const double y[], double f[], void* params, int i) {
             sqr(y[i * 7 + 3] - y[j * 7 + 3]));
 
         double i_r = sqrt(i_rsq);
-
-        if (i_r < ok_min_distance) {
+        
+        if (i_r > 1./ok_min_distance) {
+            
             if (i == 0 || j == 0)
                 return INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR;
             else
@@ -427,7 +429,7 @@ int ok_force_jerk(double t, const double y[], double f[], double jerk[], void* p
             const double i_r = sqrt(i_rsq);
             const double i_r3 = i_rsq * i_r;
             
-            if (i_r < ok_min_distance) {
+            if (i_r > 1./ok_min_distance) {
                 if (i == 0 || j == 0) {
                     system->flag |= INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR;
                     return INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR;
@@ -494,7 +496,7 @@ int ok_star_force(double t, const double y[], double f[], void* params) {
             
             double i_r = sqrt(i_rsq);
             
-            if (i_r < ok_min_distance) {
+            if (i_r > 1./ok_min_distance) {
                 return GSL_ERANGE;
             }
             
@@ -525,7 +527,7 @@ int ok_star_force_on(double t, const double y[], double f[], void* params, int i
 
     double i_r = sqrt(i_rsq);
 
-    if (i_r < ok_min_distance) {
+    if (i_r > 1./ok_min_distance) {
         return GSL_ERANGE;
     }
 
@@ -597,6 +599,7 @@ ok_system** ok_integrate_gsl(ok_system* initial, const gsl_vector* times, ok_int
     assert(times != NULL);
     assert(solver != NULL);
     
+    
     const double startTime = initial->epoch;
     const int NDIMS = initial->nplanets + 1;
     
@@ -661,6 +664,9 @@ ok_system** ok_integrate_gsl(ok_system* initial, const gsl_vector* times, ok_int
                     if (i == 0) {
                         if (error != NULL) {
                             *error = ok_last_error(bag[i]);
+                            if (*error == INTEGRATION_SUCCESS)
+                                *error = result;
+                            
                         }
                         
                         for (int j = 0; j < SAMPLES; j++)
@@ -677,6 +683,9 @@ ok_system** ok_integrate_gsl(ok_system* initial, const gsl_vector* times, ok_int
                     } else {
                         if (error != NULL) {
                             *error = ok_last_error(bag[i]);
+                            if (*error == INTEGRATION_SUCCESS)
+                                *error = result;
+                            
                         }
                         
                         for (int j = i - 1; j < SAMPLES; j++) {

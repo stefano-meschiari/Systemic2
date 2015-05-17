@@ -1930,7 +1930,7 @@ kdeactivate <- function(k, row = "all", column = "all") {
     }
     
     if (k$auto)
-        kupdate(k, calculate=FALSE)	
+        kupdate(k, calculate=TRUE)	
 }
 
 kbootstrap <- function(k, algo = NA, trials = 5000, warmup = 0, min_iter = 2000, plot = FALSE, print = FALSE, save=NA) {
@@ -2083,12 +2083,24 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
 
 
 
-kxyz <- function(k) {
+kxyz <- function(k, internal=TRUE) {
     ## Returns the cartesian coordinates of the bodies in the system. [9]
     #
-    # Coordinates are returned in internal units (Msun, AU, and day)
+    # Coordinates are returned in internal units (K2, AU, and day) if internal = TRUE,
+    # else returned in cgs.
     .check_kernel(k)
-    return (.gsl_matrix_to_R(K_getXYZ(k$h)))
+    int <- .gsl_matrix_to_R(K_getXYZ(k$h))
+    
+    colnames(int) <- c('mass', 'x', 'y', 'z', 'u', 'v', 'w')
+    if (internal)
+        return(int)
+    else {
+        int[,1] <- int[,1] / K2 * MSUN
+        int[,2:4] <- int[,2:4] * AU
+        int[,5:7] <- int[,5:7] * AU / DAY
+        return(int)
+    }
+        
 }
 
 keltype <- function(k) {

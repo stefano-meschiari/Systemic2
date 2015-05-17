@@ -122,7 +122,7 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
 }
 
 print.systemic.table <- function(df, type="text", file=stdout()) {
-    if (class(file) == "character") {
+    if (any(class(file) == "character")) {
         file <- file(file)
         on.exit(close(file))
     }
@@ -134,7 +134,7 @@ print.systemic.table <- function(df, type="text", file=stdout()) {
         cat("\n")
         sink()
     } else if (type == "latex") {
-
+        
     }
 }
 
