@@ -3,7 +3,7 @@
 # Default options
 
 # Autosave kernels in the autosave/ directory every 240 seconds
-options(systemic.autosave = TRUE)
+options(systemic.autosave = FALSE)
 options(systemic.autosave.interval = 240)
 
 # Change the palette here (see R/colors.r for themes)

@@ -377,7 +377,7 @@ gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trial
         mock[i] = ok_matrix_copy(data);
         if (i > 0) {
             rng[i] = gsl_rng_alloc(gsl_rng_default);
-            gsl_rng_set(rng[i], gsl_rng_get(rng[0]));
+            gsl_rng_set(rng[i], seed + i);
         }
     }
     

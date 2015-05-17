@@ -6,14 +6,11 @@
 #include "time.h"
 
 int main() {
-    FILE* fid = fopen("private/test.fit", "r");
-    ok_kernel* k = K_alloc();
+    FILE* fid = fopen("/Users/sm52286/Dropbox/Projects/HJST/psidraa.k", "r");
     
-    
-    K_addDataFromSystem(k, "/Users/sm52286/Projects/Systemic2/datafiles/14Her.sys");
-    FILE* fid2 = fopen("private/test2.fit", "w");
-    
-    K_save(k, fid2);
-    K_free(k);
- 
+    ok_kernel* k = K_load(fid, 0);
+    ok_kernel* kbuf[4];
+    for (int i = 0; i < 4; i++)
+        kbuf[i] = K_clone(k);
+    K_mcmc_mult(kbuf, 4, 1, 100, 100, NULL, 1.1, NULL);
 }

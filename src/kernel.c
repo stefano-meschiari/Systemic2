@@ -1286,7 +1286,9 @@ ok_kernel* K_cloneFlags(ok_kernel* k, unsigned int flags) {
         ok_info* last = NULL;
         while (ptr != NULL) {
             ok_info* n = (ok_info*) malloc(sizeof(ok_info));
-            if (ptr->info != NULL) {
+            n->next = n->tag = n->info = NULL;
+            
+            if (ptr->info != NULL && ptr->tag != NULL) {
                 n->tag = strdup(ptr->tag);
                 n->info = strdup(ptr->info);
             }
@@ -1476,7 +1478,6 @@ void K_clearInfo(ok_kernel* k) {
     ok_info* ptr = k->info;
     while (ptr != NULL) {
         ok_info* next = ptr->next;
-        
         
         free(ptr->tag);
         free(ptr->info);

@@ -18,9 +18,9 @@
 # - if command does not start with a special character, then the corresponding method in the Frame class is called. If an option is specified, it will be passed to that method.
 
 File
-New session|meta shift N|newSession
-Open session...|meta shift O|openSession
-Save session...|meta shift S|saveSession
+New session|meta ctrl N|newSession
+Open session...|meta ctrl O|openSession
+Save session...|meta ctrl S|saveSession
 Clone session||cloneSession
 -
 New kernel|meta N|!@ins@ <- knew()

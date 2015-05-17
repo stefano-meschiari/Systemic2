@@ -8,7 +8,7 @@ systemic.palette.face <- systemic.theme.tomorrow.face
 palette(systemic.palette)
 par(systemic.par)
 
-plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets,
+plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets, residuals.auto.ylim=FALSE,
                         breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, ...) {
     .check_kernel(k)
     par(systemic.par)
@@ -52,6 +52,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         axis(4, labels=FALSE)
         
         if (plot.residuals) {
+            if (residuals.auto.ylim)
+                ylim <- NULL
             suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED] + yshift, data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2+col, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2+col], ...))
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)

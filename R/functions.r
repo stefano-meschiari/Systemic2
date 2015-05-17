@@ -1279,7 +1279,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
     }
 }
 
-kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = 1, plot = FALSE, print = FALSE,
+kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, seed = sample(1:1e4, 1), plot = FALSE, print = FALSE,
                               overplot.window=TRUE, peaks=25) {
     ## Returns a periodogram of the supplied time series, where the false alarm probabilities are estimated using a bootstrap method. [7]
     #
@@ -1993,6 +1993,7 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
     .job <<- "MCMC"
 
     stopifnot(discard > 1)
+    stopifnot(temps == 1)
     
     ka <- list()
     if (class(k) == "kernel") {
@@ -2055,7 +2056,7 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
               DONE)
 		
     kl <- K_mcmc_mult(kbuf, chains, temps, skip.first, discard, opts, R.stop, NULL)
-    
+    print(is.nullptr(kl))
     if (is.nullptr(kl)) {
         ok_bridge_kernel_buf(kbuf, -chains, NULL);
         return(NULL)
