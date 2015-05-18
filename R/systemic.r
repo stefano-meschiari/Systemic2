@@ -1,3 +1,4 @@
+options(systemic.path=getwd())
 if (! exists('.systemic.loaded')) {
 
 

@@ -1099,10 +1099,13 @@ ksave <- function(k, file) {
 }
 
 kfind.peaks <- function(mat, column='power') {
+    if (any(is.na(mat[, column])))
+        return(NA)
+    
     subm <- mat[which(diff(sign(diff(mat[, column]))) == -2)+1, ]
     if (mat[nrow(mat), column] > mat[nrow(mat)-1, column])
         subm <- rbind(subm, mat[nrow(mat),])
-return(subm[order(subm[,column], decreasing=TRUE),])
+    return(subm[order(subm[,column], decreasing=TRUE),])
 }
 
 print.periodogram <- function(x, what='peaks') {
@@ -1242,12 +1245,12 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
     
     
     mat <- .gsl_matrix_to_R(per, free = TRUE, .keep.h = .keep.h)
-    
     colnames(mat) <- .periodogram
     class(mat) <- "periodogram"
     
     if (plot)
         plot(mat, overplot.window=overplot.window)
+
     peaks.m <- kfind.peaks(mat)
     if (nrow(peaks.m) > 0) {
         mfap <- mat[mat[,'fap'] < 1, , drop=FALSE]
@@ -2413,14 +2416,18 @@ print.kernel <- function(k, all.pars = FALSE) {
         print(kflags(k, what="els", type='human'))
     }
     cat("\n# Parameters\n")
+    if (k$nsets > 0)
+        subset <- c(1:k$nsets, RV.TREND, RV.TREND.QUADRATIC)
+    else
+        subset <- c(RV.TREND, RV.TREND.QUADRATIC)
     if (! all.pars)
-        print(kpars(k)[1:10])
+        print(kpars(k)[subset])
     else
         print(kpars(k))
 		
     cat("\n# Flags\n")
     if (! all.pars)
-        print(kflags(k, what='par', type='human')[1:10])	
+        print(kflags(k, what='par', type='human')[subset])	
     else
         print(kflags(k, what='par', type='human'))	
     if (! is.null(k$errors)) {

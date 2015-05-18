@@ -63,21 +63,29 @@ kminimize.genoud <- function(k, minimize.function='default', log.period=TRUE, lo
     return(invisible(v))
 }
 
+print.de <- function(x) {
+    cat(sprintf("%-30s: %e\n", "Final value", x$min.f))
+    cat(sprintf("%-30s: %.0f\n", "Total # of iterations", x$niters))
+    cat(sprintf("%-30s: %.0f\n", "Total # of evaluations", x$niters * x$population))
+    cat(sprintf("%-30s: %s\n", "Reason for stopping:", x$reason))                
+}
+
 kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
-                         max.iterations=1000, F = 'dither', CR = 0.9, plot=NULL,
-                         wait=10, check.function=NULL, accept.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL,
-                         min.f.spread=1e-3, ..., initial.pop=NULL, use.k=FALSE, type='rand', break.if=NULL) {
+                         max.iterations=1000, nochange = 500, target.val=NA, target.val.tol = 0.05, F = 'dither', CR = 0.9, plot=NULL, 
+                         check.function=NULL, accept.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, save.perf=NULL, plot.perf=FALSE,
+                          ..., initial.pop=NULL, use.k=FALSE, type='rand', break.if=NULL, silent=TRUE, log='y') {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
         if (length(plot) %% 2 != 0)
             stop("Use pairs of parameter indices for the plot parameter, e.g. kminimize.de(..., plot=c(1, 2, 5, 6))")
         par(mfrow=c(length(plot)/2, 1))
-    } 
+    }
     indices <- kminimized.indices(k)
     per.indices <- indices[1,] != -1 & indices[2,] == PER
     mass.indices <- indices[1,] != -1 & indices[2,] == MASS
     vinitial <- k['minimized']
+    reason <- sprintf("Reached max.iterations [%d]", max.iterations)
     
     Domain <- kminimize.domain(k, log.period=log.period, log.mass=log.mass)
     if (is.character(minimize.function) && minimize.function == 'default')
@@ -109,7 +117,8 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     }
 
     if (is.null(initial.pop)) {
-        cat("Initial population is NULL, trying to find suitable population...\n")
+        if (!silent)
+            cat("Initial population is NULL, trying to find suitable population...\n")
         
         x <- lapply(1:population, function(i, ...) {
             while (TRUE) {
@@ -128,10 +137,12 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
                 } else
                     break
             }
-            cat(sprintf("[%d/%d] ", i, population))
+            if (!silent)
+                cat(sprintf("[%d/%d] ", i, population))
             return(vals)
         })
-        cat("Done.\n")
+        if (!silent)
+            cat("Done.\n")
         initial.pop <- x
     } else {
         x <- initial.pop
@@ -155,17 +166,59 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
 
 
     x <- apply.function(1:length(x), function(i) c(x[[i]], f[i]))
+    initial.pop <- x
 
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
 
     dither <- F=='dither'
 
     iters <- c(0, min(f))
+    no.imp <- 0
+    min.f <- 1
+    perf <- c()
+    
     for (reps in 1:max.iterations) {
+        last.min.f <- min.f
         if (! any(is.nan(f))) 
             min.f <- which.min(f)
         else
             min.f <- 1
+
+        if (min(f) != last.min.f)
+            no.imp <- 0
+        else
+            no.imp <- no.imp + 1
+        last.min.f <- min(f)
+
+        ## if ((max(f) - min(f))/min(f) < 0.5) {
+        ##     cat(sprintf("Introducing new element [%e, %e]\n", min(f), max(f)))
+        ##     idx <- sample(1:population, 1)
+        ##     x[[idx]] <- initial.pop[[idx]]
+        ##     f[idx] <- x[[idx]][length(x)]
+        ##     print(x[[idx]])
+        ##     print(f[idx])
+        ## }
+
+        
+        ## if (reps %% 1000 == 0) {
+        ##     set.values(x[[min.f]], clone=FALSE)
+        ##     kminimize(k)
+        ##     i <- sample(1:population, 1)
+        ##     f[i] <- minimize.function(k, v)
+        ##     x[[i]] <- c(k['minimized'], f[i])
+        ## }
+
+        if (no.imp > nochange) {
+            reason <- sprintf("No improvement in the last %d of %d total iterations, assuming convergence.", nochange, nrow(iters))
+            break
+        }
+
+
+        if (!is.na(target.val) && ((abs((target.val - min(f))/target.val) < target.val.tol) || (target.val > min(f)))) {
+            reason <- sprintf("Min.f [%e] is within target.val.tol [%e] of target.val [%e].", min.f, target.val.tol, target.val)
+            break
+        }
+        
         if (dither)
             F <- runif(1, 0.5, 1)
         x <- apply.function(1:length(x), function(me, ...) {
@@ -200,19 +253,7 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             if (is.nan(fnew))
                 return(x[[me]])
             
-            ## if (me != min.f && !is.nan(f[me]) && fnew > f[me]) {
-            ##     spread <- 1/sd(f, na.rm=TRUE)
-            ##     r <- (exp(-(fnew-f[me])/spread) > runif(1))
-
-            ##     if (r) {
-            ##         print(c(spread, fnew-f[me]))
-            ##         stop()
-            ##     }
-            ## } else
-            ##     r <- FALSE
-            
-            r <- FALSE
-            if (is.nan(f[me]) || (fnew < f[me]) || r) {
+            if (is.nan(f[me]) || (fnew < f[me])) {
                 return(c(v, fnew))
             }
             else
@@ -227,14 +268,26 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             save(de.pars, file=save.trials)
         }
 
-        print(summary(f))
+        if (!silent)
+            print(summary(f))
+
         
+        if (!is.null(save.perf)) {
+            p <- cbind(sapply(x, function(v) v[save.perf]), f)
+            perf <- rbind(perf, p)
+            if (plot.perf) {
+                if (nrow(perf) == nrow(p))
+                    plot(perf[,1], perf[,2], log='y', ylim=c(1, max(perf[,2])))
+                else
+                    points(p[,1], p[,2])
+            }
+        }
         if (!is.null(plot)) {
             pm <- sapply(x, function(p) return(p[plot]))
             col <- rep('black', length(x))
             if (!all(is.nan(f)))
                 col[which.min(f)] <- 'red'
-            plot(pm[1,], pm[2,], col=col, pch=19)
+            plot(pm[1,], pm[2,], col=col, pch=19, log=log)
             if (length(plot) > 2)
                 for (i in seq(3, length(plot), 2))
                     plot(pm[i,], pm[i+1,], col=col, pch=19)
@@ -245,7 +298,8 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
                 a[per.indices] <- 10^a[per.indices]
             if (log.mass)
                 a[mass.indices] <- 10^a[mass.indices]
-            print(x[[which.min(f)]])
+            if (!silent)
+                print(c(reps, x[[which.min(f)]]))
             if (!is.null(save)) {
                 set.values(x[[which.min(f)]], clone=FALSE)
                 ksave(k, save)
@@ -253,12 +307,13 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         }
        
         else {
-            print("All solutions are NaN for now (either the integrator returned NaN for all trial solutions, or no trial solutions satisfy check.function)")
+            if (!silent)
+                print("All solutions are NaN for now (either the integrator returned NaN for all trial solutions, or no trial solutions satisfy check.function)")
             
         }
 
         if (!is.null(break.if)) {
-            set.values(x[[which.min(f)]], clone=FALSE)
+            set.values(x[[which.min(f)]], clone=FALSE)            
             kupdate(k)
             if (break.if(k)) {
                 break
@@ -266,5 +321,11 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         }
     }
 
-    return(list(best=x[[which.min(f)]], initial.pop=initial.pop, iters=iters, x))
+    set.values(x[[which.min(f)]], clone=FALSE)            
+    kupdate(k)
+
+    a <- list(best=x[[which.min(f)]], min.f=min(f), perf=perf, niters=nrow(iters), iters=iters, reason=reason, population=population)
+    class(a) <- 'de'
+    
+    return(a)
 }
