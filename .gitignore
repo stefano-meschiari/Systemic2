@@ -43,3 +43,5 @@ CVS
 #autosave
 /BUGS.org
 .tmp.h
+Rplots.pdf
+tacc/*
