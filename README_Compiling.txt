@@ -35,8 +35,8 @@ manager.
 *Dependencies*
 
 - Recent GNU Compiler Collection (GCC), 4.1 or better, including
-  gfortran. (Notice: clang will not work, for now) 
-- F2C (available here: http://www.netlib.org/f2c/) 
+  gfortran. (Note: clang will not work, for now) 
+- F2C (also available here, if not in your distribution package list: http://www.netlib.org/f2c/) 
 - GNU Scientific Library (GSL), 1.15 or better (current version: 1.16) 
 - R 2.15 or better (current version: 3.02) 
 - Sun Java 1.6 or better (current version: 1.8)

@@ -4,7 +4,7 @@
 # 2012, Stefano Meschiari (http://www.stefanom.org)
 #
 # Please modify these paths:
-CC = /usr/bin/gcc
+CC = /usr/local/bin/gcc
 FORTRAN = /usr/local/bin/gfortran
 
 # If you have installed GSL & company in non-standard places, add them here:
@@ -15,7 +15,7 @@ PACKAGE_DIR = ~/Downloads
 FFLAGS='-c -g -O3'
 
 OPTIMIZED_FLAGS = -g -O3 $(INCLUDES) $(LIBS) -Wall   -Wstrict-aliasing=2 -fopenmp  -std=c99
-DEBUG_FLAGS =  $(INCLUDES) $(LIBS) -Wall -Werror  -Wstrict-aliasing=2 -fopenmp -std=c99 -g3
+DEBUG_FLAGS =  $(INCLUDES) $(LIBS) -Wall   -Wstrict-aliasing=2 -fopenmp -std=c99 -g3
 
 SYSFLAGS=$(OPTIMIZED_FLAGS)
 #SYSFLAGS=$(DEBUG_FLAGS)
@@ -30,7 +30,7 @@ LUA=/opt/local/bin/lua
 
 
 macosx: src/*.c src/*.h $(ALLOBJECTS) utils/systemic_cli
-	gcc $(SYSFLAGS) $(CCFLAGS) -undefined dynamic_lookup -dynamiclib  -o libsystemic.dylib objects/*.o $(LIBNAMES)
+	$(CC) $(SYSFLAGS) $(CCFLAGS) -undefined dynamic_lookup -dynamiclib  -o libsystemic.dylib objects/*.o $(LIBNAMES)
 	cp libsystemic.dylib R
 
 javascript_tester: macosx
@@ -121,11 +121,14 @@ reqs: ./deps ./deps/lib/libswift.a  ./deps/lib/libf2c.a
 cleanreqs:
 	- rm -rf deps
 
-LUAJIT=/bin/luajit-2.0.0-beta9
+LUAJIT=luajit
 update_binding:
 	$(LUAJIT) lua/rparse.lua
 
-package: clean cleanreqs reqs macosx utils/systemic_cli 
+update_ui:
+	cd ../SystemicGui; ant jar
+
+package: clean cleanreqs reqs macosx utils/systemic_cli update_ui 
 	$(LUA) lua/libs.lua libsystemic.dylib
 	- rm -R $(PACKAGE_DIR)/mac
 	mkdir $(PACKAGE_DIR)/mac
@@ -138,13 +141,14 @@ package: clean cleanreqs reqs macosx utils/systemic_cli
 	cp -RH deps/lib/* $(PACKAGE_DIR)/mac/Systemic/deps/lib
 	cp -R ../SystemicGui/dist/SystemicGui.jar ../SystemicGui/dist/lib $(PACKAGE_DIR)/mac/Systemic/gui
 	tar -cvzf $(PACKAGE_DIR)/mac/Systemic/src.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' src objects Makefile.osx
-	echo >$(PACKAGE_DIR)/mac/Systemic/gui/java_cmd.txt "/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin/java -server -Xmx1g -jar "
+	echo >$(PACKAGE_DIR)/mac/Systemic/gui/java_cmd.txt "/usr/libexec/java_home -v 1.6 --exec java -server -Xmx1g -jar "
 	- cp packaging/formac/* $(PACKAGE_DIR)/mac
 	- cp packaging/formac/*.txt $(PACKAGE_DIR)/mac/Systemic
 	- cp -R deps/lib/* $(PACKAGE_DIR)/mac/Systemic/R/deps/lib
 	- cp -R private/Systemic.app $(PACKAGE_DIR)/mac/Systemic
 
 	cd $(PACKAGE_DIR); tar -cvzf systemic_mac_`cat mac/Systemic/R/version`.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' --exclude '*.a' mac
+	open -e R/version
 
 srcpackage: clean cleanreqs
 	cd ..; tar -cvzf $(PACKAGE_DIR)/src.tar.gz --exclude '*.svn' --exclude '*.git' --exclude '*.o' --exclude '*.dylib' --exclude '.R*' --exclude ".temp*" --exclude '*.so' --exclude 'private' --exclude 'tests' Systemic2 SystemicGui

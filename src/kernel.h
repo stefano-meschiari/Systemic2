@@ -8,6 +8,18 @@
 #include "systemic.h"
 #include "utils.h"
 
+#define MV_VALUE 0
+#define MV_MIN 1
+#define MV_MAX 2
+#define MV_STEP 3
+#define MV_PARINDEX 4
+#define MV_PARTYPE 5
+
+
+#define MV_TYPE_ELEMENT 0
+#define MV_TYPE_PAR 1
+
+
 #define K_GETSET_H(name, Name, type) \
         void K_set##Name(ok_kernel* k, type value);\
         type K_get##Name(ok_kernel* k);
@@ -85,6 +97,10 @@ int K_getNrPars(ok_kernel* k);
 
 void K_setElementType(ok_kernel* k, int type);
 int K_getElementType(ok_kernel* k);
+double K_getMinValue(ok_kernel* k);
+
+void K_setMinimizedValues(ok_kernel* k, double* values);
+void K_getMinimizedValues(ok_kernel* k, double* values);
 
 gsl_matrix* K_getXYZ(ok_kernel* k);
 
@@ -144,6 +160,7 @@ double K_getParStep(ok_kernel* k, int idx);
 void K_setParRange(ok_kernel* k, int idx, double min, double max);
 void K_getParRange(ok_kernel* k, int idx, double* min, double* max);
 
+void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column);
 
 // Load/Save
 bool K_save(ok_kernel* k, FILE* fid);
@@ -165,6 +182,11 @@ ok_system** K_integrateProgress(ok_kernel* k, gsl_vector* times, ok_system** bag
 ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k);
 #endif
 
+void K_setInfo(ok_kernel* k, const char* tag, const char* info);
+char* K_getInfoTag(ok_kernel* k, int n);
+char* K_getInfo(ok_kernel* k, const char* tag);
+void K_clearInfo(ok_kernel* k);
+bool K_infoExists(ok_kernel* k, const char * tag);
 
 // DEBUG
 void K_print(ok_kernel* k, FILE* f);
@@ -173,3 +195,4 @@ void K_setSeed(ok_kernel* k, unsigned long int seed);
 
 // BRIDGE UTILITIES
 void* ok_bridge_kernel_buf(void* buf, int n, ok_kernel* k);
+

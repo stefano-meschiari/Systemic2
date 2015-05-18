@@ -1,3 +1,6 @@
+R/Rplots.pdf
+R_packages_*
+
 # osx noise
 .DS_Store
 profile
@@ -43,5 +46,4 @@ CVS
 #autosave
 /BUGS.org
 .tmp.h
-Rplots.pdf
-tacc/*
+doc/doc_todo.md

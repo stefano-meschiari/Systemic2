@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1400
+K_SYSTEMIC_VERSION <- 2.1820
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -55,6 +55,7 @@ K_INC <- 5
 K_NODE <- 6
 K_RADIUS <- 7
 K_ORD <- 8
+K_PRECESSION_RATE <- 9
 K_SMA <- 13
 K_SEMIAMP <- 14
 K_TPERI <- 15
@@ -83,6 +84,7 @@ K_P_DATA_NOISE8 <- 17
 K_P_DATA_NOISE9 <- 18
 K_P_DATA_NOISE10 <- 19
 K_P_RV_TREND <- 20
+K_P_RV_TREND_QUADRATIC <- 21
 K_PARAMS_SIZE <- 100
 K_OPT_EPS <- 0
 K_OPT_ECC_LAST <- 1
@@ -121,7 +123,14 @@ K_DIFFEVOL <- 2
 K_SA <- 3
 K_INTEGRATION_SUCCESS <- 0
 K_INTEGRATORS_SIZE <- 4
-K_M_PI <- 3.14159265e+00
+K_MV_VALUE <- 0
+K_MV_MIN <- 1
+K_MV_MAX <- 2
+K_MV_STEP <- 3
+K_MV_PARINDEX <- 4
+K_MV_PARTYPE <- 5
+K_MV_TYPE_ELEMENT <- 0
+K_MV_TYPE_PAR <- 1
 K_OK_SUCCESS <- 0
 K_OK_NOCONV <- 1
 K_PS_TIME <- 0
@@ -270,9 +279,9 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 # double ok_mad(double* v, const int length, const double med)
 "ok_mad(*did)d",
 # char* ok_str_copy(const char* src)
-"ok_str_copy(Z)*<char>",
+"ok_str_copy(Z)*c",
 # char* ok_str_cat(const char* a1, const char* a2)
-"ok_str_cat(ZZ)*<char>",
+"ok_str_cat(ZZ)*c",
 # void ok_avevar(const double* v, int len, double* ave, double* var)
 "ok_avevar(*di*d*d)v",
 # gsl_matrix* ok_ptr_to_matrix(double* v, unsigned int rows, unsigned int cols)
@@ -303,6 +312,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_resample_curve(*<gsl_matrix>iidii*diB)*<gsl_matrix>",
 # bool ok_file_readable(char* fn)
 "ok_file_readable(*c)B",
+# bool ok_str_iequals(const char* s1, const char* s2)
+"ok_str_iequals(ZZ)B",
 # ok_rivector* ok_rivector_alloc(const int maxlength)
 "ok_rivector_alloc(i)*<ok_rivector>",
 # ok_kernel* K_alloc()
@@ -371,6 +382,12 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_setElementType(pi)v",
 # int K_getElementType(ok_kernel* k)
 "K_getElementType(p)i",
+# double K_getMinValue(ok_kernel* k)
+"K_getMinValue(p)d",
+# void K_setMinimizedValues(ok_kernel* k, double* values)
+"K_setMinimizedValues(p*d)v",
+# void K_getMinimizedValues(ok_kernel* k, double* values)
+"K_getMinimizedValues(p*d)v",
 # gsl_matrix* K_getXYZ(ok_kernel* k)
 "K_getXYZ(p)*<gsl_matrix>",
 # void K_setMstar(ok_kernel* k, double value)
@@ -485,6 +502,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_setParRange(pidd)v",
 # void K_getParRange(ok_kernel* k, int idx, double* min, double* max)
 "K_getParRange(pi*d*d)v",
+# void K_getMinimizedIndex(ok_kernel* k, int index, int* row, int* column)
+"K_getMinimizedIndex(pi*i*i)v",
 # bool K_save(ok_kernel* k, FILE* fid)
 "K_save(p*<FILE>)B",
 # ok_kernel* K_load(FILE* fid, int skip)
@@ -505,6 +524,16 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_integrateStellarVelocity(pddIp*i)*<gsl_matrix>",
 # ok_system** K_integrateProgress(ok_kernel* k, gsl_vector* times, ok_system** bag, int* error)
 "K_integrateProgress(p*<gsl_vector>p*i)p",
+# void K_setInfo(ok_kernel* k, const char* tag, const char* info)
+"K_setInfo(pZZ)v",
+# int K_getInfo(ok_kernel* k, const char* tag, char* out)
+"K_getInfo(pZ*c)i",
+# char* K_getInfoTag(ok_kernel* k, int n)
+"K_getInfoTag(pi)*c",
+# char* K_getInfo(ok_kernel* k, const char* tag)
+"K_getInfo(pZ)*c",
+# bool K_infoExists(ok_kernel* k, const char * tag)
+"K_infoExists(pZ)B",
 # void K_print(ok_kernel* k, FILE* f)
 "K_print(p*<FILE>)v",
 # void K_save_old(ok_kernel* k, const char* stem)
@@ -549,8 +578,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_to_cm(*<ok_system>*<gsl_matrix>)v",
 # void ok_to_star(ok_system* system, gsl_matrix* xyz)
 "ok_to_star(*<ok_system>*<gsl_matrix>)v",
-# int ok_find_closest_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error)
-"ok_find_closest_transit(*<ok_system>i*<ok_integrator_options>idi*d*i)i",
+# int ok_find_closest_time_to_transit(ok_system* sys, const int pidx, ok_integrator_options* options, const int intMethod, const double eps, const int type, double* timeout, int* error)
+"ok_find_closest_time_to_transit(*<ok_system>i*<ok_integrator_options>idi*d*i)i",
 # double ok_pcalc(const double a, const double Mcenter, const double Mp)
 "ok_pcalc(ddd)d",
 # double ok_acalc(const double P, const double Mcenter, const double Mp)
@@ -651,30 +680,9 @@ SET <- K_T_SET + 1
 TDS_PLANET <- K_T_TDS_PLANET + 1
 TDS_FLAG <- K_T_TDS_FLAG + 1
 
-DATA1 <- K_P_DATA1 + 1
-DATA2 <- K_P_DATA2 + 1
-DATA3 <- K_P_DATA3 + 1
-DATA4 <- K_P_DATA4 + 1
-DATA5 <- K_P_DATA5 + 1
-DATA6 <- K_P_DATA6 + 1
-DATA7 <- K_P_DATA7 + 1
-DATA8 <- K_P_DATA8 + 1
-DATA9 <- K_P_DATA9 + 1
-DATA10 <- K_P_DATA10 + 1
-
-DATA.NOISE1 <- K_P_DATA_NOISE1 + 1
-DATA.NOISE2 <- K_P_DATA_NOISE2 + 1
-DATA.NOISE3 <- K_P_DATA_NOISE3 + 1
-DATA.NOISE4 <- K_P_DATA_NOISE4 + 1
-DATA.NOISE5 <- K_P_DATA_NOISE5 + 1
-DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
-DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
-DATA.NOISE7 <- K_P_DATA_NOISE7 + 1
-DATA.NOISE8 <- K_P_DATA_NOISE8 + 1
-DATA.NOISE9 <- K_P_DATA_NOISE9 + 1
-DATA.NOISE10 <- K_P_DATA_NOISE10 + 1
 
 RV.TREND <- K_P_RV_TREND + 1
+RV.TREND.QUADRATIC <- K_P_RV_TREND_QUADRATIC + 1
 
 RV <- K_T_RV 
 TIMING <- K_T_TIMING
@@ -691,6 +699,7 @@ INC <- K_INC + 1
 NODE <- K_NODE + 1
 RADIUS <- K_RADIUS + 1
 ORD <- K_ORD + 1
+PRECESSION_RATE <- K_PRECESSION_RATE + 1
 SMA <- K_SMA + 1
 SEMIAMP <- K_SEMIAMP + 1
 TPERI <- K_TPERI + 1
@@ -744,16 +753,42 @@ YEAR <- K_YEAR
 GGRAV <- K_GGRAV
 K2 <- ((GGRAV * MSUN * DAY * DAY) / (AU*AU*AU))
 
+DATA1 <- K_P_DATA1 + 1
+DATA2 <- K_P_DATA2 + 1
+DATA3 <- K_P_DATA3 + 1
+DATA4 <- K_P_DATA4 + 1
+DATA5 <- K_P_DATA5 + 1
+DATA6 <- K_P_DATA6 + 1
+DATA7 <- K_P_DATA7 + 1
+DATA8 <- K_P_DATA8 + 1
+DATA9 <- K_P_DATA9 + 1
+DATA10 <- K_P_DATA10 + 1
+
+DATA.NOISE1 <- K_P_DATA_NOISE1 + 1
+DATA.NOISE2 <- K_P_DATA_NOISE2 + 1
+DATA.NOISE3 <- K_P_DATA_NOISE3 + 1
+DATA.NOISE4 <- K_P_DATA_NOISE4 + 1
+DATA.NOISE5 <- K_P_DATA_NOISE5 + 1
+DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
+DATA.NOISE6 <- K_P_DATA_NOISE6 + 1
+DATA.NOISE7 <- K_P_DATA_NOISE7 + 1
+DATA.NOISE8 <- K_P_DATA_NOISE8 + 1
+DATA.NOISE9 <- K_P_DATA_NOISE9 + 1
+DATA.NOISE10 <- K_P_DATA_NOISE10 + 1
+
+
+
 SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 
 # Labels
 
-.elements <- c("period", "mass", "ma", "ecc", "lop", "inc", "node", "radius", "ord", "u1", "u2", "u3", "u4")
+.elements <- c("period", "mass", "ma", "ecc", "lop", "inc", "node", "radius", "ord", "precession_rate", "u2", "u3", "u4")
 .allelements <- c(.elements, "a", "k", "tperi", "trueanomaly", "meanlongitude", "j1", "j2")
 .params <- c(sprintf("par%d", 1:PARAMS_SIZE))
 .params[1:DATA_SETS_SIZE] <- sprintf("data%d", 1:DATA_SETS_SIZE)
 .params[(DATA_SETS_SIZE+1):(2*DATA_SETS_SIZE)] <- sprintf("data.noise%d", 1:DATA_SETS_SIZE)
 .params[RV.TREND] <- "rv.trend"
+.params[RV.TREND.QUADRATIC] <- "rv.trend.quadratic"
 
 .data <- sprintf("V%d", 1:DATA_SIZE)
 .data[TIME] <- 'time'
@@ -766,7 +801,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 
 .periodogram <- c("period", "power", "fap", "ls_power", "tau", "window")
 .elements.labels <- c(period="Period", mass="Mass", ma="Mean anomaly", ecc="Eccentricity", lop="Longitude of periastron", 
-	inc="Inclination", node="Node", radius="Radius", ord="Label", u1="u1", u2="u2", u3="u3", u4="u4",
+	inc="Inclination", node="Node", radius="Radius", ord="Label", precession_rate="precession_rate", u2="u2", u3="u3", u4="u4",
 	a="Semi-major axis", k="Semiamplitude", tperi="Time of periastron passage", trueanomaly="True anomaly", 
 	meanlongitude="Mean longitude", j1="j1", j2="j2")
 

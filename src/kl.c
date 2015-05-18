@@ -80,6 +80,7 @@ void KL_free(ok_list* kl) {
         K_free(kl->prototype);
     if (kl->kernels != NULL)
         free(kl->kernels);
+    
     free(kl);
 }
 

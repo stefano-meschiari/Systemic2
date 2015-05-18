@@ -177,6 +177,7 @@ double ok_mad(double* v, const int length, const double med);
 
 char* ok_str_copy(const char* src);
 char* ok_str_cat(const char* a1, const char* a2);
+char* ok_str_trim(char* str);
 
 void ok_avevar(const double* v, int len, double* ave, double* var);
 
@@ -202,6 +203,7 @@ gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol,
     const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x);
 
 bool ok_file_readable(char* fn);
+bool ok_str_iequals(const char* s1, const char* s2);
 
 typedef struct {
     int length;

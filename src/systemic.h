@@ -22,7 +22,9 @@
 #define INVALID_NUMBER (NAN)
 #define IS_INVALID(x) (isnan(x))
 
-#define SYSTEMIC_VERSION 2.1300
+#define IS_NOT_FINITE(x) (isnan(x) || isinf(x))
+
+#define SYSTEMIC_VERSION 2.1820
 
 #define MAX_LINE 8192
 
@@ -106,6 +108,7 @@
 #define NODE 6
 #define RADIUS 7
 #define ORD 8
+#define PRECESSION_RATE 9
 // Extra elements that are calculated on-the-fly
 #define SMA 13
 #define SEMIAMP 14
@@ -139,6 +142,8 @@
 #define P_DATA_NOISE10 19
 
 #define P_RV_TREND 20
+#define P_RV_TREND_QUADRATIC 21
+
 #define PARAMS_SIZE 100
 
 extern char * ok_orb_labels[ELEMENTS_SIZE];
@@ -218,7 +223,6 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER (1 << 13)
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR (1 << 14)
 #define INTEGRATION_FAILURE_STOPPED (1 << 15)
-#define INTEGRATION_FAILURE_SWIFT (1 << 16)
 typedef struct ok_system {
     /// The number of planets
     int nplanets;
@@ -288,6 +292,12 @@ typedef void(*ok_model_function)(ok_kernel*, double** data, int ndata);
 typedef ok_system**(*ok_integrator)(ok_system*, const gsl_vector*, ok_integrator_options*, ok_system** bag);
 typedef int(*ok_minimizer)(ok_kernel*, int, double[]);
 
+typedef struct ok_info ok_info;
+struct ok_info {
+    char* tag;
+    char* info;
+    ok_info* next;
+};
 
 struct ok_kernel {
     // initial conditions
@@ -360,14 +370,11 @@ struct ok_kernel {
     // progress callback
     ok_progress progress;
     
-    // dataset names
-    char datanames[DATA_SETS_SIZE][MAX_LINE];
-    
     // custom model function
     ok_model_function model_function;
     int last_error;
     
-    
+    ok_info* info;
 };
 
 typedef struct ok_list_item {
@@ -388,7 +395,7 @@ typedef struct ok_list {
     int type;
 } ok_list;
 
-typedef struct ok_kernel_minimizer_pars {
+typedef struct ok_minimizer_pars {
     double** pars;
     double* steps;
     double* min;

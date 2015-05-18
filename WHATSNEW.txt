@@ -1,3 +1,43 @@
+2.172
+=====
+- NEW: Systemic checks whether new updates are available at startup.
+- FIXED: Periodogram was reporting unnormalized periodogram. Fixed.
+- FIXED: kselect(k, n, 'all') -- used to select all parameters for minimization -- will only select parameters that are flagged ACTIVE. If a parameter is not flagged ACTIVE (e.g. if the user decided to deactivate ECC and LOP to derive a circular fit), those parameters will not be selected for minimization.
+
+
+2.1700 [August 12th, 2014]
+==========================
+- NEW: ktable function for showing the fit values as a table, suitable for exporting to TeX or HTML
+- NEW: Bayesian Information Criterion menu item
+- NEW: Quadratic trend term
+- FIXED: bug where the semi-amplitude would be calculated incorrectly for massive bodies. (credit: Trifon Trifonov)
+- FIXED: bug in simplex that would crash the application if the minimizer encountered a NaN value.
+- FIXED: bug in the GUI that would crash the application in case of excessive text output.
+- FIXED: Fixed naming of columns in the matrix returned by kdata().
+- FIXED: bug where the radial velocity curve or periodogram would look excessively jagged.
+- FIXED: bug in kperiodogram.boot where the function could crash.
+- FIXED: bug in kperiodogram.boot where the function would only calculate the 'full' periodogram (instead of the periodogram of residuals)
+- FIXED: bug in the GUI periodogram routine, where you could receive an error for certain power spectra.
+- FIXED: Kernel plot using plot() respects the chosen xlim.
+- FIXED: MCMC would crash in certain situations when set up from the menu.
+- FIXED: 1LO-crossval returns the signed sum of logs, instead of the absolute value.
+- FIXED: clarified the installation instructions (Readme.txt) for Linux. (credit: Franz Feldtkeller)
+- FIXED: you can now choose a path for R that is not /usr/bin/R by selecting Help -> Set path to R...
+- FIXED: F-test menu item uses the current kernel instead of the kernel named "k".
+- Various bug-fixes in the plotting routines.
+
+Bugs reported at https://github.com/stefano-meschiari/Systemic2/issues/2 are still open, will be fixed in 2.18.
+
+2.1600 [March 6th, 2014]
+========================
+- New default color scheme. Color schemes can be switched (under the Options menu)
+- New menu items in periodogram plots
+- Lifted limitation on the number of planets. Performance in the user interface decreases noticeably past ~15 planets (because of data being shuttled back and forth between the core and the GUI). This will be addressed in a future update.
+
+2.1500
+======
+- FIXED: bug for users that had locale settings using "," (or another character) as their decimal separator. The dot character is now used consistently throughout the interface. (credit for reporting: Brice-Olivier Demory)
+
 2.1400
 ======
 - Added a feature for smoother/faster plotting in GUI

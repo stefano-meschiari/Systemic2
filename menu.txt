@@ -18,21 +18,22 @@
 # - if command does not start with a special character, then the corresponding method in the Frame class is called. If an option is specified, it will be passed to that method.
 
 File
-New session|meta shift N|newSession
-Open session...|meta shift O|openSession
-Save session...|meta shift S|saveSession
+New session|meta ctrl N|newSession
+Open session...|meta ctrl O|openSession
+Save session...|meta ctrl S|saveSession
 Clone session||cloneSession
 -
 New kernel|meta N|!@ins@ <- knew()
 Open kernel...|meta O|openKernel
 Save kernel...|meta S|saveKernel
+Save kernel as...|meta shift S|saveAsKernel
 Rename kernel...||renameKernel
 Select kernel...|meta K|!`@ins@ @@Type `kernelname <ENTER> to quickly switch between kernels. "." represents the currently selected kernel.
 Clone kernel|meta shift C|!@ins@ <- kclone(@kernel@)
 -
 Open old Systemic fit|meta alt shift O|!@kernel@ <- kload.old("@file@")
 -
-Run script||source("@ins@")
+Run script||!source("@ins@")
 -
 Close session|Meta W|closeSession
 
@@ -65,6 +66,7 @@ Deselect all parameters|meta shift G|$kdeselect(@kernel@, 'all', 'all')
 -
 Set ranges...||!krange(@kernel@, 1, 'period') <- c(min@ins@, max)
 Set steps...||!kstep(@kernel@, 1, 'period') <- @ins@
+Show ranges||$kranges(@kernel@)
 Show steps||$ksteps(@kernel@)
 -
 Execute shell command||!! @ins@
@@ -77,6 +79,7 @@ Tasks
 Minimize|meta M|minimize
 Minimize 1-D|meta shift M|!kminimize1d(@kernel@, @ins@, 'period')
 Minimize, Differential Evolution||!kminimize(@kernel@, iters=5000, algo=DIFFEVOL, de.CR=0.2, de.NPfac=10, de.Fmin=0.5, de.Fmax=1.0, de.use.steps=TRUE)
+Minimize, Differential Evolution, Random IC||!kminimize(@kernel@, iters=5000, algo=DIFFEVOL, de.CR=0.2, de.NPfac=10, de.Fmin=0.5, de.Fmax=1.0, de.use.steps=FALSE)
 Minimize, Simulated Annealing||!kminimize(@kernel@, iters=5000, algo=SA, sa.T0=0.5*@kernel@$chi2, sa.alpha=2, sa.chains=4)
 Minimize using...||[[
 	cat("?Set the min.func property to change the objective function of the minimizer. Can be a string (one of: chi2, chi2_nr, rms, jitter, chi2rvs, chi2tts, loglik), or a custom function.\n\n")
@@ -87,13 +90,13 @@ Minimize using...||[[
 -
 Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = 5000@ins@, print=TRUE)
 Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
-MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=k$nrpars*10, print=TRUE)
+MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=@kernel@$nrpars*10, print=TRUE)
 -
-Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE); print(i_@var@)
+Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE, print=TRUE)
 -
 F-test compare kernels|meta F|!var.test(kdata(@kernel@, 'res')[, VAL], kdata(@ins@, 'res')[, VAL])@@Type the name of the second kernel to compare to 
 F-test, all planets||[[
-	stopifnot(k$nplanets >= 1)
+	stopifnot(.kernel$nplanets >= 1)
 	.k <- kclone(.kernel) 
 	.k$auto <- F
 	invisible(kcalculate(.k))
@@ -107,17 +110,53 @@ F-test, all planets||[[
 			cat("# ", "Chi2 (", .k$nplanets, " planets) = ", .k$chi2, ", RMS = ", .k$rms, "\n")
 			print(var.test(a[,2], b[,2])) 
 	}
+  .k <- NULL
 ]]
 Cross-validation, single fit||$kcrossval.l1o(@kernel@)
 Cross-validation, all planets||$kcrossval.l1o(@kernel@, type="auto")
+BIC||$@kernel@$bic
+BIC, all planets||[[
+  stopifnot(.kernel$nplanets >= 1)
+	.k <- kclone(.kernel) 
+	.k$auto <- F
+	invisible(kcalculate(.k))
+  .m <- matrix(nrow=.k$nplanets+1, ncol=4)
+  rownames(.m) <- sprintf("%d planets", .k$nplanets:0)
+  colnames(.m) <- c("BIC", "dBIC", "npars", "chi2")
+  bic <- .k$bic
+	for (.i in 1:(.k$nplanets+1)) { 
+    bic2 <- .k$bic
+    .m[.i, 'BIC'] <- bic2
+    .m[.i, 'dBIC'] <- bic2-bic
+    .m[.i, 'npars'] <- .k$nrpars
+    .m[.i, 'chi2'] <- .k$chi2
+    bic2 <- bic
+    if (.k$nplanets == 0)
+       break
+	  kremove.planet(.k, .k$nplanets)
+	  invisible(kminimize(.k))
+    
+	}
+
+  print(.m)
+  .k <- NULL
+]]
 -
 Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
 Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
-Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
-Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 5000,  samples = 80000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
 -
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
+
+Fit
+Show fit parameters||$ktable(@kernel@)
+Plot fit parameters||$plot(ktable(@kernel@))
+-
+Save fit table as LaTeX||$print(xtable(ktable(@kernel@)), type='latex', file='myfile.tex@ins@')
+Save fit table as HTML||$print(xtable(ktable(@kernel@)), type='html', file='myfile.html@ins@')
+
 
 Plots
 New plot window|meta alt P|$dev.new()
@@ -148,7 +187,9 @@ Add uncertainty in quadrature...||!d <- kdata(@kernel@); d[, ERR] <- sqrt(d[, ER
 Inflate uncertainty...||!d <- kdata(@kernel@); d[, ERR] <- d[, ERR] * @ins@; kdata(@kernel@) <- d
 Select temporal subset...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[d[,TIME] > 240000 & d[,TIME] < @ins@,]
 Remove ouliers by normalized residual value...||!d <- kdata(@kernel@); kdata(@kernel@) <- d[abs(d[,SVAL]-d[,PRED])/d[,ERR] < 5@ins@, ]
-Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel) <- d
+Add random Gaussian noise...||!d <- kdata(@kernel@); d[, VAL] <- d[, VAL] + rnorm(nrow(d), sd=@ins@); kdata(@kernel@) <- d
+Remove median from data||$d <- kdata(@kernel@); d[,VAL] <- d[,VAL] - median(d[,VAL]); kdata(@kernel@) <- d
+Shift to JD = 2450000||$d <- kdata(@kernel@); d[,TIME] <- d[,TIME] - 2450000; kdata(@kernel@) <- d; @kernel@$epoch <- @kernel@$epoch - 2450000
 Other data manipulation examples...||$edit.script("doc/data_examples.R")
 -
 Get RV curve||!rv <- krvcurve(@kernel@)
@@ -165,6 +206,7 @@ Show working directory||$getwd()
 -
 Help on function||!?function@ins@
 Show function arguments||!args(@ins@)
+What caused the last error?||$traceback()
 
 Editor
 New...|meta alt N|%edit.new
@@ -188,8 +230,13 @@ Set periodogram samples...||!options(systemic.psamples = @ins@)
 Show integration accuracy parameters||$sprintf("%e %e %e", @kernel@$abs.acc, @kernel@$rel.acc, @kernel@$dt)
 Set integration accuracy (RK/BS)||!@kernel@$abs.acc <- @kernel@$rel.acc <- @ins@
 Set integration dt (SWIFT)||!@kernel@$dt <- @ins@
+-
+Theme: tomorrow||!systemic.plot.theme('tomorrow')
+Theme: R default||!systemic.plot.theme('r')
 - 
 Turn off auto-save||!options(systemic.autosave=FALSE)
+-
+Save options||@cat('?You can save these options in the file R/startup.r\n')
 
 Help
 Quickstart||$quickstart()
@@ -204,4 +251,6 @@ Acknowledgments||@acknowledgments()
 Systemic2 homepage||@browseURL('http://www.stefanom.org/?systemic')
 Systemic2 on GitHub||@browseURL('https://github.com/stefano-meschiari/Systemic2')
 -
-Report a bug||>BUGS.txt
+Set path to R...||setRPath
+Report a bug||>REPORT_BUGS.txt
+Known bugs||@edit.script("BUGS.txt")

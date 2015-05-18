@@ -180,6 +180,7 @@ double K_crossval_l1o(ok_kernel* k, int minalgo, int maxiter, double params[]) {
         lh[p] += log10(diff/s);
         ks[p]->compiled[i][T_ERR] = err;
         
+        
         if (prog != NULL && omp_get_thread_num() == 0) {
             int ret = prog(i * np, nd, ks[p],
                     "K_crossVal_l1o");
@@ -195,7 +196,7 @@ double K_crossval_l1o(ok_kernel* k, int minalgo, int maxiter, double params[]) {
         K_free(ks[p]);
     }
     if (invalid)
-        return -1;
+        return INVALID_NUMBER;
     
-    return fabs(lh2);
+    return lh2;
 }

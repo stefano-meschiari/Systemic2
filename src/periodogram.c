@@ -179,17 +179,19 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
             denb += s * s * sig;
             chi2_h += x*x * sig;
             
-            numa_w += c * sig;
-            numb_w += s * sig;
-            dena_w += c*c * sig;
-            denb_w += s*s * sig;
+            numa_w += c;
+            numb_w += s;
+            dena_w += c*c;
+            denb_w += s*s;
             
-            chi2_h_w += sig;
+            chi2_h_w += 1;
         }
         
         
         double z = 0.5 * (numa*numa/dena + numb*numb/denb);
         double z_1 = z * ndata / chi2_h;
+        
+        double w_1 = 0.5 * (numa_w * numa_w / dena_w + numb_w * numb_w / denb_w) * ndata / chi2_h_w;
         
         double fap_single = pow(1.-2.*z_1/(double)ndata, 0.5*(double)(ndata - 3.));
         double tau_z = W * fap_single * sqrt(z_1);
@@ -199,7 +201,7 @@ gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples
         MSET(ret, samples-i-1, PS_Z_LS, z);
         MSET(ret, samples-i-1, PS_FAP, MIN(fap_single + tau_z, 1.));
         MSET(ret, samples-i-1, PS_TAU, tau);
-        MSET(ret, samples-i-1, PS_WIN, 0.5 * (numa_w * numa_w / dena_w + numb_w * numb_w / denb_w) * ndata / chi2_h_w);
+        MSET(ret, samples-i-1, PS_WIN, w_1);
         
         z1_max = MAX(z1_max, z_1);
     }
@@ -371,10 +373,11 @@ gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trial
         w[i] = (ok_periodogram_workspace*) malloc(sizeof(ok_periodogram_workspace));
         w[i]->per = NULL;
         w[i]->buf = NULL;
+        w[i]->calc_z_fap = false;
         mock[i] = ok_matrix_copy(data);
         if (i > 0) {
             rng[i] = gsl_rng_alloc(gsl_rng_default);
-            gsl_rng_set(rng[i], gsl_rng_get(rng[0]));
+            gsl_rng_set(rng[i], seed + i);
         }
     }
     
