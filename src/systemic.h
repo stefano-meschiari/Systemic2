@@ -24,7 +24,7 @@
 
 #define IS_NOT_FINITE(x) (isnan(x) || isinf(x))
 
-#define SYSTEMIC_VERSION 2.1820
+#define SYSTEMIC_VERSION 2.1900
 
 #define MAX_LINE 8192
 
@@ -162,6 +162,8 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define OPT_MCMC_VERBOSE_DIAGS 7
 #define OPT_MCMC_ACCRATIO 8
 #define OPT_MCMC_NMIN 9
+#define OPT_MCMC_SAVE_EVERY 40
+#define OPT_VERBOSE_DIAGS 7
 
 #define OPT_LM_MINCHI_PAR 10
 #define OPT_LM_HIGH_DF 11
@@ -223,6 +225,7 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER (1 << 13)
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR (1 << 14)
 #define INTEGRATION_FAILURE_STOPPED (1 << 15)
+#define INTEGRATION_FAILURE_SWIFT (1 << 16)
 typedef struct ok_system {
     /// The number of planets
     int nplanets;

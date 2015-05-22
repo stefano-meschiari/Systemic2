@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1820
+K_SYSTEMIC_VERSION <- 2.1900
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -98,6 +98,8 @@ K_OPT_MCMC_TEMPFAC <- 6
 K_OPT_MCMC_VERBOSE_DIAGS <- 7
 K_OPT_MCMC_ACCRATIO <- 8
 K_OPT_MCMC_NMIN <- 9
+K_OPT_MCMC_SAVE_EVERY <- 40
+K_OPT_VERBOSE_DIAGS <- 7
 K_OPT_LM_MINCHI_PAR <- 10
 K_OPT_LM_HIGH_DF <- 11
 K_OPT_LM_MAX_ITER_AT_SCALE <- 12
@@ -282,6 +284,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_str_copy(Z)*c",
 # char* ok_str_cat(const char* a1, const char* a2)
 "ok_str_cat(ZZ)*c",
+# char* ok_str_trim(char* str)
+"ok_str_trim(*c)*c",
 # void ok_avevar(const double* v, int len, double* ave, double* var)
 "ok_avevar(*di*d*d)v",
 # gsl_matrix* ok_ptr_to_matrix(double* v, unsigned int rows, unsigned int cols)
@@ -526,12 +530,12 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_integrateProgress(p*<gsl_vector>p*i)p",
 # void K_setInfo(ok_kernel* k, const char* tag, const char* info)
 "K_setInfo(pZZ)v",
-# int K_getInfo(ok_kernel* k, const char* tag, char* out)
-"K_getInfo(pZ*c)i",
 # char* K_getInfoTag(ok_kernel* k, int n)
 "K_getInfoTag(pi)*c",
 # char* K_getInfo(ok_kernel* k, const char* tag)
 "K_getInfo(pZ)*c",
+# void K_clearInfo(ok_kernel* k)
+"K_clearInfo(p)v",
 # bool K_infoExists(ok_kernel* k, const char * tag)
 "K_infoExists(pZ)B",
 # void K_print(ok_kernel* k, FILE* f)

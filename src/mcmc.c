@@ -143,6 +143,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
     double R_single = -1;
     bool return_all = true;
     double acc_ratio = 0.44;
+    int save_every = -1;
     
     bool skip_steps = false;
     
@@ -167,6 +168,8 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             acc_ratio = params[optIdx+1];
         } else if (params[optIdx] == OPT_MCMC_SKIP_STEPS) {
             skip_steps = ((int) params[optIdx+1]) != 0;
+        } else if (params[optIdx] == OPT_MCMC_SAVE_EVERY) {
+            save_every = (int) params[optIdx + 1];
         }
         optIdx += 2;
     }
@@ -221,6 +224,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
     bool conv_single = false;
     
     int iter = 0;
+    int save = 0;
     
     int npars = 0;
     
@@ -270,6 +274,9 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
         Rmax_90 = 0.;
         Rsingle_max = 0.;
         bool stopped = false;
+        
+        
+        
         #pragma omp parallel for 
         for (int n = 0; n < nchains * ntemps; n++) {
             
@@ -438,6 +445,25 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             
             if (progret == PROGRESS_STOP)
                 conv = true;
+        }
+        
+        save++;
+        
+        if (save_every > 0 && save == save_every) {
+            save = 0;
+            FILE* fid = fopen("mcmc_stats.txt", "w");
+            fprintf(fid, "size = %d\n", kls[0][0]->size);
+            fprintf(fid, "R = %e\n", Rmax);
+            fprintf(fid, "R_90 = %e\n", Rmax_90);
+            fclose(fid);
+             
+            for (int i = 0; i < nchains; i++) {
+                char fn[80];
+                sprintf(fn, "mcmc_%d.txt", i);
+                fid = fopen(fn, "w");
+                KL_save(kls[i][0], fid);
+                fclose(fid);
+            }
         }
         
         if (verbose > 1) {

@@ -50,6 +50,7 @@ ok_mad_angle
 ok_mad
 ok_str_copy
 ok_str_cat
+ok_str_trim
 ok_avevar
 ok_ptr_to_matrix
 ok_ptr_to_vector
@@ -172,9 +173,9 @@ K_integrateRange
 K_integrateStellarVelocity
 K_integrateProgress
 K_setInfo
-K_getInfo
 K_getInfoTag
 K_getInfo
+K_clearInfo
 K_infoExists
 K_print
 K_save_old

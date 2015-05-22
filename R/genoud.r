@@ -70,10 +70,10 @@ print.de <- function(x) {
     cat(sprintf("%-30s: %s\n", "Reason for stopping:", x$reason))                
 }
 
-kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
+kminimize.de <- function(k, minimize.function='default', domain=NULL, log.period=TRUE, log.mass=TRUE, population=10*k$nrpars,
                          max.iterations=1000, nochange = 500, target.val=NA, target.val.tol = 0.05, F = 'dither', CR = 0.9, plot=NULL, 
                          check.function=NULL, accept.function=NULL, mc.cores=getOption("mc.cores", 1), save=NULL, save.trials=NULL, save.perf=NULL, plot.perf=FALSE,
-                          ..., initial.pop=NULL, use.k=FALSE, type='rand', break.if=NULL, silent=TRUE, log='y') {
+                          ..., initial.pop=NULL, use.k=FALSE, type='rand', break.if=NULL, silent=TRUE, log='y', function.best=NULL) {
     .check_kernel(k)
     stopifnot(k$nplanets > 0)
     if (!is.null(plot)) {
@@ -86,8 +86,12 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
     mass.indices <- indices[1,] != -1 & indices[2,] == MASS
     vinitial <- k['minimized']
     reason <- sprintf("Reached max.iterations [%d]", max.iterations)
+
+    if (is.null(domain))
+        Domain <- kminimize.domain(k, log.period=log.period, log.mass=log.mass)
+    else
+        Domain <- domain
     
-    Domain <- kminimize.domain(k, log.period=log.period, log.mass=log.mass)
     if (is.character(minimize.function) && minimize.function == 'default')
         minimize.function <- function(k, ...) {
             return(K_getMinValue(k$h))
@@ -137,8 +141,6 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
                 } else
                     break
             }
-            if (!silent)
-                cat(sprintf("[%d/%d] ", i, population))
             return(vals)
         })
         if (!silent)
@@ -163,9 +165,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
         apply.function <- mclapply
 
     f <- unlist(apply.function(x, set.values, mc.cores=mc.cores))
-
-
     x <- apply.function(1:length(x), function(i) c(x[[i]], f[i]))
+    if (!silent)
+        cat("Starting...\n")
     initial.pop <- x
 
     on.exit({ set.values(x[[which.min(f)]], clone=FALSE); kupdate(k, calculate=TRUE) })
@@ -183,11 +185,12 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             min.f <- which.min(f)
         else
             min.f <- 1
-
-        if (min(f) != last.min.f)
+        
+        if (f[min.f] != last.min.f)
             no.imp <- 0
         else
             no.imp <- no.imp + 1
+        
         last.min.f <- min(f)
 
         ## if ((max(f) - min(f))/min(f) < 0.5) {
@@ -246,8 +249,8 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
                     return(x[[me]][i])
             })
 
-            if (!in.domain(v, Domain))
-                return(x[[me]])
+            #if (!in.domain(v, Domain))
+            #    return(x[[me]])
             
             fnew <- set.values(v, check.function=check.function)
             if (is.nan(fnew))
@@ -268,9 +271,9 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             save(de.pars, file=save.trials)
         }
 
-        if (!silent)
+        if (!silent) {
             print(summary(f))
-
+        }
         
         if (!is.null(save.perf)) {
             p <- cbind(sapply(x, function(v) v[save.perf]), f)
@@ -318,6 +321,11 @@ kminimize.de <- function(k, minimize.function='default', log.period=TRUE, log.ma
             if (break.if(k)) {
                 break
             }
+        }
+        if (!is.null(function.best)) {
+            set.values(x[[which.min(f)]], clone=FALSE)            
+            kupdate(k)
+            function.best(k)
         }
     }
 

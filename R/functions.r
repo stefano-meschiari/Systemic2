@@ -343,6 +343,10 @@ kels <- function(k, keep.first = FALSE) {
         if (idx1 == "minimized") {
             return(apply(kminimized.indices(k), 2, function(l) k[l[1], l[2]]))
         }
+
+        if (idx1 == "minimized.steps") {
+            return(apply(kminimized.indices(k), 2, function(l) kstep(k, l[1], l[2])))
+        }
         
         stopifnot(idx1 <= k$nplanets);
         return(kallels(k)[idx1,,drop=FALSE])
@@ -1504,7 +1508,7 @@ kflags <- function(k, what = "all", type='standard') {
 
 kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
                       de.NPfac = 10, de.Fmin = 0.5, de.Fmax = 1.0, de.use.steps = FALSE,
-                      sa.T0 = k$chi2, sa.alpha=2, sa.auto=TRUE, sa.chains=4, repeat.steps = 10) {
+                      sa.T0 = k$chi2, sa.alpha=2, sa.auto=TRUE, sa.chains=4, repeat.steps = 10, verbose.diags=0) {
     ## Minimizes the chi^2 of the fit. [3]
     #
     # kminimize uses one of the built-in algorithms to minimize the
@@ -1550,6 +1554,7 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
         K_OPT_SA_AUTO_STEPS, sa.auto, K_OPT_SA_CHAINS, sa.chains,
         K_OPT_DE_CR, de.CR, K_OPT_DE_NP_FAC, de.NPfac,
         K_OPT_DE_F_MIN, de.Fmin, K_OPT_DE_F_MAX, de.Fmax,
+        K_OPT_VERBOSE_DIAGS, verbose.diags,
         K_OPT_DE_USE_STEPS, if (de.use.steps) 1 else 0, K_DONE)
     
     .job <<- "Minimization"
@@ -1983,7 +1988,7 @@ K_LIMITS[['par']] <- c(-100, 100)
 
 kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.first = 1000, discard = k$nrpars * 10, R.stop = 1.1, 
                   min.length = 5000, max.iters = -1, auto.steps = TRUE, acc.ratio = 0.44, plot = FALSE, print = FALSE, save=NA,
-                  debug.verbose.level = 1, random.log=TRUE) {
+                  debug.verbose.level = 1, random.log=TRUE, save.every=0) {
     ## Runs the MCMC routine on the given kernel. [4]
     #
     # This function runs a simple implementation of MCMC on the kernel
@@ -2058,11 +2063,12 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
     }
     
     opts <- c(K_OPT_MCMC_NSTOP, max.iters,
-              K_OPT_MCMC_NMIN, min.length,
-              K_OPT_MCMC_VERBOSE_DIAGS, debug.verbose.level,
-              K_OPT_MCMC_ACCRATIO, acc.ratio,
-              K_OPT_MCMC_SKIP_STEPS, if (auto.steps) 0 else 1,
-              DONE)
+             K_OPT_MCMC_NMIN, min.length,
+             K_OPT_MCMC_VERBOSE_DIAGS, debug.verbose.level,
+             K_OPT_MCMC_ACCRATIO, acc.ratio,
+             K_OPT_MCMC_SKIP_STEPS, if (auto.steps) 0 else 1,
+             K_OPT_MCMC_SAVE_EVERY, save.every,
+             DONE)
 		
     kl <- K_mcmc_mult(kbuf, chains, temps, skip.first, discard, opts, R.stop, NULL)
     print(is.nullptr(kl))

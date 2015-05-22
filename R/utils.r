@@ -112,3 +112,21 @@ kclone.from <- function(k, obj, index) {
  
     return(k)
 }
+
+kauto.steps <- function(k1, delta.chi=0.1, max.iters=10, verbose=TRUE) {
+    k <- kclone(k1)
+    a <- k['minimized']
+    chi2.0 <- k$chi2
+    for (i in 1:length(a)) {
+        for (j in 1:max.iters) {
+            k['minimized'][i] <- a[i] + k['minimized.steps']
+            kcalculate(k)
+            dchi <- abs(k$chi2 - chi2.0)
+            iters <- iters + 1
+            k['minimized.steps'][i] <- 0.5 * k['minimized.steps'][i] * (1 + delta.chi/dchi)
+            if (verbose)
+                cat(sprintf("[%d] dchi = %e, step = %e\n", k['minimized.steps'][i]))
+        }
+        k['minimized'] <- a
+    }
+}
