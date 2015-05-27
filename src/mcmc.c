@@ -212,12 +212,14 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             kls[n][j]->kernels[0]->elements = K_getAllElements(k[n]);
             kls[n][j]->kernels[0]->params = ok_vector_copy(k[n]->params);
             
-            if (flag != PROGRESS_CONTINUE)
+            if (flag == PROGRESS_STOP)
                 stopped=true;
         }
     }
     
-    
+    if (stopped)
+        return NULL;
+           
     bool conv = false;
     bool conv_single = false;
     
@@ -284,7 +286,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             ok_list* kl = K_mcmc_single(kls[ncha][0]->prototype, Nsteps, (iter == 0 ? skip : 0),
                     discard, glOpts[ntem], kls[ncha][ntem], merit_function, ncha, &flag);
             
-            if (flag != PROGRESS_CONTINUE)
+            if (flag == PROGRESS_STOP)
                 stopped = true;
             KL_append(kls[ncha][ntem], kl);
         }
@@ -436,7 +438,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             
             int progret = progress((int)p, 10000, NULL, prog);
             
-            if (progret == PROGRESS_STOP)
+            if (progret == PROGRESS_STOP || progret == PROGRESS_BREAK)
                 conv = true;
         }
         
@@ -757,7 +759,7 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
         }
 
         int n_conv = 0;
-        if (*flag != PROGRESS_CONTINUE)
+        if (*flag == PROGRESS_STOP)
             break;
         
         if (n_par[sub] > 2000 && state == STATE_STEPS) {

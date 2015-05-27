@@ -275,7 +275,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     axis(3, labels=FALSE)
 }
 
-plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, ...) {
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, emphasize.range.angle=NULL, emphasize.range.col='blue', ...) {
     oldpar <- par('pty')
     par(systemic.par)
 
@@ -289,7 +289,11 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
         # Eliminates weird "pattern"
         r <- runif(1, max=2*pi)
-        t <- seq(0, 2*pi, length.out=250)
+        t <- seq(r, 2*pi+r, length.out=250)
+        t2 <- NULL
+        if (!is.null(emphasize.range.angle)) {
+            t2 <- seq(emphasize.range.angle[1]/180*pi, emphasize.range.angle[2]/180*pi, length.out=250)
+        }
         
         if (planet == -1)
             planet = 1:nplanets
@@ -309,6 +313,11 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             q <- a*(1-e)
             rf <- a*(1-e^2)/(1+e*cos(f))
             lines(r*cos(t), r*sin(t), type='l', lwd=lwd, col=col)
+            if (!is.null(t2)) {
+                r <- a*(1-e^2)/(1+e*cos(t2-pom))            
+                lines(r*cos(t2), r*sin(t2), type='l', lwd=lwd, col=emphasize.range.col)
+            }
+            
             if (plot.pericenter && e > 0)
                 lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted", col=col)
             if (plot.planet)
@@ -356,7 +365,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
                 obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
 
             plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE)
+                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE, emphasize.range.angle=emphasize.range.angle, emphasize.range.col=emphasize.range.col)
         }
 
         obj <- k$fit.els

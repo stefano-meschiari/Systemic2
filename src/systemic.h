@@ -185,6 +185,7 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 
 #define PROGRESS_CONTINUE 0
 #define PROGRESS_STOP 1
+#define PROGRESS_BREAK 2
 
 #define STATUS_SUCCESS GSL_SUCCESS
 

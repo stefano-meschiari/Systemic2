@@ -2071,7 +2071,7 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
              DONE)
 		
     kl <- K_mcmc_mult(kbuf, chains, temps, skip.first, discard, opts, R.stop, NULL)
-    print(is.nullptr(kl))
+
     if (is.nullptr(kl)) {
         ok_bridge_kernel_buf(kbuf, -chains, NULL);
         return(NULL)
