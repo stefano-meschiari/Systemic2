@@ -289,7 +289,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
         # Eliminates weird "pattern"
         r <- runif(1, max=2*pi)
-        t <- seq(r, 2*pi+r, length.out=250)
+        t <- seq(0, 2*pi, length.out=250)
         
         if (planet == -1)
             planet = 1:nplanets

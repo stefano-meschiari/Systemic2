@@ -289,8 +289,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             KL_append(kls[ncha][ntem], kl);
         }
         
-        if (stopped)
-            break;
+        
         
         #pragma omp parallel for
         for (int n = 0; n < nchains; n++) {
@@ -497,6 +496,8 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
         
         
         iter++;
+        if (stopped)
+            break;
     }
     
     if (verbose > 0) {
