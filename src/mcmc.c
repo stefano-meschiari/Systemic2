@@ -815,8 +815,8 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
                         par_max = i;
                     }
                 }
-                sprintf(msg, "Computing step sizes [cur = %.2f, targ = %.2f, par = %d, step = %.2e]",
-                        acc_max, acc_ratio, par_max, *(steps[par_max]));
+                sprintf(msg, "Computing step sizes [cur = %.2f, targ = %.2f, par = %d, step = %.2e, n = %d]",
+                        acc_max, acc_ratio, par_max, *(steps[par_max]), n_par[par_max]);
                 ret = progress(n_conv, npar, NULL, msg);
             } else
                 ret = progress(i, nsteps, NULL, "");
