@@ -521,7 +521,7 @@ plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = 
 }
 
 
-plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', subset=1:e$length, ...) {
+plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, dev.factor = 5, planet, xlab, ylab, main, xlim, ylim, pch=16, col=ifelse(type=="histogram", 'white', 'black'), show.points = FALSE, points.col=20, breaks=c(0.5, 0.75, 0.9, 0.95, 0.99), cut.outliers = 12, scatter.bins = 8, add=FALSE, bf.color='red', subset=1:e$length, full.angle=FALSE, ...) {
     par(systemic.par)
     
     if (!is.null(px)) {
@@ -545,6 +545,8 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
     
     bfx <- 0
     bfy <- 0
+    x.is.angle <- FALSE
+    y.is.angle <- FALSE
     datax <- NULL
     datay <- NULL
     medx <- 0
@@ -561,6 +563,11 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
             medx <- e$stats[[x[[1]]]][x[[2]], 'median']
             devx <- e$stats[[x[[1]]]][x[[2]], 'mad']
             labx <- sprintf("%s of planet %d", .elements.labels[[x[[2]]]], x[[1]])
+
+            if (full.angle && x[[2]] %in% c(MA, INC, LOP, NODE)) {
+                xlim <- c(0, 360)
+                x.is.angle <- TRUE
+            }
         }
         else {
             bfx <- e$fit.params[x[[2]]]
@@ -577,6 +584,10 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
             medy <- e$stats[[y[[1]]]][y[[2]], 'median']
             devy <- e$stats[[y[[1]]]][y[[2]], 'mad']		
             laby <- sprintf("%s of planet %d", .elements.labels[[y[[2]]]], y[[1]])
+            if (full.angle && y[[2]] %in% c(MA, INC, LOP, NODE)) {
+                ylim <- c(0, 360)
+                y.is.angle <- TRUE
+            }
         }
         else {
             bfy <- e$fit.params[y[[2]]]
@@ -594,11 +605,13 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
         laby <- ylab
     }
 
+    
     datax <- datax[subset]
     datay <- datay[subset]
     
     if (dev.factor > 0 && type=="histogram") {
-        datax <- datax[datax > medx - dev.factor * devx & datax < medx + dev.factor * devx]
+        if (!x.is.angle)
+            datax <- datax[datax > medx - dev.factor * devx & datax < medx + dev.factor * devx]
     } else {
         limx <- c(min(datax),max(datax))
         limy <- c(min(datay),max(datay))
@@ -642,6 +655,11 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
             points(datax, datay, pch=pch, col=col,  ...)
         points(c(bfx), c(bfy), pch=19, col=bf.color, ...)
         
+    } else if (type == 'hexbin') {
+        .require.library('hexbin')
+        hbin <- hexbin(datax, datay)
+        plot(hbin)
+        return()
     } else if (type == "scatter.hist") {
         if (!add) {
             scatter.hist(datax, datay, xlab=labx, ylab=laby, pch=pch, col=col, smooth=F, correl=F, density=F, ellipse=F,  ...)
@@ -707,4 +725,41 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, xlab="Time - 
     }
     
 
+}
+
+bands <- function(x, bottom, top, col='black', alpha=0.25, ...) {
+    if (! is.na(alpha))
+        col <- adjustcolor(col, alpha.f=alpha)
+    polygon(c(x, rev(x)), c(top, rev(bottom)), border=NA, col=col, ...)
+}
+
+
+plot.rvs <- function(k, samples=1000, col=rgb(0,0,0,0.1), rvsamples=5000, ...) {    
+    par(mfg=c(1,1))
+    e <- k$errors
+    k2 <- kclone(k)
+    samp <- sample(1:e$length, samples)
+    idx <- kminimized.indices(k2)
+    trange <- k2$trange
+    mat <- NULL
+    t <- NULL
+    
+    
+    for (i in 1:samples) {
+        k2[1,] <- e[[1]][i,]
+        
+        kcalculate(k2)
+        sl <- K_integrateRange(k2$h, trange[1], trange[2], rvsamples, NULL, k2$last.error.code)
+        m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
+        mat <- cbind(mat, m[,2])
+        ok_free_systems(sl, rvsamples)
+    }
+
+    
+    t <- m[,1]
+    top <- apply(mat, 1, function(r) quantile(r, 0.9))
+    bottom <- apply(mat, 1, function(r) quantile(r, 0.1))
+    
+    bands(t, top, bottom, alpha=NA, col=col)
+    return(invisible(cbind(t, top, bottom)))
 }

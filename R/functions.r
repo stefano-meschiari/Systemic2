@@ -1766,7 +1766,7 @@ kstep <- function(k, row, column) {
     
     column <- .label_to_index(column)
     
-    if (row == "par") {
+    if (row == "par" || row == -1) {
         K_setParStep(k$h, column - 1, value)
         return(k)
     } else {

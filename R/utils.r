@@ -116,17 +116,25 @@ kclone.from <- function(k, obj, index) {
 kauto.steps <- function(k1, delta.chi=0.1, max.iters=10, verbose=TRUE) {
     k <- kclone(k1)
     a <- k['minimized']
+    p <- k['minimized.steps']
+    
     chi2.0 <- k$chi2
     for (i in 1:length(a)) {
+        iters <- 0
         for (j in 1:max.iters) {
-            k['minimized'][i] <- a[i] + k['minimized.steps']
+            k['minimized'][i] <- a[i] + p[i]
             kcalculate(k)
             dchi <- abs(k$chi2 - chi2.0)
             iters <- iters + 1
-            k['minimized.steps'][i] <- 0.5 * k['minimized.steps'][i] * (1 + delta.chi/dchi)
+            p[i] <- 0.5 * p[i] * max(min(1 + delta.chi/dchi, 10), 0.1)
             if (verbose)
-                cat(sprintf("[%d] dchi = %e, step = %e\n", k['minimized.steps'][i]))
+                cat(sprintf("[%d] dchi = %e, step = %e\n", i, dchi, p[i]))
         }
         k['minimized'] <- a
     }
+    idx <- kminimized.indices(k)
+    for (i in 1:ncol(idx)) {
+        kstep(k1, idx[1, i], idx[2, i]) <- p[i]
+    }
+    
 }

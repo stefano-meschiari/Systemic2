@@ -762,7 +762,8 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
         }
 
         int n_conv = 0;
-        
+        if (*flag != PROGRESS_CONTINUE)
+            break;
         
         if (n_par[sub] > 2000 && state == STATE_STEPS) {
             if (*steps[sub] < 1e-9)
@@ -806,11 +807,16 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
             if (state == STATE_STEPS) {
                 char msg[500];
                 double acc_max = 0;
-                for (int i = 0; i < npar; i++)
-                        acc_max = MAX(fabs(acc_par[i]/n_par[i]),
-                                acc_max);
-                sprintf(msg, "Computing step sizes [%.2f->%.2f]",
-                        acc_max, acc_ratio);
+                int par_max = 0;
+                for (int i = 0; i < npar; i++) {
+                    double acc = fabs(acc_par[i]/n_par[i]);
+                    if (acc > acc_max) {
+                        acc_max = acc;
+                        par_max = i;
+                    }
+                }
+                sprintf(msg, "Computing step sizes [cur = %.2f, targ = %.2f, par = %d, step = %.2e]",
+                        acc_max, acc_ratio, par_max, *(steps[par_max]));
                 ret = progress(n_conv, npar, NULL, msg);
             } else
                 ret = progress(i, nsteps, NULL, "");
