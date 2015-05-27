@@ -215,8 +215,6 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             if (flag != PROGRESS_CONTINUE)
                 stopped=true;
         }
-        if (stopped)
-            continue;
     }
     
     
@@ -288,10 +286,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             
             if (flag != PROGRESS_CONTINUE)
                 stopped = true;
-            if (stopped)
-                continue;
             KL_append(kls[ncha][ntem], kl);
-            
         }
         
         if (stopped)
@@ -425,7 +420,6 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                 }
                 Rsingle_max = MAX(Rsingle_max, R_single_dev);
             }
-            
             
             conv = conv && (R[np] < Rstop) && (R_90[np] < Rstop);
         } 
