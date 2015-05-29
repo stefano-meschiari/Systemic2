@@ -113,22 +113,23 @@ kclone.from <- function(k, obj, index) {
     return(k)
 }
 
-kauto.steps <- function(k1, delta.chi=0.1, max.iters=10, verbose=TRUE) {
+kauto.steps <- function(k1, delta.func=0.1, max.iters=10, verbose=TRUE) {
     k <- kclone(k1)
     a <- k['minimized']
     p <- k['minimized.steps']
     
-    chi2.0 <- k$chi2
+    chi2.0 <- K_getMinValue(k1$h)
     for (i in 1:length(a)) {
         iters <- 0
         for (j in 1:max.iters) {
             k['minimized'][i] <- a[i] + p[i]
             kcalculate(k)
-            dchi <- abs(k$chi2 - chi2.0)
+            chi2 <- K_getMinValue(k$h)
+            dchi <- abs(chi2 - chi2.0)
             iters <- iters + 1
-            p[i] <- 0.5 * p[i] * max(min(1 + delta.chi/dchi, 10), 0.1)
+            p[i] <- 0.5 * p[i] * max(min(1 + delta.func/dchi, 10), 0.1)
             if (verbose)
-                cat(sprintf("[%d] dchi = %e, step = %e\n", i, dchi, p[i]))
+                cat(sprintf("[%d] dfunc = %e, step = %e\n", i, dchi, p[i]))
         }
         k['minimized'] <- a
     }
@@ -138,3 +139,21 @@ kauto.steps <- function(k1, delta.chi=0.1, max.iters=10, verbose=TRUE) {
     }
     
 }
+
+exoplanet.archive <- function(k) {
+    props <- kprop(k)
+    name <- k$starname
+    
+    print(name)
+    browseURL(sprintf("http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=%s&type=PLANET%%20HOST&label&aliases&exo&iden&orb&ppar&tran&disc&ospar", name))
+}
+
+simbad <- function(k) {
+    props <- kprop(k)
+    name <- k$starname
+    
+    print(name)
+    browseURL(sprintf("http://simbad.u-strasbg.fr/simbad/sim-id?Ident=%s", name))
+}
+
+

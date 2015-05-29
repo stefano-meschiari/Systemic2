@@ -7,6 +7,7 @@ systemic.palette.face <- systemic.theme.tomorrow.face
 
 palette(systemic.palette)
 par(systemic.par)
+default.par <- par()
 
 plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets, residuals.auto.ylim=FALSE,
                         breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, ...) {
@@ -63,9 +64,13 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         stopifnot(k$nplanets > 0)
         np <- k$nplanets
         rows <- if (plot.residuals) length(which.planets)+1 else length(which.planets)
-        if (layout)
-            par(mfrow=c(rows, 1))
-
+        max.rows <- min(rows, 4)
+        
+        if (layout) {
+            par(mfcol=c(max.rows, ceil(rows/max.rows)))
+            par(mar=c(4, 4, 1, 1))
+        }
+        
         fpars <- list(...)
         xlab <- if (!is.null(fpars$xlab)) fpars$xlab else 'Time [JD]'
         ylab <- if (!is.null(fpars$ylab)) fpars$ylab else 'RV, Planet %d [m/s]'
@@ -94,8 +99,6 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             data_i <- data_i[data_i[, FLAG] == RV, ]			
             k[,'mass'] <- masses
             k[-i, 'mass'] <- 0
-						print(k)
-            print(i)
             sl <- K_integrateRange(k$h, trange[1], trange[2], rvsamples, NULL, k$last.error.code)
             m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
             ok_free_systems(sl, rvsamples)
@@ -275,7 +278,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
     axis(3, labels=FALSE)
 }
 
-plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, emphasize.range.angle=NULL, emphasize.range.col='blue', ...) {
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, emphasize.range.angle=NULL, emphasize.range.col='blue', orbit.samples=250, rescaled=NA, plot.comparison=NULL, plot.comparison.color='blue', ...) {
     oldpar <- par('pty')
     par(systemic.par)
 
@@ -289,10 +292,10 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 
         # Eliminates weird "pattern"
         r <- runif(1, max=2*pi)
-        t <- seq(r, 2*pi+r, length.out=250)
+        t <- seq(r, 2*pi+r, length.out=orbit.samples)
         t2 <- NULL
         if (!is.null(emphasize.range.angle)) {
-            t2 <- seq(emphasize.range.angle[1]/180*pi, emphasize.range.angle[2]/180*pi, length.out=250)
+            t2 <- seq(emphasize.range.angle[1]/180*pi, emphasize.range.angle[2]/180*pi, length.out=orbit.samples)
         }
         
         if (planet == -1)
@@ -310,11 +313,14 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
             e <- k[i, 'ecc']
             a <- k[i, 'a']
             r <- a*(1-e^2)/(1+e*cos(t-pom))
+            if (!is.na(rescaled)) r <- r^rescaled
             q <- a*(1-e)
             rf <- a*(1-e^2)/(1+e*cos(f))
+            if (!is.na(rescaled)) rf <- rf^rescaled            
             lines(r*cos(t), r*sin(t), type='l', lwd=lwd, col=col)
             if (!is.null(t2)) {
-                r <- a*(1-e^2)/(1+e*cos(t2-pom))            
+                r <- a*(1-e^2)/(1+e*cos(t2-pom))
+                if (!is.na(rescaled)) r <- r^rescaled
                 lines(r*cos(t2), r*sin(t2), type='l', lwd=lwd, col=emphasize.range.col)
             }
             
@@ -365,13 +371,14 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
                 obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
 
             plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE, emphasize.range.angle=emphasize.range.angle, emphasize.range.col=emphasize.range.col)
+                       lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE, emphasize.range.angle=emphasize.range.angle, emphasize.range.col=emphasize.range.col, orbit.samples=orbit.samples,
+                       rescaled=rescaled, plot.comparison=plot.comparison)
         }
 
         obj <- k$fit.els
         class(obj) <- c('matrix', '.orbit')
         plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
-                   lwd=lwd, col=best.col, xlab=xlab, ylab=ylab, add=TRUE)
+                   lwd=lwd, col=best.col, xlab=xlab, ylab=ylab, add=TRUE, orbit.samples=orbit.samples, rescaled=rescaled)
         
         
     } else {
@@ -380,7 +387,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 }
 
 
-plot.periodogram <- function(p, overplot.window = F, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=FALSE, ...) {
+plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=TRUE, ...) {
     par(systemic.par)
 
     if (!is.null(attr(p, 'resampled')) && !(show.resampled)) {
@@ -567,6 +574,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
 
     if (! is.null(x)) {
         if (x[[1]] != "par") {
+            print(x)
             bfx <- e$fit.els[x[[1]], x[[2]]]
             datax <- e[[x[[1]]]][, x[[2]]]
             medx <- e$stats[[x[[1]]]][x[[2]], 'median']

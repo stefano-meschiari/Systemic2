@@ -27,6 +27,7 @@ typedef int		 cmp_t(void *, const void *, const void *);
 extern void ok_qsort_r(void *a, size_t n, size_t es, void *thunk, cmp_t *cmp);
 #endif
 
+#define LOG_2PI 1.83787707
 
 
 #define MIN(a,b) (a < b ? a : b)

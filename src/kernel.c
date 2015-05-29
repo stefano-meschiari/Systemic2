@@ -1134,7 +1134,7 @@ double K_getLoglik(ok_kernel* k) {
         A += log(SQR(k->compiled[i][T_ERR]) + n * n);
     }
 
-    return 0.5 * A + 0.5 * chi2;
+    return 0.5 * A + 0.5 * chi2 + 0.5 * (double) k->ndata * LOG_2PI;
 };
 
 K_GET_C(rms, Rms, double)

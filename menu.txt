@@ -88,11 +88,11 @@ Minimize using...||[[
 	.gui.input("@kernel@$min.func = 'chi2@ins@'")
 ]]
 -
-Bootstrap|meta B|!b_@var@ <- kbootstrap(@kernel@, trials = 5000@ins@, print=TRUE)
-Bootstrap over Xgrid|meta shift B|!b_@var@ <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
-MCMC|meta alt B|!b_@var@ <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=@kernel@$nrpars*10, print=TRUE)
+Bootstrap|meta B|!@kernel@$errors <- kbootstrap(@kernel@, trials = 5000@ins@, print=TRUE)
+Bootstrap over Xgrid|meta shift B|!@kernel@$errors <- kbootstrap.xgrid(@kernel@, xgrid.host=XGRID_HOST, xgrid.password=XGRID_PWD, trials.each=50, jobs=20)
+MCMC|meta alt B|!@kernel@$errors <- kmcmc(@kernel@, chains=2, R.stop=1.1, skip.first=1000, discard=@kernel@$nrpars*10, print=TRUE)
 -
-Long-term integration|meta shift I|!i_@var@ <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE, print=TRUE)
+Long-term integration|meta shift I|!@kernel@$integration <- kintegrate(@kernel@, 1000@ins@*365.25, int.method=SWIFTRMVS, dt=min(@kernel@[,'period'])*0.01, plot=TRUE, print=TRUE)
 -
 F-test compare kernels|meta F|!var.test(kdata(@kernel@, 'res')[, VAL], kdata(@ins@, 'res')[, VAL])@@Type the name of the second kernel to compare to 
 F-test, all planets||[[
@@ -142,21 +142,26 @@ BIC, all planets||[[
   .k <- NULL
 ]]
 -
-Periodogram||!p@ins@ <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
-Periodogram of residuals||!p@ins@ <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
-Bootstrap periodogram||!p@ins@ <- kperiodogram.boot(@kernel@, "all", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
-Bootstrap periodogram of residuals||!p@ins@ <- kperiodogram.boot(@kernel@, "res", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Periodogram||!@kernel@$p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
+Periodogram of residuals||!@kernel@$r <- kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, overplot.window=TRUE, plot=TRUE, print=TRUE)
+Bootstrap periodogram||!@kernel@$p <- kperiodogram.boot(@kernel@, "all", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
+Bootstrap periodogram of residuals||!@kernel@$r <- kperiodogram.boot(@kernel@, "res", trials = 10000,  samples = 100000, pmin = 0.5, pmax = 1e4, plot=TRUE, print=TRUE)
 -
 Periodogram of TTVs||!p <- kperiodogram(@kernel@, "all", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@, overplot.window = TRUE, plot=TRUE)
 Periodogram of TTV residuals||!plot(kperiodogram(@kernel@, "res", samples = 80000, pmin = 0.5, pmax = 1e4, data.flag = TIMING, timing.planet=@ins@), , overplot.window = TRUE, plot=TRUE)
 
 Fit
+Annotate fit|meta A|!k$notes <- '@ins@'
+-
 Show fit parameters||$ktable(@kernel@)
 Plot fit parameters||$plot(ktable(@kernel@))
+Show fit parameters as HTML table||$.fn <- tempfile(basename(@kernel@$filename), fileext='.html'); print(xtable(ktable(@kernel@)), type='html', file=.fn); browseURL(.fn)
 -
-Save fit table as LaTeX||$print(xtable(ktable(@kernel@)), type='latex', file='myfile.tex@ins@')
-Save fit table as HTML||$print(xtable(ktable(@kernel@)), type='html', file='myfile.html@ins@')
-
+Save fit table as LaTeX||!print(xtable(ktable(@kernel@)), type='latex', file='myfile.tex@ins@')
+Save fit table as HTML||!print(xtable(ktable(@kernel@)), type='html', file='myfile.html@ins@')
+-
+Find this star on the NASA Exoplanet Archive|meta D|$exoplanet.archive(@kernel@)
+Find this star on SIMBAD|meta shift D|$simbad(@kernel@)
 
 Plots
 New plot window|meta alt P|$dev.new()

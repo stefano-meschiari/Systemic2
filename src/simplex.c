@@ -36,6 +36,8 @@ double K_simplex_f(const gsl_vector* cur, void* params) {
 
 int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
     double eps = 1e-8;
+    double dminValue = 1e-4;
+    //const int max_steps_wo_improvement = 10;
     
     int i = 0;
     if (params != NULL) {
@@ -115,12 +117,15 @@ int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
     
     
     int iter = 0;
+    int steps_wo_improvement = 0;
+    
     int status;
     
     // Loop until the desired eps (the size of the simplex) is reached.
     
     ok_progress pr = k->progress;
     const int every = (k->intMethod == 0 ? 30 : 1);
+    double last_min_value = K_getMinValue(k);
     
     do {
         iter++;
@@ -130,10 +135,18 @@ int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
             break;
         double size = gsl_multimin_fminimizer_size(s);
         status = gsl_multimin_test_size(size, eps);
-        
         if (status == GSL_SUCCESS)
             break;
         
+        double min_value = gsl_multimin_fminimizer_minimum(s);
+        /*if (last_min_value - min_value < dminValue) {
+            steps_wo_improvement++;
+            if (steps_wo_improvement > max_steps_wo_improvement)
+                break;
+        } else {
+            last_min_value = min_value;
+            steps_wo_improvement = 0;
+        }*/
         if (pr != NULL && iter % every == 0) {
             k->chi2 = k->minfunc(k);
             if (pr(iter, maxiter, k, __func__) != PROGRESS_CONTINUE) {
@@ -146,7 +159,8 @@ int K_minimize_simplex_iter(ok_kernel* k, int maxiter, double params[]) {
     if (sp.flag != 0) {
         fprintf(stderr, "Non-finite value encountered by minimizer [%d].\n", sp.flag);
     }
-    
+    gsl_vector* best = gsl_multimin_fminimizer_x(s);
+    K_simplex_f(best, &sp);
     K_calculate(k);
     gsl_multimin_fminimizer_free(s);
     free(pars);

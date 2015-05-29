@@ -957,11 +957,15 @@ gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol,
     ok_rivector* peaks = ok_rivector_alloc(max_points);
     ok_rivector* list = ok_rivector_alloc(max_points);
     
-    for (int i = 1; i < MROWS(curve)-1; i++)
+    for (int i = 1; i < MROWS(curve)-1; i++) {
         if (MGET(curve, i, ycol) > MGET(curve, i-1, ycol) &&
                 MGET(curve, i, ycol) > MGET(curve, i+1, ycol)) {
             ok_rivector_push(peaks, i);
+        } else if (MGET(curve, i, ycol) < MGET(curve, i-1, ycol) &&
+                MGET(curve, i, ycol) < MGET(curve, i+1, ycol)) {
+            ok_rivector_push(peaks, i);
         }
+    }
     
     ok_tagdata t_curve;
     t_curve.data = curve;

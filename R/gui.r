@@ -387,7 +387,7 @@ attach(.systemic.functions)
 	if (is.null(name))
 		return()
 	
-	if (calculate) {
+#	if (calculate) {
 		nsets <- k$nsets
 		
 		con <- file(paste(.gui.path, name, "_stats", sep=""), open="w")
@@ -418,7 +418,7 @@ attach(.systemic.functions)
 				file=con)
 		}
 		close(con)
-	}
+	#}
 		
 	.gui.event("stats", name)
 	.gui.event("state", name)

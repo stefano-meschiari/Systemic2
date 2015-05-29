@@ -1,0 +1,54 @@
+\documentclass[11pt, letterpaper]{article}
+%\usepackage[left=2cm,top=3cm,right=2cm,nohead,nofoot]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{fullpage}
+\pagestyle{empty}
+\newenvironment{pitemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+\def\chk{\underbar{\phantom{xxx}}}
+\def\lchk{\underbar{\phantom{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}}}
+\newcommand{\mass}{\mathcal{M}}
+\newcommand{\radius}{\mathcal{R}}
+\newcommand{\vsini}{\ensuremath{V\sin i}}
+\newcommand{\msun}{\ensuremath{\mass_\sun}}
+\newcommand{\mearth}{\ensuremath{\mass_\earth}}
+\newcommand{\mjup}{\ensuremath{\mass_{J}}}
+\newcommand{\rsun}{\ensuremath{\radius_\sun}}
+\newcommand{\rhk}{\ensuremath{\log R'_{hk}}}
+
+\begin{document}
+\include{table}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{fit.pdf}
+\end{figure}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{fit_wrap.pdf}
+\end{figure}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{periodogram.png}
+\includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{residuals.png}
+\end{figure}
+\clearpage
+\include{residuals}
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{integration.pdf}
+\end{figure}
+\begin{figure}[p]
+\centering
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{orbit.pdf}
+\end{figure}
+
+\end{document}

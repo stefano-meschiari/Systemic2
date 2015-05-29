@@ -90,7 +90,9 @@
 #define AU 1.4959787e13
 #define MSUN 1.98892e33
 #define MJUP 1.8986e30
+#define MEARTH 5.972e27
 #define RJUP 7.1e9
+#define REARTH 6.3674e8
 #define GGRAV 6.67384e-8
 
 #define DAY 8.64e4

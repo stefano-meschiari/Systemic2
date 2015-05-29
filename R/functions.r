@@ -52,13 +52,20 @@ systemic.names <- c(period='Period', mass='Mass', ma='Mean anomaly', ecc='Eccent
                    lop='Longitude of pericenter', inc='Inclination', node='Node',
                    a='Semi-major axis', k='Semiamplitude', tperi='Periastron passage time', rv.trend='Linear trend',
                    rv.trend.quadratic='Quadratic trend', mstar='Stellar mass',
-                   chi2='Reduced Chi-square', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations', data.noise1='Noise for dataset 1', data.noise2='Noise for dataset 2')
+                   chi2='Reduced Chi-square', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations', chi2nr='Chi-square', loglik='Log likelihood')
+
+
+
 systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
                    lop='[deg]', inc='[deg]', node='[deg]',
                    a='[AU]', k='[m/s]', tperi='[JD]',
                    rv.trend='[m/s]', rv.trend.quadratic='[m/s^2]',
                    mstar = '[M_{sun}]', chi2='', jitter='[m/s]', rms='[m/s]',
-                   epoch = '[JD]', ndata='', trange='[JD]', data.noise1='[m/s]', data.noise2='[m/s]')
+                   epoch = '[JD]', ndata='', trange='[JD]', chi2nr='', loglik='')
+for (i in 1:10) {
+    systemic.names[sprintf('data.noise%d', i)] <- sprintf('Noise for dataset %d', i)    
+    systemic.units[sprintf('data.noise%d', i)] <- '[m/s]'
+}
 
 
 ELEMENT <- 0
@@ -486,7 +493,24 @@ kels <- function(k, keep.first = FALSE) {
     } else if (idx == "min.func") {
         return(k[['min.func']])
     } else if (idx == 'bic') {
-        return(2*k$loglik - k$nrpars*(log(k$ndata)))
+        return(2*k$loglik + k$nrpars*(log(k$ndata)))
+    } else if (idx == 'notes') {
+        return(kprop(k)['.notes'])
+    } else if (idx == 'starname') {
+        props <- kprop(k)
+        if (!is.na(props['name'])) {
+            return(props['name'])
+        }
+        if (!is.na(props['systemfile'])) {
+            name <- sub('^([^.]*).*', '\\1', basename(kprop(k)['systemfile']))
+        } else if (!is.na(props['filename'])) {
+            name <- sub('^([^.]*).*', '\\1', basename(kprop(k)['filename']))
+        } else {
+            stop("No star name assigned to this kernel (use k$starname <- 'STARNAME' to assign one).")
+        }
+        kprop(k, 'name') <- name
+        if (k$auto) kupdate(k, calculate=FALSE)
+        return(name)
     } else if (idx == 'datanames') {
         if (k$nsets == 0) return(c())
         c <- sprintf("data-%d", 1:k$nsets)
@@ -518,12 +542,12 @@ kprop <- function(k, idx = 'all') {
             return(NULL)
     } else {
         i <- 0
-        s <- K_getInfoTag(k$h, i)
+        s <- tolower(K_getInfoTag(k$h, i))
         out <- c()
         while (s != "") {
             out[s] <- K_getInfo(k$h, s)
             i <- i +1
-            s <- K_getInfoTag(k$h, i)
+            s <- tolower(K_getInfoTag(k$h, i))
         }
         return(out)
     }
@@ -570,6 +594,9 @@ kprop <- function(k, idx = 'all') {
         if (k$auto) kupdate(k)
     } else if (idx == "min.method") {
         k[['min.method']] <- value
+        if (k$auto) kupdate(k, calculate=FALSE)
+    } else if (idx == "starname") {
+        kprop(k, 'name') <- value
         if (k$auto) kupdate(k, calculate=FALSE)
     } else if (idx == "element.type") {
         if (value == "astrocentric")
@@ -644,6 +671,8 @@ kprop <- function(k, idx = 'all') {
         K_setProgress(k[['h']], k[['.progress.cb']])
     } else if (idx == 'filename') {
         K_setInfo(k[['h']], 'FileName', value)
+    } else if (idx == 'notes') {
+        K_setInfo(k[['h']], '.notes', as.character(value))
     } else 
         k[[idx]] <- value
     return(k)
@@ -1241,7 +1270,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
         .periodogram.tol <- double(1)
         .periodogram.tol[1] <- 1e-4
 
-        resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, 1, 10000,
+        resampled <- .gsl_matrix_to_R(ok_resample_curve(per, 0, 1, .75, 4000,
                                                         2000, .periodogram.tol, 5, TRUE), free=TRUE)
         colnames(resampled) <- .periodogram
     } else 
@@ -1563,16 +1592,18 @@ kminimize <- function(k, iters = 5000, algo = NA, de.CR = 0.2,
     on.exit(if (k$auto) kupdate(k))
     old <- K_getMinValue(k$h)
     for (i in 1:repeat.steps) {
-        K_minimize(k$h, algo, iters, as.numeric(opts))
-        if (abs(K_getMinValue(k$h) - old) < 1e-6)
+        status <- K_minimize(k$h, algo, iters, as.numeric(opts))
+        if (status == K_PROGRESS_STOP)
+            break
+        if (abs(K_getMinValue(k$h) - old) < 1e-4)
             break
         old <- K_getMinValue(k$h)
     }
-    return(k$chi2)
+    return(K_getMinValue(k$h))
 }
 
 
-kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA) {
+kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA, sort.by.k=TRUE) {
     ## Runs the "leave-one-out" cross validation algorithm. [4]
     #
     # Args:
@@ -1589,26 +1620,35 @@ kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA) {
     if (is.na(type))
         return(K_crossval_l1o(k$h, algo, iters, NULL))
     else {
-        cat(paste("?This routine will attempt to automatically remove and refit planets one by one (starting from the smallest K),",
+        cat(paste("?This routine will attempt to automatically remove and refit planets one by one,",
                   "using the results of the leave-1-out cross-validation routine to compare between models.",
                   "If the output of a fit with (n+1) planets is larger than that of a fit with n planets,",
                   "it is likely the (n+1)-planets model is worse than the n-planets model \n"))
         .k <- kclone(k)
-        kels(.k) <- kels(.k)[sort.list(kallels(.k)[, 'k'], decreasing=TRUE),,drop=FALSE]
+        if (sort.by.k) {
+            cat("?Planets will be removed from smallest to largest K (sort.by.k=TRUE)\n")
+            kels(.k) <- kels(.k)[sort.list(kallels(.k)[, 'k'], decreasing=TRUE),,drop=FALSE]
+        } else {
+            cat("?Planets will be removed in the order of the fit (sort.by.k=FALSE)\n")
+        }            
         .k$auto <- F
 
-        cat("# ", .k$nplanets, " planets\n")
+        cat("# ", .k$nplanets, " planets [", sprintf("%.2f", .k[,'period']), collapse='', "]\n")
         ret <- c(kcrossval.l1o(.k))
-        print(ret[1])
+        print(ret)
         
         for (i in .k$nplanets:1) {
             kremove.planet(.k, i)
-            cat("# ", .k$nplanets, " planets\n")
+            cat("# ", .k$nplanets, " planets [", sprintf("%.2f", .k[,'period']), collapse='', "]\n")
             invisible(kminimize(.k))
             ret[length(ret)+1] <- kcrossval.l1o(.k)
             print(ret[length(ret)])
+            if (ret[length(ret)] < ret[length(ret)-1]) {
+                cat(sprintf("? Warning: the %d-planet fit appears to be better than the %d-planet fit\n",
+                            .k$nplanets, .k$nplanets+1))
+            }
         }
-        return(ret)
+        return(invisible(ret))
     }
 }
 
@@ -2412,30 +2452,33 @@ print.kernel <- function(k, all.pars = FALSE) {
     .check_kernel(k)
     cat(sprintf("# %d planets, %d datasets, %d data points\n# intMethod: %d, epoch: %f\n",
                 k$nplanets, k$nsets, k$ndata, k$int.method, k$epoch))
-    cat(sprintf("# Chi^2 = %.2f, RMS = %.2f, jitter = %.2f\n",
-                k$chi2, k$rms, k$jitter))
+    cat(sprintf("# Chi^2_r = %.2f, Chi^2 = %.2f, RMS = %.2f, jitter = %.2f, -log. lik. = %.2f\n",
+                k$chi2, k$chi2nr, k$rms, k$jitter, k$loglik))
 		
     if (k$nplanets > 0) {
         cat("\n# Orbital elements\n")
         print(kallels(k))
-        cat("\n# Flags\n")
-        print(kflags(k, what="els", type='human'))
     }
     cat("\n# Parameters\n")
     if (k$nsets > 0)
-        subset <- c(1:k$nsets, RV.TREND, RV.TREND.QUADRATIC)
+        subset <- c(1:k$nsets,  (1:k$nsets)+DATA_SETS_SIZE, RV.TREND, RV.TREND.QUADRATIC)
     else
         subset <- c(RV.TREND, RV.TREND.QUADRATIC)
     if (! all.pars)
         print(kpars(k)[subset])
     else
         print(kpars(k))
+    if (k$nplanets > 0) {
+        cat("\n# Orbital element flags\n")
+        print(kflags(k, what="els", type='human'))
+    }
 		
-    cat("\n# Flags\n")
+    cat("\n# Parameter flags\n")
     if (! all.pars)
         print(kflags(k, what='par', type='human')[subset])	
     else
-        print(kflags(k, what='par', type='human'))	
+        print(kflags(k, what='par', type='human'))
+    
     if (! is.null(k$errors)) {
         cat("\n# Last error estimation run results:\n")
         print(k$errors)
