@@ -84,7 +84,6 @@ double K_default_prior(ok_kernel* k) {
 }
 
 
-#define LOG_2PI 1.83787707
 void K_mcmc_merit_default(ok_kernel* k, double* ret) {
     k->flags |= NEEDS_SETUP;
     K_calculate(k);

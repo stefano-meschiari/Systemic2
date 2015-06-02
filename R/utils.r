@@ -141,19 +141,59 @@ kauto.steps <- function(k1, delta.func=0.1, max.iters=10, verbose=TRUE) {
 }
 
 exoplanet.archive <- function(k) {
-    props <- kprop(k)
-    name <- k$starname
-    
-    print(name)
+    if (is.na(name)) {
+        stop("Specify the star name (either assign it to a kernel using k$starname <- NAME, or pass it to this function directly)")
+    }
     browseURL(sprintf("http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=%s&type=PLANET%%20HOST&label&aliases&exo&iden&orb&ppar&tran&disc&ospar", name))
 }
 
-simbad <- function(k) {
-    props <- kprop(k)
-    name <- k$starname
-    
-    print(name)
+simbad <- function(name=NA) {
+    if (is.na(name)) {
+        stop("Specify the star name (either assign it to a kernel using k$starname <- 'NAME', or pass the star name to this function directly)")
+    }
     browseURL(sprintf("http://simbad.u-strasbg.fr/simbad/sim-id?Ident=%s", name))
 }
 
+exoplanets.org <- function(name=NA) {
+    if (is.na(name)) {
+        stop("Specify the star name (either assign it to a kernel using k$starname <- 'NAME', or pass the star name to this function directly")
+    }
 
+    cat("Locating star in database...\n")
+    exoarchive <- sprintf("http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=%s&type=PLANET%%20HOST&label&aliases&exo&iden&orb&ppar&tran&disc&ospar", name)
+
+
+    a <- paste0(collapse='\n', readLines(url(exoarchive)))
+    url <- str_match(a, '(http://exoplanets.org/.*?) ')[1,2]
+    if (is.na(url)) {
+        stop("Could not locate correct link to exoplanets.org")
+    } else {
+        name <- str_match(url, 'detail/(.*?)_b')[1,2]
+        cat('(called ', name, ' on exoplanets.org.)\n')
+        for (l in letters[3:20]) {
+            url <- paste0(url, ',', name, '_', l)
+        }
+        browseURL(url)
+    }
+}
+
+exoplanet.eu <- function(name) {
+    if (is.na(name)) {
+        stop("Specify the star name (either assign it to a kernel using k$starname <- 'NAME', or pass the star name to this function directly")
+    }
+
+    cat("Locating star in database...\n")
+    exoarchive <- sprintf("http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=%s&type=PLANET%%20HOST&label&aliases&exo&iden&orb&ppar&tran&disc&ospar", name)
+
+
+    a <- paste0(collapse='\n', readLines(url(exoarchive)))
+    url <- str_match(a, '(http://exoplanet.eu/.*?) ')[1,2]
+    if (is.na(url)) {
+        stop("Could not locate correct link to exoplanet.eu")
+    } else {
+        name <- str_match(url, 'detail/(.*?)_b')[1,2]
+        cat('(called ', name, ' on exoplanets.eu.)\n')
+        browseURL(url)
+    }
+}
+    

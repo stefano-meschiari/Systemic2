@@ -321,7 +321,6 @@ gsl_matrix* ok_periodogram_full(ok_kernel* k, int type, int algo, bool circular,
         
         double z = nd * (Chi2_H - Chi2_K)/Chi2_H;
         MSET(ret, r, PS_Z, z);
-        printf("%d %e %e %e %e\n", r, P, Chi2_H, Chi2_K, z);
         fflush(stdout);
     }
         

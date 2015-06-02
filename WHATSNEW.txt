@@ -1,3 +1,10 @@
+2.192
+=====
+- FIXED: Lots o' bugs, including some showstoppers when minimizing integrated fits.
+- NEW: Fits can store text information, some of which is read from the .sys datafile.
+- NEW: Direct links to Exoplanet Archive, exoplanets.org, exoplanet.eu and SIMBAD from the GUI.
+- 
+
 2.172
 =====
 - NEW: Systemic checks whether new updates are available at startup.

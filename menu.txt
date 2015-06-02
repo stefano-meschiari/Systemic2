@@ -160,12 +160,15 @@ Show fit parameters as HTML table||$.fn <- tempfile(basename(@kernel@$filename),
 Save fit table as LaTeX||!print(xtable(ktable(@kernel@)), type='latex', file='myfile.tex@ins@')
 Save fit table as HTML||!print(xtable(ktable(@kernel@)), type='html', file='myfile.html@ins@')
 -
-Find this star on the NASA Exoplanet Archive|meta D|$exoplanet.archive(@kernel@)
-Find this star on SIMBAD|meta shift D|$simbad(@kernel@)
+Find this star on the NASA Exoplanet Archive|meta D|$exoplanet.archive(name=@kernel@$starname)
+Find this star on exoplanets.org||$exoplanets.org(name=@kernel@$starname)
+Find this star on exoplanet.eu||$exoplanet.eu(name=@kernel@$starname)
+Find this star on SIMBAD|meta shift D|$simbad(name=@kernel@)
 
 Plots
 New plot window|meta alt P|$dev.new()
-Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file_save@")
+Save current plot as PDF...|meta alt D|!dev.copy2pdf(file="@file_save@", width=10, height=8)
+Save current plot as PNG...|meta alt P|!dev.copy(png(file="@file_save@", width=10, height=8, units='in'))
 Save current plot as EPS...||!dev.copy2eps(file="@file_save@")
 -
 Plot RV||$plot(@kernel@)

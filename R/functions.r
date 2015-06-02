@@ -498,6 +498,9 @@ kels <- function(k, keep.first = FALSE) {
         return(kprop(k)['.notes'])
     } else if (idx == 'starname') {
         props <- kprop(k)
+        if (is.null(props)) {
+             return(NA)
+        }
         if (!is.na(props['name'])) {
             return(props['name'])
         }
@@ -506,7 +509,7 @@ kels <- function(k, keep.first = FALSE) {
         } else if (!is.na(props['filename'])) {
             name <- sub('^([^.]*).*', '\\1', basename(kprop(k)['filename']))
         } else {
-            stop("No star name assigned to this kernel (use k$starname <- 'STARNAME' to assign one).")
+            return(NA)
         }
         kprop(k, 'name') <- name
         if (k$auto) kupdate(k, calculate=FALSE)

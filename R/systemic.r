@@ -9,7 +9,7 @@ if (! exists('.systemic.loaded')) {
             req <- require(name, warn.conflicts = F, character.only = TRUE, quietly = TRUE)
         
         if (! req && getOption("systemic.install.packages", FALSE)) {
-            warning(paste("Installing package ", name, "\n"))	
+            cat(paste("SYSTEMIC: Installing package ", name, "\n"))	
             install.packages(name, repos="http://cran.us.r-project.org")
             options(systemic.installed = TRUE)
             require(name, character.only = TRUE)
@@ -39,6 +39,7 @@ if (! exists('.systemic.loaded')) {
     .require.library('stringr', hush=TRUE)
     .require.library('Hmisc', hush=TRUE)
     .require.library('parallel', hush=TRUE)
+    .require.library('stringr', hush=TRUE)
     .require.library('xtable', hush=TRUE)
     
     if (exists('.systemic.functions')) {
