@@ -517,9 +517,19 @@ kels <- function(k, keep.first = FALSE) {
     } else if (idx == 'datanames') {
         if (k$nsets == 0) return(c())
         c <- sprintf("data-%d", 1:k$nsets)
-        for (i in 1:k$nsets)
-            if (K_infoExists(k$h, sprintf("DataFileName%d", i-1)))
-                c[i] <- K_getInfo(k$h, sprintf("DataFileName%d", i-1))
+        
+        for (i in 1:k$nsets) {
+            if (K_infoExists(k$h, sprintf("DataName%d", i-1))) 
+                c[i] <- K_getInfo(k$h, sprintf("DataName%d", i-1))
+            else if (K_infoExists(k$h, sprintf("DataFileName%d", i-1))) {
+                c[i] <- str_replace(basename(K_getInfo(k$h, sprintf("DataFileName%d", i-1))),
+                                   '\\.vels|\\.dat|\\.tds|\\.tt', '')
+                if (!is.na(k$starname)) {
+                    c[i] <- str_replace(c[i], paste0(k$starname, '_'), '')
+                }
+            }
+        }
+        
         return(c)
     } else if (idx == 'filename') {
         if (K_infoExists(k$h, "FileName"))
@@ -676,6 +686,9 @@ kprop <- function(k, idx = 'all') {
         K_setInfo(k[['h']], 'FileName', value)
     } else if (idx == 'notes') {
         K_setInfo(k[['h']], '.notes', as.character(value))
+    } else if (idx == 'datanames') {
+        for (i in 1:length(value))
+            K_setInfo(k[['h']], paste0('DataName', i-1), value[i])
     } else 
         k[[idx]] <- value
     return(k)
@@ -845,7 +858,7 @@ kdata <- function(k, idx = 'all') {
         colnames(m) <- c("TIME", "VAL", "ERR")
         return(m)
     } else {
-        stopifnot(class(idx) == "numeric")
+        stopifnot(is.numeric(idx))
         stopifnot(idx <= k$nsets && idx >= 1)
         m <- .gsl_matrix_to_R(K_getData(k$h, idx-1))
         colnames(m) <- .kdata.names
@@ -873,7 +886,7 @@ kdata <- function(k, idx = 'all') {
     .check_kernel(k)
     stopifnot(class(value) == "matrix")
     if (idx != "all") {
-        stopifnot(class(idx) == "numeric")
+        stopifnot(is.numeric(idx))
         stopifnot(idx > 0 && idx <= k$nsets)
         K_setData(k$h, idx-1, .R_to_gsl_matrix(value))
     } else {
@@ -1044,11 +1057,10 @@ kload.system <- function(k, datafile) {
     if (! file.exists(datafile))
         stop(paste("Cannot open", datafile, ", current directory:", getwd()))
 
-    K_addDataFromSystem(k$h, datafile)
+    K_addDataFromSystem(k$h, datafile)    
     kupdate(k)
 }
 
-kload.datafile <- kload.system
 kload <- function(file, skip = 0, chdir=TRUE) {
     ## Loads a kernel (previously saved with @ksave) from disk. [1]
     #
@@ -1284,8 +1296,6 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
     colnames(mat) <- .periodogram
     class(mat) <- "periodogram"
     
-    if (plot)
-        plot(mat, overplot.window=overplot.window)
 
     peaks.m <- kfind.peaks(mat)
     if (nrow(peaks.m) > 0) {
@@ -1309,7 +1319,10 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
     attr(mat, 'pmax') <- pmax
     attr(mat, 'samples') <- samples
     attr(mat, 'resampled') <- resampled
-    
+
+    if (plot)
+        plot(mat, overplot.window=overplot.window)
+
     if (print) {
         print(mat, 'peaks')
         return(invisible(mat))
@@ -1416,8 +1429,6 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 
     class(m) <- "periodogram"
     
-    if (plot)
-        plot(m, overplot.window=overplot.window)
 
     peaks.m <- kfind.peaks(m)
     if (nrow(peaks.m) > 0) {
@@ -1431,7 +1442,10 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
     attr(m, 'samples') <- samples
     attr(m, 'trials') <- trials
     attr(m, 'resampled') <- resampled
-    
+
+    if (plot)
+        plot(m, overplot.window=overplot.window)
+
     if (print) {
         print(m, "peaks")
         return(invisible(m))
@@ -2195,14 +2209,11 @@ krvcurve <- function(k, times=seq(from=min(ktrange(k)), to=max(ktrange(k)), leng
     # - k: the kernel
     # - times: a vector of times where to sample the radial velocity curve.
     .check_kernel(k)
-    k2 <- kclone(k)
-    m <- matrix(0, nrow=length(times), ncol=DATA_SIZE)
-    m[, TIME] <- times
-    kremove.data(k2)
-    kadd.data(k2, m, RV)
-    kcalculate(k2)
-    d <- kdata(k2)
-    return(cbind(d[,TIME], d[,PRED]))
+    sl <- K_integrateRange(k$h, times[1], times[2], length(times), NULL, k$last.error.code)
+    m <- .gsl_matrix_to_R(ok_get_rvs(sl, length(times)))
+    ok_free_systems(sl, length(times))
+
+    return(m)
 }
 
 kintegrate <- function(k, times, int.method=k$int.method, transits = FALSE, plot=FALSE, print=FALSE, dt=k$dt) {

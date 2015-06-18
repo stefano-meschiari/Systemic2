@@ -20,7 +20,7 @@ if (! exists('.systemic.loaded')) {
     req <- suppressMessages(require('rdyncall', warn.conflicts = FALSE, character.only = TRUE, quietly = TRUE))
     if (! req) {
         if (Sys.info()["sysname"] == "Darwin") {
-            install.packages('rdyncall_0.7.5.tgz', repos=NULL)
+            install.packages('rdyncall_0.7.5.tgz', repos=NULL, type='source')
             require('rdyncall', character.only = TRUE)
         } else {
             stop("Please install rdyncall. See the README for details.")
@@ -39,7 +39,7 @@ if (! exists('.systemic.loaded')) {
     .require.library('stringr', hush=TRUE)
     .require.library('Hmisc', hush=TRUE)
     .require.library('parallel', hush=TRUE)
-    .require.library('stringr', hush=TRUE)
+    .require.library('magrittr', hush=TRUE)
     .require.library('xtable', hush=TRUE)
     
     if (exists('.systemic.functions')) {
@@ -49,7 +49,7 @@ if (! exists('.systemic.loaded')) {
     }
 
     .job <- ""
-
+    
     enableJIT(3)
     .systemic.functions <- new.env()
     sys.source("defs.r", .systemic.functions)
@@ -63,6 +63,7 @@ if (! exists('.systemic.loaded')) {
     sys.source("phases.r", .systemic.functions)
     sys.source("auto.r", .systemic.functions)
     sys.source("web.r", .systemic.functions)
+    sys.source("latex2exp.r", .systemic.functions)
     attach(.systemic.functions)
     .systemic.loaded <- TRUE
 }

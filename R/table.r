@@ -190,19 +190,18 @@ plot.systemic.table <- function(df, ...) {
     dev.copy2pdf(file, width, height)
 }
 
-latex.report <- function(k, where=stop("Specify a folder where to save the file."), trials=1e4) {
+latex.report <- function(k, where=stop("Specify a folder where to save the file."), trials=1e4,  report.file=str_join(getOption('systemic.path'), '/report.tex')) {
     cur <- getwd()
     on.exit(setwd(cur))
     setwd(where)
 
-    file.copy(str_join(getOption('systemic.path'), '/report.tex'), getwd(), overwrite=FALSE)
+    file.copy(report.file, getwd(), overwrite=FALSE)
     if (is.null(k$filename))
         fn <- 'bestfit.fit'
     else
         fn <- basename(k$filename)
     ksave(k, fn)
     print(ktable(k, latex=TRUE), file='table.tex', font.size='small', caption='Best fit')
-
     
     if (is.null(k$p)) {
         cat("Calculating periodogram...\n")

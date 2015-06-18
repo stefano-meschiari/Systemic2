@@ -1,5 +1,5 @@
 # Constants
-K_SYSTEMIC_VERSION <- 2.1900
+K_SYSTEMIC_VERSION <- 2.1920
 K_MAX_LINE <- 8192
 K_T_RV <- 0
 K_T_PHOTO <- 1
@@ -626,6 +626,10 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_mcmc_single(pIII*d*<ok_list>pi*i)*<ok_list>",
 # ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, unsigned int skip, unsigned int discard, const double params[], double Rstop, ok_callback2 merit_function)
 "K_mcmc_mult(pIIII*ddp)*<ok_list>",
+# double K_default_prior(const ok_kernel* k)
+"K_default_prior(p)d",
+# void K_mcmc_likelihood_and_prior_default(ok_kernel* k, double* ret)
+"K_mcmc_likelihood_and_prior_default(p*d)v",
 # ok_list* K_bootstrap(ok_kernel* k, int trials, int warmup, int malgo, int miter, double mparams[])
 "K_bootstrap(piiii*d)*<ok_list>",
 # gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples, const double Pmin, const double Pmax, const int method,         unsigned int timecol, unsigned int valcol, unsigned int sigcol, ok_periodogram_workspace* p)
@@ -756,6 +760,7 @@ BULIRSCHSTOER <- K_BULIRSCHSTOER
 AU <- K_AU
 MSUN <- K_MSUN
 MJUP <- K_MJUP
+MEARTH <- K_MEARTH
 DAY <- K_DAY
 YEAR <- K_YEAR
 GGRAV <- K_GGRAV

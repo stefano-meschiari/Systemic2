@@ -219,6 +219,8 @@ KL_to_ptr
 KL_getNplanets
 K_mcmc_single
 K_mcmc_mult
+K_default_prior
+K_mcmc_likelihood_and_prior_default
 K_bootstrap
 ok_periodogram_ls
 ok_periodogram_boot

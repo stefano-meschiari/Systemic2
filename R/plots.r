@@ -9,9 +9,15 @@ palette(systemic.palette)
 par(systemic.par)
 default.par <- par()
 
-plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA, xlim = NULL, ylim=NULL, which.planets=1:k$nplanets, residuals.auto.ylim=FALSE,
-                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=21, lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, ...) {
+plot.kernel <- function(k, type = "rv", wrap=NA, legend=k$datanames, legend.pos='topright',
+                       plot.residuals=TRUE, transiting.planet = NA, transiting.per = NA,
+                       xlim = NULL, ylim=NULL, max.rows=4,
+                       which.planets=1:k$nplanets, residuals.auto.ylim=FALSE,
+                       breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=19,
+                       lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, yspace=1.2, ...) {
     .check_kernel(k)
+    oldpar <- par(no.readonly=TRUE)
+    on.exit(par(oldpar))
     par(systemic.par)
     if (is.nan(k$epoch)) {
         stop("No epoch set")
@@ -38,7 +44,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
         ok_free_systems(sl, rvsamples)
 
-        ylim <- if (is.null(ylim)) c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
+        ylim <- if (is.null(ylim)) yspace * c(min(data[,SVAL], m[,VAL]), max(data[, SVAL], m[,VAL]))
         ylim <- ylim + yshift
         if (! is.na(wrap)) {
             if (wrap == T) wrap <- k[1, 'period']
@@ -51,6 +57,9 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
         lines(m[,TIME], m[,VAL] + yshift, lwd=lwd)
         axis(3, labels=FALSE)
         axis(4, labels=FALSE)
+
+        if (!is.null(legend))
+            legend(legend.pos, legend=legend, pch=pch, col=1+col+(1:k$nsets), cex=0.5, box.col=rgb(0.7, 0.7, 0.7, 1), bg=rgb(0.95, 0.95, 0.95, 1), ncol=k$nsets)
         
         if (plot.residuals) {
             if (residuals.auto.ylim)
@@ -58,13 +67,18 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED] + yshift, data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2+col, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2+col], ...))
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
+            if (!is.null(legend))
+                legend(legend.pos, legend=legend, pch=pch, col=1+col+(1:k$nsets), cex=0.5, box.col=rgb(0.7, 0.7, 0.7, 1), bg=rgb(0.95, 0.95, 0.95, 1), ncol=k$nsets)
+
         }
+
+
         
     } else if (type == "allrv") {
         stopifnot(k$nplanets > 0)
         np <- k$nplanets
         rows <- if (plot.residuals) length(which.planets)+1 else length(which.planets)
-        max.rows <- min(rows, 4)
+        max.rows <- min(rows, max.rows)
         
         if (layout) {
             par(mfcol=c(max.rows, ceil(rows/max.rows)))
@@ -103,7 +117,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             m <- .gsl_matrix_to_R(ok_get_rvs(sl, rvsamples))
             ok_free_systems(sl, rvsamples)
             
-            ylim <- if (is.null(ylim)) c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
+            ylim <- if (is.null(ylim)) yspace * c(min(data_i[, SVAL] - data_i[, PRED], m[,VAL]), max(data_i[, SVAL] - data_i[, PRED], m[,VAL]))
             
             if (! is.na(wrap)) {
                 data_i[, TIME] <- data_i[, TIME] %% k[i, 'period']
@@ -113,7 +127,9 @@ plot.kernel <- function(k, type = "rv", wrap=NA, plot.residuals=TRUE, transiting
             xlim <- c(min(data_i[, TIME]), max(data_i[, TIME]))
             plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab=xlab, ylab=sprintf(ylab, i), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
             lines(m[,TIME], m[,VAL], xlim=xlim, lwd=lwd)
-            
+            if (!is.null(legend))
+                legend(legend.pos, legend=legend, pch=pch, col=1+col+(1:k$nsets), cex=0.5, box.col=rgb(0.7, 0.7, 0.7, 1), bg=rgb(0.95, 0.95, 0.95, 1), ncol=k$nsets)
+
             axis(3, labels=FALSE)
             axis(4, labels=FALSE)
             k[,'mass'] <- masses

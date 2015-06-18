@@ -431,7 +431,7 @@ attach(.systemic.functions)
 	}
 }
 
-. <<- knew()
+.kernel <<- knew()
 
 .gui.before <- function(currentk) {
 	tryCatch(. <<- get(currentk, envir=globalenv()), error=function(e) {})
