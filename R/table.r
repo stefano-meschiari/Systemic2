@@ -12,11 +12,14 @@ systemic.units.latex <- c(period='[days]', mass='[$\\mass_{jup}$]', ma='[deg]', 
                          rv.trend='[$\\mathrm{m s}^{-1}$]', rv.trend.quadratic='[$\\mathrm{m s}^{-1}$^2]',
                          mstar = '[$\\mass_\\odot$]', chi2='', jitter='[$\\mathrm{m s}^{-1}$]', rms='[$\\mathrm{m s}^{-1}$]',
                          epoch = '[JD]', ndata='', trange='[JD]', loglik='', chi2nr='')
-for (i in 1:10)
+for (i in 1:10) {
     systemic.units.latex[sprintf('data.noise%d', i)] <- '[$\\mathrm{m s}^{-1}$]'
-
+    systemic.units.latex[sprintf('data%d', i)] <- '[$\\mathrm{m s}^{-1}$]'
+}
 
 nformat <- function(n, err=0, digits=3, fmt="%s [%s]") {
+    if (is.na(n))
+        return('NaN')
     if (err != 0) {
         e10 <- floor(log10(abs(err)))
         if (e10 > 0) {
@@ -38,35 +41,52 @@ nformat <- function(n, err=0, digits=3, fmt="%s [%s]") {
     }
 }
 
-ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', '-', 'mstar', 'chi2nr', 'loglik', 'rms', 'jitter', 'epoch', 'ndata', 'trange', 'pars.minimized'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, caption=NULL, star.names=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE, sep.length=15) {
+.kis.active <- function(k, a, b) {
+    return(bitAnd(kflag(k, a, b), ACTIVE) == ACTIVE)
+}
+
+.linesep <- '        '
+
+
+ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', '-', sprintf('data.noise%d', 1:9), sprintf('data%d', 1:9), '-', 'mstar', 'chi2nr', 'chi2', 'loglik', 'rms', 'jitter', 'epoch', 'ndata', 'trange'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, caption=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE, sep.length=15) {
     systemic.names <- labels
     systemic.units <- units
     
-    if (class(k) == 'kernel')
-        k <- list(k)
-    if (is.null(star.names))
-        star.names <- rep('', length(k))
-    if (length(star.names) != length(k))
-        stop("There are more kernels than star names")
-    
+    stopifnot(class(k) == 'kernel')    
     df <- data.frame()
     
     if ('pars.minimized' %in% what) {
         idx <- which(what == 'pars.minimized')
-        parnames <- lapply(k, function(k) {
-            p <- kflags(k)$par
-            p <- p[p == bitOr(ACTIVE, MINIMIZE)]
-            p <- p[!is.na(systemic.names[names(p)])]
-            return(names(p))
-        })
+        
+        p <- kflags(k)$par
+        p <- p[p == bitOr(ACTIVE, MINIMIZE)]
+        p <- p[!is.na(systemic.names[names(p)])]
+        parnames <- names(p)
         
         if (length(parnames[[1]]) > 0) {
             what <- c(what[-idx], unlist(parnames))
         } else
             what <- what[-idx]
     }
+    what <- Filter(function(what) {
+        if (what == '-')
+            return(TRUE)
+        else if (systemic.type[what] == ELEMENT) {
+            if (what %in% .elements) {
+                return(any(sapply(1:k$nplanets, function(i) {
+                    return(.kis.active(k, i, what))
+                })))
+            } else {
+                return(TRUE)
+            }
+                
+        } else if (systemic.type[what] == PARAMETER)
+            return(.kis.active(k, 'par', what))
+        else
+            return(TRUE)
+    }, what)
     
-    planet.labels <- unlist(lapply(1:length(k), function(i) str_join(star.names[i], letters[1+1:k[[i]]$nplanets])))
+    planet.labels <- str_c(k$starname, letters[1+1:k$nplanets])
     
     row.labels <- sapply(what, function(n) {
         if (n == '-')
@@ -75,63 +95,70 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
             sprintf("%s %s", systemic.names[n], systemic.units[n])
     })
 
-    sep <- str_join(rep('—', sep.length), collapse='')
-    row.labels[row.labels == '-'] <- sep
     
     df <- matrix('', nrow=length(row.labels), ncol=length(planet.labels))
+    row.labels[row.labels == '-'] <- sapply(seq_along(which(row.labels == '-')), function(i) str_c(.linesep, str_rep(" ", i)))
+
     colnames(df) <- planet.labels
     rownames(df) <- row.labels
-
+    
     col <- 1
-    for (i in 1:length(k)) {
-        kk <- k[[i]]
-        if (is.null(kk$errors))
-            warning(sprintf("[Warning: Errors were not calculated for kernel #%d]\n", i))
 
-        for (pl in 1:kk$nplanets) {
-            for (j in 1:length(what)) {
+    
+    if (is.null(k$errors))
+        warning(sprintf("[Warning: Errors were not calculated for kernel #%d]\n", i))
 
-                if (what[j] == '-') {
-                    df[j, col] <- sep
-                    next
-                }
-                    
-                if (systemic.type[what[j]] == ELEMENT) {
-                    if (!is.null(kk$errors)) 
-                        df[j, col] <- nformat(kk$errors$stats[[pl]][what[j], 'median'],
-                                             kk$errors$stats[[pl]][what[j], 'mad'], fmt=default.nf)
-                    else
-                        df[j, col] <- nformat(kk[pl, what[j]])
-                    
-                }
-
-                if (pl > 1)
-                    next
-                
-                if (systemic.type[what[j]] == PARAMETER) {
-                    if (!is.null(kk$errors))
-                        df[j, col] <- nformat(kk$errors$params.stats[what[j], 'median'],
-                                             kk$errors$params.stats[what[j], 'mad'])
-                    else
-                        df[j, col] <- nformat(kk['par', what[j]])
-                    
-                } else if (systemic.type[what[j]] == PROPERTY) {
-                    
-                    p <- kget(kk, what[j])
-                    if (what[j] == 'trange') {
-                        p <- paste(nformat(p[1]), nformat(p[2]-p[1]), sep='+')
-                    } else {
-                        if (length(p) > 1)
-                            p <- str_join(sapply(p, nformat), collapse=' - ')
-                        else
-                            p <- nformat(p)
-                    }
-                    df[j, col] <- p
-                }
-            }
-            col <- col+1
-        }        
+    errors <- k$errors
+    if (!is.null(errors)) {
+        if (errors$nplanets != k$nplanets || errors$nsets != k$nsets) {
+            warning("Errors not applicable for current kernel (different # of planets or different data)")
+            errors <- NULL
+        }
     }
+    
+    for (pl in 1:k$nplanets) {
+        for (j in 1:length(what)) {
+
+            if (what[j] == '-') {
+                df[j, col] <- .linesep
+                next
+            }
+            
+            if (systemic.type[what[j]] == ELEMENT) {
+                if (!is.null(errors)) {
+                    df[j, col] <- nformat(errors$stats[[pl]][what[j], 'median'],
+                                         errors$stats[[pl]][what[j], 'mad'], fmt=default.nf)
+                } else
+                    df[j, col] <- nformat(k[pl, what[j]])
+                
+            }
+            
+            if (pl > 1)
+                next
+            
+            if (systemic.type[what[j]] == PARAMETER) {
+                if (!is.null(errors))
+                    df[j, col] <- nformat(errors$params.stats[what[j], 'median'],
+                                         errors$params.stats[what[j], 'mad'])
+                else
+                    df[j, col] <- nformat(k['par', what[j]])
+                
+            } else if (systemic.type[what[j]] == PROPERTY) {
+                
+                p <- kget(k, what[j])
+                if (what[j] == 'trange') {
+                    p <- paste(nformat(p[1]), nformat(p[2]-p[1]), sep='+')
+                } else {
+                    if (length(p) > 1)
+                        p <- str_c(sapply(p, nformat), collapse=' - ')
+                    else
+                        p <- nformat(p)
+                }
+                df[j, col] <- p
+            }
+        }
+        col <- col+1
+    }        
 
     class(df) <- c('systemic.table', 'matrix')
     attr(df, 'latex') <- latex
@@ -173,7 +200,7 @@ print.systemic.table <- function(df, file=stdout(), type=NA, caption=NULL, font.
         return(invisible())
     } else if (type == "latex") {
         s <- paste(toLatex(xtable(df, caption=attr(df, 'caption'))), collapse='\n')
-        s <- str_replace_all(s, "(——.+?)\\\\", "\\\\hline")
+        s <- str_replace_all(s, .linesep, "\\\\hline")
         s <- str_replace(s, "\\centering", paste("\\centering\\\\", font.size, sep=''))
         cat(s, file=file)
         return(invisible(s))
@@ -190,7 +217,7 @@ plot.systemic.table <- function(df, ...) {
     dev.copy2pdf(file, width, height)
 }
 
-latex.report <- function(k, where=stop("Specify a folder where to save the file."), trials=1e4,  report.file=str_join(getOption('systemic.path'), '/report.tex')) {
+latex.report <- function(k, where=stop("Specify a folder where to save the file."), trials=1e4,  report.file=str_c(getOption('systemic.path'), '/report.tex')) {
     cur <- getwd()
     on.exit(setwd(cur))
     setwd(where)

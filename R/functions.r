@@ -26,14 +26,7 @@ options(systemic.pmax=1e4)
     element.type = K_getElementType,
     abs.acc = K_getIntAbsAcc,
     rel.acc = K_getIntRelAcc,	
-    dt = K_getIntDt,
-    trange = function(h) {
-        a <- NaN
-        b <- NaN
-
-        K_getRange(h, a, b)
-        return(c(a, b))
-    },
+    dt = K_getIntDt,    
     ks.pvalue = function(h) {
         nd <- K_getNdata(h)
         if (nd <= 0)
@@ -65,6 +58,8 @@ systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
 for (i in 1:10) {
     systemic.names[sprintf('data.noise%d', i)] <- sprintf('Noise for dataset %d', i)    
     systemic.units[sprintf('data.noise%d', i)] <- '[m/s]'
+    systemic.names[sprintf('data%d', i)] <- sprintf('Shift for dataset %d', i)    
+    systemic.units[sprintf('data%d', i)] <- '[m/s]'
 }
 
 
@@ -76,6 +71,7 @@ systemic.type <- rep(ELEMENT, times=length(systemic.names))
 names(systemic.type) <- names(systemic.units)
 systemic.type[names(systemic.type) %in% .params] <- PARAMETER
 systemic.type[names(systemic.type) %in% names(.properties)] <- PROPERTY
+systemic.type[names(systemic.type) %in% c('trange', 'notes')] <- PROPERTY
 
 .free.gsl_matrix <- function(m) {
     gsl_matrix_free(m)
@@ -496,6 +492,8 @@ kels <- function(k, keep.first = FALSE) {
         return(2*k$loglik + k$nrpars*(log(k$ndata)))
     } else if (idx == 'notes') {
         return(kprop(k)['.notes'])
+    } else if (idx == 'trange') {
+        return(ktrange(k))
     } else if (idx == 'starname') {
         props <- kprop(k)
         if (is.null(props)) {
@@ -684,11 +682,14 @@ kprop <- function(k, idx = 'all') {
         K_setProgress(k[['h']], k[['.progress.cb']])
     } else if (idx == 'filename') {
         K_setInfo(k[['h']], 'FileName', value)
+        kupdate(k, calculate=FALSE)
     } else if (idx == 'notes') {
         K_setInfo(k[['h']], '.notes', as.character(value))
+        kupdate(k, calculate=FALSE)
     } else if (idx == 'datanames') {
         for (i in 1:length(value))
             K_setInfo(k[['h']], paste0('DataName', i-1), value[i])
+        kupdate(k, calculate=FALSE)        
     } else 
         k[[idx]] <- value
     return(k)
@@ -1053,10 +1054,11 @@ kload.system <- function(k, datafile) {
     #	- datafile: path to the .sys file
 
     dir <- getwd()
-    
+    datafile <- normalizePath(datafile, mustWork=FALSE)
     if (! file.exists(datafile))
         stop(paste("Cannot open", datafile, ", current directory:", getwd()))
 
+    
     K_addDataFromSystem(k$h, datafile)    
     kupdate(k)
 }
@@ -1103,6 +1105,11 @@ kload <- function(file, skip = 0, chdir=TRUE) {
     class(k) <- "kernel"	
     k$.epoch.set <- TRUE
     fclose(fid)
+
+    if (file.exists(str_c(file, "_errors.rds")))
+        k$errors <- readRDS(str_c(file, "_errors.rds"))
+    
+    
     kupdate(k)
     k$filename <- file
     return(k)
@@ -1128,6 +1135,9 @@ ksave <- function(k, file) {
         k$filename <- file
         K_save(k$h, fid)
         fclose(fid)
+
+        if (!is.null(k$errors))
+            saveRDS(k$errors, str_c(file, "_errors.rds"))
         
         return(invisible(k))
     } else if (class(k) == "list") {
@@ -2408,6 +2418,7 @@ kx2el <- function(mu = 1, x=1, y=0, z=0, u=0, v=1, w=0) {
     b$type <- type
     b$desc <- desc
     b$par.flags <- flags
+    b$date <- date()
     class(b) <- "error.est"
     
     b$.matrix <- m
@@ -2471,33 +2482,16 @@ print.kernel <- function(k, all.pars = FALSE) {
 		
     if (k$nplanets > 0) {
         cat("\n# Orbital elements\n")
-        print(kallels(k))
+        print(suppressWarnings(ktable(k)))
+
+        if (is.null(k$errors)) {
+            cat("# (Errors on parameters were not calculated)")
+        } else {
+            cat(sprintf("# Errors calculated on %s using %s\n# %s\n", k$errors$date, k$errors$type, k$errors$desc))
+        }
     }
-    cat("\n# Parameters\n")
-    if (k$nsets > 0)
-        subset <- c(1:k$nsets,  (1:k$nsets)+DATA_SETS_SIZE, RV.TREND, RV.TREND.QUADRATIC)
-    else
-        subset <- c(RV.TREND, RV.TREND.QUADRATIC)
-    if (! all.pars)
-        print(kpars(k)[subset])
-    else
-        print(kpars(k))
-    if (k$nplanets > 0) {
-        cat("\n# Orbital element flags\n")
-        print(kflags(k, what="els", type='human'))
-    }
-		
-    cat("\n# Parameter flags\n")
-    if (! all.pars)
-        print(kflags(k, what='par', type='human')[subset])	
-    else
-        print(kflags(k, what='par', type='human'))
+
     
-    if (! is.null(k$errors)) {
-        cat("\n# Last error estimation run results:\n")
-        print(k$errors)
-        cat("\n")
-    }
 }
 
 print.integration <- function(int) {

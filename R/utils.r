@@ -1,3 +1,6 @@
+str_rep <- function (ch, times)  
+    str_c(rep(ch, times), collapse = "")
+
 write.f <- function(m, file="", col.names=TRUE, format="%18.10e", sformat="%18s", comments=NULL) {
     f <- file(file, "w")
 
@@ -140,17 +143,19 @@ kauto.steps <- function(k1, delta.func=0.1, max.iters=10, verbose=TRUE) {
     
 }
 
-exoplanet.archive <- function(k) {
+exoplanet.archive <- function(name) {
     if (is.na(name)) {
         stop("Specify the star name (either assign it to a kernel using k$starname <- NAME, or pass it to this function directly)")
     }
-    browseURL(sprintf("http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=%s&type=PLANET%%20HOST&label&aliases&exo&iden&orb&ppar&tran&disc&ospar", name))
+    message(str_c("Using star name = ", name))
+   browseURL(sprintf("http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=%s&type=PLANET%%20HOST&label&aliases&exo&iden&orb&ppar&tran&disc&ospar", name))
 }
 
 simbad <- function(name=NA) {
     if (is.na(name)) {
         stop("Specify the star name (either assign it to a kernel using k$starname <- 'NAME', or pass the star name to this function directly)")
     }
+    message(str_c("Using star name = ", name))
     browseURL(sprintf("http://simbad.u-strasbg.fr/simbad/sim-id?Ident=%s", name))
 }
 
