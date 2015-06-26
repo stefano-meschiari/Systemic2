@@ -163,7 +163,7 @@ Save fit table as HTML||!print(xtable(ktable(@kernel@)), type='html', file='myfi
 Find this star on the NASA Exoplanet Archive|meta D|$exoplanet.archive(name=@kernel@$starname)
 Find this star on exoplanets.org||$exoplanets.org(name=@kernel@$starname)
 Find this star on exoplanet.eu||$exoplanet.eu(name=@kernel@$starname)
-Find this star on SIMBAD|meta shift D|$simbad(name=@kernel@)
+Find this star on SIMBAD|meta shift D|$simbad(name=@kernel@$starname)
 
 Plots
 New plot window|meta alt P|$dev.new()
