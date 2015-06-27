@@ -1082,7 +1082,7 @@ kload <- function(file, skip = 0, chdir=TRUE) {
   }
   k <- new.env()
   k$auto <- getOption("systemic.auto", F)
-  k$min.method <- LM
+  k$min.method <- SIMPLEX
   k$.new <- TRUE
   k$last.error.code <- integer(1)
   k$min.func <- 'chi2'
@@ -1143,7 +1143,9 @@ ksave <- function(k, file) {
     saveRDS(list(errors=k$errors,
                  integration=k$integration,
                  per_all=k$per_all,
-                 per_res=k$per_res),
+                 per_res=k$per_res,
+                 min.method=k$min.method,
+                 min.func=k$min.func),
             str_c(file, "_data.rds"))
     
     return(invisible(k))
@@ -2117,6 +2119,10 @@ kmcmc <- function(k, chains= 2, temps = 1, start = "perturb", noise=TRUE, skip.f
     } else if (start == "perturb") {
       for (ch in 1:chains) {
         ka[[ch]] <- kperturb(k)
+      }
+    } else if (start == "best") {
+      for (ch in 1:chains) {
+        ka[[ch]] <- kclone(k)
       }
     }
   } else if (class(k) == "list") {
