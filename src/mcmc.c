@@ -434,7 +434,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
         if (progress != NULL) {
             char prog[400];
             sprintf(prog, "[%d] R = %.2e [1/2 = %.2e], Rsing_max = %.2e [par = %d, chain = %d, v = %e], Rstop = %.2e, size = %d [%d]",
-                    kls[0][0]->size, Rmax, Rmax_90, Rsingle_max, conv_single_param, conv_single_chain, vals[conv_single_chain][conv_single_param], Rstop, kls[0][0]->size, Nstop);
+                    kls[0][0]->size, Rmax, Rmax_90, Rsingle_max, conv_single_param, conv_single_chain, vals[conv_single_param][conv_single_chain], Rstop, kls[0][0]->size, Nstop);
 
             double p = 10000. * (1 - fabs(Rmax - Rstop) / Rstop);
 
