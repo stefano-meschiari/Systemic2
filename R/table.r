@@ -55,7 +55,7 @@ kval <- function(k, what, idx='all', digits=3) {
       if (what != 'par')
         return(nformat(k$errors$stats[[idx]][what, 'median'],
                        k$errors$stats[[idx]][what, 'mad'],
-                       format='\\ensuremath{%s \\pm %s}'))
+                       fmt='\\ensuremath{%s \\pm %s}'))
     } else {
       return(nformat(k[idx, what], digits=digits))
     }
@@ -76,7 +76,7 @@ kval <- function(k, what, idx='all', digits=3) {
     return(s)
 }
 
-ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', '-', sprintf('data.noise%d', 1:9), sprintf('data%d', 1:9), '-', 'mstar', 'chi2nr', 'chi2', 'loglik', 'rms', 'jitter', 'epoch', 'ndata', 'trange'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, caption=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE, sep.length=15) {
+ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', '-', sprintf('data.noise%d', 1:9), sprintf('data%d', 1:9), '-', 'mstar', 'chi2nr', 'chi2', 'loglik', 'rms', 'jitter', 'epoch', 'ndata'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, caption=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE, sep.length=15, wide=FALSE) {
   
   systemic.names <- labels  
   systemic.units <- units
@@ -195,6 +195,7 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
   class(df) <- c('systemic.table', 'matrix')
   attr(df, 'latex') <- latex
   attr(df, 'caption') <- caption
+  attr(df, 'wide') <- wide
   
   return(df)
 }
@@ -234,6 +235,9 @@ print.systemic.table <- function(df, file=stdout(), type=NA, font.size="normalsi
     s <- paste(toLatex(xtable(df, caption=attr(df, 'caption'))), collapse='\n')
     s <- str_replace_all(s, str_c(.linesep, '.+'), "\\\\hline")
     s <- str_replace_all(s, "\\\\centering", paste0("\\\\centering\\\\", font.size))
+    if (attr(df, 'wide'))
+      s <- str_replace_all(s, "\\{table\\}", "\\{table*\\}")
+    
     cat(s, file=file)
     return(invisible(s))
   }

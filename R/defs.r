@@ -813,7 +813,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 .data[SET] <- 'set'
 
 .periodogram <- c("period", "power", "fap", "ls_power", "tau", "window")
-.elements.labels <- c(period="Period", mass="Mass", ma="Mean anomaly", ecc="Eccentricity", lop="Longitude of periastron", 
+.elements.labels <- c(period="Period", mass="Mass", ma="Mean anomaly", ecc="Eccentricity", lop="Long. of periastron", 
 	inc="Inclination", node="Node", radius="Radius", ord="Label", precession_rate="precession_rate", u2="u2", u3="u3", u4="u4",
 	a="Semi-major axis", k="Semiamplitude", tperi="Time of periastron passage", trueanomaly="True anomaly", 
 	meanlongitude="Mean longitude", j1="j1", j2="j2")

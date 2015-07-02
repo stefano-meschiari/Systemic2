@@ -239,6 +239,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
     double avgs[npars][nchains];
     double devs_90[npars][nchains];
     double avgs_90[npars][nchains];
+    double vals[npars][nchains];
 
     double devs_2[npars][nchains];
     double avgs_2[npars][nchains];
@@ -306,12 +307,14 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                     if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
                         devs[np][n] = MGET(dev, i, j);
                         avgs[np][n] = MGET(avg, i, j);
+
                         np++;
                     }
             for (int i = 0; i < PARAMS_SIZE; i++)
                 if (K_getParFlag(k[0], i) & MINIMIZE) {
                     devs[np][n] = VGET(dev_p, i);
                     avgs[np][n] = VGET(avg_p, i);
+
                     np++;
                 }
 
@@ -328,12 +331,14 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                     if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
                         devs_90[np][n] = MGET(dev_90, i, j);
                         avgs_90[np][n] = MGET(avg_90, i, j);
+                        vals[np][n] = KL_getElement(kls[n][0], kls[n][0]->size - 1, i, j);
                         np++;
                     }
             for (int i = 0; i < PARAMS_SIZE; i++)
                 if (K_getParFlag(k[0], i) & MINIMIZE) {
                     devs_90[np][n] = VGET(dev_90_p, i);
                     avgs_90[np][n] = VGET(avg_90_p, i);
+                    vals[np][n] = KL_getPar(kls[n][0], kls[n][0]->size - 1, i);
                     np++;
                 }
 
@@ -428,9 +433,8 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 
         if (progress != NULL) {
             char prog[400];
-            sprintf(prog, "[%d] R = %.2e [1/2 = %.2e], Rsing_max = %.2e [par = %d, chain = %d], Rstop = %.2e, size = %d [%d]",
-                    kls[0][0]->size, Rmax, Rmax_90, Rsingle_max, conv_single_param, conv_single_chain, Rstop, kls[0][0]->size, Nstop);
-
+            sprintf(prog, "[%d] R = %.2e [1/2 = %.2e], Rsing_max = %.2e [par = %d, chain = %d, v = %e], Rstop = %.2e, size = %d [%d]",
+                    kls[0][0]->size, Rmax, Rmax_90, Rsingle_max, conv_single_param, conv_single_chain, vals[conv_single_chain][conv_single_param], Rstop, kls[0][0]->size, Nstop);
 
             double p = 10000. * (1 - fabs(Rmax - Rstop) / Rstop);
 

@@ -42,7 +42,7 @@ options(systemic.pmax=1e4)
 
 
 systemic.names <- c(period='Period', mass='Mass', ma='Mean anomaly', ecc='Eccentricity',
-                    lop='Longitude of pericenter', inc='Inclination', node='Node',
+                    lop='Long. of pericenter', inc='Inclination', node='Node',
                     a='Semi-major axis', k='Semiamplitude', tperi='Periastron passage time', rv.trend='Linear trend',
                     rv.trend.quadratic='Quadratic trend', mstar='Stellar mass',
                     chi2='Reduced Chi-square', jitter='Stellar jitter', rms='RMS', epoch='Epoch', ndata='Data points', trange='Span of observations', chi2nr='Chi-square', loglik='Log likelihood')
@@ -1106,13 +1106,14 @@ kload <- function(file, skip = 0, chdir=TRUE) {
   k$.epoch.set <- TRUE
   fclose(fid)
 
-  if (file.exists(str_c(file, "_data.rds"))) {
-    lst <- readRDS(str_c(file, "_data.rds"))
+  if (file.exists(str_c(file, ".data.rds"))) {
+    lst <- readRDS(str_c(file, ".data.rds"))
     for (n in names(lst)) {
       k[[n]] <- lst[[n]]
     }
+    k$min.func <- lst$min.func 
   }
-  
+
   kupdate(k)
   k$filename <- file
   return(k)
@@ -1146,7 +1147,7 @@ ksave <- function(k, file) {
                  per_res=k$per_res,
                  min.method=k$min.method,
                  min.func=k$min.func),
-            str_c(file, "_data.rds"))
+            str_c(file, ".data.rds"))
     
     return(invisible(k))
   } else if (class(k) == "list") {
@@ -1677,8 +1678,8 @@ kcrossval.l1o <- function(k, iters = 5000, algo = NA, type=NA, sort.by.k=TRUE) {
     
     for (i in .k$nplanets:1) {
       kremove.planet(.k, i)
-      cat("# ", .k$nplanets, " planets [", sprintf("%.2f", .k[,'period']), collapse='', "]\n")
       invisible(kminimize(.k))
+      cat("# ", .k$nplanets, " planets [", sprintf("%.2f", .k[,'period']), collapse='', "]\n")
       ret[length(ret)+1] <- kcrossval.l1o(.k)
       print(ret[length(ret)])
       if (ret[length(ret)] < ret[length(ret)-1]) {
@@ -2586,7 +2587,13 @@ load.systemic <- function(file) {
   invisible()
 }
 
-
+kloud <- function(k) {
+  k$progress <- function(k, l) {
+    if (l$str != "") {
+        cat(sprintf("%d %d %s\n", l$cur, l$max, l$str))            
+    }
+  }
+}
 ## [1] Creating/opening/saving kernel objects
 ## [2] Setting fit parameters (planets, offsets, etc.)
 ## [5] Loading and manipulating data
