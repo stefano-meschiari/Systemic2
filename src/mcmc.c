@@ -443,6 +443,23 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             if (progret == PROGRESS_STOP || progret == PROGRESS_BREAK)
                 conv = true;
         }
+        if (verbose > 1) {
+            for (int i = 1; i < k[0]->system->nplanets + 1; i++) {
+                for (int j = 0; j < ELEMENTS_SIZE; j++)
+                    if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
+                        printf("%e ", KL_getElement(kls[conv_single_chain][0],
+                                kls[conv_single_chain][0]->size - 1,
+                                i, j));
+                    }
+                printf("\n");
+            }
+            for (int i = 0; i < PARAMS_SIZE; i++)
+                if (K_getParFlag(k[0], i) & MINIMIZE) {
+                    printf("%e ", KL_getPar(kls[conv_single_chain][0],
+                            kls[conv_single_chain][0]->size - 1,
+                            i));
+                }
+        }
 
         save++;
 
@@ -708,19 +725,7 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
         double al = MIN(exp(merit[1] - prevMerit[1] + beta * (merit[0] - prevMerit[0])), 1.);
         double u = gsl_rng_uniform(k2->rng);
 
-        if (i % 500 == 0 && verbose > 1 && omp_get_thread_num() == 0 && state != STATE_STEPS) {
-            static double maxP = -1;
-            maxP = MAX(maxP, MGET(k2->system->elements, 1, PER));
 
-            printf("%e %e %e %e %e %e %e %e %e %e %e d = %d\n", merit[0], prevMerit[0],
-                    beta, prevChi, K_getChi2_nr(k2), u, al,
-                    VGET(k2->params, P_DATA_NOISE1),
-                    MGET(k2->system->elements, 1, PER),
-                    maxP,
-                    *steps[sub], discard);
-            fflush(stdout);
-
-        }
 
         if (u < al) {
             prevMerit[0] = merit[0];
