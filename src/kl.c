@@ -240,12 +240,12 @@ gsl_vector* KL_getElements(const ok_list* kl, const int pl, const int el) {
 }
 
 double KL_getElement(const ok_list* kl, const int index, const int pl, const int el) {
-    assert(index >= 0 && index < kl->size);
+
     return MGET(kl->kernels[index]->elements, pl, el);
 }
 
 double KL_getPar(const ok_list* kl, const int index, const int what) {
-    assert(index >= 0 && index < kl->size);
+
     return VGET(kl->kernels[index]->params, what);
 }
 

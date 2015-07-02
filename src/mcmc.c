@@ -331,14 +331,14 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                     if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
                         devs_90[np][n] = MGET(dev_90, i, j);
                         avgs_90[np][n] = MGET(avg_90, i, j);
-                        vals[np][n] = KL_getElement(kls[n][0], kls[n][0]->size - 1, i, j);
+                        vals[np][n] = KL_getElement(kls[n][0], size - 1, i, j);
                         np++;
                     }
             for (int i = 0; i < PARAMS_SIZE; i++)
                 if (K_getParFlag(k[0], i) & MINIMIZE) {
                     devs_90[np][n] = VGET(dev_90_p, i);
                     avgs_90[np][n] = VGET(avg_90_p, i);
-                    vals[np][n] = KL_getPar(kls[n][0], kls[n][0]->size - 1, i);
+                    vals[np][n] = KL_getPar(kls[n][0], size - 1, i);
                     np++;
                 }
 
@@ -448,7 +448,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                 for (int j = 0; j < ELEMENTS_SIZE; j++)
                     if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
                         printf("%e ", KL_getElement(kls[conv_single_chain][0],
-                                kls[conv_single_chain][0]->size - 1,
+                                kls[conv_single_chain][0]->size - 2,
                                 i, j));
                     }
                 printf("\n");
@@ -456,9 +456,10 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
             for (int i = 0; i < PARAMS_SIZE; i++)
                 if (K_getParFlag(k[0], i) & MINIMIZE) {
                     printf("%e ", KL_getPar(kls[conv_single_chain][0],
-                            kls[conv_single_chain][0]->size - 1,
+                            kls[conv_single_chain][0]->size - 2,
                             i));
                 }
+            print("\n");
         }
 
         save++;
