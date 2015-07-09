@@ -6,9 +6,7 @@
 #include "time.h"
 
 int main() {
-    FILE* fid = fopen("/Users/sm52286/Dropbox/Projects/HJST/psidraa.k", "r");
-    
-    ok_kernel* k = K_load(fid, 0);
-    
-    
+
+
+
 }

@@ -132,7 +132,7 @@ kauto.steps <- function(k1, delta.func=0.1, max.iters=10, verbose=TRUE) {
             iters <- iters + 1
             p[i] <- 0.5 * p[i] * max(min(1 + delta.func/dchi, 10), 0.1)
             if (verbose)
-                cat(sprintf("[%d] dfunc = %e, step = %e\n", i, dchi, p[i]))
+                cat(sprintf("[%d] v = %e, dfunc = %e, step = %e\n", i, a[i], dchi, p[i]))
         }
         k['minimized'] <- a
     }

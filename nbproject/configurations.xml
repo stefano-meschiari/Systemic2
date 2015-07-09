@@ -62,6 +62,9 @@
       </makefileType>
       <folder path="0/local">
         <cTool>
+          <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
+          </incDir>
           <preprocessorList>
             <Elem>NON_UNIX_STDIO</Elem>
             <Elem>NO_FPINIT</Elem>
@@ -73,6 +76,7 @@
       <item path="src/bootstrap.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -100,6 +104,7 @@
       <item path="src/de.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
           </incDir>
@@ -111,6 +116,7 @@
       <item path="src/extras.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -138,6 +144,7 @@
       <item path="src/integration.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -164,6 +171,9 @@
       </item>
       <item path="src/javascript.c" ex="false" tool="0" flavor2="2">
         <cTool>
+          <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
+          </incDir>
           <preprocessorList>
             <Elem>_OPENMP=200505</Elem>
           </preprocessorList>
@@ -171,6 +181,9 @@
       </item>
       <item path="src/javascript.h" ex="false" tool="0" flavor2="2">
         <cTool>
+          <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
+          </incDir>
           <preprocessorList>
             <Elem>_OPENMP=200505</Elem>
           </preprocessorList>
@@ -179,6 +192,7 @@
       <item path="src/kernel.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -206,6 +220,7 @@
       <item path="src/kl.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -233,6 +248,7 @@
       <item path="src/mcmc.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -260,6 +276,7 @@
       <item path="src/mercury.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -287,6 +304,7 @@
       <item path="src/periodogram.c" ex="false" tool="0" flavor2="3">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>deps/include</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>.</pElem>
@@ -296,6 +314,7 @@
       <item path="src/qsortimp.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -323,6 +342,7 @@
       <item path="src/sa.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
           </incDir>
@@ -334,6 +354,7 @@
       <item path="src/simplex.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>
@@ -361,6 +382,7 @@
       <item path="src/swift.c" ex="false" tool="0" flavor2="3">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>deps/include</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>.</pElem>
@@ -388,6 +410,7 @@
       <item path="src/utils.c" ex="false" tool="0" flavor2="2">
         <cTool>
           <incDir>
+            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
             <pElem>/opt/local/include</pElem>
             <pElem>local/include</pElem>
             <pElem>local/swift/mvs/drift</pElem>

@@ -196,5 +196,6 @@ double K_crossval_l1o(ok_kernel* k, int minalgo, int maxiter, double params[]) {
     if (invalid)
         return INVALID_NUMBER;
 
+    lh2 += -0.5 * (double) k->ndata * LOG_2PI;
     return -lh2;
 }

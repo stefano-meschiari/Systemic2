@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 #include "systemic.h"
-    
+
     ok_list* KL_alloc(const int size, ok_kernel* prototype);
     void KL_free(ok_list* list);
     ok_list* KL_load(FILE* fid, int skip);
@@ -27,7 +27,10 @@ extern "C" {
     void KL_removeAtIndex(ok_list* kl, const int idx);
     void KL_fprintf(const ok_list* kl, FILE* out, const char* fmt, const char* lfmt);
     void KL_to_ptr(const ok_list* kl, double* out);
-    int KL_getNplanets(const ok_list* kl);    
+    int KL_getNplanets(const ok_list* kl);
+    double KL_getElement(const ok_list* kl, const int index, const int pl, const int el);
+    double KL_getPar(const ok_list* kl, const int index, const int what);
+
 #ifdef	__cplusplus
 }
 #endif

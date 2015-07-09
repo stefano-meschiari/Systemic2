@@ -85,7 +85,7 @@ ok_kernel* K_alloc() {
     k->minfunc = K_getChi2;
     k->system = ok_alloc_system(0);
     k->info = NULL;
-    
+
     MSET(k->system->elements, 0, MASS, 1.);
     k->compiled = NULL;
     k->plRanges = (gsl_matrix**) calloc(2, sizeof (gsl_matrix*));
@@ -159,9 +159,9 @@ void K_free(ok_kernel* k) {
             free(k->integration);
         }
         free(k->compiled);
-        
+
         K_clearInfo(k);
-            
+
     }
     if (k->intOptions->buffer != NULL)
         gsl_vector_free(k->intOptions->buffer);
@@ -285,7 +285,7 @@ gsl_matrix* K_addDataTable(ok_kernel* k, gsl_matrix* table, const char* name, in
     }
 
     k->datasets[k->nsets] = table;
-    
+
     for (int i = 0; i < MROWS(table); i++)
         MSET(table, i, T_FLAG, type);
 
@@ -295,11 +295,11 @@ gsl_matrix* K_addDataTable(ok_kernel* k, gsl_matrix* table, const char* name, in
         VISET(k->parFlags, k->nsets - 1, ACTIVE | MINIMIZE);
     else
         VISET(k->parFlags, k->nsets - 1, ACTIVE);
-    
+
     char dataTag[100];
-    sprintf(dataTag, "DataFileName%d", k->nsets-1);
+    sprintf(dataTag, "DataFileName%d", k->nsets - 1);
     K_setInfo(k, dataTag, name);
-    
+
     return table;
 }
 
@@ -348,11 +348,11 @@ gsl_matrix* K_addDataFile(ok_kernel* k, const char* path, int type) {
 
     VSET(k->parSteps, k->nsets - 1, 0.05);
     VSET(k->params, k->nsets - 1, 0.);
-    
+
     char dataTag[100];
-    sprintf(dataTag, "DataFileName%d", k->nsets-1);
+    sprintf(dataTag, "DataFileName%d", k->nsets - 1);
     K_setInfo(k, dataTag, path);
-    
+
     return k->datasets[k->nsets - 1];
 }
 
@@ -379,23 +379,23 @@ void K_removeData(ok_kernel* k, int idx) {
 
     gsl_matrix_free(k->datasets[idx]);
     k->datasets[idx] = NULL;
-    
+
     char a[100];
-    
+
     for (int i = idx + 1; i < k->nsets; i++) {
         k->datasets[i - 1] = k->datasets[i];
         k->params->data[i - 1] = k->params->data[i];
         k->parFlags->data[i - 1] = k->parFlags->data[i];
         k->parSteps->data[i - 1] = k->parSteps->data[i];
         sprintf(a, "DataFileName%d", i);
-        
+
         char* fn = K_getInfo(k, a);
-        sprintf(a, "DataFileName%d", i-1);
+        sprintf(a, "DataFileName%d", i - 1);
         K_setInfo(k, a, fn);
     }
-    sprintf(a, "DataFileName%d", k->nsets-1);
+    sprintf(a, "DataFileName%d", k->nsets - 1);
     K_setInfo(k, a, NULL);
-    
+
     k->parFlags->data[k->nsets - 1] = 0;
     k->parSteps->data[k->nsets - 1] = 1e-2;
 
@@ -665,7 +665,7 @@ double K_getElement(ok_kernel* k, int row, int col) {
         double K = 2 * M_PI / per * mass * MJUP / (Mcent + mass * MJUP) * a / sqrt(1 - ecc * ecc);
         return K * AU / (100. * DAY);
     } else if (col == TPERI) {
-        double n = 360./MGET(k->system->elements, row, PER);
+        double n = 360. / MGET(k->system->elements, row, PER);
         return k->system->epoch - MGET(k->system->elements, row, MA) / n;
     } else if (col == TRUEANOMALY) {
         double e = MGET(k->system->elements, row, ECC);
@@ -1281,14 +1281,14 @@ ok_kernel* K_cloneFlags(ok_kernel* k, unsigned int flags) {
         k2->integration = NULL;
         k2->integrationSamples = -1;
         k2->info = NULL;
-        
+
         ok_info* ptr = k->info;
         ok_info* last = NULL;
         while (ptr != NULL) {
-            ok_info* n = (ok_info*) malloc(sizeof(ok_info));
+            ok_info* n = (ok_info*) malloc(sizeof (ok_info));
             n->next = NULL;
             n->tag = n->info = NULL;
-            
+
             if (ptr->info != NULL && ptr->tag != NULL) {
                 n->tag = strdup(ptr->tag);
                 n->info = strdup(ptr->info);
@@ -1394,15 +1394,15 @@ void K_print(ok_kernel* k, FILE* f) {
     for (int i = 0; i < k->nsets; i++) {
         fprintf(f, "data[%d] -> %e\n", i, k->params->data[i]);
     }
-    
+
     fprintf(f, "Info:\n");
     ok_info* el = k->info;
     while (el != NULL) {
         fprintf(f, "%s = %s\n", el->tag, el->info);
         el = el->next;
     }
-        
-    
+
+
     fprintf(f, "Orbits:\n");
     ok_fprintf_matrix(k->system->orbits, f, "%e ");
     fprintf(f, "XYZ:\n");
@@ -1424,20 +1424,20 @@ void K_setInfo(ok_kernel* k, const char* tag, const char* content) {
             ptr = ptr->next;
         } while (ptr != NULL);
     }
-    
+
     char* info = (content != NULL ? strdup(content) : NULL);
     char* newtag = (tag != NULL ? strdup(tag) : NULL);
-        
-    
+
+
     if (el == NULL) {
-        el = (ok_info*) malloc(sizeof(ok_info));
-        
+        el = (ok_info*) malloc(sizeof (ok_info));
+
         el->tag = newtag;
         el->info = info;
         el->next = k->info;
         k->info = el;
     } else {
-        
+
         if (el->tag != NULL) free(el->tag);
         if (el->info != NULL) free(el->info);
         el->tag = newtag;
@@ -1446,8 +1446,8 @@ void K_setInfo(ok_kernel* k, const char* tag, const char* content) {
 }
 
 bool K_infoExists(ok_kernel* k, const char * tag) {
-    return(K_getInfo(k, tag) != NULL);
-    
+    return (K_getInfo(k, tag) != NULL);
+
 }
 
 char* K_getInfo(ok_kernel* k, const char* tag) {
@@ -1470,7 +1470,7 @@ char* K_getInfoTag(ok_kernel* k, int n) {
         if (i == n) {
             if (el->info == NULL)
                 return "";
-            
+
             return el->tag;
         }
         el = el->next;
@@ -1483,7 +1483,7 @@ void K_clearInfo(ok_kernel* k) {
     ok_info* ptr = k->info;
     while (ptr != NULL) {
         ok_info* next = ptr->next;
-        
+
         free(ptr->tag);
         free(ptr->info);
         free(ptr);
@@ -1612,7 +1612,7 @@ bool K_save(ok_kernel* k, FILE* fid) {
             fprintf(fid, "$%s = %s\n", info->tag, info->info);
         info = info->next;
     }
-    
+
     fprintf(fid, "\n@End\n");
     return true;
 }
@@ -1652,7 +1652,7 @@ ok_kernel* K_load(FILE* fid, int skip) {
     double v;
     int r;
     k->nsets = 0;
-    
+
     while (true) {
         if ((fgets(line, sizeof (line), fid) == NULL) || feof(fid) || strcmp(line, "@End\n") == 0)
             break;
@@ -1723,11 +1723,11 @@ ok_kernel* K_load(FILE* fid, int skip) {
             k->datasets[k->nsets] = d;
             k->nsets++;
         } else if (strlen(tag) > 0 && tag[0] == '$') {
-            ok_info* el = (ok_info*) malloc(sizeof(ok_info));
+            ok_info* el = (ok_info*) malloc(sizeof (ok_info));
             el->next = NULL;
             el->tag = strdup(tag + 1);
             line[strlen(line) - 1] = '\0';
-            el->info = (char*) malloc((strlen(line)+1) * sizeof(char));
+            el->info = (char*) malloc((strlen(line) + 1) * sizeof (char));
             strcpy(el->info, line + strlen(tag) + 3);
             if (k->info == NULL) {
                 k->info = el;
@@ -1740,7 +1740,7 @@ ok_kernel* K_load(FILE* fid, int skip) {
 
     k->flags = NEEDS_SETUP | NEEDS_COMPILE;
     K_validate(k);
-    
+
     return k;
 
 }
@@ -1752,10 +1752,10 @@ bool K_addDataFromSystem(ok_kernel* k, const char* filename) {
     FILE* fid = fopen(filename, "r");
     if (fid == NULL)
         return false;
-    
-    char* buf = (char*) malloc(sizeof(char) * MAX_LINE);
+
+    char* buf = (char*) malloc(sizeof (char) * MAX_LINE);
     char token[MAX_LINE];
-    
+
     char path[MAX_LINE];
 
     char* fn = strdup(filename);
@@ -1763,18 +1763,18 @@ bool K_addDataFromSystem(ok_kernel* k, const char* filename) {
 
     while (fgets(buf, MAX_LINE, fid) != 0) {
         char* line = ok_str_trim(buf);
-        char* value = (char*) malloc(sizeof(char) * MAX_LINE);
+        char* value = (char*) malloc(sizeof (char) * MAX_LINE);
         if (sscanf(line, "%s", token) == 1) {
             if ((strcmp(token, "RV[]") == 0) || (strcmp(token, "TD[]") == 0)) {
                 if (sscanf(line, "%*s %s", value) == 1) {
-                    
+
                     char* df = ok_str_trim(value);
-                    
+
                     if (strlen(df) > 1 && df[0] == '"')
                         df++;
                     if (strlen(df) > 1 && df[strlen(df) - 1] == '"')
                         df[strlen(df) - 1] = '\0';
-                    
+
                     char* ext = strrchr(df, '.');
 
                     if (!ok_file_readable(df))

@@ -47,7 +47,7 @@ double K_getParMax(ok_kernel* k, int column, double defMax) {
         } \
 
 
-double K_default_prior(const ok_kernel* k) {
+double K_default_prior(ok_kernel* k) {
     double prior = 1;
 
     for (int i = 1; i < MROWS(k->system->elements); i++) {
@@ -239,10 +239,10 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
     double avgs[npars][nchains];
     double devs_90[npars][nchains];
     double avgs_90[npars][nchains];
-    double vals[npars][nchains];
-
     double devs_2[npars][nchains];
     double avgs_2[npars][nchains];
+    double vals[npars][nchains];
+
 
     double W[npars];
     double B[npars];
@@ -253,25 +253,37 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
     double R_90[npars];
 
     bool isAngle[npars];
+    int parType[npars];
+    int parLabel[npars];
 
     for (int i = 0; i < npars; i++)
         isAngle[i] = false;
 
     int np = 0;
     for (int i = 1; i < k[0]->system->nplanets + 1; i++)
-        for (int j = 0; j < ELEMENTS_SIZE; j++)
+        for (int j = 0; j < ELEMENTS_SIZE; j++) {
             if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
                 isAngle[np] = (j == MA || j == LOP || j == INC || j == NODE || j == TRUEANOMALY);
+                parType[np] = ELEMENT;
+                parLabel[np] = j;
                 np++;
             }
+
+        }
+
+    for (int i = 0; i < PARAMS_SIZE; i++)
+        if (K_getParFlag(k[0], i) & MINIMIZE) {
+            parType[np] = PARAMETER;
+            parLabel[np] = i;
+            np++;
+        }
+
 
     double Rmax = 0;
     double Rmax_90 = 0;
     double Rsingle_max = 0;
     while ((!(conv || conv_single)) || (Nmin > kls[0][0]->size)) {
-        Rmax = 0.;
-        Rmax_90 = 0.;
-        Rsingle_max = 0.;
+
         bool stopped = false;
 
 
@@ -332,13 +344,19 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                         devs_90[np][n] = MGET(dev_90, i, j);
                         avgs_90[np][n] = MGET(avg_90, i, j);
                         vals[np][n] = KL_getElement(kls[n][0], size - 1, i, j);
+
+                        if (n == 0)
+                            printf("%d %e\n", np, vals[np][n]);
                         np++;
+
                     }
             for (int i = 0; i < PARAMS_SIZE; i++)
                 if (K_getParFlag(k[0], i) & MINIMIZE) {
                     devs_90[np][n] = VGET(dev_90_p, i);
                     avgs_90[np][n] = VGET(avg_90_p, i);
                     vals[np][n] = KL_getPar(kls[n][0], size - 1, i);
+                    if (n == 0)
+                        printf("%d %e\n", np, vals[np][n]);
                     np++;
                 }
 
@@ -390,7 +408,10 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
         int conv_params = 0;
         int conv_single_param = -1;
         int conv_single_chain = -1;
-
+        int Rmax_param = -1;
+        Rmax = 0.;
+        Rmax_90 = 0.;
+        Rsingle_max = 0.;
         for (int np = 0; np < npars; np++) {
             if (isAngle[np]) {
                 W[np] = ok_average_angle(devs[np], nchains, false);
@@ -406,6 +427,9 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 
             R[np] = sqrt((W[np] + B[np]) / W[np]);
             R_90[np] = sqrt((W_90[np] + B_90[np]) / W_90[np]);
+
+            if (Rmax < R[np])
+                Rmax_param = np;
 
             Rmax = MAX(Rmax, R[np]);
             Rmax_90 = MAX(Rmax_90, R_90[np]);
@@ -433,12 +457,12 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 
         if (progress != NULL) {
             char prog[400];
-            sprintf(prog, "[%d] R = %.2e [1/2 = %.2e], Rsing_max = %.2e [par = %d, chain = %d, v = %e], Rstop = %.2e, size = %d [%d]",
-                    kls[0][0]->size, Rmax, Rmax_90, Rsingle_max, conv_single_param, conv_single_chain, vals[conv_single_param][conv_single_chain], Rstop, kls[0][0]->size, Nstop);
+            sprintf(prog, "[%d] R[%d] = %.2e [1/2 = %.2e], Rsing_max = %.2e [par = %d, chain = %d, v = %e], Rstop = %.2e, size = %d [%d]",
+                    kls[0][0]->size, Rmax_param, Rmax, Rmax_90, Rsingle_max, conv_single_param, conv_single_chain, vals[conv_single_param][conv_single_chain], Rstop, kls[0][0]->size, Nstop);
 
-            double p = 10000. * (1 - fabs(Rmax - Rstop) / Rstop);
+            double p = 100. * (1 - fabs(Rmax - Rstop) / Rstop);
 
-            int progret = progress((int) p, 10000, NULL, prog);
+            int progret = progress((int) p, 100, NULL, prog);
 
             if (progret == PROGRESS_STOP || progret == PROGRESS_BREAK)
                 conv = true;
@@ -459,7 +483,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                             kls[conv_single_chain][0]->size - 2,
                             i));
                 }
-            print("\n");
+            printf("\n");
         }
 
         save++;
@@ -574,7 +598,6 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
     int verbose = 2;
     double acc_ratio = 0.25;
     int progress_every = (k2->intMethod == KEPLER ? 2000 : 2);
-    long max_steps = -1;
 
     while (dparams != NULL) {
         if (dparams[optIdx] == DONE)
@@ -635,7 +658,6 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
 
 
     (merit_function == NULL ? K_mcmc_likelihood_and_prior_default(k2, prevMerit) : merit_function(k2, prevMerit));
-    double prevChi = K_getChi2_nr(k2);
 
     int state = ((cont == NULL && !skipStepsConvergence) ? STATE_STEPS : STATE_SKIP);
 
@@ -731,7 +753,6 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
         if (u < al) {
             prevMerit[0] = merit[0];
             prevMerit[1] = merit[1];
-            prevChi = K_getChi2_nr(k2);
 
             MATRIX_MEMCPY(oldEls, k2->system->elements);
             VECTOR_MEMCPY(oldPars, k2->params);
@@ -786,7 +807,7 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
                 printf("%d %e -> %e [%e]\n", sub, oldstep, *steps[sub], (acc_par[sub] / n_par[sub]));
                 fflush(stdout);
             }
-            if (fabs(acc_par[sub] / n_par[sub] - acc_ratio) < 0.01) {
+            if (fabs(acc_par[sub] / n_par[sub] - acc_ratio) < 0.1 * acc_ratio) {
                 conv_par[sub] = true;
             }
 
@@ -799,6 +820,12 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
             if (conv) {
                 i = 0;
                 state = STATE_SKIP;
+
+                printf("Steps computed:\n");
+                for (int kpar = 0; kpar < npar; kpar++) {
+                    printf("[%d] %.2e\n", kpar, *(steps[kpar]));
+                }
+                printf("\n");
             }
 
 

@@ -4,7 +4,7 @@ systemic.par$tck <- 0.02
 systemic.par$col.axis <- rgb(127, 127, 127, maxColorValue=255)
 systemic.par$cex.lab <- 1.25
 systemic.par$mar <- c(4.1, 5.1, 2.1, 2.1)
-systemic.par$mgp <- c(2, 0.75, 0)
+systemic.par$mgp <- c(2, 0.5, 0)
 systemic.palette <- systemic.theme.tomorrow
 systemic.palette.face <- systemic.theme.tomorrow.face
 

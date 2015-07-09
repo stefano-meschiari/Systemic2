@@ -8,6 +8,7 @@ dev.copy2png <- function(file, ...) {
   dev.off()
 }
 
+
 systemic.units.latex <- c(period='[days]', mass='[$\\mass_\\s{jup}$]', ma='[deg]', ecc='',
                          lop='[deg]', inc='[deg]', node='[deg]',
                          a='[AU]', k='[$\\mathrm{m s}^{-1}$]', tperi='[JD]',
@@ -19,7 +20,7 @@ for (i in 1:10) {
   systemic.units.latex[sprintf('data%d', i)] <- '[$\\mathrm{m s}^{-1}$]'
 }
 
-nformat <- function(n, err=0, digits=3, fmt="%s [%s]") {
+nformat <- function(n, err=0, digits=3, fmt="%s [%s]", latex=FALSE) {
   if (is.na(n))
     return('NaN')
   if (err != 0) {
@@ -27,9 +28,13 @@ nformat <- function(n, err=0, digits=3, fmt="%s [%s]") {
     if (e10 > 0) {
       err <- round(err)
       n <- round(n)
-    } else {
+    } else if (e10 > -5 || !latex) {
       fmt2 <- sprintf("%%.%df", -e10)            
       err <- sprintf(fmt2, round(err, -e10))
+      n <- sprintf(fmt2, round(n, -e10))
+    } else {
+      fmt2 <- sprintf("%%.%df", -e10)
+      err <- sprintf("$%.0f\\times 10^{-%.0f}$", err * 10^(-e10), -e10)            
       n <- sprintf(fmt2, round(n, -e10))
     }
     return(sprintf(fmt, n, err))
@@ -43,7 +48,7 @@ nformat <- function(n, err=0, digits=3, fmt="%s [%s]") {
   }
 }
 
-kval <- function(k, what, idx='all', digits=3) {
+kval <- function(k, what, idx='all', digits=3, latex=FALSE) {
   if (idx == 'all')
     return(sapply(1:k$nplanets, function(i) kval(k, what, i)))
   else if (idx == 'min')
@@ -55,9 +60,9 @@ kval <- function(k, what, idx='all', digits=3) {
       if (what != 'par')
         return(nformat(k$errors$stats[[idx]][what, 'median'],
                        k$errors$stats[[idx]][what, 'mad'],
-                       fmt='\\ensuremath{%s \\pm %s}'))
+                       fmt='\\ensuremath{%s \\pm %s}', latex=latex))
     } else {
-      return(nformat(k[idx, what], digits=digits))
+      return(nformat(k[idx, what], digits=digits, latex=latex))
     }
   }
 }
@@ -76,7 +81,7 @@ kval <- function(k, what, idx='all', digits=3) {
     return(s)
 }
 
-ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', '-', sprintf('data.noise%d', 1:9), sprintf('data%d', 1:9), '-', 'mstar', 'chi2nr', 'chi2', 'loglik', 'rms', 'jitter', 'epoch', 'ndata'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, caption=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE, sep.length=15, wide=FALSE) {
+ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tperi', '-', sprintf('data.noise%d', 1:9), sprintf('data%d', 1:9), '-', 'mstar', 'chi2nr', 'loglik', 'rms', 'jitter', 'epoch', 'ndata'), labels=systemic.names, units=if (!latex) systemic.units else systemic.units.latex, caption=NULL, default.format="%.2f", default.nf="%s [%s]", latex=FALSE, sep.length=15, wide=FALSE) {
   
   systemic.names <- labels  
   systemic.units <- units
@@ -159,9 +164,9 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
 
         if (!is.null(errors)) {
           df[j, col] <- nformat(errors$stats[[pl]][what[j], 'median'],
-                                errors$stats[[pl]][what[j], 'mad'], fmt=default.nf)
+                                errors$stats[[pl]][what[j], 'mad'], fmt=default.nf, latex=latex)
         } else
-          df[j, col] <- nformat(k[pl, what[j]])
+          df[j, col] <- nformat(k[pl, what[j]], latex=latex)
         
       }
       

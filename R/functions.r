@@ -56,9 +56,9 @@ systemic.units <- c(period='[days]', mass='[M_{jup}]', ma='[deg]', ecc='',
                     mstar = '[M_{sun}]', chi2='', jitter='[m/s]', rms='[m/s]',
                     epoch = '[JD]', ndata='', trange='[JD]', chi2nr='', loglik='')
 for (i in 1:10) {
-  systemic.names[sprintf('data.noise%d', i)] <- sprintf('Noise for dataset %d', i)    
+  systemic.names[sprintf('data.noise%d', i)] <- sprintf('Dataset %d $\\sigma$', i)    
   systemic.units[sprintf('data.noise%d', i)] <- '[m/s]'
-  systemic.names[sprintf('data%d', i)] <- sprintf('Shift for dataset %d', i)    
+  systemic.names[sprintf('data%d', i)] <- sprintf('Dataset %d $\\delta v$', i)    
   systemic.units[sprintf('data%d', i)] <- '[m/s]'
 }
 
@@ -957,7 +957,6 @@ kclone <- function(k) {
   k2$h <- K_clone(k$h)
   k2$auto <- k$auto
   k2$.new <- TRUE
-  k2$errors <- k$errors
   
   reg.finalizer(k2$h, .free.kernel)
   class(k2) <- "kernel"

@@ -107,7 +107,7 @@ gsl_matrix* K_getXYZ(ok_kernel* k);
 
 // STELLAR PARAMETERS
 K_GETSET_H(Mstar, Mstar, double)
-        
+
 // SYSTEM PARAMETERS
 K_GETSET_H(epoch, Epoch, double)
 K_GET_H(chi2, Chi2, double)
@@ -118,14 +118,14 @@ double K_getLoglik(ok_kernel* k);
 K_GET_H(rms, Rms, double)
 K_GET_H(jitter, Jitter, double)
 K_GET_H(compiled, Compiled, double**)
-        
+
 K_GET_H(nrvs, Nrvs, unsigned int)
 K_GET_H(ntts, Ntts, unsigned int)
 K_GET_H(nsets, Nsets, unsigned int)
 K_GET_H(chi2_rvs, Chi2_rvs, double)
-K_GET_H(chi2_tts, Chi2_tts, double)        
-K_GET_H(rms_tts, Rms_tts, double)        
-        
+K_GET_H(chi2_tts, Chi2_tts, double)
+K_GET_H(rms_tts, Rms_tts, double)
+
 K_GETSET_H(flags, Flags, unsigned int)
 K_GETSET_H(minfunc, MinFunc, ok_callback)
 K_GETSET_H(plSteps, ElementSteps, gsl_matrix*)
@@ -141,7 +141,7 @@ K_GETSET_H(model_function, CustomModelFunction, ok_model_function)
 K_GETSET_H(intOptions->absacc, IntAbsAcc, double)
 K_GETSET_H(intOptions->relacc, IntRelAcc, double)
 K_GETSET_H(intOptions->dt, IntDt, double)
-        
+
 unsigned int K_getNplanets(ok_kernel* k);
 unsigned int K_getNdata(ok_kernel* k);
 void K_getRange(ok_kernel* k, double* from, double* to);

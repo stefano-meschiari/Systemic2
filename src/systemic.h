@@ -229,6 +229,10 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define INTEGRATION_FAILURE_CLOSE_ENCOUNTER_STAR (1 << 14)
 #define INTEGRATION_FAILURE_STOPPED (1 << 15)
 #define INTEGRATION_FAILURE_SWIFT (1 << 16)
+
+#define ELEMENT 0
+#define PARAMETER 1
+
 typedef struct ok_system {
     /// The number of planets
     int nplanets;
@@ -263,7 +267,6 @@ typedef void(*ok_icallback)(int);
 
 typedef int(*ok_progress)(int current, int max, void* state, const char* function);
 
-
 typedef struct ok_integrator_options {
     // Absolute and relative accuracy (used by the RK integrators and SWIFT_BS)
     double abs_acc;
@@ -274,9 +277,9 @@ typedef struct ok_integrator_options {
     double dt;
     // Accuracy parameter for the transits
     double eps_tr;
-    
+
     int iterations;
-    
+
     bool calc_elements;
     /// A pointer to a force function that takes in time,
     /// the current state as an array, the output force
@@ -284,12 +287,12 @@ typedef struct ok_integrator_options {
     int (* force) (double, const double[], double[], void*);
     int (* jac) (double, const double[], double*, double[], void*);
     int (* force_jerk) (double, const double[], double[], double[], void*);
-    
+
     // A buffer, used to hold memory to be reused between
     // integrator calls.
     gsl_vector* buffer;
     gsl_vector_int* ibuffer;
-    
+
     ok_progress progress;
 } ok_integrator_options;
 
@@ -299,6 +302,7 @@ typedef ok_system**(*ok_integrator)(ok_system*, const gsl_vector*, ok_integrator
 typedef int(*ok_minimizer)(ok_kernel*, int, double[]);
 
 typedef struct ok_info ok_info;
+
 struct ok_info {
     char* tag;
     char* info;
@@ -326,7 +330,7 @@ struct ok_kernel {
     int nsets;
     // list of radial velocities
     gsl_matrix** datasets;
-    
+
     // compiled data (merged and sorted); each row is a pointer to a row
     // of data (RV, photometry, transit timing, etc.)
     double** compiled;
@@ -355,7 +359,7 @@ struct ok_kernel {
     int nrvs;
     int ntts;
     int nrpars;
-    
+
     // integration
     int intMethod;
     ok_integrator_options* intOptions;
@@ -372,14 +376,14 @@ struct ok_kernel {
     // tagging data
     void* tag;
     double tagValue;
-    
+
     // progress callback
     ok_progress progress;
-    
+
     // custom model function
     ok_model_function model_function;
     int last_error;
-    
+
     ok_info* info;
 };
 
@@ -391,7 +395,6 @@ typedef struct ok_list_item {
     double merit_li;
     int tag;
 } ok_list_item;
-    
 
 typedef struct ok_list {
     ok_kernel* prototype;
