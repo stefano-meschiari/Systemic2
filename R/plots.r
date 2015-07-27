@@ -299,10 +299,10 @@ plot.kernel <- function(k, type = "rv", wrap=NA, legend=k$datanames, legend.pos=
   axis(3, labels=FALSE)
 }
 
-plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, emphasize.range.angle=NULL, emphasize.range.col='blue', orbit.samples=250, rescaled=NA, plot.comparison=NULL, plot.comparison.color='blue', ...) {
+plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.alpha=0.1, samples.lwd=1, xlim=NA, ylim=NA, add=FALSE, plot.pericenter=TRUE, plot.planet=TRUE, lwd=2, col='black', best.col='red', xlab="", ylab="", plot.scale=TRUE, axes=FALSE, emphasize.range.angle=NULL, emphasize.range.col='blue', orbit.samples=250, rescaled=NA, plot.comparison=NULL, plot.comparison.color='blue', col.planet='black', cex.star=1, cex.planet=1, ...) {
   oldpar <- par('pty')
   par(systemic.par)
-
+  par(mar=c(0, 0, 0, 0))
   par(pty="s")
   on.exit(suppressWarnings(par(oldpar)))
   
@@ -325,9 +325,12 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
       xlim <- c(-max(k[, 'a'] * (1+k[, 'ecc'])), max(k[, 'a'] * (1+k[, 'ecc'])))
       ylim <- xlim
     }
-    if (!add)
-      plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes)
 
+    if (length(cex.planet) != length(planet))
+      cex.planet <- rep(cex.planet[1], length(planet))
+    
+    plot(0, 0, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes, type='n')
+    
     for (i in planet) {
       f <- k[i, 'trueanomaly'] * pi/180
       pom <- k[i, 'lop'] * pi/180
@@ -339,6 +342,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
       rf <- a*(1-e^2)/(1+e*cos(f))
       if (!is.na(rescaled)) rf <- rf^rescaled            
       lines(r*cos(t), r*sin(t), type='l', lwd=lwd, col=col)
+      
       if (!is.null(t2)) {
         r <- a*(1-e^2)/(1+e*cos(t2-pom))
         if (!is.na(rescaled)) r <- r^rescaled
@@ -348,15 +352,19 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
       if (plot.pericenter && e > 0)
         lines(c(0, q*cos(pom)), c(0, q*sin(pom)), lty="dotted", col=col)
       if (plot.planet)
-        points(rf*cos(f+pom), rf*sin(f+pom), pch=19, col=col)
+        points(rf*cos(f+pom), rf*sin(f+pom), pch=19, col=col.planet, cex=cex.planet[i])
     }
+
+    if (!add)
+      points(0, 0, pch=4, cex=cex.star,
+           col=col.planet)
 
     if (plot.scale) {
       span <- par('usr')
       w <- diff(range(span))
       da <- 2^ceil(log2(0.1*w))
       x <- 0.9 * span[2]
-      y <- 0.9 * span[3]
+      y <- 0.85 * span[3]
       lines(c(x-da, x),
             c(y, y), col='black', lwd=2)
       text(x-0.5*da, y-0.05*w, adj=c(0.5, 0), labels=paste(da, 'AU'), cex=par('cex.lab'))
@@ -408,9 +416,11 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 }
 
 
-plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=TRUE, ...) {
+plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=TRUE, fixed.faps=NULL, text.top=0, ...) {
   par(systemic.par)
 
+  peaks <- attr(p, 'peaks')
+  
   if (!is.null(attr(p, 'resampled')) && !(show.resampled)) {
     cat(sprintf("# Note: this periodogram samples a lot of frequencies [%d]\n", nrow(p)))
     cat(sprintf("# To avoid large files and slow PDFs, specify show.resampled=TRUE as a parameter to only plot important frequencies.\n"))
@@ -423,6 +433,8 @@ plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fa
   ymax = max(p[, what])
   if (overplot.window)
     ymax = max(ymax, p[, 'window'])
+  if (text.top > 0)
+    ymax <- ymax * 1.1
   if (missing(ylim))
     ylim = c(0, ymax)
   if (missing(xlim))
@@ -437,20 +449,38 @@ plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fa
   if (overplot.window) {
     lines(p[, 'period'], p[, 'window'], col="red")
   }
-  
-  if (plot.fap && sum(p[, 'fap'] < 0.1) > 3) {
-    
-    faps <- approx(log(p[,'fap']), p[,what], log(c(1e-1, 1e-2, 1e-3)))
-    
+
+  if (plot.fap && sum(p[, 'fap'] < 0.1) > 1) {
+    # Change to actual calc of frequencies
+    # y <- log(1-a[,3]); x <- log(1-exp(-a[,2]))
+    if (is.null(fixed.faps))
+      faps <- approx(log(p[,'fap']), p[,what], log(c(1e-1, 1e-2, 1e-3)))$y
+    else
+      faps <- fixed.faps
+    #remove
+    print(faps)
     xmin = min(p[,'period'])
     xmax = max(p[,'period'])
     for (i in 1:3)	{
-      if (! is.na(faps$y[i])) {
-        lines(c(xmin, xmax), c(faps$y[i], faps$y[i]), lty=i+1)
+      if (! is.na(faps[i])) {
+        lines(c(xmin, xmax), c(faps[i], faps[i]), lty=i+1)
       }
     }
   }	
 
+  if (text.top > 0) {
+    i <- 1
+    printed <- c()
+    
+    while (length(printed) < text.top) {
+      if (min(abs(printed - peaks[i, 1])/peaks[i, 1]) > 0.1) {
+        text(peaks[i, 1], peaks[i, 2], sprintf("%.1f", peaks[i, 1]), offset=0.25, pos=3)
+        printed <- c(printed, peaks[i, 1])
+      }
+      i <- i + 1
+    }
+    
+  }
   axis(3, labels=FALSE)
   axis(4, labels=FALSE)
   invisible()
@@ -682,8 +712,9 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
   
   if (type == "histogram") {
     a <- hist(datax, freq=FALSE, xlab=labx, main=ifelse(missing(main), labx, main), col=col, ...)
+    print(bfx)
     points(c(bfx), c(0.), pch=19,  col=bf.color, ...)
-    return(invisible())
+    return(invisible(a))
   } else if (type == "gghistogram") {
 
   } else if (type == "scatter") {

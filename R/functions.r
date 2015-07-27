@@ -1062,12 +1062,13 @@ kload.system <- function(k, datafile) {
   kupdate(k)
 }
 
-kload <- function(file, skip = 0, chdir=TRUE) {
+kload <- function(file, skip = 0, chdir=TRUE, load.data=TRUE) {
   ## Loads a kernel (previously saved with @ksave) from disk. [1]
   #
   # Args:
   #	- file: path to the file
   #	- skip: if multiple kernels are saved in a single file, the index of the kernel to read (usually only one kernel is saved per file, so specify 0)
+  # - load.data: load an associated .rds file.
   stopifnot(class(file) == "character")
   file <- normalizePath(file, mustWork=FALSE)
   header <- readLines(file, n=1)
@@ -1105,7 +1106,7 @@ kload <- function(file, skip = 0, chdir=TRUE) {
   k$.epoch.set <- TRUE
   fclose(fid)
 
-  if (file.exists(str_c(file, ".data.rds"))) {
+  if (load.data && file.exists(str_c(file, ".data.rds"))) {
     lst <- readRDS(str_c(file, ".data.rds"))
     for (n in names(lst)) {
       k[[n]] <- lst[[n]]
@@ -1317,7 +1318,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   
 
   peaks.m <- kfind.peaks(mat)
-  if (nrow(peaks.m) > 0) {
+  if (!is.na(peaks.m) && nrow(peaks.m) > 0) {
     mfap <- mat[mat[,'fap'] < 1, , drop=FALSE]
     if (nrow(mfap) > 5) {
       window.cutoff <- 10^approxfun(log10(mfap[,'fap']), log10(mfap[,'power']))(log10(1e-6))
@@ -1329,7 +1330,8 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
       }
     }
     peaks <- min(peaks, nrow(peaks.m))
-    attr(mat, "peaks") <- peaks.m[1:peaks, , drop=FALSE]
+    if (peaks != 0)
+      attr(mat, "peaks") <- peaks.m[1:peaks, , drop=FALSE]
   }
 
   
