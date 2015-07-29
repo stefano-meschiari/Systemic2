@@ -483,6 +483,10 @@ void K_addPlanet(ok_kernel* k, const double elements[]) {
     K_validate(k);
 }
 
+void K_register_minimizer(int minimizerId, ok_minimizer f) {
+    ok_minimizers[minimizerId] = f;
+}
+
 /**
  * Removes the idx-th body from the system (the 0-th body representing the central star).
  * Matrices are shuffled automatically to accomodate the deletion of the body.
@@ -2039,6 +2043,13 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
             idx++;
         }
 
+    for (int i = 0; i < mpars.npars; i++) {
+        if (IS_INVALID(mpars.min[i]))
+            mpars.min[i] = -DBL_MAX;
+        if (IS_INVALID(mpars.max[i]))
+            mpars.max[i] = DBL_MAX;
+
+    }
     mpars.pars = pars;
     mpars.steps = steps;
     mpars.type = type;

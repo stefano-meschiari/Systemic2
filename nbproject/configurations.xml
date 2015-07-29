@@ -11,6 +11,8 @@
         <in>bootstrap.c</in>
         <in>de.c</in>
         <in>extras.c</in>
+        <in>gd.c</in>
+        <in>gd.h</in>
         <in>integration.c</in>
         <in>javascript.c</in>
         <in>javascript.h</in>
@@ -58,6 +60,12 @@
           <buildCommand>${MAKE} -f Makefile.osx  reqs test macosx</buildCommand>
           <cleanCommand>${MAKE} -f Makefile.osx clean</cleanCommand>
           <executablePath>test</executablePath>
+          <cTool>
+            <incDir>
+              <pElem>/opt/local/include</pElem>
+              <pElem>/usr/local/include</pElem>
+            </incDir>
+          </cTool>
         </makeTool>
       </makefileType>
       <folder path="0/local">
@@ -140,6 +148,10 @@
             <Elem>_OPENMP=200505</Elem>
           </preprocessorList>
         </cTool>
+      </item>
+      <item path="src/gd.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/gd.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/integration.c" ex="false" tool="0" flavor2="2">
         <cTool>

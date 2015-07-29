@@ -7,7 +7,7 @@
 
 #ifndef MINPACK_H
 #define	MINPACK_H
-
+#include "utils.h"
 
 /**
  * Attempts to converge to a local minimum of the kernel k, using the lev-mar

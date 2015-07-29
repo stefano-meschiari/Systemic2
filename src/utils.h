@@ -15,7 +15,7 @@
 #define UTILS_H
 
 #ifndef M_PI
-        #define M_PI (3.14159265358979311600e+00)
+#define M_PI (3.14159265358979311600e+00)
 #endif
 
 #define DEBUG 
@@ -23,7 +23,7 @@
 #ifdef __APPLE__
 #define ok_qsort_r qsort_r
 #else
-typedef int		 cmp_t(void *, const void *, const void *);
+typedef int cmp_t(void *, const void *, const void *);
 extern void ok_qsort_r(void *a, size_t n, size_t es, void *thunk, cmp_t *cmp);
 #endif
 
@@ -40,7 +40,7 @@ extern void ok_qsort_r(void *a, size_t n, size_t es, void *thunk, cmp_t *cmp);
 #define MSET_DEBUG(m, i, j, x) assert((i)*m->tda+(j)<m->size1*m->size2); m->data[(i)*m->tda+(j)] = x 
 #define MIGET gsl_matrix_int_get
 #define MISET gsl_matrix_int_set
-
+#define SIGN(x) ((x > 0 ? 1 : (x < 0 ? -1 : 0)))
 #define MINC(m, i, j, c) MSET(m, i, j, MGET(m, i, j) + c)
 #define MROWS(m) (m->size1)
 #define MCOLS(m) (m->size2)
@@ -98,8 +98,6 @@ extern void ok_qsort_r(void *a, size_t n, size_t es, void *thunk, cmp_t *cmp);
 #define VECTOR_MEMCPY(dest, src) memcpy(dest->data, src->data, sizeof(double)*src->size)
 #define MATRIX_MEMCPY_TOARRAY(dest, src) memcpy(dest, src->data, sizeof(double)*src->size1*src->size2)
 #define MATRIX_MEMCPY_FROMARRAY(dest, src) memcpy(dest->data, src, sizeof(double)*dest->size1*dest->size2)
-
-
 
 typedef struct {
     void* data;
@@ -189,7 +187,7 @@ gsl_vector_int* ok_iptr_to_ivector(int* v, unsigned int len);
 
 void ok_block_to_ptr(void* vv, double* out);
 
-void ok_buf_to_ptr(double** v,  unsigned int rows, unsigned int cols, double* out);
+void ok_buf_to_ptr(double** v, unsigned int rows, unsigned int cols, double* out);
 
 void ok_buf_add_to_col(double** buf, double* col_vector, int col, int nrows);
 
@@ -201,7 +199,7 @@ gsl_block* ok_vector_block(void* v);
 gsl_block* ok_matrix_block(void* v);
 
 gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,
-    const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x);
+        const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x);
 
 bool ok_file_readable(char* fn);
 bool ok_str_iequals(const char* s1, const char* s2);

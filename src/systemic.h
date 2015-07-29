@@ -221,6 +221,7 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define LM 1
 #define DIFFEVOL 2
 #define SA 3
+#define GD 4
 
 #define INTEGRATION_SUCCESS 0
 #define INTEGRATION_FAILURE_SMALL_TIMESTEP (1 << 11)

@@ -104,6 +104,7 @@ void K_getMinimizedValues(ok_kernel* k, double* values);
 
 gsl_matrix* K_getXYZ(ok_kernel* k);
 
+void K_register_minimizer(int minimizerId, ok_minimizer f);
 
 // STELLAR PARAMETERS
 K_GETSET_H(Mstar, Mstar, double)

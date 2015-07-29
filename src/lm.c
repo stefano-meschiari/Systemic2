@@ -45,7 +45,6 @@ static inline void K_lm_calc(ok_kernel* k, double* f, const int ndata, const dou
     k->flags |= NEEDS_SETUP;
     K_calculate(k);
 
-
     for (int i = 0; i < k->ndata; i++) {
         const double* comprow = compiled[i];
         int set = (int) comprow[T_SET];
@@ -54,14 +53,16 @@ static inline void K_lm_calc(ok_kernel* k, double* f, const int ndata, const dou
         double diff = (comprow[T_PRED] - comprow[T_SVAL]);
         double s = comprow[T_ERR];
 
-        if (((int) comprow[T_FLAG]) == T_RV && n > 1e-12)
-            f[i] = diff / sqrt(s * s + n * n);
-        else
-            f[i] = diff / s;
-    }
+        f[i] = diff / sqrt(s * s + n * n);
+        f[i + k->ndata] = sqrt(log(n * n + s * s)) * SIGN(log(n * n + s * s));
 
-    if (k->chi2 < params->min_chi) {
-        params->min_chi = k->chi2;
+    }
+    double fa = 0;
+    for (int i = 0; i < k->ndata; i++)
+        fa += f[i] * f[i];
+
+    if (K_getLoglik(k) < params->min_chi) {
+        params->min_chi = K_getLoglik(k);
         for (int i = 0; i < params->npars; i++)
             params->best[i] = *(params->pars[i]);
     }
@@ -293,7 +294,7 @@ int K_lm_fdf(const gsl_vector * x, void * params, gsl_vector* f, gsl_matrix * J)
 int K_minimize_lm(ok_kernel* k, int maxiter, double params[]) {
     double min_chi_par = 1e-4;
     K_calculate(k);
-    double prev_chi2 = k->chi2;
+    double prev_chi2 = K_getLoglik(k);
     bool high_df = false;
     int max_iter_at_scale = 200;
     double initial_st = 1.;
@@ -380,7 +381,7 @@ int K_minimize_lm(ok_kernel* k, int maxiter, double params[]) {
 
 
     gsl_multifit_fdfsolver * s
-            = gsl_multifit_fdfsolver_alloc(gsl_multifit_fdfsolver_lmsder, k->ndata, npars);
+            = gsl_multifit_fdfsolver_alloc(gsl_multifit_fdfsolver_lmsder, 2 * k->ndata, npars);
 
 
 
@@ -391,19 +392,19 @@ int K_minimize_lm(ok_kernel* k, int maxiter, double params[]) {
     sp.best = (double*) malloc(sizeof (double) * npars);
     sp.stepscale = stepscale;
     sp.compiled = k->compiled;
-    sp.f0 = (double*) malloc(sizeof (double)*k->ndata);
-    sp.f1 = (double*) malloc(sizeof (double)*k->ndata);
-    sp.f2 = (double*) malloc(sizeof (double)*k->ndata);
-    sp.f3 = (double*) malloc(sizeof (double)*k->ndata);
+    sp.f0 = (double*) malloc(sizeof (double)*2 * k->ndata);
+    sp.f1 = (double*) malloc(sizeof (double)*2 * k->ndata);
+    sp.f2 = (double*) malloc(sizeof (double)*2 * k->ndata);
+    sp.f3 = (double*) malloc(sizeof (double)*2 * k->ndata);
     sp.parstype = parstype;
-    sp.ndata = k->ndata;
+    sp.ndata = 2 * k->ndata;
     sp.iterations = 0;
     sp.maxiterations = maxiter;
     sp.npars = npars;
     sp.every = (k->intMethod == KEPLER ? 10 : 1);
     sp.status = PROGRESS_CONTINUE;
     sp.high_df = high_df;
-    sp.min_chi = k->chi2;
+    sp.min_chi = K_getLoglik(k);
     sp.st = initial_st;
 
     for (int i = 0; i < npars; i++)
@@ -413,7 +414,7 @@ int K_minimize_lm(ok_kernel* k, int maxiter, double params[]) {
     fdf.f = &K_lm_f;
     fdf.df = &K_lm_jac;
     fdf.fdf = &K_lm_fdf;
-    fdf.n = k->ndata;
+    fdf.n = 2 * k->ndata;
     fdf.p = npars;
     fdf.params = &sp;
 
@@ -475,7 +476,7 @@ int K_minimize_lm(ok_kernel* k, int maxiter, double params[]) {
 
         kt++;
         //printf("-> %d %d %d %e %e, last_ditch=%d\n", iter_at_scale, kt, improved, sp.st, sp.min_chi, last_ditch);
-        prev_chi2 = k->chi2;
+        prev_chi2 = K_getLoglik(k);
 
         for (int idx = 0; idx < npars; idx++)
             stepscale[idx] = steps[idx] * sp.st;

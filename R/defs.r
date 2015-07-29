@@ -126,7 +126,10 @@ K_SIMPLEX <- 0
 K_LM <- 1
 K_DIFFEVOL <- 2
 K_SA <- 3
+K_GD <- 4
 K_INTEGRATION_SUCCESS <- 0
+K_ELEMENT <- 0
+K_PARAMETER <- 1
 K_INTEGRATORS_SIZE <- 4
 K_LOG_2PI <- 1.83787707
 K_MV_VALUE <- 0
@@ -316,7 +319,7 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_vector_block(p)*<gsl_block>",
 # gsl_block* ok_matrix_block(void* v)
 "ok_matrix_block(p)*<gsl_block>",
-# gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,     const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x)
+# gsl_matrix* ok_resample_curve(gsl_matrix* curve, const int xcol, const int ycol, const double peaks_frac, const int target_points,         const int target_tolerance, double* start_tolerance, const int max_steps, const bool log_x)
 "ok_resample_curve(*<gsl_matrix>iidii*diB)*<gsl_matrix>",
 # bool ok_file_readable(char* fn)
 "ok_file_readable(*c)B",
@@ -398,6 +401,8 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_getMinimizedValues(p*d)v",
 # gsl_matrix* K_getXYZ(ok_kernel* k)
 "K_getXYZ(p)*<gsl_matrix>",
+# void K_register_minimizer(int minimizerId, ok_minimizer f)
+"K_register_minimizer(ip)v",
 # void K_setMstar(ok_kernel* k, double value)
 "K_setMstar(pd)v",
 # double K_getMstar(ok_kernel* k)
@@ -622,11 +627,15 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "KL_to_ptr(*<ok_list>*d)v",
 # int KL_getNplanets(const ok_list* kl)
 "KL_getNplanets(*<ok_list>)i",
+# double KL_getElement(const ok_list* kl, const int index, const int pl, const int el)
+"KL_getElement(*<ok_list>iii)d",
+# double KL_getPar(const ok_list* kl, const int index, const int what)
+"KL_getPar(*<ok_list>ii)d",
 # ok_list* K_mcmc_single(ok_kernel* k, unsigned int nsteps, unsigned int skip, unsigned int discard, const double dparams[], ok_list* cont, ok_callback2 merit_function, int tag, int* flag)
 "K_mcmc_single(pIII*d*<ok_list>pi*i)*<ok_list>",
 # ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, unsigned int skip, unsigned int discard, const double params[], double Rstop, ok_callback2 merit_function)
 "K_mcmc_mult(pIIII*ddp)*<ok_list>",
-# double K_default_prior(const ok_kernel* k)
+# double K_default_prior(ok_kernel* k)
 "K_default_prior(p)d",
 # void K_mcmc_likelihood_and_prior_default(ok_kernel* k, double* ret)
 "K_mcmc_likelihood_and_prior_default(p*d)v",
@@ -813,7 +822,7 @@ SYSTEMIC.VERSION <- K_SYSTEMIC_VERSION
 .data[SET] <- 'set'
 
 .periodogram <- c("period", "power", "fap", "ls_power", "tau", "window")
-.elements.labels <- c(period="Period", mass="Mass", ma="Mean anomaly", ecc="Eccentricity", lop="Long. of periastron", 
+.elements.labels <- c(period="Period", mass="Mass", ma="Mean anomaly", ecc="Eccentricity", lop="Longitude of periastron", 
 	inc="Inclination", node="Node", radius="Radius", ord="Label", precession_rate="precession_rate", u2="u2", u3="u3", u4="u4",
 	a="Semi-major axis", k="Semiamplitude", tperi="Time of periastron passage", trueanomaly="True anomaly", 
 	meanlongitude="Mean longitude", j1="j1", j2="j2")
