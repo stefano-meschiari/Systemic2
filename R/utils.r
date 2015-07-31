@@ -223,7 +223,7 @@ kboot.cv <- function(k, training.len=0.9) {
   d <- kdata(k)
   
   while (TRUE) {
-    training.indices <- sample(1:nrow(d), size=ceil(training.len*nrow(d)))
+    training.indices <- sample(1:nrow(d), size=round(training.len*nrow(d)))
     if (length(unique(d[training.indices, SET])) == k$nsets)
       break
   }
@@ -245,7 +245,6 @@ kboot.cv2 <- function(k, training.len=0.9, mc.cores=1) {
   indices <- sample(1:nrow(d), nrow(d))
   nx <- floor((1-training.len) * nrow(d))
   rounds <- floor(nrow(d)/nx)
-  print(rounds)
 
   return(sum(unlist(mclapply(1:rounds, function(i) {
     k2 <- kclone(k)
@@ -260,7 +259,6 @@ kboot.cv2 <- function(k, training.len=0.9, mc.cores=1) {
     d2[training.indices, ERR] <- -1
     kdata(k2) <- d2
     kcalculate(k2)
-    cat(k2$loglik, '\n')
     k2$loglik
     
   }, mc.cores=mc.cores))))  
