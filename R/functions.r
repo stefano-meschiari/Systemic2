@@ -960,8 +960,10 @@ kclone <- function(k) {
   
   reg.finalizer(k2$h, .free.kernel)
   class(k2) <- "kernel"
+  k2$min.func <- k$min.func
+  kcalculate(k2)
   
-  if (k2$auto) kupdate(k2)
+  if (k2$auto) kupdate(k2, calculate=FALSE)
   return(k2)
 }
 

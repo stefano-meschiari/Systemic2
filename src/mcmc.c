@@ -91,14 +91,18 @@ void K_mcmc_likelihood_and_prior_default(ok_kernel* k, double* ret) {
 
     double prior = K_default_prior(k);
     double A = 0;
+    int nd = 0;
     for (int i = 0; i < k->ndata; i++) {
-        int set = (int) k->compiled[i][T_SET];
-        double n = K_getPar(k, set + DATA_SETS_SIZE);
+        if (k->compiled[i][T_ERR] >= 0.) {
+            int set = (int) k->compiled[i][T_SET];
+            double n = K_getPar(k, set + DATA_SETS_SIZE);
 
-        A += log(SQR(k->compiled[i][T_ERR]) + n * n);
+            A += log(SQR(k->compiled[i][T_ERR]) + n * n);
+            nd++;
+        }
     }
 
-    ret[0] = -0.5 * A - 0.5 * chi2 - 0.5 * (double) k->ndata * LOG_2PI;
+    ret[0] = -0.5 * A - 0.5 * chi2 - 0.5 * nd * LOG_2PI;
     ret[1] = log(prior);
 }
 

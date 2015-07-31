@@ -2,6 +2,73 @@
 <configurationDescriptor version="94">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
+      <df name="deps">
+        <df name="swift">
+          <df name="coord">
+            <in>coord_h2j.f</in>
+            <in>coord_j2h.f</in>
+            <in>coord_vh2vj.f</in>
+          </df>
+          <df name="mvs">
+            <df name="drift">
+              <in>drift.f</in>
+              <in>drift_dan.f</in>
+              <in>drift_kepmd.f</in>
+              <in>drift_kepu.f</in>
+              <in>drift_kepu_fchk.f</in>
+              <in>drift_kepu_guess.f</in>
+              <in>drift_kepu_lag.f</in>
+              <in>drift_kepu_new.f</in>
+              <in>drift_kepu_p3solve.f</in>
+              <in>drift_kepu_stumpff.f</in>
+              <in>drift_one.f</in>
+              <in>drift_tp.f</in>
+            </df>
+            <df name="getacch">
+              <in>getacch.f</in>
+              <in>getacch_ah0.f</in>
+              <in>getacch_ah1.f</in>
+              <in>getacch_ah2.f</in>
+              <in>getacch_ah3.f</in>
+              <in>getacch_ah3_tp.f</in>
+              <in>getacch_ir3.f</in>
+              <in>getacch_tp.f</in>
+            </df>
+            <df name="kickvh">
+              <in>kickvh.f</in>
+              <in>kickvh_tp.f</in>
+            </df>
+            <df name="step">
+              <in>step_kdk.f</in>
+              <in>step_kdk_pl.f</in>
+              <in>step_kdk_tp.f</in>
+            </df>
+          </df>
+          <df name="obl">
+            <in>obl_acc.f</in>
+            <in>obl_acc_tp.f</in>
+          </df>
+          <df name="orbel">
+            <in>orbel_scget.f</in>
+            <in>orbel_xv2aeq.f</in>
+          </df>
+          <df name="rmvs">
+            <in>rmvs_chk.f</in>
+            <in>rmvs_chk_ind.f</in>
+            <in>rmvs_elog.f</in>
+            <in>rmvs_obl_acc.f</in>
+            <in>rmvs_step.f</in>
+            <in>rmvs_step_in.f</in>
+            <in>rmvs_step_in_mvpl.f</in>
+            <in>rmvs_step_in_tp.f</in>
+            <in>rmvs_step_out.f</in>
+          </df>
+          <df name="util">
+            <in>util_hills.f</in>
+            <in>util_peri.f</in>
+          </df>
+        </df>
+      </df>
       <df name="local">
         <df name="f2c">
           <in>arithchk.c</in>
@@ -12,14 +79,17 @@
         <in>de.c</in>
         <in>extras.c</in>
         <in>gd.c</in>
-        <in>gd.h</in>
+        <in>hermite.c</in>
         <in>integration.c</in>
         <in>javascript.c</in>
         <in>javascript.h</in>
         <in>kernel.c</in>
         <in>kl.c</in>
+        <in>lm.c</in>
         <in>mcmc.c</in>
         <in>mercury.c</in>
+        <in>ode.c</in>
+        <in>odex.c</in>
         <in>periodogram.c</in>
         <in>qsortimp.c</in>
         <in>sa.c</in>
@@ -51,6 +121,7 @@
       </toolsSet>
       <flagsDictionary>
         <element flagsID="0" commonFlags="-g -O3 -fopenmp -std=c99"/>
+        <element flagsID="1" commonFlags="-std=c89"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -60,17 +131,13 @@
           <buildCommand>${MAKE} -f Makefile.osx  reqs test macosx</buildCommand>
           <cleanCommand>${MAKE} -f Makefile.osx clean</cleanCommand>
           <executablePath>test</executablePath>
-          <cTool>
-            <incDir>
-              <pElem>/opt/local/include</pElem>
-              <pElem>/usr/local/include</pElem>
-            </incDir>
-          </cTool>
         </makeTool>
       </makefileType>
       <folder path="0/local">
         <cTool>
           <incDir>
+            <pElem>/opt/local/include</pElem>
+            <pElem>/usr/local/include</pElem>
             <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
           </incDir>
           <preprocessorList>
@@ -79,324 +146,153 @@
           </preprocessorList>
         </cTool>
       </folder>
-      <item path="local/f2c/arithchk.c" ex="false" tool="0" flavor2="2">
-      </item>
       <item path="src/bootstrap.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/de.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/extras.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
-      <item path="src/gd.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/gd.h" ex="false" tool="3" flavor2="0">
+      <item path="src/hermite.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
+          <incDir>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
       </item>
       <item path="src/integration.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
-        </cTool>
-      </item>
-      <item path="src/javascript.c" ex="false" tool="0" flavor2="2">
-        <cTool>
-          <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
-        </cTool>
-      </item>
-      <item path="src/javascript.h" ex="false" tool="0" flavor2="2">
-        <cTool>
-          <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/kernel.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/kl.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
+        </cTool>
+      </item>
+      <item path="src/lm.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
+          <incDir>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
         </cTool>
       </item>
       <item path="src/mcmc.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/mercury.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
-      <item path="src/periodogram.c" ex="false" tool="0" flavor2="3">
-        <cTool>
+      <item path="src/ode.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>deps/include</pElem>
-            <pElem>/opt/local/include</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="src/odex.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
+          <incDir>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="src/periodogram.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
+          <incDir>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
             <pElem>.</pElem>
           </incDir>
         </cTool>
       </item>
       <item path="src/qsortimp.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/sa.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
       <item path="src/simplex.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
-      <item path="src/swift.c" ex="false" tool="0" flavor2="3">
-        <cTool>
+      <item path="src/swift.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>deps/include</pElem>
-            <pElem>/opt/local/include</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
             <pElem>.</pElem>
           </incDir>
         </cTool>
@@ -420,31 +316,12 @@
         </cTool>
       </item>
       <item path="src/utils.c" ex="false" tool="0" flavor2="2">
-        <cTool>
+        <cTool flags="1">
           <incDir>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-            <pElem>/opt/local/include</pElem>
-            <pElem>local/include</pElem>
-            <pElem>local/swift/mvs/drift</pElem>
-            <pElem>local/swift/mvs/step</pElem>
-            <pElem>local/swift/tu4</pElem>
-            <pElem>local/swift/orbel</pElem>
-            <pElem>local/swift</pElem>
-            <pElem>local/swift/coord</pElem>
-            <pElem>.</pElem>
-            <pElem>local/swift/mvs/kickvh</pElem>
-            <pElem>/Library/Frameworks/R.framework/Versions/2.15/Resources/include</pElem>
-            <pElem>local/swift/mvs/getacch</pElem>
-            <pElem>local/swift/obl</pElem>
-            <pElem>local/swift/bs</pElem>
-            <pElem>local/swift/util</pElem>
-            <pElem>local/swift/rmvs3</pElem>
+            <pElem>/opt/local/include/gsl</pElem>
             <pElem>src</pElem>
-            <pElem>local/swift/rmvs</pElem>
+            <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>_OPENMP=200505</Elem>
-          </preprocessorList>
         </cTool>
       </item>
     </conf>

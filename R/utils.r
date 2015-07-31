@@ -202,3 +202,38 @@ exoplanet.eu <- function(name) {
     }
 }
     
+
+kclone.boot <- function(k) {
+  k2 <- kclone(k)
+  d <- kdata(k)
+  
+  while (TRUE) {
+    m <- d[sample(1:nrow(d), size=nrow(d), replace=TRUE), ]
+    if (length(unique(m[, SET])) == k$nsets)
+      break
+  }
+  kdata(k2) <- m
+  kcalculate(k2)
+  return(k2)
+}
+
+kboot.cv <- function(k, training.len=0.9) {
+  k2 <- kclone(k)
+  d <- kdata(k)
+  
+  while (TRUE) {
+    training.indices <- sample(1:nrow(d), size=ceil(training.len*nrow(d)))
+    if (length(unique(d[training.indices, SET])) == k$nsets)
+      break
+  }
+
+  d2 <- d
+  d2[-training.indices, ERR] <- -1
+  kdata(k2) <- d2
+  kminimize(k2)
+
+  d[training.indices, ERR] <- -1
+  kdata(k2) <- d
+  kcalculate(k2)
+  k2$loglik
+}

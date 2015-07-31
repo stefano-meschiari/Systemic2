@@ -25,11 +25,12 @@
 #include "lm.h"
 #include "sa.h"
 #include "de.h"
+#include "gd.h"
 #include "time.h"
 #include <libgen.h>
 
 
-ok_minimizer ok_minimizers[] = {K_minimize_simplex, K_minimize_lm, K_minimize_de, K_minimize_sa, NULL, NULL, NULL, NULL};
+ok_minimizer ok_minimizers[] = {K_minimize_simplex, K_minimize_lm, K_minimize_de, K_minimize_sa, K_minimize_gd, NULL, NULL, NULL};
 char * ok_orb_labels[ELEMENTS_SIZE] = {"P", "M", "MA", "E", "LOP", "I", "NODE", "RADIUS", "ORD",
     "UNUSED1_", "UNUSED2_", "UNUSED3_", "UNUSED4_"};
 char * ok_all_orb_labels[ALL_ELEMENTS_SIZE] = {"P", "M", "MA", "E", "LOP", "I", "NODE", "RADIUS", "ORD",
@@ -1009,11 +1010,12 @@ void K_calculate(ok_kernel* k) {
             compiled[i][T_SVAL] = compiled[i][T_VAL] - VGET(k->params, j) - VGET(k->params, P_RV_TREND) * (compiled[i][T_TIME] - epoch) - VGET(k->params, P_RV_TREND_QUADRATIC) * (compiled[i][T_TIME] - epoch) * (compiled[i][T_TIME] - epoch);
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
-
-            k->chi2_rvs += diff * diff / (s * s + n * n);
-            k->rms += diff * diff;
-            k->jitter += s*s;
-            k->nrvs++;
+            if (s >= 0) {
+                k->chi2_rvs += diff * diff / (s * s + n * n);
+                k->rms += diff * diff;
+                k->jitter += s*s;
+                k->nrvs++;
+            }
         } else if ((int) compiled[i][T_FLAG] == T_TIMING) {
             int pidx = (int) compiled[i][T_TDS_PLANET];
             compiled[i][T_SVAL] = compiled[i][T_VAL];
@@ -1033,15 +1035,19 @@ void K_calculate(ok_kernel* k) {
 
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
-            k->chi2_tts += diff * diff / (s * s + n * n);
-            k->rms_tts += diff * diff;
-            k->ntts++;
+            if (s >= 0) {
+                k->chi2_tts += diff * diff / (s * s + n * n);
+                k->rms_tts += diff * diff;
+                k->ntts++;
+            }
         } else if ((int) compiled[i][T_FLAG] == T_DUMMY) {
             // do nothing
         } else {
             double diff = compiled[i][T_SVAL] - compiled[i][T_PRED];
             double s = compiled[i][T_ERR];
-            k->chi2_other += diff * diff / (s * s + n * n);
+            if (s >= 0) {
+                k->chi2_other += diff * diff / (s * s + n * n);
+            }
         }
     }
 
@@ -1131,14 +1137,18 @@ double K_getLoglik(ok_kernel* k) {
     double chi2 = k->chi2_rvs + k->chi2_tts + k->chi2_other;
 
     double A = 0;
+    double nd = 0;
     for (int i = 0; i < k->ndata; i++) {
-        int set = (int) k->compiled[i][T_SET];
-        double n = VGET(k->params, set + DATA_SETS_SIZE);
+        if (k->compiled[i][T_ERR] >= 0) {
+            int set = (int) k->compiled[i][T_SET];
+            double n = VGET(k->params, set + DATA_SETS_SIZE);
 
-        A += log(SQR(k->compiled[i][T_ERR]) + n * n);
+            A += log(SQR(k->compiled[i][T_ERR]) + n * n);
+            nd++;
+        }
     }
 
-    return 0.5 * A + 0.5 * chi2 + 0.5 * (double) k->ndata * LOG_2PI;
+    return 0.5 * A + 0.5 * chi2 + 0.5 * nd * LOG_2PI;
 };
 
 K_GET_C(rms, Rms, double)
@@ -1833,7 +1843,8 @@ unsigned int K_getNdata(ok_kernel* k) {
 }
 
 void K_getRange(ok_kernel* k, double* from, double* to) {
-    K_compileData(k);
+    if (k->flags & NEEDS_COMPILE)
+        K_compileData(k);
 
     if (k->ndata < 1) {
         *from = INVALID_NUMBER;
@@ -2055,5 +2066,6 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
     mpars.type = type;
     mpars.min = min;
     mpars.max = max;
+    mpars.kernel = k;
     return mpars;
 }

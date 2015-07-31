@@ -195,6 +195,10 @@ unsigned int ok_vector_len(void* v);
 unsigned int ok_matrix_rows(void* v);
 unsigned int ok_matrix_cols(void* v);
 
+double ok_vector_sum(gsl_vector* x);
+double ok_vector_sum_2(gsl_vector* x);
+double ok_ptr_sum_2(double* x, int len);
+
 gsl_block* ok_vector_block(void* v);
 gsl_block* ok_matrix_block(void* v);
 

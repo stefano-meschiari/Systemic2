@@ -172,6 +172,7 @@ extern char * ok_all_orb_labels[ALL_ELEMENTS_SIZE];
 #define OPT_LM_MAX_ITER_AT_SCALE 12
 #define OPT_LM_INITIAL_SCALE 13
 
+
 #define OPT_SA_T0 20
 #define OPT_SA_ALPHA 21
 #define OPT_SA_CHAINS 22
@@ -412,6 +413,7 @@ typedef struct ok_minimizer_pars {
     double* max;
     int* type;
     int npars;
+    ok_kernel* kernel;
 } ok_kernel_minimizer_pars;
 
 #define FREE_MINIMIZER_PARS(p) do { free(p.pars); free(p.steps); free(p.min); free(p.max); free(p.type); } while (0);
