@@ -205,3 +205,74 @@ double K_crossval_l1o(ok_kernel* k, int minalgo, int maxiter, double params[]) {
     lh2 += -0.5 * (double) k->ndata * LOG_2PI;
     return -lh2;
 }
+
+double K_crossval_lno(ok_kernel* k, int no, int minalgo, int maxiter, double params[]) {
+    int nd = K_getNdata(k);
+
+    int np = omp_get_max_threads();
+    ok_kernel * ks[np];
+    double lh[np];
+    double rms[nd];
+    ok_progress prog = k->progress;
+
+    for (int p = 0; p < np; p++) {
+        ks[p] = K_clone(k);
+        ks[p]->progress = NULL;
+        lh[p] = 0.;
+    }
+    for (int i = 0; i < nd; i++) {
+        rms[i] = 0;
+    }
+
+    bool invalid = false;
+
+
+
+#pragma omp parallel for
+    for (int i = 0; i < nd; i++) {
+        if (invalid)
+            continue;
+
+        int p = omp_get_thread_num();
+        gsl_matrix_memcpy(ks[p]->system->elements, k->system->elements);
+        gsl_vector_memcpy(ks[p]->params, k->params);
+
+        ks[p]->flags |= NEEDS_SETUP;
+        K_calculate(ks[p]);
+
+        double err = ks[p]->compiled[i][T_ERR];
+        int set = (int) (ks[p]->compiled[i][T_SET]);
+
+
+        ks[p]->compiled[i][T_ERR] = -1;
+
+        K_minimize(ks[p], minalgo, maxiter, params);
+        K_calculate(ks[p]);
+        double n = K_getPar(ks[p], set + DATA_SETS_SIZE);
+        double s = err * err + n * n;
+        double diff = ks[p]->compiled[i][T_SVAL] - ks[p]->compiled[i][T_PRED];
+        lh[p] += -0.5 * log(s) - 0.5 * diff * diff / s;
+        ks[p]->compiled[i][T_ERR] = err;
+        rms[i] = (diff * diff) / (err * err);
+
+        if (prog != NULL && omp_get_thread_num() == 0) {
+            char message[MAX_LINE];
+            int ret = prog(i * np, nd, ks[p],
+                    "K_crossVal_l1o");
+            if (ret == PROGRESS_STOP) {
+                invalid = true;
+            }
+        }
+    }
+
+    double lh2 = 0;
+    for (int p = 0; p < np; p++) {
+        lh2 += lh[p];
+        K_free(ks[p]);
+    }
+    if (invalid)
+        return INVALID_NUMBER;
+
+    lh2 += -0.5 * (double) k->ndata * LOG_2PI;
+    return -lh2;
+}

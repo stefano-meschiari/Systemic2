@@ -53,7 +53,7 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
 
     double L1, L2;
     double grad_eps_abs = 1e-4;
-    double grad_eps_rel = 1e-5;
+    double grad_eps_rel = 1e-6;
     double grad0 = -1;
 
     for (int i = 0; i < maxiter; i++) {
