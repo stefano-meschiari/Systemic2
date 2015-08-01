@@ -259,6 +259,7 @@ kboot.cv2 <- function(k, training.len=0.9, mc.cores=1) {
     d2[training.indices, ERR] <- -1
     kdata(k2) <- d2
     kcalculate(k2)
+
     k2$loglik
     
   }, mc.cores=mc.cores))))  
