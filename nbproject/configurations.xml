@@ -2,87 +2,12 @@
 <configurationDescriptor version="94">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
-      <df name="deps">
-        <df name="swift">
-          <df name="coord">
-            <in>coord_h2j.f</in>
-            <in>coord_j2h.f</in>
-            <in>coord_vh2vj.f</in>
-          </df>
-          <df name="mvs">
-            <df name="drift">
-              <in>drift.f</in>
-              <in>drift_dan.f</in>
-              <in>drift_kepmd.f</in>
-              <in>drift_kepu.f</in>
-              <in>drift_kepu_fchk.f</in>
-              <in>drift_kepu_guess.f</in>
-              <in>drift_kepu_lag.f</in>
-              <in>drift_kepu_new.f</in>
-              <in>drift_kepu_p3solve.f</in>
-              <in>drift_kepu_stumpff.f</in>
-              <in>drift_one.f</in>
-              <in>drift_tp.f</in>
-            </df>
-            <df name="getacch">
-              <in>getacch.f</in>
-              <in>getacch_ah0.f</in>
-              <in>getacch_ah1.f</in>
-              <in>getacch_ah2.f</in>
-              <in>getacch_ah3.f</in>
-              <in>getacch_ah3_tp.f</in>
-              <in>getacch_ir3.f</in>
-              <in>getacch_tp.f</in>
-            </df>
-            <df name="kickvh">
-              <in>kickvh.f</in>
-              <in>kickvh_tp.f</in>
-            </df>
-            <df name="step">
-              <in>step_kdk.f</in>
-              <in>step_kdk_pl.f</in>
-              <in>step_kdk_tp.f</in>
-            </df>
-          </df>
-          <df name="obl">
-            <in>obl_acc.f</in>
-            <in>obl_acc_tp.f</in>
-          </df>
-          <df name="orbel">
-            <in>orbel_scget.f</in>
-            <in>orbel_xv2aeq.f</in>
-          </df>
-          <df name="rmvs">
-            <in>rmvs_chk.f</in>
-            <in>rmvs_chk_ind.f</in>
-            <in>rmvs_elog.f</in>
-            <in>rmvs_obl_acc.f</in>
-            <in>rmvs_step.f</in>
-            <in>rmvs_step_in.f</in>
-            <in>rmvs_step_in_mvpl.f</in>
-            <in>rmvs_step_in_tp.f</in>
-            <in>rmvs_step_out.f</in>
-          </df>
-          <df name="util">
-            <in>util_hills.f</in>
-            <in>util_peri.f</in>
-          </df>
-        </df>
-      </df>
-      <df name="local">
-        <df name="f2c">
-          <in>arithchk.c</in>
-        </df>
-      </df>
       <df name="src">
         <in>bootstrap.c</in>
         <in>de.c</in>
         <in>extras.c</in>
-        <in>gd.c</in>
         <in>hermite.c</in>
         <in>integration.c</in>
-        <in>javascript.c</in>
-        <in>javascript.h</in>
         <in>kernel.c</in>
         <in>kl.c</in>
         <in>lm.c</in>
@@ -133,19 +58,6 @@
           <executablePath>test</executablePath>
         </makeTool>
       </makefileType>
-      <folder path="0/local">
-        <cTool>
-          <incDir>
-            <pElem>/opt/local/include</pElem>
-            <pElem>/usr/local/include</pElem>
-            <pElem>/usr/local/lib/gcc/x86_64-apple-darwin12.0.0</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>NON_UNIX_STDIO</Elem>
-            <Elem>NO_FPINIT</Elem>
-          </preprocessorList>
-        </cTool>
-      </folder>
       <item path="src/bootstrap.c" ex="false" tool="0" flavor2="2">
         <cTool flags="1">
           <incDir>

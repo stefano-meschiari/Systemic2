@@ -265,13 +265,13 @@ kremove.planet <- function(k, idx) {
         kremove.planet(k, 1)
       }
     }
-    return()
+    return(invisible())
   }
   stopifnot(idx >= 1 && idx <= k$nplanets)
 
   K_removePlanet(k$h, idx)
   K_compileData(k$h)
-  
+  invisible()
 }
 
 
@@ -1200,8 +1200,7 @@ print.periodogram <- function(x, what='peaks') {
     cat(sprintf("\n# Trials: %d\n", attr(x, 'trials')))
 }
 
-kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25,
-                        overplot.window=TRUE, .keep.h = FALSE) {
+kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25, add.noise=TRUE, .keep.h = FALSE) {
   ## Returns a periodogram of the supplied time series. [7]
   #
   # If the first parameter is a kernel, then this function will return 
@@ -1239,7 +1238,6 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   #	- pred.col: the column to consider as the "model value" column 
   #	(used if per_type = "res") (by default, the PRED column)
   #	- plot: if TRUE, plot the periodogram after the calculation
-  #	- overplot.window: if TRUE, overplot the periodogram of the sampling 
   #	window
   # - print: if TRUE, pretty-prints the periodogram sorted by power.
   # 
@@ -1261,8 +1259,10 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
       stop("No data contained in the kernel.")
 
     d <- kdata(k)
+    d <- d[d[, err.col] > 0, ]
     n <- kpars(k)[DATA.NOISE1:DATA.NOISE10]
-    d[, err.col] <- sqrt(d[, err.col]^2 + n[d[, SET]+1]^2)
+    if (add.noise)
+      d[, err.col] <- sqrt(d[, err.col]^2 + n[d[, SET]+1]^2)
   } else {
     d <- k
     if (val.col > ncol(d))
@@ -1344,7 +1344,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   attr(mat, 'resampled') <- resampled
 
   if (plot)
-    plot(mat, overplot.window=overplot.window)
+    plot(mat)
 
   if (print) {
     print(mat, 'peaks')
@@ -1395,6 +1395,7 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
     .check_kernel(k)
     stopifnot(k$ndata > 0)			
     d <- kdata(k)
+    d <- d[d[, err.col] > 0, ]    
     n <- kpars(k)[DATA.NOISE1:DATA.NOISE10]
     d[, err.col] <- sqrt(d[, err.col]^2 + n[d[, SET]+1]^2)
   } else {

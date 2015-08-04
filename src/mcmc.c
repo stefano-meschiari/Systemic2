@@ -825,11 +825,11 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
                 i = 0;
                 state = STATE_SKIP;
 
-                printf("Steps computed:\n");
-                for (int kpar = 0; kpar < npar; kpar++) {
-                    printf("[%d] %.2e\n", kpar, *(steps[kpar]));
-                }
-                printf("\n");
+                //printf("Steps computed:\n");
+                //for (int kpar = 0; kpar < npar; kpar++) {
+                //    printf("[%d] %.2e\n", kpar, *(steps[kpar]));
+                //}
+                //printf("\n");
             }
 
 

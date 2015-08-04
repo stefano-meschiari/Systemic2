@@ -419,13 +419,14 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
 plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fap = TRUE, xlim, ylim, xlab, ylab, show.resampled=TRUE, fixed.faps=NULL, text.top=0, ...) {
   par(systemic.par)
 
+  per <- p
   peaks <- attr(p, 'peaks')
   
   if (!is.null(attr(p, 'resampled')) && !(show.resampled)) {
-    cat(sprintf("# Note: this periodogram samples a lot of frequencies [%d]\n", nrow(p)))
-    cat(sprintf("# To avoid large files and slow PDFs, specify show.resampled=TRUE as a parameter to only plot important frequencies.\n"))
+    message(sprintf("# Note: this periodogram samples a lot of frequencies [%d]\n", nrow(p)))
+    message(sprintf("# To avoid large files and slow PDFs, specify show.resampled=TRUE as a parameter to only plot important frequencies.\n"))
   } else if (show.resampled) {
-    cat(sprintf("# Using resampled periodogram with %d frequencies instead of %d.\n",
+    message(sprintf("# Using resampled periodogram with %d frequencies instead of %d.\n",
                 nrow(attr(p, 'resampled')), nrow(p)))
     p <- attr(p, 'resampled')
   }
@@ -454,11 +455,10 @@ plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fa
     # Change to actual calc of frequencies
     # y <- log(1-a[,3]); x <- log(1-exp(-a[,2]))
     if (is.null(fixed.faps))
-      faps <- approx(log(p[,'fap']), p[,what], log(c(1e-1, 1e-2, 1e-3)))$y
+      faps <- approx(log(per[,'fap']), per[,what], log(c(1e-1, 1e-2, 1e-3)))$y
     else
       faps <- fixed.faps
     #remove
-    print(faps)
     xmin = min(p[,'period'])
     xmax = max(p[,'period'])
     for (i in 1:3)	{
@@ -473,8 +473,8 @@ plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fa
     printed <- c()
     
     while (length(printed) < text.top) {
-      if (min(abs(printed - peaks[i, 1])/peaks[i, 1]) > 0.1) {
-        text(peaks[i, 1], peaks[i, 2], sprintf("%.1f", peaks[i, 1]), offset=0.25, pos=3)
+      if (min(abs(printed - peaks[i, 1])/peaks[i, 1]) > 0.01) {
+        text(peaks[i, 1], peaks[i, 2], sprintf("%.2f", peaks[i, 1]), offset=0.25, pos=3)
         printed <- c(printed, peaks[i, 1])
       }
       i <- i + 1
@@ -676,7 +676,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
   datax <- datax[subset]
   datay <- datay[subset]
   
-  if (dev.factor > 0 && type=="histogram") {
+  if (dev.factor > 0 && (type=="histogram" || type =="density")) {
     if (!x.is.angle)
       datax <- datax[datax > medx - dev.factor * devx & datax < medx + dev.factor * devx]
   } else {
@@ -694,7 +694,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
   if (!missing(ylim))
     limy <- ylim
   
-  if (type != "histogram" && type != "scatter" && type != "smoothScatter" && type != 'scatter.hist') {
+  if (type != "density" && type != "histogram" && type != "scatter" && type != "smoothScatter" && type != 'scatter.hist') {
 
     if (is.numeric(cut.outliers)) {
       idx <- datax > medx - cut.outliers * devx & datax < medx + cut.outliers * devx & datay > medy - cut.outliers*devy & datay < medy + cut.outliers*devy
@@ -712,11 +712,14 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
   
   if (type == "histogram") {
     a <- hist(datax, freq=FALSE, xlab=labx, main=ifelse(missing(main), labx, main), col=col, ...)
-    print(bfx)
+#    print(bfx)
     points(c(bfx), c(0.), pch=19,  col=bf.color, ...)
     return(invisible(a))
-  } else if (type == "gghistogram") {
-
+  } else if (type == "density") {
+#    print(datax)
+    a <- plot(density(datax, xlab=labx, main=ifelse(missing(main), labx, main), col=col, ...))
+    points(c(bfx), c(0.), pch=19,  col=bf.color, ...)
+    return(invisible(a))
   } else if (type == "scatter") {
     if (!add) {
       plot(datax, datay, xlab=labx, ylab=laby, xlim=limx, ylim=limy, pch=pch, col=col,  ...)
