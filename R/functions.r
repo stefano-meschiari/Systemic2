@@ -1200,7 +1200,7 @@ print.periodogram <- function(x, what='peaks') {
     cat(sprintf("\n# Trials: %d\n", attr(x, 'trials')))
 }
 
-kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25, add.noise=TRUE, .keep.h = FALSE) {
+kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psamples", 50000), pmin = getOption("systemic.pmin", 0.5), pmax = getOption("systemic.pmax", 1e4), data.flag = T_RV, timing.planet = NULL, val.col = SVAL, time.col = TIME, err.col = ERR, pred.col = PRED, plot = FALSE, print = FALSE, peaks = 25, add.noise=TRUE, window.cutoff=FALSE, .keep.h = FALSE) {
   ## Returns a periodogram of the supplied time series. [7]
   #
   # If the first parameter is a kernel, then this function will return 
@@ -1322,7 +1322,7 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   peaks.m <- kfind.peaks(mat)
   if (!is.na(peaks.m) && nrow(peaks.m) > 0) {
     mfap <- mat[mat[,'fap'] < 1, , drop=FALSE]
-    if (nrow(mfap) > 5) {
+    if (nrow(mfap) > 5 && window.cutoff) {
       window.cutoff <- 10^approxfun(log10(mfap[,'fap']), log10(mfap[,'power']))(log10(1e-6))
       if (!is.na(window.cutoff)) {
         peaks.m <- peaks.m[peaks.m[,'window'] < window.cutoff, , drop=FALSE]

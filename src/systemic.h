@@ -412,6 +412,7 @@ typedef struct ok_minimizer_pars {
     double* min;
     double* max;
     int* type;
+    int* planet;
     int npars;
     ok_kernel* kernel;
 } ok_kernel_minimizer_pars;

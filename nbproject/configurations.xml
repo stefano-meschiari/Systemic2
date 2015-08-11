@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="94">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="src">
         <in>bootstrap.c</in>
         <in>de.c</in>
         <in>extras.c</in>
+        <in>gd.c</in>
         <in>hermite.c</in>
         <in>integration.c</in>
         <in>kernel.c</in>
@@ -77,6 +78,15 @@
         </cTool>
       </item>
       <item path="src/extras.c" ex="false" tool="0" flavor2="2">
+        <cTool flags="1">
+          <incDir>
+            <pElem>/opt/local/include/gsl</pElem>
+            <pElem>src</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="src/gd.c" ex="false" tool="0" flavor2="2">
         <cTool flags="1">
           <incDir>
             <pElem>/opt/local/include/gsl</pElem>

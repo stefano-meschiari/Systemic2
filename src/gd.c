@@ -39,15 +39,17 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
     int user_status = PROGRESS_CONTINUE;
     ok_kernel_minimizer_pars sp = K_getMinimizedVariables(k);
     int verbose = 0;
+    int recompute_every = 10;
     if (params != 0) {
         int i = 0;
         while (params[i] != DONE) {
             if (params[i] == OPT_VERBOSE_DIAGS) {
                 verbose = (int) params[i + 1];
+            } else if (params[i] == OPT_SA_T0) {
+                recompute_every = (int) params[i + 1];
             }
             i++;
         }
-
     }
 
     if (verbose > 0)
@@ -72,8 +74,8 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
     int last_improved = 0;
     int last_improved_max = 100;
 
-    int recompute_every = 3;
-    int computed = 4;
+
+    int computed = recompute_every + 1;
 
     for (int i = 0; i < sp.npars; i++) {
         dF[i] = dW[i] = dW1[i] = dW2[i] = 0.;
@@ -106,7 +108,9 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
                 K_calculate(k);
 
                 dF[j] = (K_getLoglik(k) - L) / eps;
-                *(sp.pars[j]) = m[j] * sp.steps[j];
+
+                for (int kk = 0; kk < sp.npars; kk++)
+                    *(sp.pars[kk]) = m[kk] * sp.steps[kk];
 
                 if (IS_NOT_FINITE(dF[j])) {
                     printf("The gradient on parameter %d is not finite, stopping...\n",
@@ -126,8 +130,8 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
             grad0 = sqrt(ok_ptr_sum_2(dF, sp.npars));
             grad = grad0;
         }
-        double prev_grad = grad;
-        grad = sqrt(ok_ptr_sum_2(dF, sp.npars));
+
+        grad = ok_ptr_sum_2(dF, sp.npars);
 
         if (grad < grad_eps_abs + grad_eps_rel * grad0 || last_improved > last_improved_max) {
             break;
@@ -161,11 +165,9 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
             Lp = L2;
         }
 
-        for (int j = 0; j < sp.npars; j++) {
-            if (sp.)
-            }
+        bool invalid = false;
 
-        if (Lp >= L || IS_NOT_FINITE(Lp)) {
+        if (Lp >= L || IS_NOT_FINITE(Lp) || invalid) {
             eta *= 0.9;
             if (computed == 0)
                 computed--;
@@ -180,7 +182,7 @@ int K_minimize_gd(ok_kernel* k, int maxiter, double params[]) {
             L = Lp;
             succ_steps++;
             for (int j = 0; j < sp.npars; j++)
-                m[j] = m[j] - dW[j];
+                m[j] = *(sp.pars[j]) / sp.steps[j];
         }
         if (verbose)
             printf("step = %d [%d], L = %e [%e], eta = %e, alpha = %e, grad = %e, eps = %e\n",

@@ -2033,6 +2033,7 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
     double** pars = (double**) malloc(sizeof (double*) * mpars.npars);
     double* steps = (double*) malloc(sizeof (double) * mpars.npars);
     int* type = (int*) malloc(sizeof (int) * mpars.npars);
+    int* planet = (int*) malloc(sizeof (int) * mpars.npars);
     double* min = (double*) malloc(sizeof (double) * mpars.npars);
     double* max = (double*) malloc(sizeof (double) * mpars.npars);
     int idx = 0;
@@ -2042,6 +2043,7 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
                 pars[idx] = gsl_matrix_ptr(k->system->elements, i, j);
                 steps[idx] = MGET(k->plSteps, i, j);
                 type[idx] = j;
+                planet[idx] = i;
                 K_getElementRange(k, i, j, &(min[idx]), &(max[idx]));
                 idx++;
             }
@@ -2050,6 +2052,7 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
             pars[idx] = gsl_vector_ptr(k->params, i);
             steps[idx] = VGET(k->parSteps, i);
             type[idx] = -1;
+            planet[idx] = -1;
             K_getParRange(k, i, &(min[idx]), &(max[idx]));
             idx++;
         }
@@ -2067,5 +2070,6 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
     mpars.min = min;
     mpars.max = max;
     mpars.kernel = k;
+    mpars.planet = planet;
     return mpars;
 }
