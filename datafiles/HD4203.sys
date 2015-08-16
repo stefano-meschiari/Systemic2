@@ -1,6 +1,12 @@
-Data  {
-	RV[] "HD4203_1.vels"
-}
-"HD4203" {    
-  Mass   1.06
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 4203
+Mass	1.13
+HD	HD 4203
+HIP	HIP 3502
+Teff	5702
+RA	 11.171676
+Dec	 20.448927
+
+RV[]	HD4203_1_KECK.vels
+RV[]	HD4203_2_KECK.vels

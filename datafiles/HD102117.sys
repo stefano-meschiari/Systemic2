@@ -1,7 +1,14 @@
-Data  {
-	RV[] "HD102117_1.vels"
-	RV[] "HD102117_2.vels"
-}
-"HD102117" {    
-  Mass   1.03
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 102117
+Mass	1
+HD	HD 102117
+HIP	HIP 57291
+Teff	NA
+RA	176.210251
+Dec	-58.703709
+
+
+
+RV[]	HD102117_1_AAT.vels
+RV[]	HD102117_2_3.6M.vels

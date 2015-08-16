@@ -1,7 +1,15 @@
-Data  {
-	RV[] "16cygB_1.vels"
-	RV[] "16cygB_2.vels"
-}
-"16cygB" {    
-  Mass   1.01
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	16 Cyg B
+Mass	0.99
+HD	HD 186427
+HIP	HIP 96901
+Teff	5674
+RA	295.466553
+Dec	 50.517525
+
+
+
+RV[]	16CygB_1_LICK.vels
+RV[]	16CygB_2_HJS.vels
+RV[]	16CygB_3_HJS.vels

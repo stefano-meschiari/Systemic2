@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 154672
+Mass	1
+HD	HD 154672
+HIP	HIP 83983
+Teff	NA
+RA	257.520477
+Dec	-56.449268
+
+RV[]	HD154672_1_3.6M.vels
+RV[]	HD154672_2_MAGELLAN.vels

@@ -1,0 +1,15 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = WEST ET AL. 2009 (A&A, 502, 395)
+# bibcode = 2009A&A...502..395W
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300067/data/UID_0300067_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-11%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454508.370000	0.000000	10.300000
+2454509.353400	119.400000	8.400000
+2454510.381300	7.900000	12.000000
+2454511.309200	-39.500000	7.600000
+2454511.380000	-58.000000	10.600000
+2454511.420600	-67.500000	14.300000
+2454512.384800	57.200000	9.600000

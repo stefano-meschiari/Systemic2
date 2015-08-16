@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	81 Cet
+Mass	2.40
+HD	HD 16400
+HIP	HIP 12247
+Teff	4785
+RA	 39.424168
+Dec	 -3.396175
+
+RV[]	81Cet_1_1.88M.vels

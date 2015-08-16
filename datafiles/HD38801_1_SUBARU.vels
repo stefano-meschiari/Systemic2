@@ -1,0 +1,19 @@
+# telescope = 8.2M SUBARU
+# instrument = HDS
+# observatory = MAUNA KEA, HAWAII
+# reference = HARAKAWA ET AL. 2010 (APJ, 715, 550)
+# bibcode = 2010APJ...715..550H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0027/0027384/data/UID_0027384_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2038801%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453695.0902            -159.0                           4.2
+  2453695.9883            -151.3                           4.0
+  2453727.0304            -115.4                           4.8
+  2454081.9436             105.9                           4.0
+  2454082.9788             101.9                           4.7
+  2454085.9284              92.2                           4.8
+  2454087.0406              89.0                           4.1
+  2454470.9194             -19.9                           4.6
+  2454523.7729              59.0                           3.5
+  2454744.0407             145.0                           4.1
+  2454787.0288              89.6                           3.9

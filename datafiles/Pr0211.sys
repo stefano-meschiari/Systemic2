@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Pr0211
+Mass	0.95
+HD	
+HIP	
+Teff	5326
+RA	130.547882
+Dec	 19.277044
+
+RV[]	Pr0211_1_1.5M_FLWO.vels

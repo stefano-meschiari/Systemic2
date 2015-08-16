@@ -1,0 +1,13 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 285968
+Mass	0.45
+HD	HD 285968
+HIP	HIP 21932
+Teff	3679
+RA	 70.732407
+Dec	 18.958172
+
+RV[]	HD285968_1_KECK.vels
+RV[]	HD285968_2_3.6M.vels
+RV[]	HD285968_3_HET.vels

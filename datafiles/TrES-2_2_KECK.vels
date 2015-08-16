@@ -1,0 +1,19 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = O'DONOVAN ET AL. 2006 (APJ, 651, L61)
+# bibcode = 2006APJ...651L..61O
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300013/data/UID_0300013_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=TrES-2%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453949.76054             135.5                           6.1
+  2453949.91993              96.8                           6.1
+  2453950.00216              58.9                           7.7
+  2453950.79018            -201.0                           8.1
+  2453950.93491            -204.8                           9.0
+  2453950.98051            -201.7                           9.0
+  2453951.02136            -198.5                           7.2
+  2453951.75032              91.7                           6.0
+  2453951.84863             136.7                           7.0
+  2453951.95209             140.5                           7.1
+  2453952.02736             145.6                           8.4

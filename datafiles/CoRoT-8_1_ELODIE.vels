@@ -1,0 +1,10 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = BORDE ET AL. 2010 (2010, A&A, 520A, 66)
+# bibcode = 2010A&A...520A..66B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300114/data/UID_0300114_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-8%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454314.407760         -37606.00                         49.00
+  2454318.410150         -37545.40                         18.40

@@ -1,0 +1,32 @@
+# telescope = 8.2M KEUYEN (UT2)
+# instrument = FLAMES+UVES
+# observatory = ESO VLT, PARANAL OBSERVATORY, CHILE
+# reference = PONT ET AL. 2008 (A&A, 487, 749)
+# bibcode = 2008A&A...487..749P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300054/data/UID_0300054_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=OGLE-TR-182%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453791.7441            22.433                         0.056
+  2453793.6623            22.297                         0.118
+  2453793.7635            22.209                         0.067
+  2453794.7132            22.325                         0.056
+  2453794.8735            22.293                         0.058
+  2453853.5400            22.161                         0.062
+  2453853.5753            22.238                         0.057
+  2453854.4999            22.374                         0.056
+  2453856.6192            22.500                         0.060
+  2453858.6166            22.430                         0.057
+  2453859.7276            22.488                         0.070
+  2454143.7804            22.191                         0.062
+  2454144.7438            22.325                         0.061
+  2454144.7730            22.256                         0.057
+  2454145.7741            22.504                         0.082
+  2454148.6511            22.330                         0.060
+  2454149.7774            22.454                         0.064
+  2454150.7396            22.452                         0.057
+  2454203.5920            22.368                         0.046
+  2454204.5496            22.259                         0.070
+  2454205.5464            22.407                         0.070
+  2454207.6555            22.229                         0.043
+  2454208.5372            22.260                         0.050
+  2454209.6534            22.457                         0.054

@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-22
+Mass	1.11
+HD	
+HIP	
+Teff	5958
+RA	 52.818043
+Dec	-23.819702
+
+RV[]	WASP-22_1_3.6M.vels
+RV[]	WASP-22_2_EULER.vels

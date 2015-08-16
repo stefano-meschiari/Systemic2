@@ -1,0 +1,17 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = BARGE ET AL. 2008 (A&AL, 482, 17)
+# bibcode = 2008A&A...482L..17B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300036/data/UID_0300036_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-1%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454184.30498           23.2879                        0.0385
+  2454185.30867           23.1284                       0.06001
+  2454192.30397           23.5625                        0.0271
+  2454197.32090           23.2862                        0.0309
+  2454376.66501           23.5784                        0.0226
+  2454378.66336           23.3730                        0.0324
+  2454379.66472           23.6200                        0.0224
+  2454380.67016           23.6907                        0.0229
+  2454381.63151           23.3795                        0.0227

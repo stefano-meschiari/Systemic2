@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 100655
+Mass	1
+HD	HD 100655
+HIP	HIP 56508
+Teff	NA
+RA	173.765640
+Dec	 20.441545
+
+RV[]	HD100655_1_1.88M_OAO.vels
+RV[]	HD100655_2_1.8M_BOAO.vels

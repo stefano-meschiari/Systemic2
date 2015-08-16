@@ -1,8 +1,0 @@
-Data  {
-	RV[] "HD168443_CORALIE02.vels"
-	RV[] "HD168443_B06K.vels"
-	RV[] "HD168443_HJS06.vels"
-}
-"HD168443_B06K_3datasets" {    
-  Mass   1.01
-}

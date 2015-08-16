@@ -1,0 +1,24 @@
+# telescope = 10M KECK
+# instrument = HIRES
+# observatory = MANUA KEA, HAWAII
+# reference = COLLINS ET AL. 2014 (AJ, 147, 39)
+# bibcode = 2014AJ....147...39C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302522/data/UID_0302522_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=KELT-6%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2456163.733467             19.38                          3.90
+  2456164.729771             61.75                          3.76
+  2456165.727060             46.70                          3.76
+  2456172.720200             64.03                          3.36
+  2456173.720971             69.62                          3.31
+  2456175.727980             -5.05                          5.06
+  2456177.719323            -14.71                          3.56
+  2456178.716548              2.82                          3.57
+  2456179.715151             43.05                          3.67
+  2456290.173359             29.64                          3.81
+  2456318.978815            -46.73                          3.50
+  2456320.088103            -35.17                          3.48
+  2456326.175000            -62.66                          3.50
+  2456327.103147            -49.24                          3.52
+  2456328.106726            -11.70                          3.32
+  2456345.026477              8.71                          3.58

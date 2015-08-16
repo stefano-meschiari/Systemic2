@@ -1,0 +1,15 @@
+# telescope = 10M KECK
+# instrument = HIRES
+# observatory = MANUA KEA, HAWAII
+# reference = OLLIVIER ET AL. 2012 (A&A, 541, A149)
+# bibcode = 2012A&A...541A.149O
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302448/data/UID_0302448_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-16%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455012.910100             40.80                         20.20
+  2455014.037450             50.00                         21.70
+  2455368.078120              9.40                         27.40
+  2455368.928430            -43.00                         28.80
+  2455369.118550           -106.80                         58.40
+  2455429.771810             22.20                         27.70
+  2455430.784910             27.40                         18.60

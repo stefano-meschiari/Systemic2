@@ -1,0 +1,16 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = FAEDI ET AL. 2011 (ARXIV, 1102, 1375)
+# bibcode = 2011A&A...531A..40F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300148/data/UID_0300148_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-39%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455304.470400         -58475.00                         13.00
+  2455305.437400         -58429.00                         15.00
+  2455323.438900         -58565.00                         17.00
+  2455329.418400         -58472.00                         16.00
+  2455331.430100         -58522.00                         14.00
+  2455334.462400         -58418.00                         17.00
+  2455336.447700         -58503.00                         16.00
+  2455368.395500         -58514.00                         17.00

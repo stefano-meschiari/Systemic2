@@ -1,7 +1,12 @@
-Data  {
-	RV[] "HD43691_ELODIE07.vels"
-	RV[] "HD43691_SOPHIE07.vels"
-}
-"HD43691" {
-  Mass 1.38
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 43691
+Mass	1.38
+HD	HD 43691
+HIP	HIP 30057
+Teff	6200
+RA	 94.894485
+Dec	 41.092304
+
+RV[]	HD43691_1_ELODIE.vels
+RV[]	HD43691_2_ELODIE.vels

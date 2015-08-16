@@ -1,0 +1,12 @@
+# telescope = 2.1M MCDONALD
+# instrument = SANDIFORD
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = GANDOLFI ET AL. 2013 (2013, A&A, 557A, 74)
+# bibcode = 2013A&A...557A..74G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300243/data/UID_0300243_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Kepler-77%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455701.825950         -24862.00                         42.00
+  2455703.806040         -24742.00                         34.00
+  2455704.933670         -24818.00                         42.00
+  2455705.785250         -24810.00                         26.00

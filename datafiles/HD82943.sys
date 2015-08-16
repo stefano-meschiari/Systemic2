@@ -1,7 +1,11 @@
-Data  {
-	RV[] "HD82943_1.vels"
-	RV[] "HD82943_2.vels"
-}
-"HD82943" {    
-  Mass   1.05
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 82943
+Mass	1.20
+HD	HD 82943
+HIP	HIP 47007
+Teff	6016
+RA	143.711395
+Dec	-12.129546
+
+RV[]	HD82943_1_KECK.vels

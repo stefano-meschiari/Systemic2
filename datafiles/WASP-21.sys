@@ -1,0 +1,14 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-21
+Mass	0.89
+HD	
+HIP	
+Teff	5800
+RA	347.492706
+Dec	 18.396086
+
+RV[]	WASP-21_1_ELODIE.vels
+RV[]	WASP-21_2_ESO.vels
+RV[]	WASP-21_3_NOT.vels
+RV[]	WASP-21_4_ESO.vels

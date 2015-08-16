@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-68
+Mass	1.08
+HD	
+HIP	
+Teff	5793
+RA	291.032318
+Dec	 49.040272
+
+RV[]	Kepler-68_1_KECK.vels

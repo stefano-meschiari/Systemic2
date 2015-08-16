@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 86226
+Mass	1.06
+HD	HD 86226
+HIP	HIP 48739
+Teff	5903
+RA	149.124359
+Dec	-24.099390
+
+RV[]	HD86226_1_MAGELLAN.vels

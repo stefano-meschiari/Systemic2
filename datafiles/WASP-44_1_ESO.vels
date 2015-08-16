@@ -1,0 +1,25 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = ANDERSON ET AL. 2011 (ARXIV, 1105, 3179)
+# bibcode = 2012MNRAS.422.1988A
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300157/data/UID_0300157_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-44%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455378.853300          -4114.00                         28.00
+  2455387.785000          -3923.00                         19.00
+  2455388.908900          -4173.00                         24.00
+  2455389.777800          -3894.00                         40.00
+  2455390.780200          -4074.00                         25.00
+  2455391.869100          -4095.00                         20.00
+  2455392.760400          -3905.00                         23.00
+  2455396.899500          -4033.00                         39.00
+  2455414.807500          -3981.00                         20.00
+  2455446.827100          -4149.00                         27.00
+  2455448.912800          -4013.00                         32.00
+  2455449.856800          -4173.00                         24.00
+  2455450.809500          -3912.00                         25.00
+  2455451.808900          -4162.00                         25.00
+  2455453.643900          -3999.00                         18.00
+  2455454.848200          -4049.00                         26.00
+  2455482.660000          -3978.00                         25.00

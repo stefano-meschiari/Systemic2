@@ -1,8 +1,0 @@
-Data  {
-	RV[] "upsand_1.vels"
-	RV[] "upsand_2.vels"
-	RV[] "upsand_3.vels"
-}
-"upsand_3datasets" {    
-  Mass   1.30
-}

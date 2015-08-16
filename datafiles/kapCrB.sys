@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	kap CrB
+Mass	1.51
+HD	HD 142091
+HIP	HIP 77655
+Teff	4877
+RA	237.808044
+Dec	 35.657383
+
+RV[]	kapCrB_1_LICK.vels

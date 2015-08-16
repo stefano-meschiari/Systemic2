@@ -1,7 +1,16 @@
-Data  {
-	RV[] "47uma_Lick02.vels"
-	RV[] "47uma_ELODIE04.vels"
-}
-"47uma" {    
-  Mass   1.00
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	47 UMa
+Mass	1.03
+HD	HD 95128
+HIP	HIP 53721
+Teff	5892
+RA	164.866562
+Dec	 40.430256
+
+
+
+RV[]	47UMa_1_HJS.vels
+RV[]	47UMa_2_HET.vels
+RV[]	47UMa_3_ELODIE.vels
+RV[]	47UMa_4_LICK.vels

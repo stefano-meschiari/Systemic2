@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 220773
+Mass	1
+HD	HD 220773
+HIP	HIP 115697
+Teff	NA
+RA	351.614349
+Dec	  8.643845
+
+RV[]	HD220773_1_HET.vels

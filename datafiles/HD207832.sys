@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 207832
+Mass	0.94
+HD	HD 207832
+HIP	HIP 107985
+Teff	5710
+RA	328.151184
+Dec	-26.026560
+
+RV[]	HD207832_1_KECK.vels

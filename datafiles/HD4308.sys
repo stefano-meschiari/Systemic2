@@ -1,6 +1,12 @@
-Data  {
-	RV[] "HD4308_1.vels"
-}
-"HD4308" {    
-  Mass   0.83
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 4308
+Mass	0.83
+HD	HD 4308
+HIP	HIP 3497
+Teff	5685
+RA	 11.163615
+Dec	-65.649521
+
+RV[]	HD4308_1_AAT.vels
+RV[]	HD4308_2_3.6M.vels

@@ -1,7 +1,0 @@
-Data  {
-	RV[] "55cancri_1.vels"
-	RV[] "55cancri_2.vels"
-}
-"55cancri" {    
-  Mass   0.95
-}

@@ -1,6 +1,11 @@
-Data  {
-	RV[] "rhoCrB_1.vels"
-}
-"rhoCrB" {    
-  Mass   0.95
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	rho CrB
+Mass	1
+HD	HD 143761
+HIP	HIP 78459
+Teff	NA
+RA	240.261093
+Dec	 33.303509
+
+RV[]	rhoCrB_1_LICK.vels

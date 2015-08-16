@@ -1,8 +1,16 @@
-Data  {
-	RV[] "HD217107_Lick99.vels"
-	RV[] "HD217107_CORALIE01.vels"
-	RV[] "HD217107_Keck05.vels"
-}
-"HD217107" {    
-  Mass   1.05
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 217107
+Mass	1.02
+HD	HD 217107
+HIP	HIP 113421
+Teff	5646
+RA	344.564758
+Dec	 -2.395385
+
+
+
+RV[]	HD217107_1_LICK.vels
+RV[]	HD217107_2_KECK.vels
+RV[]	HD217107_3_HJS.vels
+RV[]	HD217107_4_EULER.vels

@@ -1,0 +1,15 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = POLLACCO ET AL. 2008 (MNRAS, 385, 1576)
+# bibcode = 2008MNRAS.385.1576P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300056/data/UID_0300056_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-3%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454286.522500	-207.000000	18.000000
+2454287.456300	290.000000	20.000000
+2454289.366200	285.000000	18.000000
+2454340.325100	-104.000000	13.000000
+2454341.398900	138.000000	15.000000
+2454342.319800	0.000000	19.000000
+2454343.482500	-94.000000	13.000000

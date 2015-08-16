@@ -1,0 +1,11 @@
+# telescope = 2.0M ALFRED JENSCH TELESCOPE
+# instrument = TLS
+# observatory = TAUTENBERG, GERMANY
+# reference = DELEUIL ET AL. 2008 (A&A, 491, 889)
+# bibcode = 2008A&A...491..889D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300074/data/UID_0300074_RVC_005.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-3%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454331.359000	-2670.000000	250.000000
+2454332.360000	0.000000	290.000000
+2454336.906000	810.000000	240.000000

@@ -1,6 +1,16 @@
-Data  {
-	RV[] "upsand_1.vels"
-}
-"upsand" {    
-  Mass   1.30
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	ups And
+Mass	1
+HD	HD 9826
+HIP	HIP 7513
+Teff	NA
+RA	 24.199345
+Dec	 41.405460
+
+
+
+RV[]	upsAnd_1_LICK.vels
+RV[]	upsAnd_2_ELODIE.vels
+RV[]	upsAnd_3_HJS.vels
+RV[]	upsAnd_4_TILLINGHAST.vels

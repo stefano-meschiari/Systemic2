@@ -1,0 +1,29 @@
+# telescope = 2.2M MPG/ESO
+# instrument = FEROS
+# observatory = ESO LA SILLA, CHILE
+# reference = PENEV ET AL. 2013 (2013, AJ, 145, 5)
+# bibcode = 2013AJ....145....5P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302459/data/UID_0302459_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HATS-1%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455721.482000           -190.09                         61.09
+  2455722.561000            246.23                         53.72
+  2455723.604000             28.04                         59.75
+  2455724.611000           -409.37                         58.84
+  2455726.630000            157.47                         47.67
+  2455728.539000           -146.13                         56.44
+  2455735.513000           -121.06                         81.73
+  2455736.571000            286.48                         50.45
+  2455737.464000             75.76                         50.47
+  2455738.460000            -90.05                         57.78
+  2455901.840000            281.61                         34.46
+  2455911.841000             79.18                         39.24
+  2455936.867000            274.56                         48.03
+  2455991.751000            108.73                         56.55
+  2456021.750000            -33.57                         57.03
+  2456024.793000            -50.14                         90.16
+  2456025.782000            222.49                         46.75
+  2456029.739000            163.37                         65.29
+  2456031.546000           -256.83                         46.88
+  2456032.702000             81.66                         40.39
+  2456035.651000             27.54                         69.87

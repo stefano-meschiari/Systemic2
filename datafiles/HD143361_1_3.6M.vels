@@ -1,0 +1,14 @@
+# telescope = 3.6M
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = JENKINS ET AL. 2009 (MNRAS, 398, 911)
+# bibcode = 2009MNRAS.398..911J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0078/0078521/data/UID_0078521_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20143361%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454250.745318           -437.90                          2.39
+  2454253.769447           -436.44                          3.23
+  2454367.556628           -474.74                          2.22
+  2454368.537299           -474.20                          2.24
+  2454578.788567           -534.13                          2.18
+  2454581.807762           -531.75                          2.19

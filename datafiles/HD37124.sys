@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD37124_1.vels"
-}
-"HD37124" {    
-  Mass   0.91
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 37124
+Mass	1
+HD	HD 37124
+HIP	HIP 26381
+Teff	NA
+RA	 84.260361
+Dec	 20.730787
+
+
+
+RV[]	HD37124_1_KECK.vels

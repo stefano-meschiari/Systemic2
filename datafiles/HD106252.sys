@@ -1,7 +1,15 @@
-Data  {
-	RV[] "HD106252_1.vels"
-	RV[] "HD106252_2.vels"
-}
-"HD106252" {    
-  Mass   1.05
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 106252
+Mass	1
+HD	HD 106252
+HIP	HIP 59610
+Teff	NA
+RA	183.372955
+Dec	 10.041638
+
+RV[]	HD106252_1_HJS.vels
+RV[]	HD106252_2_HET.vels
+RV[]	HD106252_3_LICK.vels
+RV[]	HD106252_4_ELODIE.vels
+RV[]	HD106252_5_LICK.vels

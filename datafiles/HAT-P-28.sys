@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-28
+Mass	1.02
+HD	
+HIP	
+Teff	5680
+RA	 13.000766
+Dec	 34.728413
+
+RV[]	HAT-P-28_1_KECK.vels
+RV[]	HAT-P-28_2_NOT.vels

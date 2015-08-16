@@ -1,0 +1,27 @@
+# telescope = 3.6M
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = SANTOS ET AL. 2007 (A&A, 474, 647)
+# bibcode = 2007A&A...474..647S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300047/data/UID_0300047_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20171028%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453310.4946           13.6319                        0.0009
+  2453574.6582           13.5948                        0.0008
+  2453575.6376           13.5924                        0.0007
+  2453576.6401           13.5899                        0.0008
+  2453577.6084           13.5939                        0.0008
+  2453578.6591           13.5954                        0.0007
+  2453669.5027           13.7099                        0.0016
+  2453672.4942           13.7045                        0.0013
+  2453862.8107           13.6268                        0.0011
+  2453864.8024           13.6304                        0.0011
+  2453870.7806           13.6268                        0.0009
+  2453882.8334           13.6266                        0.0010
+  2453883.8141           13.6219                        0.0017
+  2453920.7281           13.6179                        0.0008
+  2454166.9019           13.6329                        0.0009
+  2454168.8885           13.6345                        0.0008
+  2454172.8740           13.6417                        0.0008
+  2454174.8916           13.6446                        0.0008
+  2454196.8946           13.7075                        0.0007

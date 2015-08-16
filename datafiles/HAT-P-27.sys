@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-27
+Mass	0.94
+HD	
+HIP	
+Teff	5300
+RA	222.767441
+Dec	  5.947368
+
+RV[]	HAT-P-27_1_ESO.vels

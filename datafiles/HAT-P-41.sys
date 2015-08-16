@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-41
+Mass	1.42
+HD	
+HIP	
+Teff	6390
+RA	297.322662
+Dec	  4.672421
+
+RV[]	HAT-P-41_1_KECK.vels
+RV[]	HAT-P-41_2_NOT.vels

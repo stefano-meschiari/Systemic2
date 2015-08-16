@@ -1,0 +1,31 @@
+# telescope = 9.2M HOBBY EBERLY TELESCOPE (HET)
+# instrument = HRS
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = WITTENMYER ET AL. 2009 (APJS, 182, 97)
+# bibcode = 2009APJS..182...97W
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0045/0045982/data/UID_0045982_RVC_008.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2080606%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453346.88103               8.1                           8.6
+  2453358.02089             -16.0                           8.1
+  2453359.82400             -26.7                           8.8
+  2453361.02985             -28.9                           7.7
+  2453365.03079             -46.8                           8.0
+  2453373.98282             -63.3                           9.8
+  2453377.80112             -62.8                           9.6
+  2453379.75230             -62.1                           9.3
+  2453389.74170             -95.6                           7.8
+  2453391.74400             -97.6                           8.0
+  2453395.72763            -104.1                           8.6
+  2453399.72518            -115.4                           9.4
+  2453401.72497            -123.7                           9.1
+  2453414.67819            -186.7                           9.1
+  2453421.85529             314.1                           8.1
+  2453423.86650             374.2                           7.9
+  2453424.85231             302.6                           7.3
+  2453432.87120             132.0                           7.6
+  2453433.60628             119.8                           7.6
+  2453446.79322              55.8                           8.2
+  2454161.85400             -62.4                           8.9
+  2454166.83797             -80.2                           7.3
+  2454186.76189            -134.1                           7.4

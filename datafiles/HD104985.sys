@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD104985_1.vels"
-}
-"HD104985" {    
-  Mass   1.5
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 104985
+Mass	1
+HD	HD 104985
+HIP	HIP 58952
+Teff	NA
+RA	181.312988
+Dec	 76.905731
+
+
+
+RV[]	HD104985_1_1.88M.vels

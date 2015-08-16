@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	BD-13 2130
+Mass	1
+HD	
+HIP	
+Teff	NA
+RA	114.288492
+Dec	-13.906663
+
+RV[]	BD-132130_1_3.6M.vels
+RV[]	BD-132130_2_EULER.vels

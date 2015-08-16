@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-3
+Mass	1.24
+HD	
+HIP	
+Teff	6400
+RA	278.631805
+Dec	 35.661533
+
+RV[]	WASP-3_1_KECK.vels
+RV[]	WASP-3_2_ELODIE.vels

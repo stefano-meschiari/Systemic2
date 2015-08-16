@@ -1,0 +1,16 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = SIMPSON ET AL. 2010 (ARXIV, 1008, 3096)
+# bibcode = 2011AJ....141....8S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300132/data/UID_0300132_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-37%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455305.753200           8152.00                         18.00
+  2455310.823600           7678.00                         43.00
+  2455311.851400           7919.00                         25.00
+  2455312.826600           8064.00                         31.00
+  2455321.771600           7668.00                         23.00
+  2455324.711400           7769.00                         22.00
+  2455325.686800           7776.00                         24.00
+  2455376.668400           8103.00                         31.00

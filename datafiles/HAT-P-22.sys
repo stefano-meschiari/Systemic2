@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-22
+Mass	0.92
+HD	HD 233731
+HIP	
+Teff	5302
+RA	155.681717
+Dec	 50.128345
+
+RV[]	HAT-P-22_1_KECK.vels

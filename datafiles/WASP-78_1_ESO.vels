@@ -1,0 +1,25 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = SMALLEY ET AL. 2012 (2012, A&A, 547A, 61)
+# bibcode = 2012A&A...547A..61S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302460/data/UID_0302460_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-78%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455843.809136            356.46                         34.85
+  2455844.852761            607.83                         40.40
+  2455856.829961            347.73                         38.80
+  2455858.755243            393.17                         40.86
+  2455859.844478            528.18                         33.89
+  2455863.776195            423.26                         28.13
+  2455864.773882            538.95                         28.40
+  2455868.786063            546.33                         32.02
+  2455872.826304            513.09                         34.59
+  2455880.779941            330.21                         23.99
+  2455881.827711            573.39                         27.15
+  2455883.691336            509.27                         26.04
+  2455887.764232            415.97                         23.11
+  2455888.641287            543.11                         28.07
+  2455889.620019            378.00                         25.74
+  2455894.743726            587.54                         23.81
+  2455925.588245            534.59                         20.61

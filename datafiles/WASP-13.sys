@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-13
+Mass	1.09
+HD	
+HIP	
+Teff	5826
+RA	140.102982
+Dec	 33.882439
+
+RV[]	WASP-13_1_ELODIE.vels

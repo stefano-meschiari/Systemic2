@@ -1,6 +1,14 @@
-Data  {
-	RV[] "HD134987_1.vels"
-}
-"HD134987" {    
-  Mass   1.0
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 134987
+Mass	1
+HD	HD 134987
+HIP	HIP 74500
+Teff	NA
+RA	228.369446
+Dec	-25.309347
+
+
+
+RV[]	HD134987_1_KECK.vels
+RV[]	HD134987_2_AAT.vels

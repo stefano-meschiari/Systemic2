@@ -1,7 +1,0 @@
-Data  {
-	RV[] "ogle-tr10_1.vels"
-	RV[] "ogle-tr10_2.vels"
-}
-"ogle-tr10" {    
-  Mass   1.22
-}

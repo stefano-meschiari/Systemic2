@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	6 Lyn
+Mass	1.70
+HD	HD 45410
+HIP	HIP 31039
+Teff	4978
+RA	 97.696281
+Dec	 58.162632
+
+RV[]	6Lyn_1_1.88M.vels

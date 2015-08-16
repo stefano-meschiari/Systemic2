@@ -1,9 +1,0 @@
-Data  {
-	RV[] "47uma_Lick02.vels"
-	RV[] "47uma_ELODIE04.vels"
-	RV[] "47uma_HJS06.vels"
-	RV[] "47uma_HET06.vels"
-}
-"47uma_4datasets" {    
-  Mass   1.00
-}

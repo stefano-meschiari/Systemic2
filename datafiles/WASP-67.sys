@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-67
+Mass	0.87
+HD	
+HIP	
+Teff	5240
+RA	295.743835
+Dec	-19.949596
+
+RV[]	WASP-67_1_ESO.vels

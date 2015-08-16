@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 120084
+Mass	2.39
+HD	HD 120084
+HIP	HIP 66903
+Teff	4892
+RA	205.663345
+Dec	 78.064438
+
+RV[]	HD120084_1_1.88M_OAO.vels

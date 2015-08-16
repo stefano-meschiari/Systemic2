@@ -19,6 +19,7 @@
 #define JS_PS_GET_TOP_POWERS -7
 #define JS_PS_GET_TOP_FAPS -8
 
+const char* K_getDataName(ok_kernel* k, int idx);
 double K_getDataAt(ok_kernel* k, int subset, int row, int column);
 void K_setDataAt(ok_kernel* k, int subset, int row, int column, double val);
 double K_getRVLine(ok_kernel* k, int row, int col);

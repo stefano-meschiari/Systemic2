@@ -1,0 +1,24 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = PAL ET AL. 2009 (APJ, 700, 783)
+# bibcode = 2009APJ...700..783P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300073/data/UID_0300073_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=XO-5%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450186.94763            269.14                          3.21
+  2450187.95384            226.59                          3.08
+  2450188.95403             33.07                          2.79
+  2450216.76639            294.36                          2.70
+  2450247.80697              0.00                          3.37
+  2450248.77938             76.84                          3.83
+  2450249.78531            268.26                          3.36
+  2450251.78153              5.41                          3.75
+  2450428.02826              8.16                          3.02
+  2450430.12240            301.03                          3.71
+  2450455.97787            222.99                          3.41
+  2450547.92199            224.82                          7.25
+  2450548.81658             79.96                          3.08
+  2450548.89652             65.98                          2.84
+  2450602.74168            193.74                          2.61
+  2450603.74268             15.18                          2.83

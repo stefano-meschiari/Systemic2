@@ -1,0 +1,16 @@
+# telescope = 1.93M
+# instrument = ELODIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = DA SILVA ET AL. 2006 (A&A, 446, 717)
+# bibcode = 2006A&A...446..717D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0081/0081022/data/UID_0081022_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20149143%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2453550.446700	114.500000	13.000000
+2453554.422400	62.500000	10.000000
+2453587.370900	120.500000	14.000000
+2453589.339300	-231.500000	13.000000
+2453592.373600	-9.500000	12.000000
+2453611.317200	9.500000	10.000000
+2453613.313000	-119.500000	10.000000
+2453614.314100	-183.500000	10.000000

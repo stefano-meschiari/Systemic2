@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	omi CrB
+Mass	2.13
+HD	HD 136512
+HIP	HIP 75049
+Teff	4749
+RA	230.035660
+Dec	 29.616209
+
+RV[]	omiCrB_1_1.88M_OAO.vels

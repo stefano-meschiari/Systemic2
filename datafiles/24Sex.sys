@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	24 Sex
+Mass	1.54
+HD	HD 90043
+HIP	HIP 50887
+Teff	5098
+RA	155.868210
+Dec	 -0.902244
+
+RV[]	24Sex_1_LICK.vels
+RV[]	24Sex_2_KECK.vels

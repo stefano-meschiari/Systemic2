@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Pr0201
+Mass	1.23
+HD	
+HIP	
+Teff	6174
+RA	130.432602
+Dec	 20.226891
+
+RV[]	Pr0201_1_1.5M_FLWO.vels

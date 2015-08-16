@@ -1,0 +1,17 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = COLLIER CAMERON ET AL. 2007 (MNRAS, 375, 951)
+# bibcode = 2007MNRAS.375..951C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300018/data/UID_0300018_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-2%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453981.5065           -28.125                         0.186
+  2453982.3786           -27.711                         0.012
+  2453982.4962           -27.736                         0.013
+  2453991.3817           -27.780                         0.011
+  2453991.5102           -27.812                         0.011
+  2453996.3529           -28.037                         0.011
+  2453996.4301           -28.020                         0.012
+  2453997.3824           -27.723                         0.012
+  2453998.3415           -27.987                         0.011

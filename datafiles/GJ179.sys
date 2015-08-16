@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 179
+Mass	0.36
+HD	
+HIP	HIP 22627
+Teff	3370
+RA	 73.023865
+Dec	  6.476539
+
+RV[]	GJ179_1_KECK.vels
+RV[]	GJ179_2_HET.vels

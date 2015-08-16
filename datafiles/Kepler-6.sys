@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-6
+Mass	1.21
+HD	
+HIP	
+Teff	5647
+RA	296.837250
+Dec	 48.239964
+
+RV[]	Kepler-6_1_KECK.vels

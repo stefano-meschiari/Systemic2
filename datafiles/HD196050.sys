@@ -1,7 +1,14 @@
-Data  {
-	RV[] "HD196050_1.vels"
-	RV[] "HD196050_2.vels"
-}
-"HD196050" {    
-  Mass   1.1
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 196050
+Mass	1.15
+HD	HD 196050
+HIP	HIP 101806
+Teff	5892
+RA	309.465454
+Dec	-60.634483
+
+
+
+RV[]	HD196050_1_AAT.vels
+RV[]	HD196050_2_EULER.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 5608
+Mass	1.55
+HD	HD 5608
+HIP	HIP 4552
+Teff	4854
+RA	 14.559246
+Dec	 33.950886
+
+RV[]	HD5608_1_1.88M_OAO.vels

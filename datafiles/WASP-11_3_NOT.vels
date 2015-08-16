@@ -1,0 +1,14 @@
+# telescope = 2.5M NORDIC OPTICAL TELESCOPE (NOT)
+# instrument = FIES
+# observatory = LA PALMA, SPAIN
+# reference = WEST ET AL. 2009 (A&A, 502, 395)
+# bibcode = 2009A&A...502..395W
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300067/data/UID_0300067_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-11%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454462.395000	-27.750000	18.500000
+2454463.456000	-24.150000	20.300000
+2454465.404000	24.150000	25.800000
+2454466.440000	-70.450000	24.400000
+2454466.443000	51.950000	24.600000
+2454491.424000	37.250000	22.000000

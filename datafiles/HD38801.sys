@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 38801
+Mass	1
+HD	HD 38801
+HIP	HIP 27384
+Teff	NA
+RA	 86.996567
+Dec	 -8.327700
+
+RV[]	HD38801_1_SUBARU.vels
+RV[]	HD38801_2_KECK.vels

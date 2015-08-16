@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-26
+Mass	1.11
+HD	
+HIP	
+Teff	5939
+RA	  4.602897
+Dec	-15.267305
+
+RV[]	WASP-26_1_EULER.vels

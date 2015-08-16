@@ -1,0 +1,19 @@
+# telescope = 2.5M NOT
+# instrument = FIES
+# observatory = OBSERVATORIO DEL ROQUE DE LOS MUCHACHOS, LA PALMA, SPAIN
+# reference = GANDOLFI ET AL. 2013 (2013, A&A, 557A, 74)
+# bibcode = 2013A&A...557A..74G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300243/data/UID_0300243_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Kepler-77%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2456101.696090         -24773.00                         18.00
+  2456102.531600         -24808.00                         18.00
+  2456104.601910         -24712.00                         24.00
+  2456105.609140         -24805.00                         20.00
+  2456107.701220         -24691.00                         19.00
+  2456118.656140         -24705.00                         14.00
+  2456119.704640         -24803.00                         12.00
+  2456121.666980         -24716.00                         14.00
+  2456122.702040         -24702.00                         23.00
+  2456202.417910         -24806.00                         12.00
+  2456214.347020         -24739.00                         24.00

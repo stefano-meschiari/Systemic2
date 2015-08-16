@@ -1,0 +1,21 @@
+# telescope = 10M KECK
+# instrument = HIRES
+# observatory = MANUA KEA, HAWAII
+# reference = BAKOS ET AL. 2010 (ARXIV, 1008, 3388)
+# bibcode = 2011APJ...742..116B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300129/data/UID_0300129_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-23%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454638.106010           -137.90                          4.49
+  2454674.914040            374.64                          5.15
+  2454723.787190           -209.16                          5.55
+  2454725.853090            329.57                          6.18
+  2454726.879760            277.98                          4.20
+  2454727.762470           -210.01                          4.81
+  2454727.896190            -19.91                          4.77
+  2454777.821890            214.73                          4.54
+  2454810.729600            290.22                          5.63
+  2454955.046760            388.82                          4.74
+  2454985.994940           -369.93                          4.42
+  2455192.708120            348.01                          4.40
+  2455193.710800             83.68                          4.57

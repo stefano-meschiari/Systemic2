@@ -1,0 +1,16 @@
+# telescope = 10M KECK
+# instrument = HIRES
+# observatory = MANUA KEA, HAWAII
+# reference = BUCHHAVE ET AL. 2011 (ARXIV, 1103, 1813)
+# bibcode = 2011APJ...733..116B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300151/data/UID_0300151_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-29%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455466.002840             37.80                          2.16
+  2455467.942930            -85.06                          2.47
+  2455469.021380            -15.21                          2.31
+  2455469.928510             42.10                          2.53
+  2455490.917980            -79.20                          2.51
+  2455521.917810             80.29                          2.39
+  2455523.004630             45.97                          2.49
+  2455544.955900             68.78                          3.04

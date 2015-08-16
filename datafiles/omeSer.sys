@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	ome Ser
+Mass	2.17
+HD	HD 141680
+HIP	HIP 77578
+Teff	4770
+RA	237.573105
+Dec	  2.196509
+
+RV[]	omeSer_1_1.88M_OAO.vels

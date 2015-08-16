@@ -1,8 +1,0 @@
-Data  {
-	RV[] "HD195019_B06K.vels"
-	RV[] "HD195019_B06L.vels"
-	RV[] "HD195019_HJS06.vels"
-}
-"HD195019_B06_3datasets" {    
-  Mass   1.0
-}

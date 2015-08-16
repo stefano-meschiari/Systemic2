@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD23596_1.vels"
-}
-"HD23596" {    
-  Mass   1.30
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 23596
+Mass	1
+HD	HD 23596
+HIP	HIP 17747
+Teff	NA
+RA	 57.001556
+Dec	 40.530636
+
+RV[]	HD23596_1_HJS.vels
+RV[]	HD23596_2_HET.vels
+RV[]	HD23596_3_ELODIE.vels

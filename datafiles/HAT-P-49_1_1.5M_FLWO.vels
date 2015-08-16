@@ -1,0 +1,24 @@
+# telescope = 1.5M FLWO
+# instrument = TRES
+# observatory = FRED L. WHIPPLE OBSERVATORY, MT. HOPKINS, ARIZONA
+# reference = BIERYLA ET AL. 2014 (2014, AJ, 147, 84)
+# bibcode = 2014AJ....147...84B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302527/data/UID_0302527_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-49%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2456110.902550            218.00                         52.00
+  2456176.732780            -96.00                         68.00
+  2456192.790110            -61.00                         52.00
+  2456199.665050            303.00                         58.00
+  2456210.608850            337.00                         55.00
+  2456223.591890            113.00                         19.00
+  2456225.691260            -41.00                         29.00
+  2456226.657340            151.00                         19.00
+  2456227.743190           -177.00                         41.00
+  2456228.744450              7.00                         39.00
+  2456229.617240             77.00                         29.00
+  2456230.665490           -239.00                         40.00
+  2456231.679340             14.00                         30.00
+  2456233.606110           -208.00                         29.00
+  2456234.684160            169.00                         50.00
+  2456237.649710            186.00                         51.00

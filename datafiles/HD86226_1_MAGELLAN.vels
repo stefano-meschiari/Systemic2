@@ -1,0 +1,21 @@
+# telescope = 6.5M MAGELLAN II (CLAY)
+# instrument = MIKE
+# observatory = LAS CAMPANAS OBSERVATORY, CHILE
+# reference = ARRIAGADA ET AL. 2010 (APJ, 711, 1229)
+# bibcode = 2010APJ...711.1229A
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0048/0048739/data/UID_0048739_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2086226%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2452626.8679             -24.6                           7.5
+  2452663.7551             -11.1                           5.1
+  2453041.6735             -12.4                           6.9
+  2453128.5597               2.4                           4.2
+  2453455.6305              11.5                           4.6
+  2453784.7926              20.4                           4.8
+  2454583.6051              -4.7                           4.2
+  2454843.8112              -1.5                           6.3
+  2454925.6391              11.9                           4.2
+  2454963.5403              11.3                           4.0
+  2454994.5061              11.9                           4.1
+  2455001.4805               9.4                           4.5
+  2455019.4585              19.6                           4.2

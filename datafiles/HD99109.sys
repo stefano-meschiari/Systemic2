@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 99109
+Mass	0.93
+HD	HD 99109
+HIP	HIP 55664
+Teff	5272
+RA	171.072327
+Dec	 -1.529076
+
+RV[]	HD99109_1_KECK.vels

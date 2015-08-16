@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD69830_1.vels"
-}
-"HD69830" {    
-  Mass   0.86
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 69830
+Mass	1
+HD	HD 69830
+HIP	HIP 40693
+Teff	NA
+RA	124.599777
+Dec	-12.632174
+
+RV[]	HD69830_1_3.6M.vels

@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 87883
+Mass	1
+HD	HD 87883
+HIP	HIP 49699
+Teff	NA
+RA	152.179749
+Dec	 34.242260
+
+RV[]	HD87883_1_LICK.vels
+RV[]	HD87883_2_KECK.vels

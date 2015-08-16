@@ -1,7 +1,16 @@
-Data  {
-	RV[] "HD40979_1.vels"
-	RV[] "HD40979_2.vels"
-}
-"HD40979" {    
-  Mass   1.1
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 40979
+Mass	1
+HD	HD 40979
+HIP	HIP 28767
+Teff	NA
+RA	 91.124763
+Dec	 44.260445
+
+
+
+RV[]	HD40979_1_HJS.vels
+RV[]	HD40979_2_HET.vels
+RV[]	HD40979_3_LICK.vels
+RV[]	HD40979_4_KECK.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 47186
+Mass	1
+HD	HD 47186
+HIP	HIP 31540
+Teff	NA
+RA	 99.036613
+Dec	-27.622297
+
+RV[]	HD47186_1_3.6M.vels

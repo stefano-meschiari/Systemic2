@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD101930_1.vels"
-}
-"HD101930" {    
-  Mass   0.74
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 101930
+Mass	1
+HD	HD 101930
+HIP	HIP 57172
+Teff	NA
+RA	175.875458
+Dec	-58.006886
+
+RV[]	HD101930_1_3.6M.vels

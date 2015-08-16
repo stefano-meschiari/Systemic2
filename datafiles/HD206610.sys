@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 206610
+Mass	1
+HD	HD 206610
+HIP	HIP 107251
+Teff	NA
+RA	325.853760
+Dec	 -7.408253
+
+RV[]	HD206610_1_KECK.vels

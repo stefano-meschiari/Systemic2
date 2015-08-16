@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD81688_OAO08.vels"
-}
-"HD81688" {
-  Mass 2.10
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 81688
+Mass	1
+HD	HD 81688
+HIP	HIP 46471
+Teff	NA
+RA	142.166626
+Dec	 45.601482
+
+RV[]	HD81688_1_1.88M.vels

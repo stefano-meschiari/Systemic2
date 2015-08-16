@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-19
+Mass	0.94
+HD	
+HIP	
+Teff	5460
+RA	148.417007
+Dec	-45.659191
+
+RV[]	WASP-19_1_EULER.vels

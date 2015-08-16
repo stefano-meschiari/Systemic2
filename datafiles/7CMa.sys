@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	7 CMa
+Mass	1.52
+HD	HD 47205
+HIP	HIP 31592
+Teff	4792
+RA	 99.170990
+Dec	-19.255878
+
+RV[]	7CMa_1_AAT.vels

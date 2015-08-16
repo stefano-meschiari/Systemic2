@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-39
+Mass	0.93
+HD	
+HIP	
+Teff	5400
+RA	217.326706
+Dec	 -3.444534
+
+RV[]	WASP-39_1_ELODIE.vels
+RV[]	WASP-39_2_ESO.vels

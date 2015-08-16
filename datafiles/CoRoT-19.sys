@@ -1,0 +1,14 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-19
+Mass	1.21
+HD	
+HIP	
+Teff	6090
+RA	 97.033585
+Dec	 -0.170681
+
+RV[]	CoRoT-19_1_ELODIE.vels
+RV[]	CoRoT-19_2_MCDONALD.vels
+RV[]	CoRoT-19_3_ESO.vels
+RV[]	CoRoT-19_4_NOT.vels

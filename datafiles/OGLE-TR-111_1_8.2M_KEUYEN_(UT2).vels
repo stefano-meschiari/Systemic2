@@ -1,0 +1,16 @@
+# telescope = 8.2M KEUYEN (UT2)
+# instrument = FLAMES
+# observatory = ESO VLT, PARANAL OBSERVATORY, CHILE
+# reference = PONT ET AL. 2005 (A&A, 438, 1123)
+# bibcode = 2005A&A...438.1123P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300002/data/UID_0300002_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=OGLE-TR-111%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2453078.604200	-45.000000	45.000000
+2453079.642350	7.000000	46.000000
+2453080.659580	64.000000	69.000000
+2453081.594920	-50.000000	91.000000
+2453082.712800	-127.000000	42.000000
+2453083.664690	19.000000	56.000000
+2453084.651490	63.000000	33.000000
+2453085.607210	-7.000000	37.000000

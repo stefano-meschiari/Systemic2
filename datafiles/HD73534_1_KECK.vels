@@ -1,0 +1,28 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = VALENTI ET AL. 2009 (APJ, 702, 989)
+# bibcode = 2009APJ...702..989V
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0042/0042446/data/UID_0042446_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2073534%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453014.92199             13.92                          1.61
+  2453015.91840             20.34                          1.45
+  2453016.92449             14.69                          1.65
+  2453071.88830             18.52                          1.79
+  2453369.04318             -4.59                          1.04
+  2453369.90891             -5.77                          0.98
+  2453397.90482              1.29                          1.00
+  2453746.93249             -9.00                          1.13
+  2453747.97716             -6.34                          1.11
+  2453748.93288            -10.62                          1.14
+  2453749.86191            -13.88                          1.03
+  2453750.86815            -20.34                          1.15
+  2453752.97936             -9.79                          0.92
+  2453775.94527             -9.63                          1.01
+  2453776.83750            -15.35                          1.21
+  2454130.09538              1.43                          1.29
+  2454428.05313             13.21                          0.98
+  2454428.99770             18.79                          1.00
+  2454779.07344             18.32                          1.05
+  2454780.12264             18.86                          1.09

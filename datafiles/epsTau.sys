@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	eps Tau
+Mass	2.70
+HD	HD 28305
+HIP	HIP 20889
+Teff	4901
+RA	 67.154167
+Dec	 19.180431
+
+RV[]	epsTau_1_1.88M.vels

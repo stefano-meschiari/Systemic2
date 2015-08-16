@@ -1,0 +1,21 @@
+# telescope = 1.8M BOAO
+# instrument = BOES
+# observatory = BOHYUNSAN OPTICAL ASTRONOMY OBSERVATORY, KOREA
+# reference = OMIYA ET AL. 2012 (2012, PASJ, 64, 34)
+# bibcode = 2012PASJ...64...34O
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0056/0056508/data/UID_0056508_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20100655%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453428.216600              3.90                          8.40
+  2453809.144300             77.20                          9.20
+  2453889.061400             -4.50                          8.70
+  2454081.338200             58.10                         10.40
+  2454123.207400             67.90                          8.80
+  2454224.087300             33.20                         12.10
+  2454471.322900             30.00                          8.10
+  2454505.757400            -24.30                          8.80
+  2454833.336700             14.40                          9.00
+  2454930.015200             45.30                         10.00
+  2454931.059700             31.70                          7.70
+  2454971.060900             -4.80                          9.80
+  2454994.059700            -29.70                          9.30

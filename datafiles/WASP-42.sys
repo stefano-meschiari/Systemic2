@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-42
+Mass	0.88
+HD	
+HIP	
+Teff	5200
+RA	192.981552
+Dec	-42.073608
+
+RV[]	WASP-42_1_ESO.vels
+RV[]	WASP-42_2_ESO.vels

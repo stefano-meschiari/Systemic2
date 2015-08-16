@@ -1,8 +1,15 @@
-Data  {
-	RV[] "HD45350_1.vels"
-	RV[] "HD45350_2.vels"
-	RV[] "HD45350_3.vels"
-}
-"HD45350" {    
-  Mass   1.02
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 45350
+Mass	1.02
+HD	HD 45350
+HIP	HIP 30860
+Teff	5616
+RA	 97.190460
+Dec	 38.962963
+
+
+
+RV[]	HD45350_1_KECK.vels
+RV[]	HD45350_2_HJS.vels
+RV[]	HD45350_3_HET.vels

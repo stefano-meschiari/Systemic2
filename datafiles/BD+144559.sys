@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	BD+14 4559
+Mass	0.86
+HD	
+HIP	HIP 104780
+Teff	5008
+RA	318.399963
+Dec	 14.689387
+
+RV[]	BD+144559_1_HET.vels

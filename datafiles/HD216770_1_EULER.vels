@@ -1,0 +1,24 @@
+# telescope = 1.2M EULER SWISS TELESCOPE
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = MAYOR ET AL. 2004 (A&A, 415, 391)
+# bibcode = 2004A&A...415..391M
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0113/0113238/data/UID_0113238_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20216770%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451795.6279            31.152                         0.006
+  2451830.6460            31.137                         0.006
+  2452080.9282            31.169                         0.005
+  2452174.7844            31.122                         0.005
+  2452187.6335            31.125                         0.004
+  2452187.6335            31.125                         0.004
+  2452195.6424            31.149                         0.004
+  2452226.5949            31.162                         0.005
+  2452446.9073            31.189                         0.005
+  2452447.8570            31.181                         0.005
+  2452465.9021            31.186                         0.005
+  2452543.7294            31.149                         0.006
+  2452547.7058            31.135                         0.005
+  2452590.5825            31.171                         0.005
+  2452621.5878            31.139                         0.005
+  2452622.5508            31.135                         0.005

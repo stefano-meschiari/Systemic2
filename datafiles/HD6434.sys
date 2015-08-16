@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD6434_1.vels"
-}
-"HD6434" {    
-  Mass   1.0
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 6434
+Mass	1
+HD	HD 6434
+HIP	HIP 5054
+Teff	NA
+RA	 16.167295
+Dec	-39.488216
+
+RV[]	HD6434_1_EULER.vels

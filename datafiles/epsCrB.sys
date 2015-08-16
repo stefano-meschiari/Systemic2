@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	eps CrB
+Mass	1.70
+HD	HD 143107
+HIP	HIP 78159
+Teff	4406
+RA	239.396881
+Dec	 26.877880
+
+RV[]	epsCrB_1_1.8M_BOAO.vels

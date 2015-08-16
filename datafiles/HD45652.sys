@@ -1,8 +1,13 @@
-Data  {
-	RV[] "HD45652_ELODIE08.vels"
-	RV[] "HD45652_CORALIE08.vels"
-	RV[] "HD45652_SOPHIE08.vels"
-}
-"HD45652" {
-  Mass 0.83
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 45652
+Mass	1
+HD	HD 45652
+HIP	HIP 30905
+Teff	NA
+RA	 97.304962
+Dec	 10.933891
+
+RV[]	HD45652_1_ELODIE.vels
+RV[]	HD45652_2_ELODIE.vels
+RV[]	HD45652_3_EULER.vels

@@ -1,0 +1,14 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = NAEF ET AL. 2001 (A&A, 375, L27)
+# bibcode = 2001A&A...375L..27N
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0045/0045982/data/UID_0045982_RVC_005.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2080606%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2451293.846000	-193.500000	14.000000
+2451318.798000	74.500000	15.000000
+2451546.139000	18.500000	12.000000
+2451547.059000	40.500000	12.000000
+2451549.063000	-18.500000	11.000000
+2451550.100000	-23.500000	12.000000

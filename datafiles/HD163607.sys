@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 163607
+Mass	1.09
+HD	HD 163607
+HIP	HIP 87601
+Teff	5543
+RA	268.418732
+Dec	 56.391956
+
+RV[]	HD163607_1_KECK.vels

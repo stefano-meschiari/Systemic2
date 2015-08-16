@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 676 A
+Mass	0.71
+HD	
+HIP	HIP 85647
+Teff	NA
+RA	262.546692
+Dec	-51.636978
+
+RV[]	GJ676A_1_ESO.vels

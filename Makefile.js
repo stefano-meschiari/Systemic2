@@ -8,7 +8,6 @@
 # (1) Configure + compile gsl:
 # emconfigure ./configure
 # emmake make
-# 
 
 # If you have installed GSL & company in non-standard places, add them here:
 LIBS = -L./deps/lib -L./private/javascript -L/opt/local/include
@@ -36,13 +35,16 @@ ALLOBJECTS = objects/periodogram.o objects/extras.o objects/mercury.o objects/in
 
 JS_FILES = ui help systemic
 
-js: src/*.c src/*.h  $(ALLOBJECTS) support
+js: src/*.c src/*.h  $(ALLOBJECTS) support ../SystemicLive/systems.txt
 	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) $(EXP_FUNCTIONS) src/javascript.c  objects/*.o -o $(SYSTEMICLIVE_DIR)/js/libsystemic.html $(LIBS) $(LIBNAMES)  --embed-file ../SystemicLive/data@
 	cd $(JS_DIR); sh minify.sh
-	lua lua/minify_safely.lua $(JS_DIR)/libsystemic.js >$(JS_DIR)/libsystemic.min.js
+	LUA_PATH="?.lua;lua/?.lua" lua lua/minify_safely.lua $(JS_DIR)/libsystemic.js >$(JS_DIR)/libsystemic.min.js
+
+../SystemicLive/systems.txt: ../SystemicLive/data/datafiles/*.sys
+	cd ../SystemicLive/data/datafiles; ls >../../systems.txt
 
 support: 
-	cd lua; luajit-2.0.0-beta9 jsparse.lua; luajit-2.0.0-beta9 list_sys.lua
+	cd lua; luajit jsparse.lua; luajit list_sys.lua
 
 test: src/*.c src/*.h $(ALLOBJECTS)
 	$(CC) $(CCFLAGS) $(SYSFLAGS) $(GSL_OBJECTS) src/test.c -o packaging/forweb/systemic_test.js objects/*.o $(LIBS) $(LIBNAMES)  --embed-file datafiles --embed-file ./private/hd141399.fit

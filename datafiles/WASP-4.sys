@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-4
+Mass	0.89
+HD	
+HIP	
+Teff	5436
+RA	353.562836
+Dec	-42.061428
+
+RV[]	WASP-4_1_EULER.vels

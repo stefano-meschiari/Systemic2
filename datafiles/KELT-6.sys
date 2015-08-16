@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	KELT-6
+Mass	1.08
+HD	
+HIP	
+Teff	6102
+RA	195.981873
+Dec	 30.640051
+
+RV[]	KELT-6_1_1.5M_FLWO.vels
+RV[]	KELT-6_2_KECK.vels

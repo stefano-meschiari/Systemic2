@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-7
+Mass	1.28
+HD	HD 197286
+HIP	
+Teff	6400
+RA	311.042603
+Dec	-39.225273
+
+RV[]	WASP-7_1_EULER.vels

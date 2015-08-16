@@ -1,6 +1,12 @@
-Data  {
-	RV[] "HD81040_1.vels"
-}
-"HD81040" {    
-  Mass   0.96
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 81040
+Mass	1
+HD	HD 81040
+HIP	HIP 46076
+Teff	NA
+RA	140.946198
+Dec	 20.364454
+
+RV[]	HD81040_1_KECK.vels
+RV[]	HD81040_2_ELODIE.vels

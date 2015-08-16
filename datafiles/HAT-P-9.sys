@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-9
+Mass	1.28
+HD	
+HIP	
+Teff	6350
+RA	110.168526
+Dec	 37.140652
+
+RV[]	HAT-P-9_1_ELODIE.vels

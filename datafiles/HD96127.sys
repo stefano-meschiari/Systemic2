@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 96127
+Mass	1
+HD	HD 96127
+HIP	HIP 54232
+Teff	NA
+RA	166.441452
+Dec	 44.301559
+
+RV[]	HD96127_1_HET.vels

@@ -1,0 +1,23 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = BUTLER ET AL. 2006 (APJ, 646, 505)
+# bibcode = 2006APJ...646..505B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0059/0059610/data/UID_0059610_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20106252%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450831.983877               38.                           16.
+  2451303.785231             -67.7                           9.6
+  2451304.748009             -42.3                           9.4
+  2451534.093623              -92.                           11.
+  2451628.816817            -109.9                           9.6
+  2451915.095602             132.4                           9.1
+  2451916.070312             144.6                           9.3
+  2451998.900466              188.                           12.
+  2451999.870710              178.                           11.
+  2452000.917369              173.                           15.
+  2452033.833183              166.                           10.
+  2452040.835394             166.4                           9.2
+  2452293.062319               44.                           16.
+  2452294.055048               54.                           12.
+  2452295.022224               62.                           12.

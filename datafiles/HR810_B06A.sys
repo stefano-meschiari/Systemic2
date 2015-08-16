@@ -1,8 +1,0 @@
-Data  {
-	RV[] "HR810_ESOCES00.vels"
-	RV[] "HR810_CORALIE01.vels"
-	RV[] "HR810_B06A.vels"
-}
-"HR810_B06A" {    
-  Mass   1.03
-}

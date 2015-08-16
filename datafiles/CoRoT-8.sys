@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-8
+Mass	0.88
+HD	
+HIP	
+Teff	5080
+RA	291.588531
+Dec	  1.426452
+
+RV[]	CoRoT-8_1_ELODIE.vels
+RV[]	CoRoT-8_2_ESO.vels

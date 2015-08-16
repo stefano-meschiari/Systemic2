@@ -1,0 +1,23 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = HEBRARD ET AL. 2013 (2013, A&A, 549A, 134)
+# bibcode = 2013A&A...549A.134H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302486/data/UID_0302486_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-58%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455744.467400         -28558.00                         12.00
+  2455746.422200         -28744.00                         11.00
+  2455752.413800         -28758.00                         13.00
+  2455753.377700         -28660.00                         16.00
+  2455754.366300         -28523.00                         14.00
+  2455763.457300         -28672.00                         13.00
+  2455764.375000         -28575.00                         11.00
+  2455765.406700         -28593.00                         11.00
+  2455766.344800         -28720.00                         15.00
+  2455767.373600         -28767.00                         14.00
+  2455768.373400         -28672.00                         11.00
+  2455772.415800         -28765.00                         10.00
+  2455774.383300         -28560.00                          9.00
+  2455776.438100         -28734.00                         11.00
+  2455777.345000         -28761.00                         14.00

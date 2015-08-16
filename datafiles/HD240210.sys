@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 240210
+Mass	0.82
+HD	HD 240210
+HIP	
+Teff	4297
+RA	347.621792
+Dec	 57.029456
+
+RV[]	HD240210_1_HET.vels

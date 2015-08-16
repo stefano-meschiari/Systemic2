@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 832
+Mass	0.45
+HD	HD 204961
+HIP	HIP 106440
+Teff	3472
+RA	323.391571
+Dec	-49.009006
+
+RV[]	GJ832_1_AAT.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-5
+Mass	0.96
+HD	
+HIP	
+Teff	5700
+RA	359.348999
+Dec	-41.277149
+
+RV[]	WASP-5_1_EULER.vels

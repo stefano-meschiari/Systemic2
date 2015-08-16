@@ -1,7 +1,0 @@
-Data  {
-	RV[] "51peg_B06L.vels"
-	RV[] "51peg_ELODIE04.vels"
-}
-"51peg_B06L" {    
-  Mass   1.06
-}

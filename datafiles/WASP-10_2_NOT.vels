@@ -1,0 +1,15 @@
+# telescope = 2.5M NORDIC OPTICAL TELESCOPE (NOT)
+# instrument = FIES
+# observatory = LA PALMA, SPAIN
+# reference = CHRISTIAN ET AL. 2009 (MNRAS, 392, 1585)
+# bibcode = 2009MNRAS.392.1585C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300066/data/UID_0300066_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-10%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454437.540000	0.000000	26.000000
+2454463.377000	-913.000000	30.000000
+2454465.342000	25.000000	18.000000
+2454466.335000	-776.000000	21.000000
+2454490.329000	15.000000	143.000000
+2454490.358000	38.000000	120.000000
+2454491.340000	-927.000000	24.000000

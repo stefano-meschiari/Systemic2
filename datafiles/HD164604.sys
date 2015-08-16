@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 164604
+Mass	1
+HD	HD 164604
+HIP	HIP 88414
+Teff	NA
+RA	270.778900
+Dec	-28.560644
+
+RV[]	HD164604_1_MAGELLAN.vels

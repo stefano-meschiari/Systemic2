@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	OGLE2-TR-L9
+Mass	1.52
+HD	
+HIP	
+Teff	6933
+RA	166.979919
+Dec	-61.146263
+
+RV[]	OGLE2-TR-L9_1_VLT.vels

@@ -1,0 +1,11 @@
+# telescope = 2.5M NOT
+# instrument = FIES
+# observatory = OBSERVATORIO DEL ROQUE DE LOS MUCHACHOS, LA PALMA, SPAIN
+# reference = BOUCHY ET AL. 2010 (A&A, 2010, IN PRESS)
+# bibcode = 2010A&A...519A..98B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300107/data/UID_0300107_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-21%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454462.336000         -89504.00                         27.00
+  2454465.371000         -89409.00                         36.00
+  2454466.364000         -89444.00                         29.00

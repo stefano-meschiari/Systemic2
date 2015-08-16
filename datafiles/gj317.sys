@@ -1,6 +1,11 @@
-Data  {
-	RV[] "gj317_Keck07.vels"
-}
-"gj317" {
-  Mass 0.24
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 317
+Mass	0.42
+HD	
+HIP	
+Teff	3510
+RA	130.246735
+Dec	-23.456289
+
+RV[]	GJ317_1_KECK.vels

@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-35
+Mass	1.24
+HD	
+HIP	
+Teff	6096
+RA	123.250763
+Dec	  4.787023
+
+RV[]	HAT-P-35_1_KECK.vels
+RV[]	HAT-P-35_2_NOT.vels

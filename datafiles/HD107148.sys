@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 107148
+Mass	1
+HD	HD 107148
+HIP	HIP 60081
+Teff	NA
+RA	184.806213
+Dec	 -3.319789
+
+RV[]	HD107148_1_KECK.vels

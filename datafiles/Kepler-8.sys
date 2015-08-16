@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-8
+Mass	1.21
+HD	
+HIP	
+Teff	6213
+RA	281.288116
+Dec	 42.451080
+
+RV[]	Kepler-8_1_KECK.vels

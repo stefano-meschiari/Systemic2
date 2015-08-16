@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HIP 57050
+Mass	1
+HD	
+HIP	HIP 57050
+Teff	NA
+RA	175.435974
+Dec	 42.751972
+
+RV[]	HIP57050_1_KECK.vels

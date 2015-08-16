@@ -1,0 +1,14 @@
+# telescope = 3.6M
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = EGGENBERGER ET AL. 2006 (A&A, 447, 1159)
+# bibcode = 2006A&A...447.1159E
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0079/0079242/data/UID_0079242_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20142022%20A%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2453232.506980	-23.000000	1.000000
+2453237.530930	-22.000000	1.000000
+2453400.879330	-2.000000	1.000000
+2453411.889810	2.000000	1.000000
+2453511.809650	8.000000	1.000000
+2453520.713750	12.000000	1.000000

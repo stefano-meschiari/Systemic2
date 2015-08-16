@@ -1,0 +1,13 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	61 Vir
+Mass	0.94
+HD	HD 115617
+HIP	HIP 64924
+Teff	5577
+RA	199.601318
+Dec	-18.311195
+
+RV[]	61Vir_1_KECK.vels
+RV[]	61Vir_2_AAT.vels
+RV[]	61Vir_3_CFHT.vels

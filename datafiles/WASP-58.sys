@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-58
+Mass	0.94
+HD	
+HIP	
+Teff	5800
+RA	274.701050
+Dec	 45.172016
+
+RV[]	WASP-58_1_ELODIE.vels

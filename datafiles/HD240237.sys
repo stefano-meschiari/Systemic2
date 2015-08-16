@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 240237
+Mass	1.69
+HD	HD 240237
+HIP	HIP 114840
+Teff	4361
+RA	348.925934
+Dec	 58.043240
+
+RV[]	HD240237_1_HET.vels

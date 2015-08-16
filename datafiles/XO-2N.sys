@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	XO-2 N
+Mass	0.97
+HD	
+HIP	
+Teff	5332
+RA	117.026951
+Dec	 50.225815
+
+RV[]	XO-2N_1_HET.vels

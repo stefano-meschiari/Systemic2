@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 16175
+Mass	1
+HD	HD 16175
+HIP	HIP 12191
+Teff	NA
+RA	 39.257961
+Dec	 42.062634
+
+RV[]	HD16175_1_LICK.vels

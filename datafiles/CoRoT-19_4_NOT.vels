@@ -1,0 +1,13 @@
+# telescope = 2.5M NOT
+# instrument = FIES
+# observatory = OBSERVATORIO DEL ROQUE DE LOS MUCHACHOS, LA PALMA, SPAIN
+# reference = GUENTHER ET AL. 2012 (2012, A&A, 537A, 136)
+# bibcode = 2012A&A...537A.136G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300167/data/UID_0300167_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-19%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455568.501200            118.00                         28.00
+  2455569.589800            -63.00                         35.00
+  2455570.431400           -122.00                         32.00
+  2455580.427800             76.00                         34.00
+  2455581.421700            -77.00                         36.00

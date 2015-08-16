@@ -1,0 +1,14 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = RAUER ET AL. 2009 (A&A, 506, 281)
+# bibcode = 2009A&A...506..281R
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300076/data/UID_0300076_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-5%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454463.493900	54.500000	17.000000
+2454465.524710	-76.500000	28.000000
+2454506.377000	-125.500000	16.000000
+2454525.347850	-32.500000	20.000000
+2454528.288610	40.500000	31.000000
+2454544.346330	32.500000	26.000000

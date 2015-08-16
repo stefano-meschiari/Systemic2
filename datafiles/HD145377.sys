@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 145377
+Mass	1
+HD	HD 145377
+HIP	HIP 79346
+Teff	NA
+RA	242.901855
+Dec	-27.078173
+
+RV[]	HD145377_1_3.6M.vels

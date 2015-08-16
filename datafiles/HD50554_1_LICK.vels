@@ -1,0 +1,37 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = BUTLER ET AL. 2006 (APJ, 646, 505)
+# bibcode = 2006APJ...646..505B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0033/0033212/data/UID_0033212_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2050554%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450831.804919              -26.                           16.
+  2450854.776806              -17.                           16.
+  2451131.003206              -26.                           16.
+  2451152.958600              -74.                           21.
+  2451154.921771              -39.                           12.
+  2451174.937743              -82.                           17.
+  2451212.809155              -71.                           18.
+  2451242.710035              -52.                           15.
+  2451298.681111              -50.                           10.
+  2451299.663275              -57.                           10.
+  2451300.675104              -49.                           14.
+  2451536.884190             -11.9                           9.0
+  2451539.886007              -37.                           11.
+  2451540.913380              -26.                           10.
+  2451915.883681             116.1                           8.4
+  2451946.739387              83.9                           8.1
+  2452033.691022              23.6                           6.9
+  2452158.037153              -20.                           12.
+  2452159.030880              -33.                           12.
+  2452256.951222              -61.                           13.
+  2452267.891308             -62.7                           5.7
+  2452292.908175              -43.                           11.
+  2452293.884280             -42.8                           8.1
+  2452294.879848              -46.                           10.
+  2452299.722060             -24.3                           9.2
+  2452333.727720             -39.0                           8.3
+  2452334.692963              -55.                           10.
+  2452335.692280             -43.3                           8.7
+  2453008.864826              93.0                           8.4

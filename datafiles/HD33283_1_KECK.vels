@@ -1,0 +1,33 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = JOHNSON ET AL. 2006 (APJ, 647, 600J)
+# bibcode = 2006APJ...647..600J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0023/0023889/data/UID_0023889_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2033283%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453014.852             10.57                          5.45
+  2453015.858              1.88                          5.35
+  2453016.850            -11.57                          4.98
+  2453071.767            -29.19                          4.85
+  2453072.843            -31.26                          5.07
+  2453368.955              4.10                          4.94
+  2453369.808              4.87                          4.99
+  2453397.796             -8.86                          4.52
+  2453398.870            -20.06                          5.14
+  2453428.792             17.14                          4.50
+  2453605.139             10.66                          4.35
+  2453692.917            -12.34                          3.93
+  2453693.979             -2.42                          4.23
+  2453694.975             -0.03                          4.35
+  2453695.994              6.55                          4.33
+  2453696.981              9.04                          4.26
+  2453723.925              9.44                          4.49
+  2453724.932              4.19                          4.53
+  2453746.852            -15.10                          4.81
+  2453747.891             -2.94                          4.60
+  2453748.809             -0.13                          4.37
+  2453749.824              5.66                          4.27
+  2453750.822             12.91                          4.14
+  2453751.875             14.61                          3.34
+  2453752.878             13.17                          3.89

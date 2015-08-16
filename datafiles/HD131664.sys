@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 131664
+Mass	1
+HD	HD 131664
+HIP	HIP 73408
+Teff	NA
+RA	225.025314
+Dec	-73.535339
+
+RV[]	HD131664_1_3.6M.vels

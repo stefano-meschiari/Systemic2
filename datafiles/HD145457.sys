@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 145457
+Mass	1
+HD	HD 145457
+HIP	HIP 79219
+Teff	NA
+RA	242.516312
+Dec	 26.742750
+
+RV[]	HD145457_1_SUBARU.vels
+RV[]	HD145457_2_1.88M.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-7
+Mass	1.35
+HD	
+HIP	
+Teff	5933
+RA	288.581512
+Dec	 41.089798
+
+RV[]	Kepler-7_1_NOT.vels

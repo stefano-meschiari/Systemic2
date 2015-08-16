@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 212771
+Mass	1
+HD	HD 212771
+HIP	HIP 110813
+Teff	NA
+RA	336.762787
+Dec	-17.263659
+
+RV[]	HD212771_1_KECK.vels

@@ -1,0 +1,28 @@
+# telescope = 8.2M KEUYEN (UT2)
+# instrument = FLAMES
+# observatory = ESO VLT, PARANAL OBSERVATORY, CHILE
+# reference = UDALSKI ET AL. 2008 (A&A, 482, 299)
+# bibcode = 2008A&A...482..299U
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300055/data/UID_0300055_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=OGLE-TR-211%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453793.81192            18.784                         0.055
+  2453794.75446            18.866                         0.053
+  2453852.50001            18.720                         0.053
+  2453853.51724            18.875                         0.053
+  2453854.54151            18.841                         0.051
+  2453855.50251            18.711                         0.055
+  2453855.59958            18.816                         0.060
+  2453858.49787            18.906                         0.054
+  2453881.57542            18.766                         0.053
+  2454143.83440            18.860                         0.046
+  2454144.71247            18.911                         0.046
+  2454145.72709            18.762                         0.048
+  2454149.81577            18.681                         0.047
+  2454150.77874            18.891                         0.046
+  2454203.55370            18.745                         0.046
+  2454204.51070            18.623                         0.046
+  2454205.59031            18.657                         0.046
+  2454207.70041            18.658                         0.046
+  2454208.68020            18.578                         0.046
+  2454209.61470            18.517                         0.049

@@ -1,0 +1,15 @@
+# telescope = OBSERVATIONS MADE AT LICK OBSERVATORY (1896 - 1921)
+# instrument = PHOTOGRAPHIC
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = GRIFFIN ET AL. 2002 (OBS, 122, 90)
+# bibcode = 2002OBS...122...90G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0116/0116727/data/UID_0116727_RVC_006.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=gam%20Cep%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2413875.210000	1000.000000	500.000000
+2413876.200000	200.000000	300.000000
+2414527.440000	1900.000000	1400.000000
+2414538.400000	0.000000	500.000000
+2417424.520000	-1300.000000	1600.000000
+2422897.450000	-2700.000000	300.000000
+2422944.350000	-1800.000000	600.000000

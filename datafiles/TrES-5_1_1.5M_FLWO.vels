@@ -1,0 +1,16 @@
+# telescope = 1.5M FLWO
+# instrument = TRES
+# observatory = FRED L. WHIPPLE OBSERVATORY, MT. HOPKINS, ARIZONA
+# reference = MANDUSHEV ET AL. 2011 (ARXIV, 1108, 3572)
+# bibcode = 2011APJ...741..114M
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300171/data/UID_0300171_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=TrES-5%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455456.847578           -542.80                         27.90
+  2455468.707361           -472.60                         23.30
+  2455647.005138           -308.30                         22.80
+  2455649.002656            127.20                         26.90
+  2455651.985839             98.30                         29.00
+  2455659.987762           -549.80                         29.90
+  2455667.970142              0.00                         14.80
+  2455673.945954             45.00                         14.80

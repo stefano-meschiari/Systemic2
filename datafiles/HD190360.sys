@@ -1,8 +1,15 @@
-Data  {
-	RV[] "HD190360_1.vels"
-	RV[] "HD190360_2.vels"
-	RV[] "HD190360_3.vels"
-}
-"HD190360" {    
-  Mass   0.96
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 190360
+Mass	0.96
+HD	HD 190360
+HIP	HIP 98767
+Teff	5590
+RA	300.905853
+Dec	 29.896805
+
+
+
+RV[]	HD190360_1_KECK.vels
+RV[]	HD190360_2_ELODIE.vels
+RV[]	HD190360_3_TILLINGHAST.vels

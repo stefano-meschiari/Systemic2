@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 40307
+Mass	0.77
+HD	HD 40307
+HIP	HIP 27887
+Teff	4956
+RA	 88.517670
+Dec	-60.023472
+
+RV[]	HD40307_1_3.6M.vels

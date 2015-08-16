@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-1
+Mass	0.95
+HD	
+HIP	
+Teff	5950
+RA	102.079887
+Dec	 -3.102147
+
+RV[]	CoRoT-1_1_ELODIE.vels

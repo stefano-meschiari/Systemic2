@@ -1,7 +1,17 @@
-Data  {
-	RV[] "HD3651_1.vels"
-	RV[] "HD3651_2.vels"
-}
-"HD3651" {    
-  Mass   0.79
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 3651
+Mass	1
+HD	HD 3651
+HIP	HIP 3093
+Teff	NA
+RA	  9.840858
+Dec	 21.250473
+
+
+
+RV[]	HD3651_1_HJS.vels
+RV[]	HD3651_2_HET.vels
+RV[]	HD3651_3_LICK.vels
+RV[]	HD3651_4_KECK.vels
+RV[]	HD3651_5_KECK.vels

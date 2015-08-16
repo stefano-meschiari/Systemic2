@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 1214
+Mass	0.16
+HD	
+HIP	
+Teff	3170
+RA	258.828827
+Dec	  4.963920
+
+RV[]	GJ1214_1_3.6M.vels

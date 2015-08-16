@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 180902
+Mass	1
+HD	HD 180902
+HIP	HIP 94951
+Teff	NA
+RA	289.823792
+Dec	-23.558155
+
+RV[]	HD180902_1_KECK.vels

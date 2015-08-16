@@ -1,0 +1,26 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = JOHNSON ET AL. 2007 (APJ, 670, 833)
+# bibcode = 2007APJ...670..833J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0250/0250257/data/UID_0250257_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=GJ%20317%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451550.993             13.89                          3.79
+  2451552.990             30.27                          4.99
+  2451582.891             45.77                          4.16
+  2451883.101            -23.35                          3.74
+  2451973.795            -65.89                          6.10
+  2452243.073              0.00                          6.52
+  2452362.949             95.56                          6.07
+  2452601.045            -31.64                          5.09
+  2452989.125            101.25                          4.79
+  2453369.016            -29.65                          3.40
+  2453753.983            130.31                          3.68
+  2454084.001             -6.55                          4.64
+  2454086.141            -21.73                          4.55
+  2454130.082            -15.26                          4.79
+  2454131.014            -15.47                          4.20
+  2454138.932             -8.98                          2.82
+  2454216.733              4.15                          3.86
+  2454255.745             28.54                          2.25

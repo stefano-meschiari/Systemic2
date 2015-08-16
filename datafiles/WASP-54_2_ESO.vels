@@ -1,0 +1,24 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = FAEDI ET AL. 2013 (2013, A&A, 551A, 73)
+# bibcode = 2013A&A...551A..73F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302482/data/UID_0302482_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-54%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455413.489900          -3080.00                          9.00
+  2455596.847500          -3202.00                          7.00
+  2455622.716800          -3200.00                         10.00
+  2455623.780800          -3109.00                         27.00
+  2455624.757000          -3052.00                          7.00
+  2455626.709200          -3191.00                          8.00
+  2455629.865900          -3216.00                          8.00
+  2455635.780200          -3057.00                          9.00
+  2455637.817100          -3187.00                         10.00
+  2455638.820000          -3101.00                          7.00
+  2455639.888100          -3091.00                          7.00
+  2455646.730900          -3061.00                          7.00
+  2455647.678900          -3149.00                          6.00
+  2455648.705700          -3205.00                          6.00
+  2455651.834700          -3191.00                          8.00
+  2455677.588700          -3173.00                          7.00

@@ -1,0 +1,24 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = BUTLER ET AL. 2006 (APJ, 646, 505)
+# bibcode = 2006APJ...646..505B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0006/0006643/data/UID_0006643_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%208574%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451026.942917               25.                           16.
+  2451069.904097              -28.                           19.
+  2451130.826198              -39.                           16.
+  2451131.778727              -23.                           17.
+  2451154.645752              -34.                           14.
+  2451174.698333              -67.                           22.
+  2451175.727975               -3.                           18.
+  2451206.654873               26.                           15.
+  2451213.638067                1.                           16.
+  2451445.944502               11.                           11.
+  2451533.671516              -33.                           11.
+  2451535.684537              -18.                           11.
+  2451775.969618              -14.                           12.
+  2452157.888148              104.                           11.
+  2452159.890000              100.                           11.
+  2452160.899560               95.                           11.

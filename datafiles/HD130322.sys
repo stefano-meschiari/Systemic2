@@ -1,6 +1,14 @@
-Data  {
-	RV[] "HD130322_1.vels"
-}
-"HD130322" {    
-  Mass   0.79
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 130322
+Mass	1
+HD	HD 130322
+HIP	HIP 72339
+Teff	NA
+RA	221.886368
+Dec	 -0.281476
+
+RV[]	HD130322_1_HJS.vels
+RV[]	HD130322_2_HET.vels
+RV[]	HD130322_3_KECK.vels
+RV[]	HD130322_4_EULER.vels

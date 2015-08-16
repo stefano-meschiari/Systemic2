@@ -1,0 +1,28 @@
+# telescope = 8.2M SUBARU
+# instrument = HDS
+# observatory = MAUNA KEA, HAWAII
+# reference = NARITA ET AL. 2007 (PASJ, 59, 763)
+# bibcode = 2007PASJ...59..763N
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300006/data/UID_0300006_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=TrES-1%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453907.87018              18.7                          14.0
+  2453907.88139              30.5                          12.5
+  2453907.89262              54.6                          12.0
+  2453907.90384              24.3                          10.4
+  2453907.91506              26.4                          11.4
+  2453907.92628              30.4                          10.9
+  2453907.93750              22.4                          14.3
+  2453907.94873               2.9                          11.0
+  2453907.95996              -7.1                          12.1
+  2453907.97119             -22.3                          13.3
+  2453907.98241             -40.5                          13.3
+  2453907.99364             -39.2                          13.0
+  2453908.00488              -9.8                          12.2
+  2453908.01610             -30.5                          13.8
+  2453908.02732             -17.7                          13.6
+  2453908.03854             -24.7                          12.2
+  2453908.04978             -27.5                          11.1
+  2453908.06100             -38.2                          13.3
+  2453908.07223             -23.7                          11.2
+  2453908.08345             -23.0                           9.6

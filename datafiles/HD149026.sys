@@ -1,7 +1,14 @@
-Data  {
-	RV[] "HD149026_1.vels"
-	RV[] "HD149026_2.vels"
-}
-"HD149026" {    
-  Mass   1.30
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 149026
+Mass	1.34
+HD	HD 149026
+HIP	HIP 80838
+Teff	6160
+RA	247.623413
+Dec	 38.347309
+
+
+
+RV[]	HD149026_1_SUBARU.vels
+RV[]	HD149026_2_KECK.vels

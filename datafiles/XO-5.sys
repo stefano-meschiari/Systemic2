@@ -1,9 +1,12 @@
-Data  {
-	RV[] "XO-5_HET08.vels"
-}
-TransitData {
-	    TD[] "XO-5.tds"
-}
-"XO-5" {
-  Mass 1.00
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	XO-5
+Mass	0.88
+HD	
+HIP	
+Teff	5370
+RA	116.716530
+Dec	 39.094578
+
+RV[]	XO-5_1_HET.vels
+RV[]	XO-5_2_KECK.vels

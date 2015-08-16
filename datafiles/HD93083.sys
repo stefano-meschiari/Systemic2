@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD93083_1.vels"
-}
-"HD93083" {    
-  Mass   0.7
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 93083
+Mass	1
+HD	HD 93083
+HIP	HIP 52521
+Teff	NA
+RA	161.087143
+Dec	-33.577023
+
+RV[]	HD93083_1_3.6M.vels

@@ -1,10 +1,14 @@
-Data  {
-	RV[] "HD102195_1.vels"
-	RV[] "HD102195_2.vels"
-	RV[] "HD102195_3.vels"
-	RV[] "HD102195_4.vels"
-	RV[] "HD102195_5.vels"
-}
-"HD102195" {    
-  Mass   0.926
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 102195
+Mass	1
+HD	HD 102195
+HIP	HIP 57370
+Teff	NA
+RA	176.426224
+Dec	  2.821483
+
+RV[]	HD102195_1_3.6M.vels
+RV[]	HD102195_2_2.1M.vels
+RV[]	HD102195_3_0.9M.vels
+RV[]	HD102195_4_HET.vels

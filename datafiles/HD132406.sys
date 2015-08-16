@@ -1,7 +1,12 @@
-Data  {
-	RV[] "HD132406_ELODIE07.vels"
-	RV[] "HD132406_SOPHIE07.vels"
-}
-"HD132406" {
-  Mass 1.09
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 132406
+Mass	1
+HD	HD 132406
+HIP	HIP 73146
+Teff	NA
+RA	224.227707
+Dec	 53.382168
+
+RV[]	HD132406_1_ELODIE.vels
+RV[]	HD132406_2_ELODIE.vels

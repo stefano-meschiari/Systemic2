@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD19994_1.vels"
-}
-"HD19994" {    
-  Mass   1.35
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 19994
+Mass	1.37
+HD	HD 19994
+HIP	HIP 14954
+Teff	6190
+RA	 48.193485
+Dec	 -1.196101
+
+RV[]	HD19994_1_HJS.vels
+RV[]	HD19994_2_HET.vels
+RV[]	HD19994_3_EULER.vels

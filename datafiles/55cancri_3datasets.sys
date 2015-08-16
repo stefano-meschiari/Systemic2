@@ -1,8 +1,0 @@
-Data  {
-	RV[] "55cancri_1.vels"
-	RV[] "55cancri_2.vels"
-	RV[] "55cancri_3.vels"
-}
-"55cancri_3datasets" {    
-  Mass   0.95
-}

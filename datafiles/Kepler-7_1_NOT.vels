@@ -1,0 +1,17 @@
+# telescope = 2.5M NORDIC OPTICAL TELESCOPE (NOT)
+# instrument = FIES
+# observatory = LA PALMA, SPAIN
+# reference = LATHAM ET AL. 2010 (APJ, 713, 140L)
+# bibcode = 2010APJ...713L.140L
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300099/data/UID_0300099_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Kepler-7%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455107.37937              43.7                           6.8
+  2455108.36845              32.7                           7.1
+  2455110.50735             -34.2                           9.8
+  2455111.40251             -11.5                           6.7
+  2455112.41378              33.2                           8.2
+  2455113.40824              27.9                           6.1
+  2455114.44632             -31.1                           8.1
+  2455115.44411             -29.2                          10.7
+  2455116.37077              -0.1                           9.4

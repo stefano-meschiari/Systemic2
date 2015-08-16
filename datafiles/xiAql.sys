@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	xi Aql
+Mass	1
+HD	HD 188310
+HIP	HIP 97938
+Teff	NA
+RA	298.562012
+Dec	  8.461452
+
+RV[]	xiAql_1_1.88M.vels

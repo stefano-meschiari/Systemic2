@@ -1,0 +1,16 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = BAKOS ET AL. 2007 (APJ, 671, L173)
+# bibcode = 2007APJ...671L.173B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300050/data/UID_0300050_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-5%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454227.5199            7721.4                          12.2
+  2454228.5949            7457.4                          22.3
+  2454229.6098            7710.4                          17.2
+  2454230.4900            7603.8                          22.4
+  2454231.6088            7521.3                          14.3
+  2454233.6057            7579.4                          15.1
+  2454234.5210            7510.5                          21.3
+  2454255.5171            7680.5                           9.8

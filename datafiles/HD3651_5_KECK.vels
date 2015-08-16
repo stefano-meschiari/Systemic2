@@ -1,0 +1,34 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = FISCHER ET AL. 2003 (APJ, 590, 1081)
+# bibcode = 2003APJ...590.1081F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0003/0003093/data/UID_0003093_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%203651%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450366.925             -3.11                          2.74
+  2450667.033              1.34                          3.99
+  2450716.051              2.15                          2.97
+  2451044.061             -5.39                          3.01
+  2451071.029             -0.51                          2.89
+  2451173.824              1.53                          3.92
+  2451368.050             -5.17                          3.03
+  2451438.846            -18.76                          3.14
+  2451551.688             -1.15                          5.83
+  2451756.006             -1.21                          2.71
+  2452096.111              5.72                          3.79
+  2452102.020              1.23                          3.60
+  2452128.082            -26.39                          3.26
+  2452133.920              5.94                          2.86
+  2452188.947            -15.61                          3.58
+  2452235.698             -5.91                          2.99
+  2452236.759             -4.52                          2.78
+  2452237.729            -12.13                          3.33
+  2452515.020              7.38                          3.16
+  2452535.819              0.30                          3.06
+  2452551.823            -12.82                          2.81
+  2452576.761             13.88                          2.35
+  2452581.737              9.56                          3.28
+  2452602.777             -3.30                          2.28
+  2452606.667             10.87                          2.85
+  2452608.735              0.43                          2.92

@@ -1,8 +1,0 @@
-Data  {
-	RV[] "HD8574_ELODIE03.vels"
-	RV[] "HD8574_B06K.vels"
-	RV[] "HD8574_B06L.vels"
-}
-"HD8574_B06" {    
-  Mass   1.17
-}

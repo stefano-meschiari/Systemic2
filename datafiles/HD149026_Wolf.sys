@@ -1,7 +1,0 @@
-Data  {
-	RV[] "HD149026_WolfS06.vels"
-	RV[] "HD149026_WolfK06.vels"
-}
-"HD149026_Wolf" {    
-  Mass   1.30
-}

@@ -1,0 +1,23 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = HELLIER ET AL. 2012 (2012, MNRAS, 426, 739)
+# bibcode = 2012MNRAS.426..739H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302475/data/UID_0302475_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-61%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455570.714900          18857.00                         41.00
+  2455615.622100          19218.00                         39.00
+  2455629.509300          18790.00                         46.00
+  2455649.517200          18985.00                         45.00
+  2455650.524300          19168.00                         48.00
+  2455802.874800          18721.00                         56.00
+  2455806.896800          18758.00                         39.00
+  2455809.832700          18748.00                         49.00
+  2455810.884900          18772.00                         45.00
+  2455811.857100          19108.00                         50.00
+  2455813.886900          18810.00                         57.00
+  2455814.906000          18891.00                         50.00
+  2455815.897900          19172.00                         49.00
+  2455839.837900          19172.00                         46.00
+  2455868.837100          18923.00                         38.00

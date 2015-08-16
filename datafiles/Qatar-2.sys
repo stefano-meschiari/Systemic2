@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Qatar-2
+Mass	0.74
+HD	
+HIP	
+Teff	4645
+RA	207.655869
+Dec	 -6.804028
+
+RV[]	Qatar-2_1_1.5M_FLWO.vels

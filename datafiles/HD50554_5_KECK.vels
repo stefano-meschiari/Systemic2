@@ -1,0 +1,19 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = FISCHER ET AL. 2002 (PASP, 114, 529)
+# bibcode = 2002PASP..114..529F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0033/0033212/data/UID_0033212_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2050554%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2461171.062             -5.56                          4.06
+  2461171.955              0.00                          4.18
+  2461172.903             -4.59                          4.24
+  2461174.113             -6.74                          5.01
+  2461200.007              6.73                          4.60
+  2462007.845             75.27                          4.36
+  2462219.141            -11.78                          4.51
+  2462220.111            -19.77                          5.22
+  2462235.969             12.16                          3.70
+  2462238.914             10.84                          3.89
+  2462243.018             -7.18                          4.29

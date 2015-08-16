@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD28185_1.vels"
-}
-"HD28185" {    
-  Mass   0.99
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 28185
+Mass	1
+HD	HD 28185
+HIP	HIP 20723
+Teff	NA
+RA	 66.609673
+Dec	-10.550821
+
+RV[]	HD28185_1_HET.vels
+RV[]	HD28185_2_MAGELLAN.vels
+RV[]	HD28185_3_EULER.vels

@@ -1,0 +1,31 @@
+# telescope = 2.7M HARLAN J. SMITH (HJS) TELESCOPE
+# instrument = CES
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = WITTENMYER ET AL. 2007 (APJ, 654, 625)
+# bibcode = 2007APJ...654..625W
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0113/0113421/data/UID_0113421_RVC_007.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20217107%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451449.84000             -44.9                           4.8
+  2451556.57950             -52.7                           5.1
+  2451750.89391             154.4                           5.2
+  2451776.82866             -79.6                           4.9
+  2451777.83705               0.8                           5.7
+  2451778.80954              97.5                           4.6
+  2451778.82275             101.5                           5.3
+  2451809.80381              38.2                           5.0
+  2451860.65078             -28.0                          16.0
+  2451862.66594             -75.8                           6.8
+  2451918.58936            -102.3                           4.7
+  2452116.89988             -15.7                           7.3
+  2452219.68045               1.5                           6.5
+  2452473.84637             -83.3                           5.0
+  2452492.88220             157.8                           8.7
+  2452540.78985              46.9                           5.3
+  2452895.85865             -72.5                           5.0
+  2452931.80527             -49.1                           4.9
+  2453017.56950             -29.9                           6.0
+  2453563.89812             -51.8                           4.8
+  2453630.81136              -9.2                           6.8
+  2453635.82600             -81.0                           6.5
+  2453689.65961             177.3                           5.9

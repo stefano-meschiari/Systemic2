@@ -1,0 +1,32 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = JENKINS ET AL. 2010 (ARXIV, 1001, 0416)
+# bibcode = 2010ARXIV1001.0416J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300100/data/UID_0300100_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Kepler-8%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454984.040            -22.15                          34.5
+  2454985.043             52.45                          34.5
+  2454986.065            -42.39                          34.0
+  2454987.060            -74.37                          33.6
+  2454988.027             63.04                          33.7
+  2454988.973             98.87                          33.8
+  2454995.103             46.58                          34.2
+  2455014.891            -64.61                          33.7
+  2455015.975            -29.97                          33.4
+  2455017.020            -28.28                          33.3
+  2455075.788             41.65                          33.9
+  2455109.850           -122.00                          32.8
+  2455110.790            -67.42                          31.9
+  2455133.718             58.11                          32.6
+  2455133.732             51.13                          32.5
+  2455133.747             71.85                          32.7
+  2455133.761             34.51                          32.8
+  2455133.776             24.38                          32.6
+  2455133.790             -9.49                          33.2
+  2455133.805            -31.04                          33.2
+  2455133.821            -14.32                          32.6
+  2455133.839             49.58                          32.8
+  2455134.740            -23.48                          31.9
+  2455135.790             48.50                          32.6

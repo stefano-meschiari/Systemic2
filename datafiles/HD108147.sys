@@ -1,6 +1,12 @@
-Data  {
-	RV[] "HD108147_1.vels"
-}
-"HD108147" {    
-  Mass   1.27
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 108147
+Mass	1
+HD	HD 108147
+HIP	HIP 60644
+Teff	NA
+RA	186.442780
+Dec	-64.022087
+
+RV[]	HD108147_1_AAT.vels
+RV[]	HD108147_2_EULER.vels

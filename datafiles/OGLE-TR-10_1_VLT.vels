@@ -1,0 +1,16 @@
+# telescope = 8.2M KUEYEN (UT2)
+# instrument = UVES
+# observatory = ESO VLT, PARANAL OBSERVATORY, CHILE
+# reference = BOUCHY ET AL. 2005 (A&A, 431, 1105)
+# bibcode = 2005A&A...431.1105B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300001/data/UID_0300001_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=OGLE-TR-10%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2452522.508230	-4.000000	65.000000
+2452525.509050	4.000000	61.000000
+2452526.511460	-68.000000	60.000000
+2452549.553290	-190.000000	86.000000
+2452550.537000	282.000000	106.000000
+2452551.554090	-58.000000	94.000000
+2452552.502870	7.000000	63.000000
+2452553.547290	282.000000	62.000000

@@ -1,9 +1,12 @@
-Data  {
-	RV[] "TrES-2_1.vels"
-}
-TransitsData {
-             TD[] "TrES-2.tds"
-}
-"TrES-2" {    
-  Mass   1.08
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	TrES-2
+Mass	0.98
+HD	
+HIP	
+Teff	5850
+RA	286.808477
+Dec	 49.316407
+
+RV[]	TrES-2_1_KECK.vels
+RV[]	TrES-2_2_KECK.vels

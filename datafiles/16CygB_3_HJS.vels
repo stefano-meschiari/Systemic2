@@ -1,0 +1,37 @@
+# telescope = 2.7M HARLAN J. SMITH (HJS) TELESCOPE
+# instrument = 6FTCS
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = COCHRAN ET AL. 1997 (APJ, 483, 457)
+# bibcode = 1997APJ...483..457C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0096/0096901/data/UID_0096901_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=16%20Cyg%20B%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2448485.7305              -4.2                          16.8
+  2448524.6562              22.6                          21.9
+  2448783.8398              41.5                          20.5
+  2448823.8984               8.7                          16.7
+  2448852.7734              22.2                          21.3
+  2448882.5742              52.7                          19.6
+  2448901.6875               5.8                          20.4
+  2448943.6328             -13.2                          22.8
+  2449146.9102             -37.3                          22.1
+  2449220.7812             -10.8                          19.5
+  2449258.7500              -5.1                          20.5
+  2449286.6367             -27.9                          17.1
+  2449521.8984              20.5                          21.4
+  2449588.7305              51.5                          16.0
+  2449616.6602              45.3                          24.2
+  2449647.6289              44.4                          14.6
+  2449668.5430              13.7                          22.6
+  2449703.5508              35.7                          18.1
+  2449816.9023             -37.6                          21.0
+  2449861.9141             -13.6                          19.5
+  2449876.8438              -6.9                          21.9
+  2449916.7930              -7.6                          17.2
+  2449946.8125             -39.6                          19.4
+  2449963.7070             -33.6                          16.1
+  2449994.6055              -5.0                          16.4
+  2450204.9258              19.7                          21.6
+  2450235.9023              38.5                          19.6
+  2450292.7539              20.9                          22.8
+  2450355.6328              45.5                          19.0

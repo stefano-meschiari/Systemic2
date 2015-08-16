@@ -1,0 +1,21 @@
+# telescope = 3.6M ESO
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = PARVIAINEN ET AL. 2014 (2014, A&A, 562A, 140)
+# bibcode = 2014A&A...562A.140P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302520/data/UID_0302520_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-27%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2456092.859270          -5415.70                         97.10
+  2456094.806470          -2889.60                         75.60
+  2456096.851660          -5022.10                        208.80
+  2456097.848330          -2985.20                        182.40
+  2456098.670830          -3245.40                        143.90
+  2456099.710550          -5346.10                        246.60
+  2456100.594900          -4578.60                        161.40
+  2456101.598730          -2640.70                        157.10
+  2456102.841700          -4564.20                        104.40
+  2456118.676580          -4180.70                         77.10
+  2456119.583470          -2934.20                        167.50
+  2456121.607480          -5334.40                        131.30
+  2456161.618870          -4020.40                         83.30

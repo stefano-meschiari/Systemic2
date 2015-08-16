@@ -1,0 +1,23 @@
+# telescope = 6.5M MAGELLAN II (CLAY)
+# instrument = MIKE
+# observatory = LAS CAMPANAS OBSERVATORY, CHILE
+# reference = WELDRAKE ET AL. 2008 (APJ, 675, L37)
+# bibcode = 2008APJ...675L..37W
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300052/data/UID_0300052_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Lupus-TR-3%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454272.633942             9.454                         0.103
+  2454272.661301             9.271                         0.118
+  2454272.688652             9.396                         0.115
+  2454273.614632             9.486                         0.128
+  2454273.641701             9.559                         0.098
+  2454273.667137             9.485                         0.133
+  2454273.690788             9.653                         0.134
+  2454274.612755             9.111                         0.126
+  2454274.637009             9.351                         0.104
+  2454274.661842             9.397                         0.130
+  2454274.683777             9.455                         0.176
+  2454275.605759             9.441                         0.127
+  2454275.631256             9.231                         0.140
+  2454275.658302             9.265                         0.099
+  2454275.687073             9.343                         0.087

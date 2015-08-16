@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 32518
+Mass	1.13
+HD	HD 32518
+HIP	HIP 24003
+Teff	4580
+RA	 77.403000
+Dec	 69.639404
+
+RV[]	HD32518_1_JENSCH.vels

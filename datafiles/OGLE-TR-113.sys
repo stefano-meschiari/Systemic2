@@ -1,0 +1,14 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	OGLE-TR-113
+Mass	0.78
+HD	
+HIP	
+Teff	4790
+RA	163.101667
+Dec	-61.446806
+
+
+
+RV[]	OGLE-TR-113_1_MAGELLAN.vels
+RV[]	OGLE-TR-113_2_VLT.vels

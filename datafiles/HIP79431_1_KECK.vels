@@ -1,0 +1,21 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = APPS ET AL. 2010 (PASP, 122, 156)
+# bibcode = 2010PASP..122..156A
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0079/0079431/data/UID_0079431_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HIP%2079431%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454928.07496            -63.11                          2.73
+  2454929.11611            -70.45                          2.84
+  2454984.87477            103.92                          2.68
+  2454986.96264            125.53                          3.14
+  2454987.94866            140.47                          3.10
+  2455028.96005             -7.06                          3.88
+  2455041.89538            -74.88                          3.21
+  2455042.92741            -81.75                          3.55
+  2455048.75289           -104.55                          2.80
+  2455074.72733           -140.47                          2.84
+  2455078.74506           -119.78                          2.90
+  2455084.73424            -64.40                          2.97
+  2455106.73408            139.86                          3.52

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 181433
+Mass	0.78
+HD	HD 181433
+HIP	HIP 95467
+Teff	4962
+RA	291.289856
+Dec	-66.468796
+
+RV[]	HD181433_1_3.6M.vels

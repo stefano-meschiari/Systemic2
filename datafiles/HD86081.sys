@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD86081_1.vels"
-}
-"HD86081" {    
-  Mass   1.21
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 86081
+Mass	1
+HD	HD 86081
+HIP	HIP 48711
+Teff	NA
+RA	149.024658
+Dec	 -3.808422
+
+RV[]	HD86081_1_KECK.vels

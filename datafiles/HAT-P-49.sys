@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-49
+Mass	1.54
+HD	HD 340099
+HIP	
+Teff	6820
+RA	305.441406
+Dec	 26.692652
+
+RV[]	HAT-P-49_1_1.5M_FLWO.vels
+RV[]	HAT-P-49_2_ELODIE.vels

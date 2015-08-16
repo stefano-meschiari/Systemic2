@@ -1,0 +1,19 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = SKILLEN ET AL. 2009 (A&A, 502, 391)
+# bibcode = 2009A&A...502..391S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300069/data/UID_0300069_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-13%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454508.48441            9.8660                        0.0088
+  2454509.45978            9.8126                        0.0072
+  2454510.46914            9.8022                        0.0078
+  2454510.55389            9.7634                        0.0088
+  2454511.32838            9.8365                        0.0080
+  2454511.55075            9.8690                        0.0082
+  2454511.57290            9.8492                        0.0086
+  2454511.64730            9.8667                        0.0088
+  2454512.42051            9.9062                        0.0068
+  2454512.55184            9.8770                        0.0080
+  2454512.65565            9.8829                        0.0090

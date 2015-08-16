@@ -1,0 +1,15 @@
+# telescope = 6.5M MAGELLAN I (WALTER BAADE TELESCOPE)
+# instrument = MIKE
+# observatory = LAS CAMPANAS OBSERVATORY, CHILE
+# reference = KONACKI ET AL. 2004 (APJ, 609, L37)
+# bibcode = 2004APJ...609L..37K
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300003/data/UID_0300003_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=OGLE-TR-113%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2452690.625900	48.000000	105.000000
+2452691.723000	-163.000000	114.000000
+2452692.787300	-350.000000	118.000000
+2452692.812800	-412.000000	116.000000
+2452693.729800	8.000000	122.000000
+2452694.792700	138.000000	104.000000
+2452754.724400	0.000000	127.000000

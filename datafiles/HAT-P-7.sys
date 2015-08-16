@@ -1,9 +1,14 @@
-Data  {
-        RV[] "HAT-P-7_KECK08.vels"
-}
-TransitsData {
-             TD[] "HAT-P-7.tds"
-}
-"HAT-P-7" {
-  Mass   1.47
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-7
+Mass	1.47
+HD	
+HIP	
+Teff	6350
+RA	292.247314
+Dec	 47.969513
+
+
+
+RV[]	HAT-P-7_1_SUBARU.vels
+RV[]	HAT-P-7_2_KECK.vels

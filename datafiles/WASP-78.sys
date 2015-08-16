@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-78
+Mass	1.17
+HD	
+HIP	
+Teff	6100
+RA	 63.756241
+Dec	-22.116434
+
+RV[]	WASP-78_1_ESO.vels

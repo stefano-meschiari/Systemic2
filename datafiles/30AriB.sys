@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	30 Ari B
+Mass	1.16
+HD	HD 16232
+HIP	HIP 12184
+Teff	6300
+RA	 39.240585
+Dec	 24.648064
+
+RV[]	30AriB_1_TAUTENBERG.vels

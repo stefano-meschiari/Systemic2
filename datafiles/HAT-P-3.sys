@@ -1,9 +1,11 @@
-Data  {
-        RV[] "HAT-P-3_Keck07.vels"
-}
-TransitsData {
-             TD[] "HAT-P-3.tds"
-}
-"HAT-P-3" {
-  Mass   0.936
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-3
+Mass	0.92
+HD	
+HIP	
+Teff	5185
+RA	206.094110
+Dec	 48.028670
+
+RV[]	HAT-P-3_1_KECK.vels

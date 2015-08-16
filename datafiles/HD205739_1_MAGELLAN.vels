@@ -1,0 +1,32 @@
+# telescope = 6.5M MAGELLAN II (CLAY)
+# instrument = MIKE
+# observatory = LAS CAMPANAS OBSERVATORY, CHILE
+# reference = LOPEZ-MORALES ET AL. 2008 (AJ, 136, 1901)
+# bibcode = 2008AJ....136.1901L
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0106/0106824/data/UID_0106824_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20205739%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453189.8080             -33.3                           4.0
+  2453190.8643             -27.7                           4.4
+  2453191.8243             -31.7                           4.0
+  2453254.6094             -77.0                           3.6
+  2453550.8993             -39.0                           4.3
+  2453551.8692             -57.0                           3.9
+  2453655.6332             -27.5                           3.2
+  2453657.5999             -10.4                           3.6
+  2453658.6117             -11.9                           3.4
+  2453685.5468              23.8                           3.3
+  2453872.8832             -46.8                           3.5
+  2453982.7455              38.4                           4.0
+  2453988.7200              38.7                           3.9
+  2454013.6776              23.1                           3.6
+  2454066.5152             -13.4                           3.7
+  2454067.5231              -2.7                           3.6
+  2454216.9394              19.3                           4.0
+  2454277.8176              71.4                           5.6
+  2454299.8091              55.8                           3.9
+  2454300.7959              37.7                           3.6
+  2454338.7675              18.7                           4.6
+  2454339.7078              30.7                           4.4
+  2454397.5266              -2.0                           4.7
+  2454398.5065              -2.2                           3.3

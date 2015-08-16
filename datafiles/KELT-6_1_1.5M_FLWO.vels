@@ -1,0 +1,32 @@
+# telescope = 1.5M FLWO
+# instrument = TRES
+# observatory = FRED L. WHIPPLE OBSERVATORY, MT. HOPKINS, ARIZONA
+# reference = COLLINS ET AL. 2014 (AJ, 147, 39)
+# bibcode = 2014AJ....147...39C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302522/data/UID_0302522_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=KELT-6%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2456029.869867             27.02                         20.27
+  2456114.681684             -5.96                         28.33
+  2456117.673406             63.43                         19.73
+  2456443.707006            -33.79                         22.37
+  2456450.707562            -18.64                         19.40
+  2456451.710411            -54.28                         19.92
+  2456452.667049            -79.97                         17.75
+  2456453.661056             16.31                         21.20
+  2456458.688259            -71.18                         18.35
+  2456459.685632            -54.01                         17.19
+  2456460.684562            -57.04                         20.36
+  2456461.669084            -30.88                         18.32
+  2456462.673881              0.00                         14.42
+  2456463.673604             19.16                         15.25
+  2456464.684882             10.16                         14.42
+  2456466.733703            -69.70                         17.79
+  2456467.707369            -66.40                         24.43
+  2456468.720609            -78.93                         24.46
+  2456469.719214            -36.11                         22.32
+  2456470.658849             34.53                         19.41
+  2456472.704518            -11.86                         25.12
+  2456501.663546            -20.17                         33.33
+  2456503.653861             58.79                         33.22
+  2456504.645862             -2.35                         19.21

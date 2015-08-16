@@ -1,0 +1,27 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = FISCHER ET AL. 2007 (APJ, 669, 1336)
+# bibcode = 2007APJ...669.1336F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0070/0070123/data/UID_0070123_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20125612%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453190.83262             52.80                          2.85
+  2453197.83363             61.40                          2.66
+  2453198.85557             60.49                          2.59
+  2453199.83792             44.35                          2.70
+  2453604.75480            -60.07                          2.04
+  2453754.12824             45.68                          1.83
+  2453776.15380             17.80                          2.03
+  2453777.11940             21.71                          2.16
+  2453838.01492            -77.76                          2.35
+  2453841.94894            -86.49                          2.52
+  2453927.79007            -90.28                          2.01
+  2453961.75080            -79.07                          2.01
+  2453962.74127            -80.81                          1.83
+  2453981.72862            -83.16                          1.90
+  2453983.74037            -81.92                          2.11
+  2453984.72815            -80.88                          2.03
+  2454130.13392            -22.62                          2.18
+  2454139.12383              1.31                          1.94
+  2454251.82778             90.28                          2.39

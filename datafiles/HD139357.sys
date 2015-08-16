@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 139357
+Mass	1
+HD	HD 139357
+HIP	HIP 76311
+Teff	NA
+RA	233.817490
+Dec	 53.922142
+
+RV[]	HD139357_1_JENSCH.vels

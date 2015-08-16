@@ -1,6 +1,11 @@
-Data  {
-	RV[] "gj3021_1.vels"
-}
-"gj3021" {    
-  Mass   0.9
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 3021
+Mass	0.90
+HD	HD 1237
+HIP	HIP 1292
+Teff	5540
+RA	  4.052823
+Dec	-79.851181
+
+RV[]	GJ3021_1_EULER.vels

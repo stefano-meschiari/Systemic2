@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 649
+Mass	0.54
+HD	
+HIP	HIP 83043
+Teff	3700
+RA	254.536880
+Dec	 25.744160
+
+RV[]	GJ649_1_KECK.vels

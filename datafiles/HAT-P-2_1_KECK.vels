@@ -1,0 +1,22 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = PAL ET AL. 2010 (MNRAS, 401, 2665)
+# bibcode = 2010MNRAS.401.2665P
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0080/0080076/data/UID_0080076_RVC_005.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-2%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454216.95938             747.7                           8.1
+  2454279.87688             402.0                           8.3
+  2454285.82384             168.3                           5.7
+  2454294.87869             756.8                           6.5
+  2454304.86497             615.5                           6.2
+  2454305.87010             764.2                           6.3
+  2454306.86520             761.4                           7.6
+  2454307.91236             479.1                           6.5
+  2454335.81260             574.7                           6.8
+  2454546.09817            -670.9                          10.1
+  2454547.11569             554.6                           7.4
+  2454549.05046             784.8                           9.2
+  2454602.91654             296.3                           7.0
+  2454603.93210             688.0                           5.9

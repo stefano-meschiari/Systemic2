@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	gam 1 Leo
+Mass	1.23
+HD	HD 89484
+HIP	HIP 50583 A
+Teff	4330
+RA	154.993149
+Dec	 19.841488
+
+RV[]	gam1Leo_1_1.8M.vels

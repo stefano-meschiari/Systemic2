@@ -1,0 +1,13 @@
+# telescope = 2.5M NOT
+# instrument = FIES
+# observatory = OBSERVATORIO DEL ROQUE DE LOS MUCHACHOS, LA PALMA, SPAIN
+# reference = BAKOS ET AL. 2012 (ARXIV, 1201, 0659)
+# bibcode = 2012AJ....144...19B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300186/data/UID_0300186_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-35%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455482.734690            106.37                         10.20
+  2455483.748990             39.07                         10.70
+  2455486.745440             97.37                          8.50
+  2455488.747370           -152.93                         16.90
+  2455490.724600             78.27                          8.50

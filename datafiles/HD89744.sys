@@ -1,6 +1,15 @@
-Data  {
-	RV[] "HD89744_1.vels"
-}
-"HD89744" {    
-  Mass   1.4
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 89744
+Mass	1
+HD	HD 89744
+HIP	HIP 50786
+Teff	NA
+RA	155.544006
+Dec	 41.229530
+
+
+
+RV[]	HD89744_1_HJS.vels
+RV[]	HD89744_2_HET.vels
+RV[]	HD89744_3_LICK.vels

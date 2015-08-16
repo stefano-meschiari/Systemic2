@@ -1,7 +1,15 @@
-Data  {
-	RV[] "HD37605_1.vels"
-	RV[] "HD37605_2.vels"
-}
-"HD37605" {    
-  Mass   0.8
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 37605
+Mass	1.00
+HD	HD 37605
+HIP	HIP 26664
+Teff	5448
+RA	 85.007210
+Dec	  6.060579
+
+
+
+RV[]	HD37605_1_KECK.vels
+RV[]	HD37605_2_HET.vels
+RV[]	HD37605_3_2.1M.vels

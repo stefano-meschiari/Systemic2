@@ -1,7 +1,14 @@
-Data  {
-	RV[] "gj876_Lick.vels"
-	RV[] "gj876_Keck.vels"
-}
-"gj876" {    
-  Mass   0.32
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 876
+Mass	0.33
+HD	
+HIP	HIP 113020
+Teff	NA
+RA	343.319733
+Dec	-14.263700
+
+
+
+RV[]	GJ876_1_LICK.vels
+RV[]	GJ876_2_KECK.vels

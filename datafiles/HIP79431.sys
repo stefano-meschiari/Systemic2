@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HIP 79431
+Mass	1
+HD	
+HIP	HIP 79431
+Teff	NA
+RA	243.174057
+Dec	-18.875504
+
+RV[]	HIP79431_1_KECK.vels

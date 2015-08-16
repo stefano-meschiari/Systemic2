@@ -1,0 +1,15 @@
+# telescope = 2.5M NORDIC OPTICAL TELESCOPE (NOT)
+# instrument = FIES (HIGH RESOLUTION)
+# observatory = LA PALMA, SPAIN
+# reference = BUCHHAVE ET AL. 2010 (ARXIV, 1005, 2009)
+# bibcode = 2010ARXIV1005.2009B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300112/data/UID_0300112_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-16%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455048.64476            -137.7                           4.6
+  2455049.70638            -339.5                          10.5
+  2455050.68239            -911.9                           6.1
+  2455051.73142              60.3                           5.8
+  2455052.68956            -579.8                           4.4
+  2455053.71751            -674.7                          11.3
+  2455054.71713              66.2                           5.7

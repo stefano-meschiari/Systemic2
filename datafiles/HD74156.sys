@@ -1,9 +1,15 @@
-Data {
-	RV[] "HD74156_CORALIE04.vels"
-	RV[] "HD74156_ELODIE04.vels"
-	RV[] "HD74156_HET09.vels"
-	RV[] "HD74156_KECK.vels"
-}
-"HD74156" {
- Mass 1.24
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 74156
+Mass	1
+HD	HD 74156
+HIP	HIP 42723
+Teff	NA
+RA	130.604675
+Dec	  4.578097
+
+
+
+RV[]	HD74156_1_HET.vels
+RV[]	HD74156_2_ELODIE.vels
+RV[]	HD74156_3_EULER.vels

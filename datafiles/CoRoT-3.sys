@@ -1,0 +1,16 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-3
+Mass	1.37
+HD	
+HIP	
+Teff	6740
+RA	292.055267
+Dec	  0.121820
+
+RV[]	CoRoT-3_1_3.6M.vels
+RV[]	CoRoT-3_2_JENSCH.vels
+RV[]	CoRoT-3_3_ELODIE.vels
+RV[]	CoRoT-3_4_2.1M_OTTO_STRUVE_TELESCOPE.vels
+RV[]	CoRoT-3_5_3.6M.vels
+RV[]	CoRoT-3_6_EULER.vels

@@ -1,0 +1,22 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	gam Cep
+Mass	1.59
+HD	HD 222404
+HIP	HIP 116727
+Teff	4888
+RA	354.836884
+Dec	 77.632278
+
+
+
+RV[]	gamCep_1_HJS.vels
+RV[]	gamCep_2_HJS.vels
+RV[]	gamCep_3_HJS.vels
+RV[]	gamCep_4_CFHT.vels
+RV[]	gamCep_5_TILLINGHAST.vels
+RV[]	gamCep_6_LICK.vels
+RV[]	gamCep_7_0.6M.vels
+RV[]	gamCep_10_48_INCH.vels
+RV[]	gamCep_11_ELODIE.vels
+RV[]	gamCep_12_SMITHSONIAN.vels

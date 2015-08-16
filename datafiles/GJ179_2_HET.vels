@@ -1,0 +1,22 @@
+# telescope = 9M HET
+# instrument = HRS
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = HOWARD ET AL. 2010 (2010, APJ, 721, 1467)
+# bibcode = 2010APJ...721.1467H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0022/0022627/data/UID_0022627_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=GJ%20179%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453297.855070             -1.09                         10.33
+  2453299.848620             14.31                          5.54
+  2453314.807540              8.21                          4.36
+  2453340.724000              2.54                          5.09
+  2453631.929880             10.84                         15.59
+  2453644.900170             25.11                         12.87
+  2453686.921710              9.61                          6.64
+  2453719.831420             28.29                         12.94
+  2454411.937120             17.96                         14.13
+  2454771.803030             22.44                          4.48
+  2455084.949430             -1.33                          7.22
+  2455175.707400            -15.10                          8.34
+  2455180.835370            -32.31                          5.00
+  2455206.775690             -3.89                          4.39

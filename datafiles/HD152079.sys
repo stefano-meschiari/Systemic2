@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 152079
+Mass	1
+HD	HD 152079
+HIP	HIP 82632
+Teff	NA
+RA	253.373901
+Dec	-46.332958
+
+RV[]	HD152079_1_MAGELLAN.vels

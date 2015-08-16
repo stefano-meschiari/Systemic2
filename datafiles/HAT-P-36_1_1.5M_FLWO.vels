@@ -1,0 +1,15 @@
+# telescope = 1.5M FLWO
+# instrument = TRES
+# observatory = FRED L. WHIPPLE OBSERVATORY, MT. HOPKINS, ARIZONA
+# reference = BAKOS ET AL. 2012 (ARXIV, 1201, 0659)
+# bibcode = 2012AJ....144...19B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300187/data/UID_0300187_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-36%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455547.021390           -206.37                         22.40
+  2455550.042360            200.83                         22.80
+  2455554.993940           -293.87                         11.40
+  2455556.053880           -237.67                          7.40
+  2455557.055330            240.83                         24.60
+  2455558.957410           -355.47                         10.50
+  2455559.996130           -199.97                         17.70

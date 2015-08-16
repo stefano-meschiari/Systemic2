@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD88133_1.vels"
-}
-"HD88133" {    
-  Mass   1.2
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 88133
+Mass	1
+HD	HD 88133
+HIP	HIP 49813
+Teff	NA
+RA	152.531982
+Dec	 18.186871
+
+
+
+RV[]	HD88133_1_KECK.vels

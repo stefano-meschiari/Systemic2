@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-74
+Mass	1.18
+HD	
+HIP	
+Teff	6000
+RA	293.092529
+Dec	 41.355522
+
+RV[]	Kepler-74_1_ELODIE.vels
+RV[]	Kepler-74_2_3.58M_TNG.vels

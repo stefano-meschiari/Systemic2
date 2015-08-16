@@ -1,0 +1,13 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HATS-2
+Mass	0.88
+HD	
+HIP	
+Teff	5227
+RA	176.739090
+Dec	-22.562992
+
+RV[]	HATS-2_1_ESO.vels
+RV[]	HATS-2_2_ESO.vels
+RV[]	HATS-2_3_AAT.vels

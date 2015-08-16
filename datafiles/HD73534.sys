@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 73534
+Mass	1
+HD	HD 73534
+HIP	HIP 42446
+Teff	NA
+RA	129.815842
+Dec	 12.960376
+
+RV[]	HD73534_1_KECK.vels

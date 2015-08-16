@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-30
+Mass	1.24
+HD	
+HIP	
+Teff	6304
+RA	123.949898
+Dec	  5.836719
+
+RV[]	HAT-P-30_1_SUBARU.vels
+RV[]	HAT-P-30_2_KECK.vels

@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD162020_1.vels"
-}
-"HD162020" {    
-  Mass   0.7
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 162020
+Mass	1
+HD	HD 162020
+HIP	HIP 87330
+Teff	NA
+RA	267.659821
+Dec	-40.318348
+
+RV[]	HD162020_1_EULER.vels

@@ -1,0 +1,23 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = NOYES ET AL. 2008 (APJ, 673, 79)
+# bibcode = 2008APJ...673L..79N
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300051/data/UID_0300051_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-6%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454022.70228             74.01                          4.85
+  2454023.78901             47.70                          4.85
+  2454085.81512             -3.70                          5.72
+  2454130.72257             62.40                          6.93
+  2454247.11201             67.25                          4.55
+  2454248.08955           -110.02                          4.91
+  2454249.08558            -94.78                          4.23
+  2454250.12528             66.22                          4.61
+  2454251.08766             56.10                          4.21
+  2454258.11601            103.71                          4.09
+  2454279.09485           -127.75                          6.05
+  2454286.12699            -18.23                          6.84
+  2454319.11890             32.41                          4.30
+  2454336.87654           -112.33                          4.13
+  2454337.86117            -59.68                          4.41

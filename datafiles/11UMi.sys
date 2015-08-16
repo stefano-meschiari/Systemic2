@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	11 UMi
+Mass	1.80
+HD	HD 136726
+HIP	HIP 74793
+Teff	4340
+RA	229.274536
+Dec	 71.823898
+
+RV[]	11UMi_1_JENSCH.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 79498
+Mass	1
+HD	HD 79498
+HIP	HIP 45406
+Teff	NA
+RA	138.789169
+Dec	 23.375549
+
+RV[]	HD79498_1_HJS.vels

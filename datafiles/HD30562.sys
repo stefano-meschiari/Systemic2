@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 30562
+Mass	1.23
+HD	HD 30562
+HIP	HIP 22336
+Teff	5994
+RA	 72.151604
+Dec	 -5.674045
+
+RV[]	HD30562_1_LICK.vels

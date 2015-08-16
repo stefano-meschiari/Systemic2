@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD216435_1.vels"
-}
-"HD216435" {    
-  Mass   1.25
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 216435
+Mass	1.30
+HD	HD 216435
+HIP	HIP 113044
+Teff	5999
+RA	343.408051
+Dec	-48.598286
+
+
+
+RV[]	HD216435_1_AAT.vels

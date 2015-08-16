@@ -1,0 +1,18 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 62509
+Mass	1
+HD	HD 62509
+HIP	HIP 37826
+Teff	NA
+RA	116.328957
+Dec	 28.026199
+
+
+
+RV[]	HD62509_1_1.8M.vels
+RV[]	HD62509_2_0.6M_CAT.vels
+RV[]	HD62509_3_2.7M.vels
+RV[]	HD62509_4_2.1M.vels
+RV[]	HD62509_5_JENSCH.vels
+RV[]	HD62509_6_HJS.vels

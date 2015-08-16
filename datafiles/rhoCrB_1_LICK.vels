@@ -1,0 +1,34 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = BUTLER ET AL. 2006 (APJ, 646, 505)
+# bibcode = 2006APJ...646..505B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0078/0078459/data/UID_0078459_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=rho%20CrB%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450563.901411              49.7                           6.2
+  2450578.891386               2.3                           4.7
+  2450579.858453              -1.0                           5.5
+  2450610.801898              64.3                           4.5
+  2450613.772049              49.6                           5.6
+  2450614.777176              39.3                           4.7
+  2450640.753669               6.6                           5.1
+  2450645.784676              64.4                           3.8
+  2450655.728032              35.8                           5.0
+  2450656.751088              26.5                           5.9
+  2450681.684456              27.9                           5.5
+  2450794.091331             -41.4                           5.1
+  2450977.837402             -14.3                           6.7
+  2450979.806898             -23.5                           8.9
+  2451005.760937              54.5                           5.8
+  2451298.932685             -20.5                           5.8
+  2451352.765521             -26.7                           7.2
+  2451379.750483             -27.0                           5.4
+  2451403.696245              65.1                           4.6
+  2451627.981910             -66.7                           6.4
+  2451699.834271             -36.8                           6.2
+  2451733.746319               2.7                           5.7
+  2451750.707627             -50.7                           5.1
+  2452041.912771              61.5                           4.5
+  2452449.802986              16.1                           5.7
+  2452450.818566              14.5                           3.5

@@ -1,7 +1,14 @@
-Data  {
-	RV[] "HD52265_1.vels"
-	RV[] "HD52265_2.vels"
-}
-"HD52265" {    
-  Mass   1.13
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 52265
+Mass	1.20
+HD	HD 52265
+HIP	HIP 33719
+Teff	6103
+RA	105.075150
+Dec	 -5.367162
+
+
+
+RV[]	HD52265_1_KECK.vels
+RV[]	HD52265_2_EULER.vels

@@ -1,6 +1,11 @@
-Data  {
-        RV[] "HD170469_Keck07.vels"
-}
-"HD170469" {
-  Mass   1.14
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 170469
+Mass	1.14
+HD	HD 170469
+HIP	HIP 90593
+Teff	5810
+RA	277.295746
+Dec	 11.695502
+
+RV[]	HD170469_1_KECK.vels

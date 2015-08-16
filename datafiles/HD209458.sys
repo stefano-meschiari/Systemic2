@@ -1,8 +1,15 @@
-Data  {
-	RV[] "HD209458_1.vels"
-	RV[] "HD209458_2.vels"
-	RV[] "HD209458_3.vels"
-}
-"HD209458" {    
-  Mass   1.15
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 209458
+Mass	1.15
+HD	HD 209458
+HIP	HIP 108859
+Teff	6117
+RA	330.794891
+Dec	 18.884319
+
+
+
+RV[]	HD209458_1_ELODIE.vels
+RV[]	HD209458_2_EULER.vels
+RV[]	HD209458_3_KECK.vels

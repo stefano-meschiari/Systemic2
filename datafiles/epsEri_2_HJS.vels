@@ -1,0 +1,41 @@
+# telescope = 2.7M HARLAN J. SMITH (HJS) TELESCOPE
+# instrument = 2D COUDE SPECTROGRAPH (2DCS)
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = BENEDICT ET AL. 2006 (AJ, 132, 2206)
+# bibcode = 2006AJ....132.2206B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0016/0016537/data/UID_0016537_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=eps%20Eri%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451066.4339              -3.6                           6.4
+  2451212.1671              13.6                           5.0
+  2451239.1133               1.7                           8.6
+  2451449.4333               6.5                           5.0
+  2451503.3574              14.7                           5.1
+  2451529.1986              -3.5                           7.4
+  2451555.1645              -0.2                           5.2
+  2451775.4643               1.3                           5.9
+  2451809.4033              -2.7                           4.8
+  2451917.2260               2.9                           5.5
+  2451984.0740              -2.8                           5.0
+  2452142.4227              -0.7                           6.2
+  2452142.4264              -0.4                           6.1
+  2452248.2921             -14.0                           5.9
+  2452303.1266             -16.1                           7.7
+  2452328.1208               2.1                           5.6
+  2452330.1064              -0.9                           5.7
+  2452539.4226             -16.4                           6.4
+  2452576.4378               2.0                           5.5
+  2452661.1445             -11.8                           5.2
+  2452931.3912             -13.9                           6.4
+  2452958.2449              -0.4                           5.4
+  2452958.2481               0.0                           6.0
+  2453016.2424               2.9                           6.0
+  2453016.2456               2.1                           6.0
+  2453035.1757              -5.2                           5.6
+  2453075.0940               3.0                           5.7
+  2453318.3124             -10.1                           6.6
+  2453632.4520              -1.2                           5.3
+  2453632.4550               0.4                           5.5
+  2453689.3900              -3.0                           5.2
+  2453745.2110               6.3                           5.1
+  2453809.0850               9.0                           5.5

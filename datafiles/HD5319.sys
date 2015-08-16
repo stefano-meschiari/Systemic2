@@ -1,6 +1,11 @@
-Data  {
-        RV[] "HD5319_Keck07.vels"
-}
-"HD5319" {
-  Mass   1.56
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 5319
+Mass	1.51
+HD	HD 5319
+HIP	HIP 4297
+Teff	4958
+RA	 13.755836
+Dec	  0.789553
+
+RV[]	HD5319_1_KECK.vels

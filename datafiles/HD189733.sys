@@ -1,9 +1,12 @@
-Data  {
-	RV[] "HD189733_1.vels"
-}
-TransitsData {
-             TD[] "HD189733.tds"
-}
-"HD189733" {    
-  Mass   0.82
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 189733
+Mass	0.84
+HD	HD 189733
+HIP	HIP 98505
+Teff	5050
+RA	300.182129
+Dec	 22.710854
+
+RV[]	HD189733_1_3.6M.vels
+RV[]	HD189733_2_KECK.vels

@@ -1,0 +1,23 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = FISCHER ET AL. 2002 (PASP, 114, 529)
+# bibcode = 2002PASP..114..529F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0033/0033212/data/UID_0033212_RVC_004.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2050554%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2460831.805             20.23                         16.44
+  2460854.777             26.67                         16.24
+  2461131.003             15.39                         16.15
+  2461154.447             -7.72                         10.59
+  2461242.710             -7.81                         15.83
+  2461299.528            -12.57                          6.47
+  2461536.884             24.31                          9.68
+  2461540.400             11.93                          7.48
+  2461915.884            156.74                          8.31
+  2461946.739            125.98                          8.78
+  2462033.691             64.33                          6.85
+  2462158.523             14.10                          8.79
+  2462256.951            -22.70                         13.06
+  2462293.715             -1.97                          6.17
+  2462294.897             -7.77                         13.05

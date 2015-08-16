@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	14 And
+Mass	2.20
+HD	HD 221345
+HIP	HIP 116076
+Teff	4813
+RA	352.822571
+Dec	 39.236198
+
+RV[]	14And_1_1.88M.vels

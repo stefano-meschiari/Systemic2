@@ -1,0 +1,14 @@
+# telescope = 2.5M NORDIC OPTICAL TELESCOPE (NOT)
+# instrument = FIES
+# observatory = LA PALMA, SPAIN
+# reference = JOSHI ET AL. 2009 (MNRAS, 392, 1532)
+# bibcode = 2009MNRAS.392.1532J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300070/data/UID_0300070_RVC_004.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-14%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454461.740000	-358.200000	8.000000
+2454462.771000	1394.300000	5.400000
+2454465.749000	663.400000	7.800000
+2454466.785000	108.600000	4.400000
+2454490.770000	-108.600000	8.700000
+2454490.782000	-126.000000	8.100000

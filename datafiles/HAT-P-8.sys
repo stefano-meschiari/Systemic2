@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-8
+Mass	1.28
+HD	
+HIP	
+Teff	6200
+RA	343.041077
+Dec	 35.447109
+
+RV[]	HAT-P-8_1_KECK.vels

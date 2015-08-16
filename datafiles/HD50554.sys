@@ -1,8 +1,15 @@
-Data  {
-	RV[] "HD50554_1.vels"
-	RV[] "HD50554_2.vels"
-	RV[] "HD50554_3.vels"
-}
-"HD50554" {    
-  Mass   1.1
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 50554
+Mass	1
+HD	HD 50554
+HIP	HIP 33212
+Teff	NA
+RA	103.678436
+Dec	 24.245558
+
+RV[]	HD50554_1_LICK.vels
+RV[]	HD50554_2_KECK.vels
+RV[]	HD50554_3_ELODIE.vels
+RV[]	HD50554_4_LICK.vels
+RV[]	HD50554_5_KECK.vels

@@ -1,6 +1,13 @@
-Data {
-	RV[] "HIP14810_Keck06.vels"
-}
-"HIP14810" {
-  Mass 0.99
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HIP 14810
+Mass	1
+HD	
+HIP	HIP 14810
+Teff	NA
+RA	 47.809292
+Dec	 21.097359
+
+
+
+RV[]	HIP14810_1_KECK.vels

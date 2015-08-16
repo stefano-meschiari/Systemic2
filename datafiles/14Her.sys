@@ -1,7 +1,15 @@
-Data  {
-	RV[] "14Her_1.vels"
-	RV[] "14Her_2.vels"
-}
-"14Her" {    
-  Mass   1.00
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	14 Her
+Mass	0.90
+HD	HD 145675
+HIP	HIP 79248
+Teff	5311
+RA	242.601303
+Dec	 43.817646
+
+
+
+RV[]	14Her_1_KECK.vels
+RV[]	14Her_2_ELODIE.vels
+RV[]	14Her_3_HJS.vels

@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD142_1.vels"
-}
-"HD142" {    
-  Mass   1.1
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 142
+Mass	1.23
+HD	HD 142
+HIP	HIP 522
+Teff	6245
+RA	  1.579898
+Dec	-49.075191
+
+
+
+RV[]	HD142_1_AAT.vels

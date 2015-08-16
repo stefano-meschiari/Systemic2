@@ -1,0 +1,17 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = KONACKI ET AL. 2005 (APJ, 624, 372)
+# bibcode = 2005APJ...624..372K
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300001/data/UID_0300001_RVC_004.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=OGLE-TR-10%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2452481.794600	124.000000	58.000000
+2452483.757800	-42.000000	57.000000
+2452853.781300	7.000000	48.000000
+2452855.845400	-86.000000	59.000000
+2452864.778600	-50.000000	54.000000
+2453206.785600	31.000000	97.000000
+2453207.779400	102.000000	56.000000
+2453208.777200	-126.000000	70.000000
+2453209.772700	0.000000	56.000000

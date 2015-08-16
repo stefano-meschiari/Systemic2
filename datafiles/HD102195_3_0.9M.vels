@@ -1,0 +1,22 @@
+# telescope = 0.9M
+# instrument = COUDE SPECTROGRAPH (BK2/BK4)
+# observatory = KITT PEAK NATIONAL OBSERVATORY (KPNO), ARIZONA
+# reference = GE ET AL. 2006 (APJ, 648, 683)
+# bibcode = 2006APJ...648..683G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0057/0057370/data/UID_0057370_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20102195%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453372.014             133.0                          21.0
+  2453376.999             165.3                          20.0
+  2453378.011             125.5                          23.2
+  2453379.013              86.4                          24.3
+  2453380.024              71.7                          22.8
+  2453381.011             112.2                          20.3
+  2453429.966             -99.6                          19.3
+  2453430.892             -15.6                          24.3
+  2453431.882             -35.7                          28.5
+  2453431.991             -90.7                          27.1
+  2453432.881            -156.9                          23.0
+  2453432.966            -173.3                          24.0
+  2453433.844            -160.1                          25.3
+  2453433.963            -137.2                          26.5

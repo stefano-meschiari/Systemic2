@@ -1,0 +1,13 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-18
+Mass	0.95
+HD	
+HIP	
+Teff	5440
+RA	 98.172409
+Dec	 -0.031586
+
+RV[]	CoRoT-18_1_ELODIE.vels
+RV[]	CoRoT-18_2_ESO.vels
+RV[]	CoRoT-18_3_NOT.vels

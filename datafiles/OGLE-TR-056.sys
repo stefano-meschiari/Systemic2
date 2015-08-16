@@ -1,0 +1,13 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	OGLE-TR-056
+Mass	1.23
+HD	
+HIP	
+Teff	6050
+RA	269.147958
+Dec	-29.539222
+
+
+
+RV[]	OGLE-TR-056_1_KECK.vels

@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-10
+Mass	0.75
+HD	
+HIP	
+Teff	4675
+RA	348.992920
+Dec	 31.462852
+
+RV[]	WASP-10_1_ELODIE.vels
+RV[]	WASP-10_2_NOT.vels

@@ -1,0 +1,20 @@
+# telescope = 2.7M HARLAN J. SMITH (HJS) TELESCOPE
+# instrument = 2D COUDE SPECTROGRAPH (2DCS)
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = WITTENMYER ET AL. 2009 (APJS, 182, 97)
+# bibcode = 2009APJS..182...97W
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0014/0014954/data/UID_0014954_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2019994%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453635.94301              -2.0                           9.7
+  2453655.86581             -33.6                          18.0
+  2453690.87053              34.6                           8.0
+  2453747.67357              52.8                          10.1
+  2454020.88376             -33.9                           8.5
+  2454310.93898              22.2                          10.4
+  2454346.88504               2.7                          11.4
+  2454377.85942             -19.8                           9.6
+  2454404.79890              -4.2                           8.9
+  2454404.80349              -9.8                          10.1
+  2454460.79143              14.2                          12.5
+  2454496.57966             -23.3                           8.5

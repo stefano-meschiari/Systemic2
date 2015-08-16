@@ -1,6 +1,11 @@
-Data {
-	RV[] "HD219828_HARPS07.vels"
-}
-"HD219828" {
-  Mass 1.24
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 219828
+Mass	1
+HD	HD 219828
+HIP	HIP 115100
+Teff	NA
+RA	349.694733
+Dec	 18.645720
+
+RV[]	HD219828_1_3.6M.vels

@@ -1,7 +1,14 @@
-Data  {
-	RV[] "HD187123_1.vels"
-	RV[] "HD187123_2.vels"
-}
-"HD187123" {    
-  Mass   1.06
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 187123
+Mass	1.00
+HD	HD 187123
+HIP	HIP 97336
+Teff	5830
+RA	296.742126
+Dec	 34.419525
+
+
+
+RV[]	HD187123_1_KECK.vels
+RV[]	HD187123_2_ELODIE.vels

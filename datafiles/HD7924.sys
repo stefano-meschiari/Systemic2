@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 7924
+Mass	1
+HD	HD 7924
+HIP	HIP 6379
+Teff	NA
+RA	 20.496313
+Dec	 76.710281
+
+RV[]	HD7924_1_KECK.vels

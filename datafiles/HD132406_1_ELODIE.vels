@@ -1,0 +1,12 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = DA SILVA ET AL. 2007 (A&A, 473, 323)
+# bibcode = 2007A&A...473..323D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0073/0073146/data/UID_0073146_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20132406%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454080.725200	43.000000	3.000000
+2454173.684800	9.000000	4.000000
+2454187.633200	-9.000000	4.000000
+2454230.580300	-29.000000	4.000000

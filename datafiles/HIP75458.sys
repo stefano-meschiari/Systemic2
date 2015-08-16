@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HIP75458_1.vels"
-}
-"HIP75458" {    
-  Mass   1.05
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HIP 75458
+Mass	1.05
+HD	HD 137759
+HIP	HIP 75458
+Teff	4530
+RA	231.232391
+Dec	 58.966064
+
+
+
+RV[]	HIP75458_1_LICK.vels

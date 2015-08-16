@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 143361
+Mass	1
+HD	HD 143361
+HIP	HIP 78521
+Teff	NA
+RA	240.459778
+Dec	-44.434536
+
+RV[]	HD143361_1_3.6M.vels
+RV[]	HD143361_2_MAGELLAN.vels

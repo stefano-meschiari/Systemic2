@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-32
+Mass	1.10
+HD	
+HIP	
+Teff	6100
+RA	  3.961682
+Dec	  1.200451
+
+RV[]	WASP-32_1_ESO.vels

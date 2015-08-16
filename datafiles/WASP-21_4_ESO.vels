@@ -1,0 +1,21 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = BOUCHY ET AL. 2010 (A&A, 2010, IN PRESS)
+# bibcode = 2010A&A...519A..98B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300107/data/UID_0300107_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-21%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454624.909500         -89427.00                         13.00
+  2454661.788300         -89487.00                         12.00
+  2454662.864300         -89475.00                         14.00
+  2454684.854100         -89442.00                         12.00
+  2454686.833300         -89430.00                         14.00
+  2455001.902000         -89424.00                         14.00
+  2455009.882900         -89398.00                         15.00
+  2455013.895100         -89431.00                         15.00
+  2455093.655100         -89506.00                         16.00
+  2455095.665600         -89444.00                         13.00
+  2455096.679500         -89407.00                         14.00
+  2455098.655400         -89500.00                         13.00
+  2455130.641700         -89433.00                         15.00

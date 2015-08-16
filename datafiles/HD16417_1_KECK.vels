@@ -1,0 +1,18 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = O'TOOLE ET AL. 2009 (APJ, 697, 1263)
+# bibcode = 2009APJ...697.1263O
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0012/0012186/data/UID_0012186_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2016417%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454668.1283               6.6                           0.5
+  2454672.1241              -2.4                           0.5
+  2454673.1315               0.1                           0.5
+  2454674.1344              -3.5                           0.5
+  2454676.1059               1.5                           0.5
+  2454687.1134              -4.1                           0.5
+  2454702.1000               3.4                           0.6
+  2454703.0879              -0.3                           0.5
+  2454704.0405               0.8                           0.6
+  2454705.0833              -0.7                           0.6

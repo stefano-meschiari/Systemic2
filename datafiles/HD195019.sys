@@ -1,7 +1,17 @@
-Data  {
-	RV[] "HD195019_1.vels"
-	RV[] "HD195019_2.vels"
-}
-"HD195019" {    
-  Mass   1.0
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 195019
+Mass	1.07
+HD	HD 195019
+HIP	HIP 100970
+Teff	5788
+RA	307.077637
+Dec	 18.769497
+
+
+
+
+
+RV[]	HD195019_1_LICK.vels
+RV[]	HD195019_2_KECK.vels
+RV[]	HD195019_3_HJS.vels

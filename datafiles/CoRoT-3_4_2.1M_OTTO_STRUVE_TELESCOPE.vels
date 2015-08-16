@@ -1,0 +1,11 @@
+# telescope = 2.1M OTTO STRUVE TELESCOPE
+# instrument = SANDIFORD
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = DELEUIL ET AL. 2008 (A&A, 491, 889)
+# bibcode = 2008A&A...491..889D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300074/data/UID_0300074_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-3%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454607.886100	-4478.000000	163.000000
+2454609.852800	121.000000	100.000000
+2454613.868400	0.000000	157.000000

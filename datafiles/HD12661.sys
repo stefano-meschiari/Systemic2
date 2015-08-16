@@ -1,7 +1,14 @@
-Data  {
-	RV[] "HD12661_1.vels"
-	RV[] "HD12661_2.vels"
-}
-"HD12661" {    
-  Mass   1.07
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 12661
+Mass	1
+HD	HD 12661
+HIP	HIP 9683
+Teff	NA
+RA	 31.142866
+Dec	 25.414305
+
+
+
+RV[]	HD12661_1_LICK.vels
+RV[]	HD12661_2_KECK.vels

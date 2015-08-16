@@ -1,0 +1,18 @@
+# telescope = 3.6M ESO
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = ROUAN ET AL. 2012 (2012, A&A, 537A, 54)
+# bibcode = 2012A&A...537A..54R
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300184/data/UID_0300184_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-23%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455657.870890         -35419.00                         63.80
+  2455681.914060         -34862.00                         74.30
+  2455683.856330         -35521.00                         76.30
+  2455684.770130         -35199.00                         80.90
+  2455685.769950         -34758.00                         55.80
+  2455686.780870         -35271.00                         77.70
+  2455687.806420         -35455.00                         80.40
+  2455689.822070         -34882.00                         83.00
+  2455695.916620         -35168.00                         53.00
+  2455716.848350         -35620.00                        163.20

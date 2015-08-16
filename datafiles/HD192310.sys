@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 192310
+Mass	1
+HD	HD 192310
+HIP	HIP 99825
+Teff	NA
+RA	303.822449
+Dec	-27.032976
+
+RV[]	HD192310_1_ESO.vels

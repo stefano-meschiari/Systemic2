@@ -1,0 +1,22 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = TORRES ET AL. 2010 (APJ, 715, 458)
+# bibcode = 2010APJ...715..458T
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300102/data/UID_0300102_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-14%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454602.85803           -193.02                          3.63
+  2454603.10266           -208.31                          2.97
+  2454603.86301           -163.07                          3.39
+  2454604.09553            -95.63                          3.35
+  2454633.99341            197.89                          3.59
+  2454634.93450           -104.57                          3.08
+  2454635.98053           -207.08                          3.48
+  2454637.96376            200.73                          3.10
+  2454639.01426             90.31                          3.34
+  2454641.98653            101.38                          4.20
+  2454777.70610            124.49                          3.94
+  2454955.08247           -213.27                          3.65
+  2455017.01279            126.95                          3.44
+  2455106.77226            -27.59                          4.34

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-33
+Mass	1.50
+HD	HD 15082
+HIP	HIP 11397
+Teff	7430
+RA	 36.712746
+Dec	 37.550484
+
+RV[]	WASP-33_1_JENSCH.vels

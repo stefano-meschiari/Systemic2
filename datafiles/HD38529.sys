@@ -1,7 +1,16 @@
-Data  {
-	RV[] "HD38529_1.vels"
-	RV[] "HD38529_2.vels"
-}
-"HD38529" {    
-  Mass   1.39
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 38529
+Mass	1
+HD	HD 38529
+HIP	HIP 27253
+Teff	NA
+RA	 86.645470
+Dec	  1.168193
+
+
+
+RV[]	HD38529_1_LICK.vels
+RV[]	HD38529_2_KECK.vels
+RV[]	HD38529_3_HJS.vels
+RV[]	HD38529_4_HET.vels

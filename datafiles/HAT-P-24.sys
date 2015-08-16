@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-24
+Mass	1.19
+HD	
+HIP	
+Teff	6373
+RA	108.825058
+Dec	 14.262599
+
+RV[]	HAT-P-24_1_KECK.vels

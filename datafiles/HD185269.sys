@@ -1,6 +1,12 @@
-Data {
-	RV[] "HD185269_Lick.vels"
-}
-"HD185269" {
-  Mass  1.28
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 185269
+Mass	1.28
+HD	HD 185269
+HIP	HIP 96507
+Teff	5980
+RA	294.298920
+Dec	 28.499865
+
+RV[]	HD185269_1_LICK.vels
+RV[]	HD185269_2_ELODIE.vels

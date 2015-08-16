@@ -1,9 +1,11 @@
-Data  {
-        RV[] "HAT-P-5_SOPHIE07.vels"
-}
-TransitsData {
-             TD[] "HAT-P-5.tds"
-}
-"HAT-P-5" {
-  Mass   1.160
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-5
+Mass	1.16
+HD	
+HIP	
+Teff	5960
+RA	274.405487
+Dec	 36.621410
+
+RV[]	HAT-P-5_1_ELODIE.vels

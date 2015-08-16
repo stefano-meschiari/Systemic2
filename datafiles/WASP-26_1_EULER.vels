@@ -1,0 +1,24 @@
+# telescope = 1.2M EULER SWISS TELESCOPE
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = SMALLEY ET AL. 2010 (ARXIV, 1004, 1542)
+# bibcode = 2010ARXIV1004.1542S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300106/data/UID_0300106_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-26%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455001.927439           8.59117                       0.00915
+  2455008.900119           8.35510                       0.00959
+  2455011.938063           8.45626                       0.01134
+  2455012.833505           8.58264                       0.01092
+  2455013.918513           8.32991                       0.00997
+  2455036.934802           8.50676                       0.01022
+  2455037.917112           8.53360                       0.00951
+  2455038.919423           8.32703                       0.00871
+  2455040.915661           8.47129                       0.01929
+  2455042.899210           8.57224                       0.00800
+  2455068.668524           8.41145                       0.01011
+  2455070.807797           8.57495                       0.00967
+  2455072.729127           8.49720                       0.00979
+  2455076.856687           8.43943                       0.01866
+  2455094.818292           8.49411                       0.00929
+  2455096.728728           8.31789                       0.00855

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 45364
+Mass	1
+HD	HD 45364
+HIP	HIP 30579
+Teff	NA
+RA	 96.410316
+Dec	-31.480953
+
+RV[]	HD45364_1_3.6M.vels

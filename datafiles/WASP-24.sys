@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-24
+Mass	1.18
+HD	
+HIP	
+Teff	6075
+RA	227.215591
+Dec	  2.343304
+
+RV[]	WASP-24_1_ESO.vels

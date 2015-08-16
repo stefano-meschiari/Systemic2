@@ -1,0 +1,17 @@
+# telescope = 2.5M NOT
+# instrument = FIES
+# observatory = OBSERVATORIO DEL ROQUE DE LOS MUCHACHOS, LA PALMA, SPAIN
+# reference = HARTMAN ET AL. 2012 (2012, AJ, 144, 139)
+# bibcode = 2012AJ....144..139H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302470/data/UID_0302470_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-41%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455378.587660             52.31                         40.10
+  2455379.545780             21.11                         51.30
+  2455380.474200           -106.99                         49.00
+  2455381.616870            112.71                         49.90
+  2455383.493570            -79.79                         75.00
+  2455427.513770            112.18                         40.10
+  2455428.540900            -22.42                         91.50
+  2455429.380870            -79.42                         50.00
+  2455431.540130           -153.82                         68.60

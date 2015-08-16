@@ -1,0 +1,19 @@
+# telescope = 1.2M EULER/ESO
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = MAXTED ET AL. 2013 (2013, PASP, 125, 48)
+# bibcode = 2013PASP..125...48M
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302489/data/UID_0302489_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-77%20A%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455069.780300           1324.60                          4.90
+  2455163.609100           1336.20                          5.20
+  2455169.692000           1967.30                          4.90
+  2455170.662500           1570.60                          5.30
+  2455188.625800           1969.60                          5.40
+  2455856.709500           1865.50                          5.30
+  2455914.678300           1710.50                          4.30
+  2455915.677500           1332.80                          4.40
+  2455916.668100           1708.70                          4.80
+  2455917.650000           1954.40                          4.70
+  2455918.664500           1554.20                          6.50

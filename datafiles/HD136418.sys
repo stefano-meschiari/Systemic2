@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 136418
+Mass	1
+HD	HD 136418
+HIP	HIP 74961
+Teff	NA
+RA	229.775757
+Dec	 41.733208
+
+RV[]	HD136418_1_KECK.vels

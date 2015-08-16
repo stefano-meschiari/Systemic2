@@ -1,7 +1,0 @@
-Data  {
-	RV[] "70vir_1.vels"
-	RV[] "70vir_2.vels"
-}
-"70vird" {    
-  Mass   1.1
-}

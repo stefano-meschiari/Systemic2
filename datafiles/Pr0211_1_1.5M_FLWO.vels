@@ -1,0 +1,26 @@
+# telescope = 1.5M FLWO
+# instrument = TRES
+# observatory = FRED L. WHIPPLE OBSERVATORY, MT. HOPKINS, ARIZONA
+# reference = QUINN ET AL. 2012 (2012, APJ, 756L, 33)
+# bibcode = 2012APJ...756L..33Q
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302465/data/UID_0302465_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Pr0211%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455986.772462            -75.70                         19.10
+  2455987.720167            413.80                         13.80
+  2455988.721641           -193.00                         21.30
+  2455996.712491            311.80                         24.90
+  2455997.756832              0.00                         13.80
+  2455998.662801            405.80                         14.70
+  2456021.718407            346.40                         18.90
+  2456022.663113            108.00                         20.30
+  2456023.652317            208.10                         21.80
+  2456024.663763            212.00                         21.40
+  2456025.714331            113.10                         16.90
+  2456026.737245            275.70                         30.00
+  2456028.698449            428.70                         18.20
+  2456029.716113            -52.50                         21.00
+  2456030.741942            480.60                         26.50
+  2456031.720488           -156.90                         50.50
+  2456032.715068            504.40                         24.70
+  2456033.654723            -98.10                         19.90

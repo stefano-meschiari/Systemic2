@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-23
+Mass	1.14
+HD	
+HIP	
+Teff	5900
+RA	279.782623
+Dec	  4.357806
+
+RV[]	CoRoT-23_1_ESO.vels

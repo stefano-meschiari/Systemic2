@@ -1,0 +1,23 @@
+# telescope = 3.6M ESO
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = BOUCHY ET AL. 2010 (A&A, 2010, IN PRESS)
+# bibcode = 2010A&A...519A..98B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300107/data/UID_0300107_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-21%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454706.746400         -89400.10                         10.00
+  2454709.765500         -89479.20                          3.30
+  2454710.747200         -89428.70                          3.80
+  2454749.661100         -89430.90                          3.60
+  2454754.643400         -89415.40                          3.10
+  2454755.663500         -89431.70                          2.50
+  2454760.634000         -89463.90                          2.20
+  2454761.628000         -89478.20                          2.70
+  2454763.596300         -89404.00                          3.10
+  2455111.637700         -89479.70                          2.90
+  2455112.634200         -89436.10                          3.20
+  2455113.622900         -89411.80                          2.70
+  2455115.642900         -89489.20                          5.00
+  2455116.638500         -89465.50                          2.30
+  2455117.620400         -89418.40                          4.50

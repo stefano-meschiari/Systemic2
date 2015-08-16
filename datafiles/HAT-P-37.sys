@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-37
+Mass	0.93
+HD	
+HIP	
+Teff	5500
+RA	284.296051
+Dec	 51.269138
+
+RV[]	HAT-P-37_1_1.5M_FLWO.vels

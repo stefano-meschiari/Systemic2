@@ -1,0 +1,28 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = BUTLER ET AL. 2002 (APJ, 578, 565)
+# bibcode = 2002APJ...578..565B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0047/0047202/data/UID_0047202_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2083443%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450898.0961              26.0                           2.7
+  2450899.0788             -52.3                           2.5
+  2450900.0854              39.9                           2.5
+  2450901.0806              22.4                           2.6
+  2450971.9566              50.2                           3.2
+  2450972.9432              -7.0                           3.7
+  2450974.8502              47.2                           3.3
+  2450981.9535              -7.0                           3.2
+  2450982.9366             -46.2                           2.9
+  2451003.7982             -40.1                           3.1
+  2451006.9015             -28.6                           2.8
+  2451007.8096              52.1                           2.3
+  2451062.7608             -37.2                           3.4
+  2451064.7379              62.8                           2.7
+  2451219.1297             -14.7                           2.5
+  2451236.1362             -50.4                           2.2
+  2451243.1498              -3.1                           3.0
+  2451307.9118             -56.5                           2.3
+  2451333.9629              21.6                           2.3
+  2451334.8507             -53.7                           2.6

@@ -1,0 +1,22 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = FRIDLUND ET AL. 2010 (ARXIV, 1001, 1426)
+# bibcode = 2010ARXIV1001.1426F
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300084/data/UID_0300084_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-6%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454642.5591           -18.465                         0.066
+  2454646.4820           -17.967                         0.039
+  2454679.4155           -18.345                         0.044
+  2454681.4542           -17.999                         0.048
+  2454685.3983           -18.510                         0.050
+  2454689.4129           -18.202                         0.063
+  2454700.3532           -18.011                         0.048
+  2454702.3841           -18.333                         0.072
+  2454704.3410           -18.469                         0.044
+  2454706.3593           -18.229                         0.041
+  2454707.3968           -18.041                         0.040
+  2454711.3270           -18.341                         0.049
+  2454712.3234           -18.525                         0.060
+  2454715.4002           -18.321                         0.059

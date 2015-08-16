@@ -1,6 +1,11 @@
-Data {
-	RV[] "HD192699_Lick07.vels"
-}
-"HD192699" {
-  Mass 1.68
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 192699
+Mass	1.68
+HD	HD 192699
+HIP	HIP 99894
+Teff	5220
+RA	304.025024
+Dec	  4.580795
+
+RV[]	HD192699_1_LICK.vels

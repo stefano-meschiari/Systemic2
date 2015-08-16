@@ -1,0 +1,11 @@
+# telescope = 0.6M
+# instrument = FICK SPECTOMETER
+# observatory = ERWIN W. FICK OBSERVATORY, AMES, IOWA
+# reference = GRIFFIN ET AL. 2002 (OBS, 122, 90)
+# bibcode = 2002OBS...122...90G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0116/0116727/data/UID_0116727_RVC_005.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=gam%20Cep%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2443731.340000	900.000000	700.000000
+2443756.270000	0.000000	200.000000
+2444488.280000	-500.000000	400.000000

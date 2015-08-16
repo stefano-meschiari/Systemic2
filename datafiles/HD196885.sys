@@ -1,6 +1,14 @@
-Data  {
-	RV[] "HD196885_EC08.vels"
-}
-"HD196885" {
-  Mass 1.33
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 196885
+Mass	1.28
+HD	HD 196885
+HIP	HIP 101966
+Teff	6254
+RA	309.966156
+Dec	 11.249649
+
+RV[]	HD196885_1_LICK.vels
+RV[]	HD196885_2_ELODIE.vels
+RV[]	HD196885_3_1.0M.vels
+RV[]	HD196885_4_EULER.vels

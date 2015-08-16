@@ -1,0 +1,26 @@
+# telescope = 3.6M ESO
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = GUENTHER ET AL. 2012 (2012, A&A, 537A, 136)
+# bibcode = 2012A&A...537A.136G
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300167/data/UID_0300167_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-19%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455546.773100           -104.00                         14.00
+  2455548.720400            133.00                         15.00
+  2455574.761400            -72.00                         14.00
+  2455576.666200             64.00                         14.00
+  2455577.747500           -128.00                         14.00
+  2455584.723000             50.00                         18.00
+  2455586.691000             -7.00                         18.00
+  2455591.712400            134.00                         21.00
+  2455592.537800             22.00                         15.00
+  2455592.573500             54.00                         19.00
+  2455592.609000              7.00                         15.00
+  2455592.646700            -26.00                         15.00
+  2455592.687700            -41.00                         20.00
+  2455593.718500           -141.00                         25.00
+  2455627.559300              1.00                         31.00
+  2455627.594400             -4.00                         37.00
+  2455627.629800             59.00                         32.00
+  2455627.663300             23.00                         39.00

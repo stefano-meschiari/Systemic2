@@ -1,7 +1,0 @@
-Data  {
-	RV[] "rhoCrB_AFOE98PS1.vels"
-	RV[] "rhoCrB_B06L.vels"
-}
-"rhoCrBPS_B06L" {    
-  Mass   0.95
-}

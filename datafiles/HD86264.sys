@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 86264
+Mass	1
+HD	HD 86264
+HIP	HIP 48780
+Teff	NA
+RA	149.240997
+Dec	-15.895122
+
+RV[]	HD86264_1_LICK.vels

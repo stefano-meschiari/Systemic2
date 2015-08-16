@@ -1,0 +1,14 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 86
+Mass	0.77
+HD	HD 13445
+HIP	HIP 10138
+Teff	5151
+RA	 32.608059
+Dec	-50.823723
+
+
+
+RV[]	GJ86_1_8.2M_ANTU_(UT1).vels
+RV[]	GJ86_2_AAT.vels

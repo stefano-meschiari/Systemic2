@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 181342
+Mass	1
+HD	HD 181342
+HIP	HIP 95124
+Teff	NA
+RA	290.267639
+Dec	-23.619572
+
+RV[]	HD181342_1_KECK.vels

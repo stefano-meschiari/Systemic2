@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	18 Del
+Mass	2.30
+HD	HD 199665
+HIP	HIP 103527
+Teff	4979
+RA	314.608063
+Dec	 10.839286
+
+RV[]	18Del_1_1.88M.vels

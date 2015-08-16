@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-75
+Mass	0.91
+HD	
+HIP	
+Teff	5200
+RA	291.137604
+Dec	 36.577385
+
+RV[]	Kepler-75_1_ELODIE.vels
+RV[]	Kepler-75_2_3.58M_TNG.vels

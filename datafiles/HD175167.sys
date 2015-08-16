@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 175167
+Mass	1
+HD	HD 175167
+HIP	HIP 93281
+Teff	NA
+RA	285.003479
+Dec	-69.944244
+
+RV[]	HD175167_1_MAGELLAN.vels

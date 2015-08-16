@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	omi UMa
+Mass	3.09
+HD	HD 71369
+HIP	HIP 41704
+Teff	5242
+RA	127.566124
+Dec	 60.718170
+
+RV[]	omiUMa_1_1.88M_OAO.vels

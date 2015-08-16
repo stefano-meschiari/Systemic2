@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	TrES-5
+Mass	0.89
+HD	
+HIP	
+Teff	5171
+RA	305.221832
+Dec	 59.448788
+
+RV[]	TrES-5_1_1.5M_FLWO.vels

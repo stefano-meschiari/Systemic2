@@ -1,0 +1,23 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = SHPORER ET AL. 2009 (APJ, 690, 1393)
+# bibcode = 2009APJ...690.1393S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300078/data/UID_0300078_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-9%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454233.3347             22667                            24
+  2454379.6357             22586                            20
+  2454380.6213             22672                            24
+  2454381.5815             22749                            23
+  2454413.6292             22727                            21
+  2454414.6084             22610                            24
+  2454415.6457             22675                            27
+  2454416.6392             22740                            21
+  2454421.6701             22659                            31
+  2454422.6651             22595                            20
+  2454587.3543             22536                            21
+  2454588.3571             22650                            23
+  2454589.3525             22730                            23
+  2454590.3425             22699                            25
+  2454591.3647             22564                            30

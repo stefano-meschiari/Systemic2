@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 3634
+Mass	0.45
+HD	
+HIP	
+Teff	NA
+RA	164.646240
+Dec	-31.143990
+
+RV[]	GJ3634_1_ESO.vels

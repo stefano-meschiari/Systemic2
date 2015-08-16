@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 129445
+Mass	1
+HD	HD 129445
+HIP	HIP 72203
+Teff	NA
+RA	221.512772
+Dec	-68.762749
+
+RV[]	HD129445_1_MAGELLAN.vels

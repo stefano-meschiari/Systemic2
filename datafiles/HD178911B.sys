@@ -1,7 +1,15 @@
-Data  {
-	RV[] "HD178911B_1.vels"
-	RV[] "HD178911B_2.vels"
-}
-"HD178911B" {    
-  Mass   0.87
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 178911 B
+Mass	1
+HD	HD 178911 B
+HIP	HIP 94075
+Teff	NA
+RA	287.262939
+Dec	 34.599850
+
+
+
+RV[]	HD178911B_1_HET.vels
+RV[]	HD178911B_2_KECK.vels
+RV[]	HD178911B_3_ELODIE.vels

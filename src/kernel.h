@@ -64,7 +64,6 @@ gsl_matrix* K_addDataTable(ok_kernel* k, gsl_matrix* rvtable, const char* name, 
 void K_removeData(ok_kernel* k, int idx);
 gsl_matrix* K_getData(ok_kernel* k, int idx);
 void K_setData(ok_kernel* k, int idx, gsl_matrix* data);
-const char* K_getDataName(ok_kernel* k, int idx);
 bool K_addDataFromSystem(ok_kernel* k, const char* filename);
 int K_getDataType(ok_kernel* k, int idx);
 

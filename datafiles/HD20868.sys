@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 20868
+Mass	0.78
+HD	HD 20868
+HIP	HIP 15578
+Teff	4795
+RA	 50.177895
+Dec	-33.730103
+
+RV[]	HD20868_1_3.6M.vels

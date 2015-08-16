@@ -1,7 +1,0 @@
-Data  {
-	RV[] "HD106252_ELODIE03.vels"
-	RV[] "HD106252_B06L.vels"
-}
-"HD106252_B06L" {    
-  Mass   1.05
-}

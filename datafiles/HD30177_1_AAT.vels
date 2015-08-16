@@ -1,0 +1,30 @@
+# telescope = 3.9M ANGLO-AUSTRALIAN TELESCOPE (AAT)
+# instrument = UCLES
+# observatory = SIDING SPRING OBSERVATORY, AUSTRALIA
+# reference = BUTLER ET AL. 2006 (APJ, 646, 505)
+# bibcode = 2006APJ...646..505B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0021/0021850/data/UID_0021850_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2030177%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451118.097373             164.7                           8.7
+  2451119.192396              132.                           14.
+  2451121.151412              157.                           11.
+  2451157.102187             170.1                           8.3
+  2451211.983437             158.5                           9.8
+  2451212.965972             160.5                           8.8
+  2451213.999549             173.1                           7.3
+  2451214.950648             170.9                           6.9
+  2451525.997393             115.7                           6.8
+  2451630.915556              77.3                           8.8
+  2451768.329595               4.3                           8.7
+  2451921.107488             -51.7                           9.1
+  2452127.320486              -77.                           16.
+  2452188.253241            -106.3                           6.9
+  2452358.918056            -118.9                           7.5
+  2452598.187000            -114.8                           3.6
+  2452655.024306            -120.0                           7.7
+  2452747.848678            -116.7                           4.0
+  2452945.181625             -75.5                           4.6
+  2453044.034641             -58.5                           6.5
+  2453282.261519              -7.9                           5.4
+  2453400.993967              20.5                           4.5

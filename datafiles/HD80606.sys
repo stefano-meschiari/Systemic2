@@ -1,7 +1,18 @@
-Data  {
-	RV[] "HD80606_1.vels"
-	RV[] "HD80606_2.vels"
-}
-"HD80606" {    
-  Mass   0.9
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 80606
+Mass	0.97
+HD	HD 80606
+HIP	HIP 45982
+Teff	5645
+RA	140.656540
+Dec	 50.603722
+
+
+
+RV[]	HD80606_1_HET.vels
+RV[]	HD80606_2_ELODIE.vels
+RV[]	HD80606_3_ELODIE.vels
+RV[]	HD80606_4_KECK.vels
+RV[]	HD80606_5_KECK.vels
+RV[]	HD80606_6_ELODIE.vels

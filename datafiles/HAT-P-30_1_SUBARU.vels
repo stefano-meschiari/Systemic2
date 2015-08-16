@@ -1,0 +1,19 @@
+# telescope = SUBARU
+# instrument = HSD
+# observatory = MAUNA KEA, HAWAII
+# reference = JOHNSON ET AL. 2011 (ARXIV, 1103, 3825)
+# bibcode = 2011APJ...735...24J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300156/data/UID_0300156_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-30%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455338.771420            -63.42                         15.02
+  2455338.773610            -41.42                         13.48
+  2455338.776470            -61.91                         10.11
+  2455338.780030            -43.23                         10.80
+  2455339.732040            -28.01                         15.95
+  2455339.737570            -24.22                         10.72
+  2455339.743900             -8.72                         11.41
+  2455339.750240            -22.31                         10.37
+  2455340.781730             68.96                          8.10
+  2455340.788300             64.70                          9.16
+  2455340.796040             53.51                         12.62

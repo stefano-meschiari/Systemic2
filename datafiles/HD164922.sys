@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 164922
+Mass	1
+HD	HD 164922
+HIP	HIP 88348
+Teff	NA
+RA	270.628601
+Dec	 26.313002
+
+RV[]	HD164922_1_KECK.vels

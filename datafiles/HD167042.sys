@@ -1,6 +1,12 @@
-Data  {
-	RV[] "HD167042_LICK08.vels"
-}
-"HD167042" {
-  Mass 1.64
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 167042
+Mass	1.50
+HD	HD 167042
+HIP	HIP 89047
+Teff	4943
+RA	272.631836
+Dec	 54.286552
+
+RV[]	HD167042_1_1.88M.vels
+RV[]	HD167042_2_LICK.vels

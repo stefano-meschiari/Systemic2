@@ -1,0 +1,19 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = BOUCHY ET AL. 2010 (A&A, 2010, IN PRESS)
+# bibcode = 2010A&A...519A..98B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300107/data/UID_0300107_RVC_004.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-21%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454659.587200         -89409.00                         18.00
+  2454662.594700         -89418.00                         18.00
+  2454663.574900         -89392.00                         17.00
+  2454665.582600         -89449.00                         19.00
+  2454666.577300         -89458.00                         17.00
+  2454667.579000         -89387.00                         17.00
+  2454668.592500         -89381.00                         20.00
+  2454679.594000         -89474.00                         18.00
+  2454683.624200         -89495.00                         18.00
+  2454685.559100         -89393.00                         18.00
+  2454688.547900         -89445.00                         18.00

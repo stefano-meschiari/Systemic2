@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	OGLE-TR-211
+Mass	1.33
+HD	
+HIP	
+Teff	6325
+RA	160.059952
+Dec	-62.455601
+
+RV[]	OGLE-TR-211_1_8.2M_KEUYEN_(UT2).vels

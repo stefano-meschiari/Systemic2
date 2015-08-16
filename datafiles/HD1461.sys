@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 1461
+Mass	1.02
+HD	HD 1461
+HIP	HIP 1499
+Teff	5765
+RA	  4.674448
+Dec	 -8.053001
+
+RV[]	HD1461_1_KECK.vels
+RV[]	HD1461_2_KECK.vels

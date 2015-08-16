@@ -1,0 +1,17 @@
+# telescope = 2.7M HARLAN J. SMITH (HJS) TELESCOPE
+# instrument = 2D COUDE SPECTROGRAPH (2DCS)
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = MCCULLOGH ET AL. 2008 (ARXIV, 0805, 2921)
+# bibcode = 2008ARXIV0805.2921M
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300072/data/UID_0300072_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=XO-4%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454455.7622               257                            57
+  2454457.7597              -127                            40
+  2454469.9042               -88                            43
+  2454474.6989              -166                            31
+  2454476.8855               140                            39
+  2454477.8677               -53                            39
+  2454479.8429               -34                            46
+  2454480.6910               172                            47
+  2454480.8856               141                            39

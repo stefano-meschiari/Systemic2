@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	75 Cet
+Mass	2.49
+HD	HD 15779
+HIP	HIP 11791
+Teff	4846
+RA	 38.039253
+Dec	 -1.034896
+
+RV[]	75Cet_1_1.88M_OAO.vels

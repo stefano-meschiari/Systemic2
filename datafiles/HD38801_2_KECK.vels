@@ -1,0 +1,18 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = HARAKAWA ET AL. 2010 (APJ, 715, 550)
+# bibcode = 2010APJ...715..550H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0027/0027384/data/UID_0027384_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2038801%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453982.1185             201.4                           0.9
+  2453983.1122             196.8                           0.9
+  2453984.1088             202.8                           0.9
+  2454130.8895              13.4                           1.2
+  2454138.9172              -6.9                           1.2
+  2454344.1185            -180.3                           0.8
+  2454398.0809            -154.4                           0.9
+  2454427.9607             -93.3                           1.1
+  2454492.7365              -3.1                           1.0
+  2454838.9756               4.0                           1.2

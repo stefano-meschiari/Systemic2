@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	alf Ari
+Mass	1.50
+HD	HD 12929
+HIP	HIP 9884
+Teff	4553
+RA	 31.793364
+Dec	 23.462423
+
+RV[]	alfAri_1_1.8M_BOAO.vels

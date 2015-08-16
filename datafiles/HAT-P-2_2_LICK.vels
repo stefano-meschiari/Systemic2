@@ -1,0 +1,18 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = BAKOS ET AL. 2007 (APJ, 670, 826)
+# bibcode = 2007APJ...670..826B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0080/0080076/data/UID_0080076_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-2%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454168.9679            -152.7                          42.1
+  2454169.9519             542.4                          41.3
+  2454170.8619             556.8                          42.6
+  2454171.0365             719.1                          49.6
+  2454218.8081           -1165.2                          88.3
+  2454218.9856           -1492.6                          90.8
+  2454219.9373             -28.2                          43.9
+  2454219.9600             -14.8                          43.9
+  2454220.9641             451.6                          38.4
+  2454220.9934             590.7                          37.1

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-36
+Mass	1.02
+HD	
+HIP	
+Teff	5560
+RA	188.266251
+Dec	 44.915352
+
+RV[]	HAT-P-36_1_1.5M_FLWO.vels

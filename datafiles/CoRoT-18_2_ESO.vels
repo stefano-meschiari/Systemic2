@@ -1,0 +1,26 @@
+# telescope = 3.6M ESO
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = HEBRARD ET AL. 2011 (2011, A&A, 533A, 130)
+# bibcode = 2011A&A...533A.130H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300165/data/UID_0300165_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-18%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455538.744100          28979.00                         27.00
+  2455539.725300          30115.00                         38.00
+  2455547.783800          29720.00                         23.00
+  2455548.676700          29324.00                         55.00
+  2455583.751500          29892.00                         51.00
+  2455589.537400          29732.00                         51.00
+  2455589.554200          29641.00                         52.00
+  2455589.572100          29719.00                         42.00
+  2455589.589700          29583.00                         46.00
+  2455589.607400          29616.00                         48.00
+  2455589.626100          29727.00                         51.00
+  2455589.646700          29596.00                         52.00
+  2455589.668700          29501.00                         45.00
+  2455589.690900          29415.00                         39.00
+  2455589.713200          29436.00                         33.00
+  2455589.734300          29482.00                         37.00
+  2455589.756500          29329.00                         43.00
+  2455590.706100          29435.00                         65.00

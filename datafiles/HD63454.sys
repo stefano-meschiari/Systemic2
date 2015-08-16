@@ -1,6 +1,11 @@
-Data  {
-	RV[] "HD63454_1.vels"
-}
-"HD63454" {    
-  Mass   0.8
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 63454
+Mass	1
+HD	HD 63454
+HIP	HIP 37284
+Teff	NA
+RA	114.841049
+Dec	-78.278969
+
+RV[]	HD63454_1_3.6M.vels

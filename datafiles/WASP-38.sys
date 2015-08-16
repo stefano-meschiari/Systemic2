@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-38
+Mass	1.20
+HD	HD 146389
+HIP	
+Teff	6150
+RA	243.959839
+Dec	 10.032566
+
+RV[]	WASP-38_1_ESO.vels

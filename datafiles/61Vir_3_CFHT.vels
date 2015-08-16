@@ -1,0 +1,34 @@
+# telescope = 3.6M CFHT
+# instrument = F/8.2 COUDE SPECTROGRAPH
+# observatory = MAUNA KEA, HAWAII
+# reference = CAMPBELL ET AL. 1988 (APJ, 331, 902)
+# bibcode = 1988APJ...331..902C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0064/0064924/data/UID_0064924_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=61%20Vir%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2444655.009              46.7                          18.0
+  2444687.010             125.6                          26.6
+  2444687.976              35.6                          14.4
+  2444745.922              -8.9                          22.3
+  2444753.859              41.0                          18.7
+  2444770.754              22.2                          28.7
+  2444958.153              22.4                          10.4
+  2445148.800              -2.1                          12.4
+  2445458.915              15.5                          14.2
+  2445713.117             -30.0                          13.4
+  2445809.917             -20.1                          10.3
+  2445810.915             -10.0                           8.4
+  2445864.876             -33.8                          11.2
+  2446216.858             -15.4                           8.6
+  2446216.897             -25.9                          11.7
+  2446395.143             -16.7                          11.1
+  2446538.003              13.4                           9.9
+  2446603.880               2.8                           8.2
+  2446604.833               4.7                           6.5
+  2446633.770             -23.8                           6.5
+  2446785.133               8.8                           8.9
+  2446786.106               4.9                           9.3
+  2446835.069              15.8                           9.2
+  2446865.030              17.9                          10.8
+  2446866.020              13.9                           6.9
+  2446866.973              -0.8                           9.0

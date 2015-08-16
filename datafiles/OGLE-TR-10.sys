@@ -1,0 +1,15 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	OGLE-TR-10
+Mass	1.14
+HD	
+HIP	
+Teff	5950
+RA	267.867708
+Dec	-29.876361
+
+
+
+RV[]	OGLE-TR-10_1_VLT.vels
+RV[]	OGLE-TR-10_2_VLT.vels
+RV[]	OGLE-TR-10_3_KECK.vels

@@ -1,0 +1,19 @@
+# telescope = 1.2M EULER SWISS TELESCOPE
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = ANDERSON ET AL. 2008 (MNRAS, 387, L4)
+# bibcode = 2008MNRAS.387L...4A
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300058/data/UID_0300058_RVC_001.tbl
+# value_units = KM/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-5%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454359.614570            19.785                         0.016
+  2454362.654785            19.942                         0.015
+  2454364.676219            19.753                         0.021
+  2454365.682733            20.203                         0.013
+  2454372.781658            19.750                         0.013
+  2454374.817984            20.016                         0.040
+  2454376.714797            20.248                         0.014
+  2454377.762440            19.747                         0.013
+  2454379.627523            19.907                         0.014
+  2454380.682557            19.830                         0.010
+  2454387.644986            19.818                         0.015

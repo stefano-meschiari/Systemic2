@@ -1,0 +1,37 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = JOHNSON ET AL. 2007 (APJ, 665, 785)
+# bibcode = 2007APJ...665..785J
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0109/0109577/data/UID_0109577_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20210702%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453241.863             18.13                          3.32
+  2453256.776              9.30                          3.91
+  2453310.752            -16.07                          4.33
+  2453342.598             -0.18                          3.37
+  2453569.930             42.99                          4.77
+  2453573.904             29.79                          5.13
+  2453574.927             38.71                          4.47
+  2453575.897             29.80                          4.41
+  2453640.779             10.99                          5.45
+  2453922.930             28.01                          3.39
+  2453959.860              0.18                          3.22
+  2453975.798             -1.47                          3.54
+  2453976.764             -8.51                          3.20
+  2453998.768            -10.73                          3.52
+  2454001.789            -13.09                          3.61
+  2454020.721            -15.97                          3.73
+  2454021.735            -11.53                          4.38
+  2454034.695            -22.55                          4.41
+  2454046.694            -31.56                          3.40
+  2454059.673            -14.62                          3.57
+  2454070.705            -11.10                          3.70
+  2454092.594              1.07                          4.06
+  2454097.649             -2.40                          3.31
+  2454098.603              1.90                          3.78
+  2454103.598              9.35                          3.65
+  2454109.626              9.02                          5.12
+  2454117.595             22.46                          5.58
+  2454136.600             38.79                          3.09
+  2454197.033             53.95                          4.26

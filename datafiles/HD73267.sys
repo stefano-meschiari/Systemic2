@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 73267
+Mass	1
+HD	HD 73267
+HIP	HIP 42202
+Teff	NA
+RA	129.074066
+Dec	-34.459980
+
+RV[]	HD73267_1_3.6M.vels

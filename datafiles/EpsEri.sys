@@ -1,6 +1,13 @@
-Data  {
-	RV[] "EpsEri_all_d.vels"
-}
-"EpsEri" {
-  Mass   0.8
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	eps Eri
+Mass	0.83
+HD	HD 22049
+HIP	HIP 16537
+Teff	NA
+RA	 53.232685
+Dec	 -9.458262
+
+RV[]	epsEri_1_LICK.vels
+RV[]	epsEri_2_HJS.vels
+RV[]	epsEri_3_CFHT.vels

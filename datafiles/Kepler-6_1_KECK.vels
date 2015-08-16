@@ -1,0 +1,17 @@
+# telescope = 10M KECK I
+# instrument = HIRES
+# observatory = MAUNA KEA, HAWAII
+# reference = DUNHAM ET AL. 2010 (APJ, 713, 136L)
+# bibcode = 2010APJ...713L.136D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300098/data/UID_0300098_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=Kepler-6%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454986.087289             68.42                          4.48
+  2454987.087348            -59.94                          4.59
+  2454988.077695            -67.64                          4.75
+  2454989.019649             48.64                          4.64
+  2454995.112273             18.56                          4.79
+  2455014.881155             51.75                          4.54
+  2455015.984052            -34.79                          4.65
+  2455017.067098            -75.84                          4.94
+  2455044.019956             50.59                          5.42

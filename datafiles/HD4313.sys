@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 4313
+Mass	1
+HD	HD 4313
+HIP	HIP 3574
+Teff	NA
+RA	 11.418160
+Dec	  7.845021
+
+RV[]	HD4313_1_KECK.vels

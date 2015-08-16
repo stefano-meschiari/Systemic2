@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	BD-17 63
+Mass	0.74
+HD	
+HIP	HIP 2247
+Teff	4714
+RA	  7.142942
+Dec	-16.226345
+
+RV[]	BD-1763_1_3.6M.vels

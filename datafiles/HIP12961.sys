@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HIP 12961
+Mass	1
+HD	
+HIP	HIP 12961
+Teff	NA
+RA	 41.678692
+Dec	-23.086611
+
+RV[]	HIP12961_1_ESO.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 4732
+Mass	1.74
+HD	HD 4732
+HIP	HIP 3834
+Teff	4959
+RA	 12.308117
+Dec	-24.136671
+
+RV[]	HD4732_1_1.88M_OAO.vels

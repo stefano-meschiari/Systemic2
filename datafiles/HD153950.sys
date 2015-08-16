@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 153950
+Mass	1
+HD	HD 153950
+HIP	HIP 83547
+Teff	NA
+RA	256.128632
+Dec	-43.309769
+
+RV[]	HD153950_1_3.6M.vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 3470
+Mass	0.51
+HD	
+HIP	
+Teff	3652
+RA	119.774345
+Dec	 15.391492
+
+RV[]	GJ3470_1_ESO.vels

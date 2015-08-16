@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-100
+Mass	1.08
+HD	
+HIP	
+Teff	5825
+RA	291.385986
+Dec	 41.990273
+
+RV[]	Kepler-100_1_KECK.vels

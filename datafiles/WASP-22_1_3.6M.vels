@@ -1,0 +1,14 @@
+# telescope = 3.6M
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = MAXTED ET AL. 2010 (ARXIV, 1004, 1514)
+# bibcode = 2010ARXIV1004.1514M
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300105/data/UID_0300105_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-22%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454743.752700	33.350000	2.900000
+2454746.768300	-22.550000	2.600000
+2454749.765000	-77.550000	2.400000
+2454750.679100	22.550000	2.900000
+2454754.725700	41.350000	2.500000
+2454755.755800	-56.050000	3.200000

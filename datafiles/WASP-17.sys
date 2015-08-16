@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-17
+Mass	1.20
+HD	
+HIP	
+Teff	6550
+RA	239.962311
+Dec	-28.061733
+
+RV[]	WASP-17_1_3.6M.vels
+RV[]	WASP-17_2_EULER.vels

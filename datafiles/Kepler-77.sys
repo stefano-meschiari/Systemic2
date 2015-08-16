@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	Kepler-77
+Mass	0.95
+HD	
+HIP	
+Teff	5520
+RA	289.607971
+Dec	 44.345425
+
+RV[]	Kepler-77_1_MCDONALD.vels
+RV[]	Kepler-77_2_NOT.vels

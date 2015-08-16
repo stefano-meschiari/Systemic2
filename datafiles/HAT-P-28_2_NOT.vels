@@ -1,0 +1,19 @@
+# telescope = 2.5M NOT
+# instrument = FIES
+# observatory = OBSERVATORIO DEL ROQUE DE LOS MUCHACHOS, LA PALMA, SPAIN
+# reference = BUCHHAVE ET AL. 2011 (ARXIV, 1103, 1813)
+# bibcode = 2011APJ...733..116B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300150/data/UID_0300150_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-28%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455108.711010            -72.31                         12.10
+  2455110.684940             77.09                         12.60
+  2455111.599710            -22.21                          9.10
+  2455112.638610            -57.41                         12.60
+  2455113.605390             78.79                          8.70
+  2455114.568090             10.09                         13.90
+  2455115.566260            -99.31                         10.80
+  2455116.557200             34.79                         10.00
+  2455122.555730            -43.01                          8.70
+  2455123.504980             61.29                         11.90
+  2455125.496410            -68.71                          9.70

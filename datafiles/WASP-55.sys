@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-55
+Mass	1.01
+HD	
+HIP	
+Teff	5960
+RA	203.758118
+Dec	-17.503464
+
+RV[]	WASP-55_1_ESO.vels

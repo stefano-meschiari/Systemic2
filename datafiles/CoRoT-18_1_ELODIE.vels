@@ -1,0 +1,19 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = HEBRARD ET AL. 2011 (2011, A&A, 533A, 130)
+# bibcode = 2011A&A...533A.130H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300165/data/UID_0300165_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-18%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455484.670400          30132.00                         41.00
+  2455485.662100          29030.00                         62.00
+  2455486.646900          30069.00                         51.00
+  2455505.636700          30102.00                         32.00
+  2455525.602700          28933.00                         86.00
+  2455527.575100          29006.00                         65.00
+  2455529.612100          29178.00                         65.00
+  2455557.522700          29077.00                         96.00
+  2455577.383100          29756.00                         41.00
+  2455578.372100          29241.00                         52.00
+  2455580.367300          29181.00                         94.00

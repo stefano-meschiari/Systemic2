@@ -1,0 +1,27 @@
+# telescope = 3.6M ESO
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = BORDE ET AL. 2010 (2010, A&A, 520A, 66)
+# bibcode = 2010A&A...520A..66B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300114/data/UID_0300114_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-8%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454675.696520         -37505.00                         15.10
+  2454678.665570         -37442.70                         10.10
+  2454679.731800         -37475.10                         40.70
+  2454682.684360         -37483.00                         11.20
+  2454700.574590         -37475.60                         14.00
+  2454703.595650         -37461.10                         16.90
+  2454732.562020         -37468.70                          8.00
+  2454733.585760         -37450.80                          7.70
+  2454737.584970         -37495.50                         13.40
+  2454987.783680         -37455.00                         23.70
+  2454988.844560         -37448.20                         14.60
+  2454989.835280         -37454.00                          9.80
+  2454991.851150         -37497.90                         15.70
+  2454992.808070         -37483.90                         10.60
+  2454993.873460         -37461.00                         11.30
+  2454998.851020         -37500.60                         10.60
+  2455021.829510         -37465.60                         10.20
+  2455045.740890         -37413.90                         14.80
+  2455046.734670         -37488.80                         17.90

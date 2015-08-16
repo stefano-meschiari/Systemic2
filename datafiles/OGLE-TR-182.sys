@@ -1,9 +1,11 @@
-Data  {
-	RV[] "OGLE-TR-182_FLAMES07.vels"
-}
-TransitsData {
-        TD[] "OGLE-TR-182.tds"
-}
-"OGLE-TR-182" {
-  Mass   1.14
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	OGLE-TR-182
+Mass	1.14
+HD	
+HIP	
+Teff	5924
+RA	167.327957
+Dec	-61.095257
+
+RV[]	OGLE-TR-182_1_8.2M_KEUYEN_(UT2).vels

@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 148427
+Mass	1
+HD	HD 148427
+HIP	HIP 80687
+Teff	NA
+RA	247.117294
+Dec	-13.399640
+
+RV[]	HD148427_1_LICK.vels

@@ -1,6 +1,13 @@
-Data  {
-	RV[] "HD30177_1.vels"
-}
-"HD30177" {    
-  Mass   0.95
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 30177
+Mass	1.01
+HD	HD 30177
+HIP	HIP 21850
+Teff	5588
+RA	 70.476555
+Dec	-58.020756
+
+
+
+RV[]	HD30177_1_AAT.vels

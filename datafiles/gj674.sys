@@ -1,6 +1,11 @@
-Data {
-	RV[] "gj674_HARPS07.vels"
-}
-"gj674" {
-  Mass 0.35
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 674
+Mass	0.35
+HD	
+HIP	HIP 85523
+Teff	3600
+RA	262.166443
+Dec	-46.895191
+
+RV[]	GJ674_1_3.6M.vels

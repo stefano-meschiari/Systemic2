@@ -1,0 +1,14 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = BIERYLA ET AL. 2014 (2014, AJ, 147, 84)
+# bibcode = 2014AJ....147...84B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0302/0302527/data/UID_0302527_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HAT-P-49%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2456197.410350            247.00                         26.00
+  2456198.371330            -90.00                         21.00
+  2456202.371990            236.00                         11.00
+  2456203.344020           -106.00                         16.00
+  2456204.377660           -192.00                         13.00
+  2456206.317910           -229.00                         14.00

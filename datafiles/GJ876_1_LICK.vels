@@ -1,0 +1,24 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = MARCY ET AL. 2001 (APJ, 556, 296)
+# bibcode = 2001APJ...556..296M
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0113/0113020/data/UID_0113020_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=GJ%20876%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2449679.6316             58.07                          19.7
+  2449913.9713             39.56                          29.1
+  2450003.6980            136.89                          46.4
+  2450263.9395           -220.65                          24.4
+  2450300.8446            194.30                          26.5
+  2450326.8829           -189.96                          22.3
+  2450614.9787            -97.98                          25.6
+  2450655.9063            128.76                          24.8
+  2450681.8951           -223.27                          20.5
+  2451004.9431           -185.06                          21.2
+  2451005.9532           -150.76                          23.8
+  2451026.8841            254.04                          24.9
+  2451027.9327            263.53                          19.8
+  2451416.8707            -83.78                          24.4
+  2451446.7224            204.41                          24.8
+  2451894.5961            -17.89                          19.6

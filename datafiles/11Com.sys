@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	11 Com
+Mass	2.70
+HD	HD 107383
+HIP	HIP 60202
+Teff	4742
+RA	185.179276
+Dec	 17.792868
+
+RV[]	11Com_1_2.16M.vels
+RV[]	11Com_2_1.88M.vels

@@ -1,0 +1,12 @@
+# telescope = 3.6M
+# instrument = HARPS
+# observatory = ESO LA SILLA, CHILE
+# reference = DELEUIL ET AL. 2008 (A&A, 491, 889)
+# bibcode = 2008A&A...491..889D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300074/data/UID_0300074_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-3%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454341.681500	2297.000000	52.000000
+2454342.636600	408.000000	49.000000
+2454343.655600	-2056.000000	54.000000
+2454344.681600	-408.000000	57.000000

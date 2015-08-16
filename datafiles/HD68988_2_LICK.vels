@@ -1,0 +1,14 @@
+# telescope = 3.0M SHANE AND 0.6M CAT
+# instrument = HAMILTON ECHELLE SPECTROGRAPH
+# observatory = LICK OBSERVATORY, CALIFORNIA
+# reference = VOGT ET AL. 2002 (APJ, 568, 352)
+# bibcode = 2002APJ...568..352V
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0040/0040687/data/UID_0040687_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2068988%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450913.9219               6.2                           8.0
+  2450914.8319            -139.6                           8.8
+  2450915.7716            -150.0                           7.5
+  2450927.7894            -146.3                           8.8
+  2450945.8093             -99.5                           8.5
+  2450946.7834            -157.2                          10.8

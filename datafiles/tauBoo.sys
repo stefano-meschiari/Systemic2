@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	tau Boo
+Mass	1.34
+HD	HD 120136
+HIP	HIP 67275
+Teff	6400
+RA	206.815598
+Dec	 17.456905
+
+RV[]	tauBoo_1_LICK.vels

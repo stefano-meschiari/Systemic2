@@ -1,0 +1,13 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-16
+Mass	1.22
+HD	
+HIP	
+Teff	6140
+RA	  9.573181
+Dec	 42.463078
+
+RV[]	HAT-P-16_1_KECK.vels
+RV[]	HAT-P-16_2_NOT.vels
+RV[]	HAT-P-16_3_NOT.vels

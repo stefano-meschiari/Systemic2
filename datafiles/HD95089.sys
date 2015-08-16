@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 95089
+Mass	1
+HD	HD 95089
+HIP	HIP 53666
+Teff	NA
+RA	164.698898
+Dec	  1.729216
+
+RV[]	HD95089_1_KECK.vels

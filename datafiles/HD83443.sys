@@ -1,8 +1,16 @@
-Data  {
-	RV[] "HD83443_1.vels"
-	RV[] "HD83443_2.vels"
-	RV[] "HD83443_3.vels"
-}
-"HD83443" {    
-  Mass   0.79
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 83443
+Mass	1
+HD	HD 83443
+HIP	HIP 47202
+Teff	NA
+RA	144.299286
+Dec	-43.272205
+
+
+
+RV[]	HD83443_1_KECK.vels
+RV[]	HD83443_2_AAT.vels
+RV[]	HD83443_3_KECK.vels
+RV[]	HD83443_4_EULER.vels

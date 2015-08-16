@@ -1,6 +1,14 @@
-Data  {
-	RV[] "HD114783_1.vels"
-}
-"HD114783" {    
-  Mass   0.92
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 114783
+Mass	1
+HD	HD 114783
+HIP	HIP 64457
+Teff	NA
+RA	198.182434
+Dec	 -2.265040
+
+
+
+RV[]	HD114783_1_HET.vels
+RV[]	HD114783_2_KECK.vels

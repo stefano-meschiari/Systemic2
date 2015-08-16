@@ -1,0 +1,12 @@
+# telescope = 8.2M SUBARU
+# instrument = HDS
+# observatory = MAUNA KEA, HAWAII
+# reference = SATO ET AL. 2005 (APJ, 633, 465)
+# bibcode = 2005APJ...633..465S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0080/0080838/data/UID_0080838_RVC_003.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20149026%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453206.913796            -24.10                          3.15
+  2453207.935648             38.95                          3.21
+  2453208.908681            -42.48                          3.10
+  2453241.797685              6.06                          4.61

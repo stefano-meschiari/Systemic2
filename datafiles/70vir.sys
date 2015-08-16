@@ -1,6 +1,12 @@
-Data  {
-	RV[] "70vir_1.vels"
-}
-"70vir" {    
-  Mass   1.1
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	70 Vir
+Mass	1.11
+HD	HD 117176
+HIP	HIP 65721
+Teff	5545
+RA	202.107544
+Dec	 13.778788
+
+RV[]	70Vir_1_LICK.vels
+RV[]	70Vir_2_ELODIE.vels

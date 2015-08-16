@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 433
+Mass	0.48
+HD	
+HIP	HIP 56528
+Teff	3600
+RA	173.862289
+Dec	-32.539970
+
+RV[]	GJ433_1_VLT.vels

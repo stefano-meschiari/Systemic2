@@ -1,8 +1,15 @@
-Data  {
-	RV[] "HD92788_1.vels"
-	RV[] "HD92788_2.vels"
-	RV[] "HD92788_3.vels"
-}
-"HD92788" {    
-  Mass   1.06
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 92788
+Mass	1
+HD	HD 92788
+HIP	HIP 52409
+Teff	NA
+RA	160.702209
+Dec	 -2.183756
+
+
+
+RV[]	HD92788_1_LICK.vels
+RV[]	HD92788_2_KECK.vels
+RV[]	HD92788_3_EULER.vels

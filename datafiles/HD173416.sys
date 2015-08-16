@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 173416
+Mass	2.00
+HD	HD 173416
+HIP	HIP 91852
+Teff	4683
+RA	280.900452
+Dec	 36.556606
+
+RV[]	HD173416_1_2.16M.vels
+RV[]	HD173416_2_1.88M.vels

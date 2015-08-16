@@ -1,6 +1,11 @@
-Data {
-	RV[] "HD210702_Lick07.vels"
-}
-"HD210702" {
-  Mass 1.85
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 210702
+Mass	1.68
+HD	HD 210702
+HIP	HIP 109577
+Teff	4967
+RA	332.963867
+Dec	 16.040550
+
+RV[]	HD210702_1_LICK.vels

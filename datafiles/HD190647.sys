@@ -1,6 +1,11 @@
-Data  {
-        RV[] "HD190647_HARPS07.vels"
-}
-"HD190647" {
-  Mass   1.1
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 190647
+Mass	1
+HD	HD 190647
+HIP	HIP 99115
+Teff	NA
+RA	301.831970
+Dec	-35.538631
+
+RV[]	HD190647_1_3.6M.vels

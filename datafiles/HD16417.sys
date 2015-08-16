@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 16417
+Mass	1
+HD	HD 16417
+HIP	HIP 12186
+Teff	NA
+RA	 39.244198
+Dec	-34.577976
+
+RV[]	HD16417_1_KECK.vels
+RV[]	HD16417_2_AAT.vels

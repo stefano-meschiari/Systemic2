@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	CoRoT-26
+Mass	1.09
+HD	
+HIP	
+Teff	5590
+RA	279.750519
+Dec	  6.969787
+
+RV[]	CoRoT-26_1_ESO.vels

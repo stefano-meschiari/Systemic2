@@ -1,6 +1,15 @@
-Data  {
-	RV[] "HR810_1.vels"
-}
-"HR810" {    
-  Mass   1.03
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HR 810
+Mass	1
+HD	HD 17051
+HIP	HIP 12653
+Teff	NA
+RA	 40.639442
+Dec	-50.800293
+
+
+
+RV[]	HR810_1_AAT.vels
+RV[]	HR810_2_EULER.vels
+RV[]	HR810_3_1.4M_CAT.vels

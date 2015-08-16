@@ -1,0 +1,15 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	WASP-14
+Mass	1.21
+HD	
+HIP	
+Teff	6475
+RA	218.276474
+Dec	 21.894714
+
+RV[]	WASP-14_1_SUBARU.vels
+RV[]	WASP-14_2_KECK.vels
+RV[]	WASP-14_3_ELODIE.vels
+RV[]	WASP-14_4_ELODIE.vels
+RV[]	WASP-14_5_NOT.vels

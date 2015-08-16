@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	BD-08 2823
+Mass	0.74
+HD	
+HIP	HIP 49067
+Teff	4746
+RA	150.198837
+Dec	 -9.516680
+
+RV[]	BD-082823_1_ESO.vels

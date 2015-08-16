@@ -1,0 +1,11 @@
+# telescope = 1.2M EULER SWISS TELESCOPE
+# instrument = CORALIE
+# observatory = ESO LA SILLA, CHILE
+# reference = ALONSO ET AL. 2008 (A&AL, 482, 21)
+# bibcode = 2008A&A...482L..21A
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300048/data/UID_0300048_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-2%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454329.675600	326.000000	45.000000
+2454330.664420	-497.000000	39.000000
+2454378.560180	0.000000	32.000000

@@ -1,6 +1,15 @@
-Data  {
-	RV[] "HD160691_1.vels"
-}
-"HD160691" {    
-  Mass   1.08
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 160691
+Mass	1.08
+HD	HD 160691
+HIP	HIP 86796
+Teff	5807
+RA	266.036255
+Dec	-51.834053
+
+
+
+RV[]	HD160691_1_AAT.vels
+RV[]	HD160691_2_3.6M.vels
+RV[]	HD160691_3_EULER.vels

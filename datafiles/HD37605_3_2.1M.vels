@@ -1,0 +1,15 @@
+# telescope = 2.1M
+# instrument = SANDIFORD CASSEGRAIN ECHELLE SPECTROGRAPH
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = COCHRAN ET AL. 2004 (APJ, 611, L133)
+# bibcode = 2004APJ...611L.133C
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0026/0026664/data/UID_0026664_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2037605%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2453072.1363              69.5                         25.99
+  2453097.6345            -177.0                         30.24
+  2453098.6555            -181.7                         27.91
+  2453101.6647            -412.1                         78.12
+  2453102.6034            -297.5                         23.58
+  2453103.5928            -203.0                         20.37
+  2453104.5972             -79.7                         29.20

@@ -1,0 +1,23 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = DIAZ ET AL. 2012 (2012, A&A, 538A, 113)
+# bibcode = 2012A&A...538A.113D
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0084/0084171/data/UID_0084171_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%20156279%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455330.552200         -20627.00                          4.00
+  2455361.461100         -20881.00                          4.00
+  2455398.382100         -20163.00                          3.00
+  2455405.357200         -20142.00                          4.00
+  2455424.351400         -20370.00                          4.00
+  2455425.364000         -20360.00                          4.00
+  2455427.372600         -20376.00                          4.00
+  2455441.402100         -20502.00                          4.00
+  2455449.293200         -20541.00                          4.00
+  2455479.275700         -20766.00                          5.00
+  2455503.244000         -20999.00                          4.00
+  2455513.216800         -21137.00                          4.00
+  2455525.239300         -20823.00                          5.00
+  2455540.237200         -20210.00                          5.00
+  2455584.722900         -20592.00                          4.00

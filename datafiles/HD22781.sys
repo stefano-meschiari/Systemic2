@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 22781
+Mass	1
+HD	HD 22781
+HIP	HIP 17187
+Teff	NA
+RA	 55.206356
+Dec	 31.826290
+
+RV[]	HD22781_1_ELODIE.vels

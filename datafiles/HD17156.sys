@@ -1,10 +1,18 @@
-Data  {
-        RV[] "HD17156_Keck07.vels"
-        RV[] "HD17156_Subaru07.vels"
-}
-TransitsData {
-	     TD[] "HD17156.tds"
-}
-"HD17156" {
-  Mass   1.2
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 17156
+Mass	1.24
+HD	HD 17156
+HIP	HIP 13192
+Teff	6100
+RA	 42.435364
+Dec	 71.753235
+
+
+
+RV[]	HD17156_1_TNG.vels
+RV[]	HD17156_2_HJS.vels
+RV[]	HD17156_3_HET.vels
+RV[]	HD17156_4_SUBARU.vels
+RV[]	HD17156_5_KECK.vels
+RV[]	HD17156_6_1.88M.vels

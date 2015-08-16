@@ -1,0 +1,24 @@
+# telescope = 9.2M HOBBY EBERLY TELESCOPE (HET)
+# instrument = HRS
+# observatory = MCDONALD OBSERVATORY, TEXAS
+# reference = BURKE ET AL. 2007 (APJ, 671, 2115)
+# bibcode = 2007APJ...671.2115B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300038/data/UID_0300038_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=XO-2%20N%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2454127.6626             -60.6                            22
+  2454128.6459              99.5                            18
+  2454133.6383             -21.6                            18
+  2454134.6257              -1.5                            15
+  2454134.8318             -34.0                            15
+  2454135.8366             -57.8                            19
+  2454135.8481             -32.4                            20
+  2454136.6494              71.0                            19
+  2454136.8477              64.6                            20
+  2454136.8599              -7.6                            17
+  2454158.7782             -78.5                            19
+  2454158.7932              30.6                            17
+  2454159.7882              73.6                            20
+  2454160.5891              27.3                            23
+  2454160.7715              37.0                            26
+  2454168.7572              16.7                            17

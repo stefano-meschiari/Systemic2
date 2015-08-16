@@ -1,7 +1,12 @@
-Data  {
-	RV[] "HD149143_1.vels"
-	RV[] "HD149143_2.vels"
-}
-"HD149143" {    
-  Mass   1.21
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 149143
+Mass	1
+HD	HD 149143
+HIP	HIP 81022
+Teff	NA
+RA	248.212708
+Dec	  2.084832
+
+RV[]	HD149143_1_KECK.vels
+RV[]	HD149143_2_ELODIE.vels

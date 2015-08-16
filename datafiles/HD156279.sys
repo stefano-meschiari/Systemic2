@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 156279
+Mass	1
+HD	HD 156279
+HIP	HIP 84171
+Teff	NA
+RA	258.096680
+Dec	 63.352093
+
+RV[]	HD156279_1_ELODIE.vels

@@ -1,0 +1,30 @@
+# telescope = 2.0M ALFRED JENSCH TELESCOPE
+# instrument = COUDE ECHELLE SPECTROGRAPH
+# observatory = THURINGER LANDESSTERNWARTE TAUTENBURG (TLS), GERMANY
+# reference = HATZES ET AL. 2006 (A&A, 457, 335)
+# bibcode = 2006A&A...457..335H
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0037/0037826/data/UID_0037826_RVC_006.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2062509%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2452656.6562            -22.87                           3.5
+  2452683.2109            -21.72                           2.5
+  2452744.2891            -36.09                           3.1
+  2452746.2969            -37.64                           2.8
+  2452751.2891            -35.31                           2.1
+  2452752.2930            -35.72                           2.1
+  2452753.2969            -22.83                           3.5
+  2452782.8359            -36.32                           2.6
+  2452783.3359            -31.51                           4.4
+  2452877.6172            -14.63                           2.9
+  2452929.6055             -9.30                           5.0
+  2452952.5391             34.42                           3.2
+  2453076.2656             34.23                           2.4
+  2453080.3047             37.66                           3.3
+  2453420.3789            -42.72                           2.9
+  2453429.3594            -18.47                           6.8
+  2453431.3477            -30.56                           4.5
+  2453658.6523             22.47                           5.5
+  2453661.6055             28.74                           8.0
+  2453662.6680             22.77                           5.0
+  2453750.4609             30.94                           2.6
+  2453758.3281             25.43                           3.0

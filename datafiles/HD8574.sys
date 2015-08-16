@@ -1,6 +1,15 @@
-Data  {
-	RV[] "HD8574_1.vels"
-}
-"HD8574" {    
-  Mass   1.17
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 8574
+Mass	1
+HD	HD 8574
+HIP	HIP 6643
+Teff	NA
+RA	 21.302153
+Dec	 28.566692
+
+RV[]	HD8574_1_HJS.vels
+RV[]	HD8574_2_HET.vels
+RV[]	HD8574_3_LICK.vels
+RV[]	HD8574_4_KECK.vels
+RV[]	HD8574_5_ELODIE.vels

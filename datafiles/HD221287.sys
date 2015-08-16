@@ -1,6 +1,11 @@
-Data  {
-        RV[] "HD221287_HARPS07.vels"
-}
-"HD221287" {
-  Mass   1.25
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 221287
+Mass	1
+HD	HD 221287
+HIP	HIP 116084
+Teff	NA
+RA	352.834747
+Dec	-58.209732
+
+RV[]	HD221287_1_3.6M.vels

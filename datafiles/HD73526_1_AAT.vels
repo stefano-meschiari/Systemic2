@@ -1,0 +1,26 @@
+# telescope = 3.9M ANGLO-AUSTRALIAN TELESCOPE (AAT)
+# instrument = UCLES
+# observatory = SIDING SPRING OBSERVATORY, AUSTRALIA
+# reference = TINNEY ET AL. 2003 (APJ, 587, 423)
+# bibcode = 2003APJ...587..423T
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0042/0042282/data/UID_0042282_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2073526%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2451212.1302              23.5                          12.9
+  2451213.1314              66.8                          13.7
+  2451214.2389              61.6                          14.9
+  2451236.1465              48.4                          10.9
+  2451630.0280              35.5                          11.0
+  2451717.9000            -120.7                          12.8
+  2451920.1419             -32.0                          13.4
+  2451984.0378              78.0                           9.3
+  2452009.0976              71.8                           9.7
+  2452060.8844             -58.9                           7.4
+  2452091.8465            -149.8                          13.6
+  2452386.9003              51.8                           6.8
+  2452387.8921              64.0                           6.2
+  2452420.9248             -14.4                           7.8
+  2452421.9199              -9.6                           6.5
+  2452422.8602              -9.8                           7.3
+  2452424.9237             -19.1                          10.4
+  2452454.8529            -109.0                           6.3

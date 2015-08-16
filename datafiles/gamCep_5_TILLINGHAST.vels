@@ -1,0 +1,11 @@
+# telescope = 1.5M TILLINGHAST
+# instrument = ECHELLE SPECTROGRAPH
+# observatory = FRED L. WHIPPLE OBSERVATORY (FLWO), MT. HOPKINS, ARIZONA
+# reference = TORRES 2007 (APJ, 654, 1095)
+# bibcode = 2007APJ...654.1095T
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0116/0116727/data/UID_0116727_RVC_011.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=gam%20Cep%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2452099.970700	-360.000000	230.000000
+2453275.778200	0.000000	230.000000
+2453337.669100	120.000000	230.000000

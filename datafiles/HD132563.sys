@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 132563
+Mass	1
+HD	HD 132563
+HIP	HIP 73261 A
+Teff	NA
+RA	224.589661
+Dec	 44.043148
+
+RV[]	HD132563_1_3.58M_TNG.vels

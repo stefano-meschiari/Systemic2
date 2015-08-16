@@ -1,6 +1,11 @@
-Data  {
-	RV[] "gj849.vels"
-}
-"gj849" {
-  Mass 0.49
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	GJ 849
+Mass	0.49
+HD	
+HIP	HIP 109388
+Teff	NA
+RA	332.418121
+Dec	 -4.640729
+
+RV[]	GJ849_1_KECK.vels

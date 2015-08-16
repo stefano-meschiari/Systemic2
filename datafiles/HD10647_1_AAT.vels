@@ -1,0 +1,36 @@
+# telescope = 3.9M ANGLO-AUSTRALIAN TELESCOPE (AAT)
+# instrument = UCLES
+# observatory = SIDING SPRING OBSERVATORY, AUSTRALIA
+# reference = BUTLER ET AL. 2006 (APJ, 646, 505)
+# bibcode = 2006APJ...646..505B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0007/0007978/data/UID_0007978_RVC_001.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=HD%2010647%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2450831.018912               9.6                           4.7
+  2451235.918565               2.8                           5.4
+  2451383.268762              -2.3                           4.8
+  2451413.243735             -12.4                           6.3
+  2451526.957245              -9.4                           6.0
+  2451743.321354              -2.7                           8.5
+  2451767.282442             -12.9                           5.5
+  2451857.029475               19.                           10.
+  2451918.961759              15.2                           5.6
+  2452061.336898               3.5                           8.9
+  2452092.272604              20.6                           4.2
+  2452093.332940              16.3                           4.7
+  2452127.226875              33.3                           6.2
+  2452152.109514              -4.6                           5.6
+  2452187.136424               9.4                           4.7
+  2452477.293623             -18.8                           4.8
+  2452595.019213              -5.0                           4.7
+  2452600.101018              -2.2                           4.5
+  2452857.276512               0.7                           3.1
+  2452858.274164              13.7                           3.9
+  2452859.255023               5.3                           3.8
+  2453007.052141              24.3                           4.5
+  2453007.999282              17.2                           4.8
+  2453043.961181              17.8                           5.1
+  2453216.278738               2.2                           3.8
+  2453245.305000              -0.6                           5.7
+  2453281.151505              -5.1                           5.2
+  2453574.260298             -32.5                           3.2

@@ -1,0 +1,13 @@
+# telescope = 1.93M OHP
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE, FRANCE
+# reference = SIMPSON ET AL. 2010 (ARXIV, 1008, 3096)
+# bibcode = 2011AJ....141....8S
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300132/data/UID_0300132_RVC_002.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=WASP-37%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+  2455304.497500           7892.00                         12.00
+  2455305.466000           8223.00                         14.00
+  2455334.544900           8196.00                         19.00
+  2455336.476400           7825.00                         21.00
+  2455345.461800           8115.00                         18.00

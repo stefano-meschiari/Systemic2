@@ -1,0 +1,16 @@
+# telescope = 1.93M
+# instrument = SOPHIE
+# observatory = OBSERVATOIRE DE HAUTE PROVENCE (OHP), FRANCE
+# reference = BOUCHY ET AL. 2008 (A&AL, 482, 25)
+# bibcode = 2008A&A...482L..25B
+# source = http://exoplanetarchive.ipac.caltech.edu//data/ExoData/0300/0300048/data/UID_0300048_RVC_005.tbl
+# value_units = M/S
+# nexsci_url = http://exoplanetarchive.ipac.caltech.edu/cgi-bin/ExoOverview/nph-ExoOverview?objname=CoRoT-2%20b&label&aliases&exo&orb&ppar&tran&disc&ospar&ts&type=CONFIRMED_PLANET
+2454298.464100	137.000000	26.000000
+2454298.486200	81.000000	27.000000
+2454298.503000	165.000000	28.000000
+2454298.519800	174.000000	27.000000
+2454298.538100	-81.000000	27.000000
+2454298.555000	-278.000000	28.000000
+2454298.571400	-313.000000	29.000000
+2454298.587900	-181.000000	30.000000

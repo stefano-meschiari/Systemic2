@@ -1,0 +1,16 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	55 Cnc
+Mass	0.91
+HD	HD 75732
+HIP	HIP 43587
+Teff	5196
+RA	133.149216
+Dec	 28.330818
+
+
+
+RV[]	55Cnc_1_LICK.vels
+RV[]	55Cnc_2_KECK.vels
+RV[]	55Cnc_3_ELODIE.vels
+RV[]	55Cnc_4_HET.vels

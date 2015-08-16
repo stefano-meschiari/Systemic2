@@ -1461,7 +1461,6 @@ void K_setInfo(ok_kernel* k, const char* tag, const char* content) {
 
 bool K_infoExists(ok_kernel* k, const char * tag) {
     return (K_getInfo(k, tag) != NULL);
-
 }
 
 char* K_getInfo(ok_kernel* k, const char* tag) {

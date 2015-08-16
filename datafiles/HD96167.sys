@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 96167
+Mass	1
+HD	HD 96167
+HIP	HIP 54195
+Teff	NA
+RA	166.312790
+Dec	-10.291301
+
+RV[]	HD96167_1_KECK.vels

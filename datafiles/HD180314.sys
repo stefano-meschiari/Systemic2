@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 180314
+Mass	1
+HD	HD 180314
+HIP	HIP 94576
+Teff	NA
+RA	288.709198
+Dec	 31.860350
+
+RV[]	HD180314_1_SUBARU.vels
+RV[]	HD180314_2_1.88M.vels

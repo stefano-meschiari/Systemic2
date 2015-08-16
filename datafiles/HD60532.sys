@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 60532
+Mass	1.44
+HD	HD 60532
+HIP	HIP 36795
+Teff	6095
+RA	113.513252
+Dec	-22.296066
+
+RV[]	HD60532_1_3.6M.vels

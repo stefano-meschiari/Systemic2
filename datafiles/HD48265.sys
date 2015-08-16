@@ -1,0 +1,12 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 48265
+Mass	1
+HD	HD 48265
+HIP	HIP 31895
+Teff	NA
+RA	100.007195
+Dec	-48.541954
+
+RV[]	HD48265_1_3.6M.vels
+RV[]	HD48265_2_MAGELLAN.vels

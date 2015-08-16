@@ -1,10 +1,15 @@
-Data  {
-	RV[] "HAT-P-2_Keck07.vels"
-	RV[] "HAT-P-2_Lick07.vels"
-}
-TransitsData {
-             TD[] "HAT-P-2.tds"
-}
-"HAT-P-2" {
-  Mass 1.35
-}
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HAT-P-2
+Mass	1.36
+HD	HD 147506
+HIP	HIP 80076
+Teff	6290
+RA	245.151489
+Dec	 41.048084
+
+RV[]	HAT-P-2_1_KECK.vels
+RV[]	HAT-P-2_2_LICK.vels
+RV[]	HAT-P-2_3_KECK.vels
+RV[]	HAT-P-2_4_TILLINGHAST.vels
+RV[]	HAT-P-2_5_ELODIE.vels

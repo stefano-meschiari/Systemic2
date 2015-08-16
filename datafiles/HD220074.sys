@@ -1,0 +1,11 @@
+# Data from http://exoplanetarchive.ipac.caltech.edu/
+
+Name	HD 220074
+Mass	1.20
+HD	HD 220074
+HIP	HIP 115218
+Teff	3935
+RA	350.059906
+Dec	 61.970127
+
+RV[]	HD220074_1_1.8M_BOAO.vels
