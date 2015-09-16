@@ -1342,7 +1342,8 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   attr(mat, 'pmax') <- pmax
   attr(mat, 'samples') <- samples
   attr(mat, 'resampled') <- resampled
-
+  
+  attr(mat, 'faps') <- 
   if (plot)
     plot(mat)
 

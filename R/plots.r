@@ -2,6 +2,7 @@ systemic.par <- list()
 systemic.par$font.lab <- 1
 systemic.par$tck <- 0.02
 systemic.par$col.axis <- rgb(127, 127, 127, maxColorValue=255)
+systemic.par$cex.axis <- 1
 systemic.par$cex.lab <- 1.25
 systemic.par$mar <- c(4.1, 5.1, 2.1, 2.1)
 systemic.par$mgp <- c(2, 0.5, 0)
@@ -13,14 +14,16 @@ par(systemic.par)
 default.par <- par(no.readonly=TRUE)
 
 plot.kernel <- function(k, type = "rv", wrap=NA, legend=k$datanames, legend.pos='topright',
-                       plot.residuals=TRUE, plot.rvline=TRUE, transiting.planet = NA, transiting.per = NA,
+                       plot.residuals=TRUE, plot.rvline=TRUE, transiting.planet = NA, transiting.per = NA, 
                        xlim = NULL, ylim=NULL, max.rows=4,
                        which.planets=1:k$nplanets, residuals.auto.ylim=FALSE,
                        breaks=NA, plot.gaussian=TRUE, density=FALSE, pch=19,
-                       lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, yspace=1.2, ...) {
+                       lwd=2, layout=TRUE, separate.sets=TRUE, xlab=NULL, ylab=NULL, col=0, yshift=0, yspace=1.2, reset.pars=TRUE, ...) {
   .check_kernel(k)
   oldpar <- par(no.readonly=TRUE)
-  on.exit(par(oldpar))
+  
+  if (reset.pars)
+    on.exit(par(oldpar))
   par(systemic.par)
   if (is.nan(k$epoch)) {
     stop("No epoch set")
@@ -326,11 +329,12 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
       ylim <- xlim
     }
 
+
     if (length(cex.planet) != length(planet))
       cex.planet <- rep(cex.planet[1], length(planet))
-    
-    plot(0, 0, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes, type='n')
-    
+    if (!add)
+      plot(0, 0, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes, type='n')
+
     for (i in planet) {
       f <- k[i, 'trueanomaly'] * pi/180
       pom <- k[i, 'lop'] * pi/180
@@ -387,7 +391,7 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
       xlim <- c(-lim, lim)
       ylim <- xlim
     }
-    
+
     plot(0, 0, pch=19, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=axes)
 
     obj <- matrix(nrow=length(planet), ncol=4)
@@ -399,13 +403,14 @@ plot.orbit <- function(k, planet=-1, nplanets=k$nplanets, samples=1000, samples.
       for (e in colnames(obj))
         obj[, e] <- sapply(planet, function(i) k[[i]][j, e])
 
-      plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
+      plot.orbit(obj, xlim=xlim, ylim=ylim, planet=planet, nplanets=k$nplanets,
                  lwd=samples.lwd, col=samples.col, xlab=xlab, ylab=ylab, add=TRUE, plot.pericenter=FALSE, plot.planet=FALSE, plot.scale=FALSE, emphasize.range.angle=emphasize.range.angle, emphasize.range.col=emphasize.range.col, orbit.samples=orbit.samples,
                  rescaled=rescaled, plot.comparison=plot.comparison)
     }
 
     obj <- k$fit.els
     class(obj) <- c('matrix', '.orbit')
+
     plot.orbit(obj, xlim=lim, ylim=lim, planet=planet, nplanets=k$nplanets,
                lwd=lwd, col=best.col, xlab=xlab, ylab=ylab, add=TRUE, orbit.samples=orbit.samples, rescaled=rescaled)
     
@@ -451,14 +456,14 @@ plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fa
     lines(p[, 'period'], p[, 'window'], col="red")
   }
 
-  if (plot.fap && sum(p[, 'fap'] < 0.1) > 1) {
+  if (plot.fap) {
     # Change to actual calc of frequencies
     # y <- log(1-a[,3]); x <- log(1-exp(-a[,2]))
     if (is.null(fixed.faps))
       faps <- approx(log(per[,'fap']), per[,what], log(c(1e-1, 1e-2, 1e-3)))$y
     else
       faps <- fixed.faps
-    #remove
+
     xmin = min(p[,'period'])
     xmax = max(p[,'period'])
     for (i in 1:3)	{

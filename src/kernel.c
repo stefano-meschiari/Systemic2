@@ -330,11 +330,11 @@ gsl_matrix* K_addDataFile(ok_kernel* k, const char* path, int type) {
     if (type == T_TIMING) {
         for (int i = 0; i < MROWS(k->datasets[k->nsets]); i++) {
             MSET(k->datasets[k->nsets], i, T_TDS_FLAG, MGET(k->datasets[k->nsets], i,
-                    2));
+                                                            2));
             MSET(k->datasets[k->nsets], i, T_ERR, MGET(k->datasets[k->nsets], i,
-                    T_VAL));
+                                                       T_VAL));
             MSET(k->datasets[k->nsets], i, T_VAL, MGET(k->datasets[k->nsets], i,
-                    T_TIME));
+                                                       T_TIME));
         }
     }
 
@@ -563,7 +563,7 @@ void K_setElement(ok_kernel* k, int row, int col, double value) {
             double f = RADRANGE(TO_RAD(value));
 
             double E = 2 * atan2(sqrt(1 - e) * sin(0.5 * f),
-                    sqrt(1 + e) * cos(0.5 * f));
+                                 sqrt(1 + e) * cos(0.5 * f));
 
             double M = E - e * sin(E);
             MSET(k->system->elements, row, MA, TO_DEG(M));
@@ -678,8 +678,8 @@ double K_getElement(ok_kernel* k, int row, int col) {
         double E = mco_kep__(e, ma);
 
         double f = 2. * atan2(
-                sqrt(1 + e) * sin(0.5 * E),
-                sqrt(1 - e) * cos(0.5 * E));
+                              sqrt(1 + e) * sin(0.5 * E),
+                              sqrt(1 - e) * cos(0.5 * E));
 
         return TO_DEG(f);
     } else if (col == MEANLONGITUDE) {
@@ -972,7 +972,7 @@ void K_calculate(ok_kernel* k) {
 
     if (integrate) {
         k->integration = ok_integrate(k->system, k->times, k->intOptions, k->intMethod, k->integration,
-                &k->last_error);
+                                      &k->last_error);
     }
 
     k->chi2_rvs = 0.;
@@ -1028,7 +1028,7 @@ void K_calculate(ok_kernel* k) {
             if (integrate && k->integration != NULL && ((int) compiled[i][T_SCRATCH] < 0)) {
                 double to = 0.;
                 ok_find_closest_time_to_transit(k->integration[i],
-                        pidx, &o, k->intMethod, o.eps_tr, compiled[i][T_TDS_FLAG], &to, &k->last_error);
+                                                pidx, &o, k->intMethod, o.eps_tr, compiled[i][T_TDS_FLAG], &to, &k->last_error);
                 compiled[i][T_PRED] += to;
             }
             compiled[i][T_SCRATCH] = 0;
@@ -1389,10 +1389,11 @@ int K_1dminimize(ok_kernel* k, int algo, int maxiter, int row, int column, doubl
         VISET(p, column, ACTIVE | MINIMIZE);
     }
 
-
     k->plFlags = m;
     k->parFlags = p;
+
     int ret = K_minimize(k, algo, maxiter, params);
+
     k->plFlags = old_plFlags;
     k->parFlags = old_parFlags;
     gsl_matrix_int_free(m);
