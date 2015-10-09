@@ -1,4 +1,4 @@
-install.packages('rdyncall', repos="http://cran.us.r-project.org")
+install.packages('rdyncall', repos="http://R-Forge.R-project.org")
 install.packages('bitops', repos="http://cran.us.r-project.org")
 install.packages('gdata', repos="http://cran.us.r-project.org")
 install.packages('gplots', repos="http://cran.us.r-project.org")
