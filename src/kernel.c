@@ -388,6 +388,9 @@ void K_removeData(ok_kernel* k, int idx) {
         k->params->data[i - 1] = k->params->data[i];
         k->parFlags->data[i - 1] = k->parFlags->data[i];
         k->parSteps->data[i - 1] = k->parSteps->data[i];
+        k->params->data[i - 1 + P_DATA_NOISE1] = k->params->data[i + P_DATA_NOISE1];
+        k->parFlags->data[i - 1 + P_DATA_NOISE1] = k->parFlags->data[i + P_DATA_NOISE1];
+        k->parSteps->data[i - 1 + P_DATA_NOISE1] = k->parSteps->data[i + P_DATA_NOISE1];
         sprintf(a, "DataFileName%d", i);
 
         char* fn = K_getInfo(k, a);

@@ -122,7 +122,7 @@ ktable <- function(k, what=c('period', 'mass', 'ma', 'ecc', 'lop', 'k', 'a', 'tp
       return(TRUE)
   }, what)
   
-  planet.labels <- str_c(k$starname, letters[1+1:k$nplanets])
+  planet.labels <- str_c(k$starname, k$letters)
   
   row.labels <- sapply(what, function(n) {
     if (n == '-')

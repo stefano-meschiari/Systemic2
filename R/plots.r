@@ -133,7 +133,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, legend=k$datanames, legend.pos=
         m <- m[order(m[, TIME]), ]
       }
       xlim <- c(min(data_i[, TIME]), max(data_i[, TIME]))
-      plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab=xlab, ylab=sprintf(ylab, letters[i]), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
+      plotCI(data_i[,TIME], data_i[, SVAL] - data_i[,PRED], data_i[, ERR], sfrac=0, xlab=xlab, ylab=sprintf(ylab, k$letters[i]), ylim=ylim, col=data_i[,SET]+2, xlim=xlim, pch=pch, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2])
       lines(m[,TIME], m[,VAL], xlim=xlim, lwd=lwd)
       if (!is.null(legend))
         legend(legend.pos, legend=legend, pch=pch, col=1+col+(1:k$nsets), cex=0.5, box.col=rgb(0.7, 0.7, 0.7, 1), bg=rgb(0.95, 0.95, 0.95, 1), ncol=k$nsets)
@@ -634,7 +634,7 @@ plot.error.est <- function(e, type="histogram", px=list(1, "period"), py=NULL, d
       datax <- e[[x[[1]]]][, x[[2]]]
       medx <- e$stats[[x[[1]]]][x[[2]], 'median']
       devx <- e$stats[[x[[1]]]][x[[2]], 'mad']
-      labx <- sprintf("%s of planet %s", .elements.labels[[x[[2]]]], letters[x[[1]]+1])
+      labx <- sprintf("%s of planet %s", .elements.labels[[x[[2]]]], k$letters[x[[1]]])
 
       if (full.angle && x[[2]] %in% c(MA, INC, LOP, NODE)) {
         xlim <- c(0, 360)
@@ -801,7 +801,7 @@ plot.integration <- function(int, what=c('a', 'ecc'), legend=TRUE, xlab="Time - 
 
     
     
-    legend("topright", col=(1:int$nplanets)+1, inset=c(0, -0.15), legend=sprintf("%s", letters[1+(1:int$nplanets)]), xpd=TRUE, lty=rep(1, int$nplanets), box.col=NA, ncol=int$nplanets)
+    legend("topright", col=(1:int$nplanets)+1, inset=c(0, -0.15), legend=sprintf("%s", k$letters), xpd=TRUE, lty=rep(1, int$nplanets), box.col=NA, ncol=int$nplanets)
   }
   
 

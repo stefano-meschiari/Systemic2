@@ -259,14 +259,18 @@ kremove.planet <- function(k, idx) {
   # - idx: index of the planet to remove (starting at 1)
   on.exit(if (k$auto) kupdate(k))
   .check_kernel(k)
-  if (idx == 'all') {
+  if (length(idx) > 1) {
+    for (i in sort(idx, TRUE))
+      kremove.planet(k, i)
+    return(invisible())
+  } else if (idx == 'all') {
     if (k$nplanets > 0) {
       for (i in 1:k$nplanets) {
         kremove.planet(k, 1)
       }
     }
     return(invisible())
-  }
+  } 
   stopifnot(idx >= 1 && idx <= k$nplanets)
 
   K_removePlanet(k$h, idx)
@@ -494,6 +498,17 @@ kels <- function(k, keep.first = FALSE) {
     return(kprop(k)['.notes'])
   } else if (idx == 'trange') {
     return(ktrange(k))
+  } else if (idx == 'letters') {
+    if (k$nplanets == 0)
+      return(c())
+    
+    l <- kprop(k, 'letters')
+    if (is.null(l)) {
+      return(letters[1+1:k$nplanets])
+    } else {
+      l <- strsplit(l, '')[[1]]
+      return(l[1:k$nplanets])
+    }
   } else if (idx == 'starname') {
     props <- kprop(k)
     if (is.null(props)) {
@@ -690,6 +705,12 @@ kprop <- function(k, idx = 'all') {
     for (i in 1:length(value))
       K_setInfo(k[['h']], paste0('DataName', i-1), value[i])
     kupdate(k, calculate=FALSE)        
+  } else if (idx == 'letters') {
+    l <- paste0(value, collapse='')
+    if (nchar(l) != k$nplanets)
+      stop(sprintf("You entered %d letters, but there are %d planets.", nchar(l), k$nplanets))
+    
+    K_setInfo(k[['h']], 'letters', l)    
   } else 
     k[[idx]] <- value
   return(k)
@@ -1343,7 +1364,6 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   attr(mat, 'samples') <- samples
   attr(mat, 'resampled') <- resampled
   
-  attr(mat, 'faps') <- 
   if (plot)
     plot(mat)
 
@@ -1400,8 +1420,8 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
     n <- kpars(k)[DATA.NOISE1:DATA.NOISE10]
     d[, err.col] <- sqrt(d[, err.col]^2 + n[d[, SET]+1]^2)
   } else {
-    stopifnot(nrow(d) > 1 && ncol(d) >= 3)		
     d <- k
+    stopifnot(nrow(d) > 1 && ncol(d) >= 3)		
   }
   
   if (per_type == "res") {
@@ -1435,7 +1455,8 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
 
   
   m <- .R_to_gsl_matrix(d)
-  per <- ok_periodogram_boot(m, trials, samples, pmin, pmax, 0, time.col-1, val.col-1, err.col-1, seed, NULL, K_getProgress(k$h))
+
+  per <- ok_periodogram_boot(m, trials, samples, pmin, pmax, 0, time.col-1, val.col-1, err.col-1, seed, NULL, if (class(k) == "kernel") K_getProgress(k$h) else NULL)
   .job <<- "Bootstrap periodogram"
 
 

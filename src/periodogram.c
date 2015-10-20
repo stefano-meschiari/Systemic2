@@ -79,7 +79,7 @@ double _find_z(gsl_root_fsolver* s, gsl_function* F, double target, double x_lo,
  * LS power). You are responsible for deallocating it.
  */
 gsl_matrix* ok_periodogram_ls(const gsl_matrix* data, const unsigned int samples, const double Pmin, const double Pmax, const int method,
-        unsigned int timecol, unsigned int valcol, unsigned int sigcol, ok_periodogram_workspace* p) {
+                              unsigned int timecol, unsigned int valcol, unsigned int sigcol, ok_periodogram_workspace* p) {
 
     gsl_matrix* ret = NULL;
     gsl_matrix* buf = NULL;
@@ -260,7 +260,7 @@ double _kminimize(ok_kernel* k, int algo) {
 }
 
 gsl_matrix* ok_periodogram_full(ok_kernel* k, int type, int algo, bool circular, unsigned int sample,
-        const unsigned int samples, const double Pmin, const double Pmax) {
+                                const unsigned int samples, const double Pmin, const double Pmax) {
 
     k = K_clone(k);
     K_calculate(k);
@@ -298,7 +298,7 @@ gsl_matrix* ok_periodogram_full(ok_kernel* k, int type, int algo, bool circular,
 
 
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int r = 0; r < samples; r++) {
         double P = MGET(ret, r, PS_TIME);
         double K = sqrt(MGET(ret, r, PS_Z));
@@ -324,7 +324,6 @@ gsl_matrix* ok_periodogram_full(ok_kernel* k, int type, int algo, bool circular,
         fflush(stdout);
     }
 
-    printf("\n");
     return ret;
 
 }
@@ -353,9 +352,9 @@ gsl_matrix* ok_periodogram_full(ok_kernel* k, int type, int algo, bool circular,
 
  */
 gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trials, const unsigned int samples,
-        const double Pmin, const double Pmax, const int method,
-        const unsigned int timecol, const unsigned int valcol, const unsigned int sigcol,
-        const unsigned long int seed, ok_periodogram_workspace* p, ok_progress prog) {
+                                const double Pmin, const double Pmax, const int method,
+                                const unsigned int timecol, const unsigned int valcol, const unsigned int sigcol,
+                                const unsigned long int seed, ok_periodogram_workspace* p, ok_progress prog) {
 
 
     int nthreads = omp_get_max_threads();
@@ -384,7 +383,7 @@ gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trial
     gsl_vector* zmax = (p != NULL && p->zm != NULL ? p->zm : gsl_vector_alloc(trials));
 
     bool abort = false;
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < trials; i++) {
         if (!abort) {
             int nt = omp_get_thread_num();
@@ -395,10 +394,10 @@ gsl_matrix* ok_periodogram_boot(const gsl_matrix* data, const unsigned int trial
 
             if (nt == 0 && prog != NULL) {
                 int ret = prog(i * nthreads, trials, NULL,
-                        "ok_periodogram_boot");
+                               "ok_periodogram_boot");
                 if (ret == PROGRESS_STOP) {
                     abort = true;
-#pragma omp flush (abort)
+                    #pragma omp flush (abort)
                 }
             }
         }
