@@ -1339,7 +1339,6 @@ kperiodogram <- function(k, per_type = "all", samples = getOption("systemic.psam
   colnames(mat) <- .periodogram
   class(mat) <- "periodogram"
   
-
   peaks.m <- kfind.peaks(mat)
   if (!is.na(peaks.m) && nrow(peaks.m) > 0) {
     mfap <- mat[mat[,'fap'] < 1, , drop=FALSE]
@@ -1492,7 +1491,8 @@ kperiodogram.boot <- function(k, per_type = "all", trials = 1e5, samples = getOp
   if (plot)
     plot(m, overplot.window=overplot.window)
 
-  k[[paste0('per_', per_type)]] <- m
+  if (class(k) == "kernel")
+    k[[paste0('per_', per_type)]] <- m
   
   if (print) {
     print(m, "peaks")
