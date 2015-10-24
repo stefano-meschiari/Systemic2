@@ -72,7 +72,8 @@ plot.kernel <- function(k, type = "rv", wrap=NA, legend=k$datanames, legend.pos=
     if (plot.residuals) {
       if (residuals.auto.ylim)
         ylim <- NULL
-      suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED] + yshift, data[,ERR], xlab="Time [JD]", ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2+col, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2+col], ...))
+      suppressWarnings(plotCI(data[,TIME], data[,SVAL] - data[, PRED] + yshift, data[,ERR], xlab=xlab, ylab="Residuals [m/s]", ylim=ylim, xlim=xlim, col=data[,SET]+2+col, pch=pch, sfrac=0, gap = 0, pt.bg=systemic.palette.face[data[,SET]+2+col], ...))
+      lines(range(data[, TIME]), c(0, 0), lty='dashed')
       axis(3, labels=FALSE)
       axis(4, labels=FALSE)
       if (!is.null(legend))
@@ -94,7 +95,7 @@ plot.kernel <- function(k, type = "rv", wrap=NA, legend=k$datanames, legend.pos=
     }
     
     fpars <- list(...)
-    xlab <- if (!is.null(fpars$xlab)) fpars$xlab else 'Time [JD]'
+    xlab <- if (!is.null(xlab)) xlab else 'Time [JD]'
     ylab <- if (!is.null(fpars$ylab)) fpars$ylab else 'RV, Planet %s [m/s]'
     
     
@@ -479,7 +480,7 @@ plot.periodogram <- function(p, overplot.window = FALSE, what = 'power', plot.fa
     
     while (length(printed) < text.top) {
       if (min(abs(printed - peaks[i, 1])/peaks[i, 1]) > 0.01) {
-        text(peaks[i, 1], peaks[i, 2], sprintf("%.2f", peaks[i, 1]), offset=0.25, pos=3)
+        text(peaks[i, 1], peaks[i, 2], sprintf("%.0f", peaks[i, 1]), offset=0.25, pos=3)
         printed <- c(printed, peaks[i, 1])
       }
       i <- i + 1
