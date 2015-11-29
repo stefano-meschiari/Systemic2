@@ -845,7 +845,7 @@ plot.rvs <- function(k, samples=1000, col=rgb(0,0,0,0.1), rvsamples=5000, ...) {
   return(invisible(cbind(t, top, bottom)))
 }
 
-plot.qq <- function(k, pch=19, ...) {
+plot_qq <- function(k, pch=19, col=kdata(k)[,SET]+2, lty='dashed', lwd=1, ...) {
   d <- kdata(k)
   noises <- k['par'][DATA.NOISE1:DATA.NOISE10]
   vals <- (d[,PRED]-d[,SVAL])/sqrt(d[,ERR]^2 + noises[d[,SET]+1]^2)
@@ -853,6 +853,6 @@ plot.qq <- function(k, pch=19, ...) {
   on.exit(par(oldpar))
   
   par(systemic.par)
-  qqnorm(vals, pch=pch, ...)
-  qqline(vals)
+  qqnorm(vals, pch=pch, col=col, ...)
+  qqline(vals, lty=lty, lwd=lwd)
 }

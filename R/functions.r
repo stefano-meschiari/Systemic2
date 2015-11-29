@@ -191,8 +191,8 @@ knew <- function() {
   k$min.method <- SIMPLEX
   k$last.error.code <- integer(1)
   k$.new <- TRUE
-  k$min.func <- "chi2"
   class(k) <- "kernel"
+  k$min.func <- "loglik"
   k$epoch <- 2450000
   k$.epoch.set <- FALSE
   

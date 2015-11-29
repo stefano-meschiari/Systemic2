@@ -6,7 +6,6 @@
 # Please modify these paths:
 CC = /usr/local/bin/gcc
 FORTRAN = /usr/local/bin/gfortran
-
 # If you have installed GSL & company in non-standard places, add them here:
 LIBS = -L./deps/lib -L/opt/local/lib -L/usr/local/lib
 INCLUDES = -I./deps/include -I/opt/local/include -I/opt/local/include
@@ -131,7 +130,7 @@ update_binding:
 update_ui:
 	cd ../SystemicGui; ant jar
 
-package: update_binding clean cleanreqs reqs  macosx utils/systemic_cli update_ui 
+package: update_binding clean cleanreqs reqs  macosx utils/systemic_cli update_ui
 	$(LUA) lua/libs.lua libsystemic.dylib
 	- rm -R $(PACKAGE_DIR)/mac
 	mkdir $(PACKAGE_DIR)/mac
