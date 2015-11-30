@@ -201,7 +201,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
     };
     bool stopped = false;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int n = 0; n < nchains; n++) {
         ok_kernel* k2 = K_clone(k[n]);
 
@@ -209,7 +209,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
         int flag;
         for (int j = 0; j < ntemps; j++) {
             kls[n][j] = K_mcmc_single(k2, 1, 0, discard, glOpts[j], NULL, merit_function, n,
-                    &flag);
+                                      &flag);
             kls[n][j]->prototype = k2;
             kls[n][j]->kernels[0]->elements = K_getAllElements(k[n]);
             kls[n][j]->kernels[0]->params = ok_vector_copy(k[n]->params);
@@ -292,14 +292,14 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 
 
 
-#pragma omp parallel for 
+        #pragma omp parallel for 
         for (int n = 0; n < nchains * ntemps; n++) {
 
             int ntem = n % ntemps;
             int ncha = n - (n % ntemps);
             int flag;
             ok_list* kl = K_mcmc_single(kls[ncha][0]->prototype, Nsteps, (iter == 0 ? skip : 0),
-                    discard, glOpts[ntem], kls[ncha][ntem], merit_function, ncha, &flag);
+                                        discard, glOpts[ntem], kls[ncha][ntem], merit_function, ncha, &flag);
 
             if (flag == PROGRESS_STOP)
                 stopped = true;
@@ -308,7 +308,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 
 
 
-#pragma omp parallel for
+        #pragma omp parallel for
         for (int n = 0; n < nchains; n++) {
             int size = kls[n][0]->size;
 
@@ -349,8 +349,6 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                         avgs_90[np][n] = MGET(avg_90, i, j);
                         vals[np][n] = KL_getElement(kls[n][0], size - 1, i, j);
 
-                        if (n == 0)
-                            printf("%d %e\n", np, vals[np][n]);
                         np++;
 
                     }
@@ -359,8 +357,6 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                     devs_90[np][n] = VGET(dev_90_p, i);
                     avgs_90[np][n] = VGET(avg_90_p, i);
                     vals[np][n] = KL_getPar(kls[n][0], size - 1, i);
-                    if (n == 0)
-                        printf("%d %e\n", np, vals[np][n]);
                     np++;
                 }
 
@@ -476,16 +472,16 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
                 for (int j = 0; j < ELEMENTS_SIZE; j++)
                     if (K_getElementFlag(k[0], i, j) & MINIMIZE) {
                         printf("%e ", KL_getElement(kls[conv_single_chain][0],
-                                kls[conv_single_chain][0]->size - 2,
-                                i, j));
+                                                    kls[conv_single_chain][0]->size - 2,
+                                                    i, j));
                     }
                 printf("\n");
             }
             for (int i = 0; i < PARAMS_SIZE; i++)
                 if (K_getParFlag(k[0], i) & MINIMIZE) {
                     printf("%e ", KL_getPar(kls[conv_single_chain][0],
-                            kls[conv_single_chain][0]->size - 2,
-                            i));
+                                            kls[conv_single_chain][0]->size - 2,
+                                            i));
                 }
             printf("\n");
         }
@@ -552,7 +548,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 
     if (verbose > 0) {
         printf("Final length: %d, final R_max = %e, final Rsingle_max = %e\n",
-                kls[0][0]->size, Rmax, Rsingle_max);
+               kls[0][0]->size, Rmax, Rsingle_max);
     }
 
     if (return_all) {
@@ -571,7 +567,7 @@ ok_list* K_mcmc_mult(ok_kernel** k, unsigned int nchains, unsigned int ntemps, u
 }
 
 ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, unsigned int discard, const double dparams[], ok_list* cont, ok_callback2 merit_function, int tag,
-        int* flag) {
+                       int* flag) {
 
 
     gsl_matrix* plSteps = k2->plSteps;
@@ -584,8 +580,8 @@ ok_list* K_mcmc_single(ok_kernel* k2, unsigned int nsteps, unsigned int skip, un
 
     if (cont != NULL && cont->size > 0) {
         oldEls = ok_matrix_copy_sub(cont->kernels[cont->size - 1]->elements,
-                0, MROWS(cont->kernels[cont->size - 1]->elements),
-                0, ELEMENTS_SIZE);
+                                    0, MROWS(cont->kernels[cont->size - 1]->elements),
+                                    0, ELEMENTS_SIZE);
 
         oldPars = ok_vector_copy(cont->kernels[cont->size - 1]->params);
         MATRIX_MEMCPY(k2->system->elements, oldEls);

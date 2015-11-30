@@ -62,6 +62,9 @@ ok_buf_add_to_col
 ok_vector_len
 ok_matrix_rows
 ok_matrix_cols
+ok_vector_sum
+ok_vector_sum_2
+ok_ptr_sum_2
 ok_vector_block
 ok_matrix_block
 ok_resample_curve
@@ -77,7 +80,6 @@ K_addDataTable
 K_removeData
 K_getData
 K_setData
-K_getDataName
 K_addDataFromSystem
 K_getDataType
 K_getDataSize

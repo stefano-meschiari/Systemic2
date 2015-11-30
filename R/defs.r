@@ -315,6 +315,12 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "ok_matrix_rows(p)I",
 # unsigned int ok_matrix_cols(void* v)
 "ok_matrix_cols(p)I",
+# double ok_vector_sum(gsl_vector* x)
+"ok_vector_sum(*<gsl_vector>)d",
+# double ok_vector_sum_2(gsl_vector* x)
+"ok_vector_sum_2(*<gsl_vector>)d",
+# double ok_ptr_sum_2(double* x, int len)
+"ok_ptr_sum_2(*di)d",
 # gsl_block* ok_vector_block(void* v)
 "ok_vector_block(p)*<gsl_block>",
 # gsl_block* ok_matrix_block(void* v)
@@ -345,8 +351,6 @@ tryCatch({.lib <- dynbind(c("libsystemic.so", "libsystemic.dylib"), paste(sep=";
 "K_getData(pi)*<gsl_matrix>",
 # void K_setData(ok_kernel* k, int idx, gsl_matrix* data)
 "K_setData(pi*<gsl_matrix>)v",
-# const char* K_getDataName(ok_kernel* k, int idx)
-"K_getDataName(pi)Z",
 # bool K_addDataFromSystem(ok_kernel* k, const char* filename)
 "K_addDataFromSystem(pZ)B",
 # int K_getDataType(ok_kernel* k, int idx)

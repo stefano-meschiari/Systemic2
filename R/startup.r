@@ -13,7 +13,7 @@ systemic.plot.theme('tomorrow')
 
 
 # This is the startup message. You can make it wittier if you'd like.
-cat(sprintf('Hello master %s!\nThis is Console %.4f speaking, %s.\n(c) 2013-2014 Stefano Meschiari, >>>http://www.stefanom.org\nPlease cite >>>http://adsabs.harvard.edu/abs/2009PASP..121.1016M when you use this software.\n?* Type quickstart() to get started.\n?* Type tutorial() to view a brief tutorial.\n?* Type acknowledgments() to view the license and a list of acknowledgments.\n',
+cat(sprintf('Hello master %s!\nThis is Console %.4f speaking, %s.\n(c) 2013-2015 Stefano Meschiari, >>>http://www.stefanom.org\nPlease cite >>>http://adsabs.harvard.edu/abs/2009PASP..121.1016M when you use this software.\n?* Type quickstart() to get started.\n?* Type tutorial() to view a brief tutorial.\n?* Type acknowledgments() to view the license and a list of acknowledgments.\n',
 	Sys.getenv("USER"), SYSTEMIC.VERSION, R.version.string))
 
 # Window title
