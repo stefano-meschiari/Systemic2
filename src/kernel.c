@@ -2061,10 +2061,10 @@ ok_kernel_minimizer_pars K_getMinimizedVariables(ok_kernel* k) {
         }
 
     for (int i = 0; i < mpars.npars; i++) {
-        if (IS_INVALID(mpars.min[i]))
-            mpars.min[i] = -DBL_MAX;
-        if (IS_INVALID(mpars.max[i]))
-            mpars.max[i] = DBL_MAX;
+        if (IS_INVALID(min[i]))
+            min[i] = -DBL_MAX;
+        if (IS_INVALID(max[i]))
+            max[i] = DBL_MAX;
 
     }
     mpars.pars = pars;

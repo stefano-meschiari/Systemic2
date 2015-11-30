@@ -1,6 +1,7 @@
-R/Rplots.pdf
+Rplots.pdf
 R/*.pdf
 R_packages_*
+Makefile.local
 
 # osx noise
 .DS_Store
@@ -49,3 +50,4 @@ CVS
 .tmp.h
 doc/doc_todo.md
 tacc
+
