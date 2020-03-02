@@ -3,6 +3,9 @@ R/*.pdf
 R_packages_*
 Makefile.local
 
+*.sh
+*.app
+
 # osx noise
 .DS_Store
 profile
@@ -50,4 +53,3 @@ CVS
 .tmp.h
 doc/doc_todo.md
 tacc
-
